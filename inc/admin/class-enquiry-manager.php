@@ -737,3 +737,5 @@ class CCS_Enquiry_Manager {
 		}
 		fclose( $out );
 	}
+
+}
