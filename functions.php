@@ -38,3 +38,25 @@ new CCS_Register_Taxonomies();
  * Theme setup (supports, menus, enqueue).
  */
 require_once THEME_DIR . '/inc/theme-setup.php';
+
+/**
+ * Theme activation: demo pages, services, menus, Reading, permalinks. Idempotent; handles Reset Demo Content.
+ */
+new CCS_Theme_Activation();
+
+/**
+ * Appearance → CCS Theme Setup: welcome message, quick start checklist, theme info, Reset Demo Content, server requirements.
+ */
+new CCS_Welcome_Screen();
+
+/**
+ * Consultation form: shortcode [ccs_consultation_form], AJAX handler, CPT ccs_enquiry, emails.
+ */
+new CCS_Contact_Form();
+
+/**
+ * WP-CLI: wp ccs regenerate-critical-css (only when running via WP-CLI).
+ */
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+	require_once THEME_DIR . '/inc/cli/class-ccs-critical-css-command.php';
+}

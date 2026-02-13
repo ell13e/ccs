@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class CCS_SEO_Optimizer {
 
 	const TITLE_MAX = 60;
-	const DESC_MAX = 160;
+	const DESC_MAX = 155;
 
 	/** Optional meta keys for custom title/description (e.g. pages). */
 	const META_TITLE       = 'ccs_seo_title';
@@ -42,6 +42,7 @@ class CCS_SEO_Optimizer {
 		add_action( 'wp_head', array( $this, 'output_open_graph' ), 2 );
 		add_action( 'wp_head', array( $this, 'output_twitter_card' ), 3 );
 		add_action( 'wp_head', array( $this, 'output_canonical' ), 4 );
+		add_action( 'wp_head', array( $this, 'output_structured_data' ), 5 );
 
 		add_filter( 'wp_sitemaps_post_types', array( $this, 'filter_sitemap_post_types' ), 10, 1 );
 		add_filter( 'wp_sitemaps_posts_entry', array( $this, 'filter_sitemap_posts_entry' ), 10, 3 );
@@ -164,12 +165,19 @@ class CCS_SEO_Optimizer {
 
 	/**
 	 * Output meta description tag in wp_head.
+	 * Singular: custom or auto from content. Front page: blog description. Others: none.
 	 */
 	public function output_meta_description() {
-		if ( is_admin() || is_feed() || is_robots() || ! is_singular() ) {
+		if ( is_admin() || is_feed() || is_robots() ) {
 			return;
 		}
-		$desc = $this->get_meta_description();
+		$desc = '';
+		if ( is_singular() ) {
+			$desc = $this->get_meta_description();
+		} elseif ( is_front_page() ) {
+			$desc = get_bloginfo( 'description', 'display' );
+			$desc = is_string( $desc ) && trim( $desc ) !== '' ? $this->truncate( trim( $desc ), self::DESC_MAX ) : '';
+		}
 		if ( $desc === '' ) {
 			return;
 		}
@@ -473,6 +481,301 @@ class CCS_SEO_Optimizer {
 			$post_ids[] = $page->ID;
 		}
 		return $post_ids;
+	}
+
+	// -------------------------------------------------------------------------
+	// JSON-LD structured data (Organization, LocalBusiness, Service, BreadcrumbList)
+	// -------------------------------------------------------------------------
+
+	/** CCS organization name (schema and fallbacks). */
+	const ORG_NAME = 'Continuity Care Services';
+
+	/** CCS contact phone (E.164-style for schema). */
+	const ORG_PHONE = '+44-1622-689-047';
+
+	/** CCS area served. */
+	const ORG_AREA_SERVED = 'Maidstone, Kent';
+
+	/**
+	 * Output JSON-LD structured data script(s) in wp_head.
+	 */
+	public function output_structured_data() {
+		if ( is_admin() || is_feed() || is_robots() ) {
+			return;
+		}
+
+		$graphs = array();
+
+		$org = $this->get_organization_localbusiness_schema();
+		if ( ! empty( $org ) ) {
+			$graphs[] = $org;
+		}
+
+		if ( is_singular( 'service' ) ) {
+			$post = get_queried_object();
+			if ( $post instanceof WP_Post ) {
+				$service_schema = $this->get_service_schema( $post );
+				if ( ! empty( $service_schema ) ) {
+					$graphs[] = $service_schema;
+				}
+			}
+		}
+
+		$breadcrumb = $this->get_breadcrumb_schema();
+		if ( ! empty( $breadcrumb ) ) {
+			$graphs[] = $breadcrumb;
+		}
+
+		if ( empty( $graphs ) ) {
+			return;
+		}
+
+		$json = wp_json_encode(
+			array(
+				'@context' => 'https://schema.org',
+				'@graph'   => $graphs,
+			),
+			JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+		);
+		if ( $json === false ) {
+			return;
+		}
+
+		echo '<!-- Schema.org JSON-LD (CCS SEO) -->' . "\n";
+		echo '<script type="application/ld+json">' . "\n" . $json . "\n" . '</script>' . "\n";
+	}
+
+	/**
+	 * Organization + LocalBusiness schema with exact CCS details from content guide.
+	 *
+	 * @return array Schema array for @graph.
+	 */
+	private function get_organization_localbusiness_schema() {
+		$url = home_url( '/' );
+		$name = self::ORG_NAME;
+		$logo_url = $this->get_schema_logo_url();
+
+		$schema = array(
+			'@type'       => array( 'Organization', 'LocalBusiness' ),
+			'@id'         => $url . '#organization',
+			'name'        => $name,
+			'url'         => $url,
+			'contactPoint' => array(
+				'@type'       => 'ContactPoint',
+				'telephone'   => self::ORG_PHONE,
+				'contactType' => 'Customer Service',
+			),
+			'address'     => array(
+				'@type'           => 'PostalAddress',
+				'streetAddress'   => 'The Maidstone Studios, New Cut Road',
+				'addressLocality' => 'Maidstone',
+				'addressRegion'   => 'Kent',
+				'postalCode'      => 'ME14 5NZ',
+				'addressCountry'  => 'GB',
+			),
+			'sameAs'      => array(
+				'https://instagram.com/continuityofcareservices',
+				'https://linkedin.com/company/continuitycareservices',
+			),
+			'priceRange'  => '$$',
+		);
+
+		if ( $logo_url !== '' ) {
+			$schema['logo'] = $logo_url;
+		}
+
+		return $schema;
+	}
+
+	/**
+	 * Service schema for a single service (care_service / service) post.
+	 *
+	 * @param WP_Post $post Service post.
+	 * @return array Schema array or empty.
+	 */
+	private function get_service_schema( WP_Post $post ) {
+		$name = get_the_title( $post->ID );
+		$url  = get_permalink( $post->ID );
+		if ( $name === '' || $url === '' ) {
+			return array();
+		}
+
+		$schema = array(
+			'@type'       => 'Service',
+			'@id'         => $url . '#service',
+			'serviceType' => $name,
+			'provider'    => array(
+				'@type' => 'LocalBusiness',
+				'name'  => self::ORG_NAME,
+			),
+			'areaServed'  => self::ORG_AREA_SERVED,
+		);
+
+		$description = $this->get_schema_service_description( $post );
+		if ( $description !== '' ) {
+			$schema['description'] = $description;
+		}
+
+		return $schema;
+	}
+
+	/**
+	 * BreadcrumbList from page hierarchy (ancestors) or context.
+	 *
+	 * @return array Schema array or empty.
+	 */
+	private function get_breadcrumb_schema() {
+		$items = $this->get_breadcrumb_items();
+		if ( count( $items ) < 2 ) {
+			return array();
+		}
+
+		$list_items = array();
+		$position   = 1;
+		foreach ( $items as $item ) {
+			$list_items[] = array(
+				'@type'    => 'ListItem',
+				'position' => $position,
+				'name'     => $item['name'],
+				'item'     => $item['url'],
+			);
+			$position++;
+		}
+
+		return array(
+			'@type'           => 'BreadcrumbList',
+			'itemListElement' => $list_items,
+		);
+	}
+
+	/**
+	 * Build breadcrumb trail: Home then hierarchy (pages) or archive + current (service/post).
+	 *
+	 * @return array List of array( 'name', 'url' ).
+	 */
+	private function get_breadcrumb_items() {
+		$items = array();
+		$items[] = array(
+			'name' => __( 'Home', 'ccs-wp-theme' ),
+			'url'  => home_url( '/' ),
+		);
+
+		if ( is_singular( 'service' ) ) {
+			$obj = get_post_type_object( 'service' );
+			$archive = get_post_type_archive_link( 'service' );
+			if ( $archive && $obj ) {
+				$items[] = array(
+					'name' => $obj->labels->name,
+					'url'  => $archive,
+				);
+			}
+			$post = get_queried_object();
+			if ( $post instanceof WP_Post ) {
+				$items[] = array(
+					'name' => get_the_title( $post->ID ),
+					'url'  => get_permalink( $post->ID ),
+				);
+			}
+		} elseif ( is_singular( 'page' ) ) {
+			$post = get_queried_object();
+			if ( $post instanceof WP_Post ) {
+				$ancestors = array_reverse( get_post_ancestors( $post->ID ) );
+				foreach ( $ancestors as $ancestor_id ) {
+					$ancestor_id = (int) $ancestor_id;
+					if ( $ancestor_id <= 0 ) {
+						continue;
+					}
+					$items[] = array(
+						'name' => get_the_title( $ancestor_id ),
+						'url'  => get_permalink( $ancestor_id ),
+					);
+				}
+				$items[] = array(
+					'name' => get_the_title( $post->ID ),
+					'url'  => get_permalink( $post->ID ),
+				);
+			}
+		} elseif ( is_singular( 'post' ) ) {
+			$posts_page_id = (int) get_option( 'page_for_posts' );
+			if ( $posts_page_id > 0 ) {
+				$items[] = array(
+					'name' => get_the_title( $posts_page_id ),
+					'url'  => get_permalink( $posts_page_id ),
+				);
+			}
+			$post = get_queried_object();
+			if ( $post instanceof WP_Post ) {
+				$items[] = array(
+					'name' => get_the_title( $post->ID ),
+					'url'  => get_permalink( $post->ID ),
+				);
+			}
+		} elseif ( is_singular( 'location' ) ) {
+			$obj = get_post_type_object( 'location' );
+			$archive = get_post_type_archive_link( 'location' );
+			if ( $archive && $obj ) {
+				$items[] = array(
+					'name' => $obj->labels->name,
+					'url'  => $archive,
+				);
+			}
+			$post = get_queried_object();
+			if ( $post instanceof WP_Post ) {
+				$items[] = array(
+					'name' => get_the_title( $post->ID ),
+					'url'  => get_permalink( $post->ID ),
+				);
+			}
+		} elseif ( is_post_type_archive() ) {
+			$obj = get_queried_object();
+			if ( $obj && isset( $obj->labels->name ) ) {
+				$items[] = array(
+					'name' => $obj->labels->name,
+					'url'  => get_post_type_archive_link( $obj->name ),
+				);
+			}
+		} elseif ( is_singular() ) {
+			$post = get_queried_object();
+			if ( $post instanceof WP_Post ) {
+				$items[] = array(
+					'name' => get_the_title( $post->ID ),
+					'url'  => get_permalink( $post->ID ),
+				);
+			}
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Logo URL for schema (custom logo, full size).
+	 *
+	 * @return string URL or empty.
+	 */
+	private function get_schema_logo_url() {
+		$logo_id = get_theme_mod( 'custom_logo' );
+		if ( ! $logo_id ) {
+			return '';
+		}
+		$src = wp_get_attachment_image_src( (int) $logo_id, 'full' );
+		return is_array( $src ) && ! empty( $src[0] ) ? $src[0] : '';
+	}
+
+	/**
+	 * Service description for schema: excerpt or first 155 chars of content (strip tags).
+	 *
+	 * @param WP_Post $post Service post.
+	 * @return string Plain text.
+	 */
+	private function get_schema_service_description( WP_Post $post ) {
+		if ( has_excerpt( $post->ID ) ) {
+			$text = get_the_excerpt( $post->ID );
+		} else {
+			$text = get_post_field( 'post_content', $post->ID );
+			$text = wp_trim_words( wp_strip_all_tags( $text ), 25 );
+		}
+		$text = wp_strip_all_tags( trim( $text ) );
+		return $text === '' ? '' : $this->truncate( $text, self::DESC_MAX );
 	}
 
 	// -------------------------------------------------------------------------

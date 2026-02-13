@@ -4,6 +4,7 @@
  *
  * Repeater of question/answer pairs, optional FAQPage schema. Attributes:
  * faqs (array of { question, answer }), showSchema (boolean).
+ * Outputs FAQPage JSON-LD when showSchema is true. Accordion is keyboard-accessible.
  *
  * @package CCS_WP_Theme
  * @since 1.0.0
@@ -19,6 +20,36 @@ if ( ! defined( 'ABSPATH' ) ) {
 class CCS_FAQ_Block {
 
 	const BLOCK_NAME = 'ccs/faq';
+
+	/**
+	 * Default FAQ items for auto-insert when block is first added.
+	 *
+	 * @return array<int, array{question: string, answer: string}>
+	 */
+	public static function get_default_faqs() {
+		return array(
+			array(
+				'question' => __( 'What services do you offer?', 'ccs-wp-theme' ),
+				'answer'   => __( 'We offer a range of care services including personal care, companionship, and specialist support. Get in touch to discuss your needs.', 'ccs-wp-theme' ),
+			),
+			array(
+				'question' => __( 'What areas do you cover?', 'ccs-wp-theme' ),
+				'answer'   => __( 'We provide care across the local area. Contact us to confirm we cover your postcode.', 'ccs-wp-theme' ),
+			),
+			array(
+				'question' => __( 'How do I start care?', 'ccs-wp-theme' ),
+				'answer'   => __( 'You can start by calling us or filling in the contact form. We will arrange a free assessment and agree a care plan with you.', 'ccs-wp-theme' ),
+			),
+			array(
+				'question' => __( 'Are you CQC regulated?', 'ccs-wp-theme' ),
+				'answer'   => __( 'Yes, we are registered and regulated by the Care Quality Commission. You can view our latest report on the CQC website.', 'ccs-wp-theme' ),
+			),
+			array(
+				'question' => __( 'What are your rates?', 'ccs-wp-theme' ),
+				'answer'   => __( 'Our rates depend on the type and amount of care you need. We provide a clear quote after your assessment with no obligation.', 'ccs-wp-theme' ),
+			),
+		);
+	}
 
 	/**
 	 * Constructor.
@@ -76,7 +107,7 @@ class CCS_FAQ_Block {
 				'attributes'      => array(
 					'faqs'       => array(
 						'type'    => 'array',
-						'default' => array(),
+						'default' => self::get_default_faqs(),
 						'items'   => array(
 							'type'       => 'object',
 							'properties' => array(
@@ -139,23 +170,28 @@ class CCS_FAQ_Block {
 	 * @return string HTML output.
 	 */
 	public function render( $attributes ) {
-		$faqs       = isset( $attributes['faqs'] ) && is_array( $attributes['faqs'] ) ? $attributes['faqs'] : array();
+		$faqs        = isset( $attributes['faqs'] ) && is_array( $attributes['faqs'] ) ? $attributes['faqs'] : array();
 		$show_schema = ! empty( $attributes['showSchema'] );
+
+		// Use default FAQs when none set (e.g. legacy block or empty state).
+		if ( empty( $faqs ) ) {
+			$faqs = self::get_default_faqs();
+		}
 
 		$schema = $show_schema ? $this->build_faq_schema( $faqs ) : array();
 		$out    = '';
 
 		if ( ! empty( $schema ) ) {
-			$out .= '<script type="application/ld+json">' . wp_json_encode( $schema ) . '</script>';
+			$out .= '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>';
 		}
 
 		$out .= '<div class="wp-block-ccs-faq ccs-faq" role="region" aria-label="' . esc_attr__( 'Frequently asked questions', 'ccs-wp-theme' ) . '">';
 		$out .= '<div class="ccs-faq__list">';
 
 		foreach ( $faqs as $index => $item ) {
-			$question = isset( $item['question'] ) ? trim( (string) $item['question'] ) : '';
-			$answer   = isset( $item['answer'] ) ? trim( (string) $item['answer'] ) : '';
-			$id       = 'ccs-faq-' . get_the_ID() . '-' . $index;
+			$question  = isset( $item['question'] ) ? trim( (string) $item['question'] ) : '';
+			$answer    = isset( $item['answer'] ) ? trim( (string) $item['answer'] ) : '';
+			$id        = 'ccs-faq-' . get_the_ID() . '-' . $index;
 			$id_answer = $id . '-answer';
 
 			$out .= '<div class="ccs-faq__item">';
@@ -165,7 +201,7 @@ class CCS_FAQ_Block {
 			$out .= '<span class="ccs-faq__icon" aria-hidden="true"></span>';
 			$out .= '</button>';
 			$out .= '</h3>';
-			$out .= '<div id="' . esc_attr( $id_answer ) . '" class="ccs-faq__answer" role="region" aria-labelledby="' . esc_attr( $id ) . '" hidden>';
+			$out .= '<div id="' . esc_attr( $id_answer ) . '" class="ccs-faq__answer" role="region" aria-labelledby="' . esc_attr( $id ) . '" aria-hidden="true" hidden>';
 			$out .= '<div class="ccs-faq__answer-inner">';
 			$out .= $answer !== '' ? wp_kses_post( wpautop( $answer ) ) : '&nbsp;';
 			$out .= '</div>';

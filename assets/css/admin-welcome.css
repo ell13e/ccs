@@ -1,0 +1,181 @@
+/**
+ * CCS Theme Setup welcome page (Appearance → CCS Theme Setup).
+ *
+ * @package CCS_WP_Theme
+ * @since 1.0.0
+ */
+
+.ccs-welcome-wrap {
+	max-width: 720px;
+}
+
+.ccs-welcome-section {
+	margin: 24px 0;
+	padding: 16px 0;
+	border-bottom: 1px solid #c3c4c7;
+}
+
+.ccs-welcome-section:last-child {
+	border-bottom: 0;
+}
+
+.ccs-welcome-section h2 {
+	margin-top: 0;
+	font-size: 1.1em;
+}
+
+/* Checklist list */
+.ccs-welcome-checklist-list {
+	list-style: none;
+	margin: 12px 0;
+	padding: 0;
+}
+
+.ccs-welcome-checklist-item {
+	margin: 8px 0;
+	padding: 6px 0;
+}
+
+.ccs-welcome-checklist-item label {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+}
+
+.ccs-welcome-checklist-item input[type="checkbox"] {
+	margin: 0;
+}
+
+.ccs-welcome-checklist-item--done {
+	color: #1d2327;
+}
+
+.ccs-welcome-checklist-check {
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	background: #00a32a;
+	border-radius: 2px;
+	position: relative;
+	top: 2px;
+}
+
+.ccs-welcome-checklist-check::after {
+	content: "";
+	position: absolute;
+	left: 5px;
+	top: 2px;
+	width: 4px;
+	height: 8px;
+	border: solid #fff;
+	border-width: 0 2px 2px 0;
+	transform: rotate(45deg);
+}
+
+/* "You're all set up!" collapsed toggle */
+.ccs-welcome-all-set {
+	margin: 12px 0;
+}
+
+.ccs-welcome-all-set-toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 14px;
+	background: #f0f6fc;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 14px;
+	width: 100%;
+	text-align: left;
+}
+
+.ccs-welcome-all-set-toggle:hover {
+	background: #e8eef4;
+	border-color: #8c8f94;
+}
+
+.ccs-welcome-all-set-toggle[aria-expanded="true"] .ccs-welcome-all-set-icon {
+	transform: rotate(90deg);
+}
+
+.ccs-welcome-all-set-icon {
+	display: inline-block;
+	width: 0;
+	height: 0;
+	border-left: 6px solid #1d2327;
+	border-top: 4px solid transparent;
+	border-bottom: 4px solid transparent;
+	transition: transform 0.15s ease;
+}
+
+.ccs-welcome-all-set-list {
+	margin-top: 12px;
+	padding: 12px 0 12px 24px;
+	border-left: 3px solid #00a32a;
+}
+
+.ccs-welcome-all-set-list[hidden] {
+	display: none;
+}
+
+.ccs-welcome-checklist-list--all-done {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+/* Theme meta */
+.ccs-welcome-theme-meta {
+	list-style: none;
+	margin: 12px 0;
+	padding: 0;
+}
+
+.ccs-welcome-theme-meta li {
+	margin: 6px 0;
+}
+
+/* Requirements table */
+.ccs-welcome-requirements .widefat {
+	max-width: 480px;
+}
+
+.ccs-welcome-warn {
+	color: #d63638;
+}
+
+/* Docs overlay */
+.ccs-welcome-docs-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.6);
+	z-index: 100000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 24px;
+	box-sizing: border-box;
+}
+
+.ccs-welcome-docs-inner {
+	background: #fff;
+	max-width: 720px;
+	max-height: 85vh;
+	overflow: auto;
+	padding: 24px;
+	border-radius: 4px;
+	box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+}
+
+.ccs-welcome-docs-content {
+	margin: 16px 0;
+	line-height: 1.6;
+}
+
+.ccs-welcome-docs-content strong {
+	display: block;
+	margin-top: 12px;
+}

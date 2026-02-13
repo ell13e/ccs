@@ -45,6 +45,38 @@ function ccs_theme_setup() {
 add_action( 'after_setup_theme', 'ccs_theme_setup' );
 
 /**
+ * Ensure custom logo has descriptive alt text for accessibility.
+ * When the logo image has no alt, use the site name.
+ *
+ * @param string $html    Logo HTML.
+ * @param int    $blog_id Blog ID.
+ * @param int    $logo_id Attachment ID.
+ * @return string
+ */
+function ccs_custom_logo_alt( $html, $blog_id, $logo_id ) {
+	if ( ! $html || ! $logo_id ) {
+		return $html;
+	}
+	$site_name = get_bloginfo( 'name' );
+	if ( $site_name === '' ) {
+		return $html;
+	}
+	$alt = get_post_meta( $logo_id, '_wp_attachment_image_alt', true );
+	if ( is_string( $alt ) && trim( $alt ) !== '' ) {
+		return $html;
+	}
+	$safe_name = esc_attr( $site_name );
+	if ( preg_match( '/<img\s[^>]*\balt=""[^>]*>/i', $html ) ) {
+		return preg_replace( '/(<img\s[^>]*)\balt=""([^>]*>)/i', '$1alt="' . $safe_name . '"$2', $html );
+	}
+	if ( preg_match( '/<img((?![^>]*\balt=)[^>]*)>/i', $html ) ) {
+		return preg_replace( '/<img(\s+)([^>]*)>/i', '<img$1alt="' . $safe_name . '"$2>', $html );
+	}
+	return $html;
+}
+add_filter( 'get_custom_logo', 'ccs_custom_logo_alt', 10, 3 );
+
+/**
  * Register meta boxes (Service, Location, Enquiry).
  * Must run on add_meta_boxes: add_meta_box() is only available in admin.
  */
@@ -189,6 +221,18 @@ function ccs_theme_scripts() {
 add_action( 'wp_enqueue_scripts', 'ccs_theme_scripts' );
 
 /**
+ * Defer non-critical scripts for better LCP (they run after HTML parse; no document.write).
+ */
+function ccs_defer_scripts( $tag, $handle, $src ) {
+	$defer_handles = array( 'ccs-navigation', 'ccs-form-handler', 'ccs-consultation-form' );
+	if ( in_array( $handle, $defer_handles, true ) ) {
+		return str_replace( ' src', ' defer src', $tag );
+	}
+	return $tag;
+}
+add_filter( 'script_loader_tag', 'ccs_defer_scripts', 10, 3 );
+
+/**
  * Register admin dashboard widget (stats, chart, recent enquiries).
  */
 function ccs_register_dashboard_widget() {
@@ -255,6 +299,14 @@ function ccs_register_cache_control() {
 	new CCS_Cache_Control();
 }
 add_action( 'init', 'ccs_register_cache_control', 10 );
+
+/**
+ * Security: HTTP security headers (X-Frame-Options, X-Content-Type-Options, Referrer-Policy) and optional security event logging.
+ */
+function ccs_register_security() {
+	new CCS_Security();
+}
+add_action( 'init', 'ccs_register_security', 10 );
 
 /**
  * Critical CSS: inline above-the-fold styles, defer rest with media="print" onload.

@@ -183,11 +183,11 @@ while ( have_posts() ) :
 							<p class="service-sidebar__hours"><?php echo esc_html( $ccs_office_hrs ); ?></p>
 						<?php endif; ?>
 
-						<form class="service-sidebar__form ccs-form" data-ccs-action="request_callback" method="post" action="">
+						<form class="service-sidebar__form ccs-form" data-ccs-action="request_callback" method="post" action="" aria-describedby="callback-form-message">
 							<label for="service-cb-name" class="screen-reader-text"><?php esc_html_e( 'Your name', 'ccs-wp-theme' ); ?></label>
-							<input type="text" id="service-cb-name" name="name" required placeholder="<?php esc_attr_e( 'Your name', 'ccs-wp-theme' ); ?>" class="service-sidebar__input">
+							<input type="text" id="service-cb-name" name="name" required aria-required="true" placeholder="<?php esc_attr_e( 'Your name', 'ccs-wp-theme' ); ?>" class="service-sidebar__input">
 							<label for="service-cb-phone" class="screen-reader-text"><?php esc_html_e( 'Phone number', 'ccs-wp-theme' ); ?></label>
-							<input type="tel" id="service-cb-phone" name="phone" required placeholder="<?php esc_attr_e( 'Phone number', 'ccs-wp-theme' ); ?>" class="service-sidebar__input">
+							<input type="tel" id="service-cb-phone" name="phone" required aria-required="true" placeholder="<?php esc_attr_e( 'Phone number', 'ccs-wp-theme' ); ?>" class="service-sidebar__input">
 							<label for="service-cb-time" class="screen-reader-text"><?php esc_html_e( 'Preferred callback time (optional)', 'ccs-wp-theme' ); ?></label>
 							<input type="text" id="service-cb-time" name="preferred_time" placeholder="<?php esc_attr_e( 'Preferred callback time', 'ccs-wp-theme' ); ?>" class="service-sidebar__input" autocomplete="off">
 							<input type="text" name="_company" value="" tabindex="-1" autocomplete="off" aria-hidden="true" class="ccs-honeypot">

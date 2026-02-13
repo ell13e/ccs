@@ -28,9 +28,25 @@
 				if (e.key === 'Enter' || e.key === ' ') {
 					e.preventDefault();
 					toggleItem(block, btn);
+				} else if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+					e.preventDefault();
+					focusAdjacent(block, btn, 1);
+				} else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+					e.preventDefault();
+					focusAdjacent(block, btn, -1);
 				}
 			});
 		});
+	}
+
+	function focusAdjacent(block, current, direction) {
+		var toggles = Array.prototype.slice.call(block.querySelectorAll(TOGGLE_SELECTOR));
+		var idx = toggles.indexOf(current);
+		if (idx === -1) return;
+		idx += direction;
+		if (idx >= 0 && idx < toggles.length) {
+			toggles[idx].focus();
+		}
 	}
 
 	function toggleItem(block, button) {
@@ -59,12 +75,14 @@
 	function openItem(button, item, answer) {
 		button.setAttribute('aria-expanded', 'true');
 		answer.removeAttribute('hidden');
+		answer.setAttribute('aria-hidden', 'false');
 		item.classList.add(OPEN_CLASS);
 	}
 
 	function closeItem(button, item, answer) {
 		button.setAttribute('aria-expanded', 'false');
 		answer.setAttribute('hidden', '');
+		answer.setAttribute('aria-hidden', 'true');
 		item.classList.remove(OPEN_CLASS);
 	}
 

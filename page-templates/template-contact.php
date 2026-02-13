@@ -32,15 +32,15 @@ $ccs_parking  = get_theme_mod( 'ccs_contact_parking', '' );
 			<!-- LEFT: Contact form -->
 			<div class="contact-form-col">
 				<h1 class="contact-form-col__title"><?php esc_html_e( 'Send us a message', 'ccs-wp-theme' ); ?></h1>
-				<form id="contact-form" class="contact-form ccs-form" data-ccs-action="submit_enquiry" method="post" action="" novalidate>
+				<form id="contact-form" class="contact-form ccs-form" data-ccs-action="submit_enquiry" method="post" action="" novalidate aria-describedby="contact-form-message">
 					<label for="contact-name" class="contact-form__label"><?php esc_html_e( 'Name', 'ccs-wp-theme' ); ?> <span class="required" aria-hidden="true">*</span></label>
-					<input type="text" id="contact-name" name="enquiry_name" class="contact-form__input" required autocomplete="name">
+					<input type="text" id="contact-name" name="enquiry_name" class="contact-form__input" required aria-required="true" autocomplete="name">
 
 					<label for="contact-email" class="contact-form__label"><?php esc_html_e( 'Email', 'ccs-wp-theme' ); ?> <span class="required" aria-hidden="true">*</span></label>
-					<input type="email" id="contact-email" name="enquiry_email" class="contact-form__input" required autocomplete="email">
+					<input type="email" id="contact-email" name="enquiry_email" class="contact-form__input" required aria-required="true" autocomplete="email">
 
 					<label for="contact-phone" class="contact-form__label"><?php esc_html_e( 'Phone', 'ccs-wp-theme' ); ?> <span class="required" aria-hidden="true">*</span></label>
-					<input type="tel" id="contact-phone" name="enquiry_phone" class="contact-form__input" required autocomplete="tel">
+					<input type="tel" id="contact-phone" name="enquiry_phone" class="contact-form__input" required aria-required="true" autocomplete="tel">
 
 					<label for="contact-care-type" class="contact-form__label"><?php esc_html_e( 'Care type', 'ccs-wp-theme' ); ?></label>
 					<select id="contact-care-type" name="enquiry_care_type" class="contact-form__select">

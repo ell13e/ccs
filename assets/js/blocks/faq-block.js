@@ -15,6 +15,16 @@
 	var InspectorControls = blockEditor.InspectorControls;
 	var useBlockProps = blockEditor.useBlockProps;
 
+	function getDefaultFaqs() {
+		return [
+			{ question: __('What services do you offer?', 'ccs-wp-theme'), answer: __('We offer a range of care services including personal care, companionship, and specialist support. Get in touch to discuss your needs.', 'ccs-wp-theme') },
+			{ question: __('What areas do you cover?', 'ccs-wp-theme'), answer: __('We provide care across the local area. Contact us to confirm we cover your postcode.', 'ccs-wp-theme') },
+			{ question: __('How do I start care?', 'ccs-wp-theme'), answer: __('You can start by calling us or filling in the contact form. We will arrange a free assessment and agree a care plan with you.', 'ccs-wp-theme') },
+			{ question: __('Are you CQC regulated?', 'ccs-wp-theme'), answer: __('Yes, we are registered and regulated by the Care Quality Commission. You can view our latest report on the CQC website.', 'ccs-wp-theme') },
+			{ question: __('What are your rates?', 'ccs-wp-theme'), answer: __('Our rates depend on the type and amount of care you need. We provide a clear quote after your assessment with no obligation.', 'ccs-wp-theme') },
+		];
+	}
+
 	blocks.registerBlockType('ccs/faq', {
 		apiVersion: 2,
 		title: __('FAQ Accordion', 'ccs-wp-theme'),
@@ -25,7 +35,7 @@
 		attributes: {
 			faqs: {
 				type: 'array',
-				default: [],
+				default: getDefaultFaqs(),
 			},
 			showSchema: {
 				type: 'boolean',

@@ -2,44 +2,45 @@
  * Continuity Care Services – Design System
  *
  * CSS custom properties and utility classes for the Kent-based home care theme.
- * Aligned with UI/UX Pro Max: accessibility, touch targets, reduced motion.
+ * Aligned with design-system/MASTER.md: Soft UI Evolution, WCAG 2.1 AA.
+ * Enqueue Poppins (400, 500, 600, 700) + Open Sans (400, 600, 700) in theme.
  *
  * @package CCS_WP_Theme
  * @since 1.0.0
  */
-
-/* Enqueue Poppins (400, 500, 600, 700) in theme; fallback in --font-family below. */
 
 /* -------------------------------------------------------------------------
    DESIGN TOKENS – CSS Custom Properties
    ------------------------------------------------------------------------- */
 
 :root {
-	/* ----- Colors: Primary (CCS Purple) ----- */
-	--color-primary: #564299;
+	/* ----- Colors: Primary (CCS Purple) – exact brand #564298 ----- */
+	--color-primary: #564298;
 	--color-primary-light: #7B63B8;
 	--color-primary-dark: #3F2F70;
 
-	/* ----- Colors: Secondary (Mint Blue) ----- */
-	--color-secondary: #A8DBD2;
+	/* ----- Colors: Secondary (Mint) – exact brand #a8ddd4 ----- */
+	--color-secondary: #a8ddd4;
 	--color-secondary-light: #C5EAE4;
 	--color-secondary-dark: #85C4B8;
 
 	/* ----- Neutrals ----- */
-	--color-text: #2E2E2E;
+	--color-text: #2e2e2e;
 	--color-text-light: #666666;
 	--color-background: #FFFFFF;
-	--color-background-grey: #F6F5F0;
+	--color-background-grey: #f6f5ef;
 	--color-border: #E0E0E0;
 
 	/* ----- Utility (contrast: urgent ≥4.5:1 on white for body text) ----- */
 	--color-success: #85C4B8;
 	--color-warning: #D4A843;
 	--color-urgent: #C64B4B;
-	--color-accent: #A68EDA;
+	--color-accent: #9b8fb5;
 
-	/* ----- Typography ----- */
-	--font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, sans-serif;
+	/* ----- Typography (MASTER: Poppins headings, Open Sans body) ----- */
+	--font-family-heading: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+	--font-family-body: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+	--font-family: var(--font-family-body);
 
 	/* Modular scale (approx. 1.25): 14 → 18 → 22 → 28 → 35 → 44 → 48 */
 	--text-xs: 0.875rem;    /* 14px */
@@ -89,6 +90,13 @@
 	--focus-ring-color: var(--color-primary);
 	--focus-ring: var(--focus-ring-width) solid var(--focus-ring-color);
 
+	/* ----- Soft UI Evolution (MASTER) ----- */
+	--radius-sm: 6px;
+	--radius-md: 10px;
+	--radius-lg: 14px;
+	--shadow-soft: 0 2px 8px rgba(46, 46, 46, 0.08);
+	--shadow-soft-lg: 0 4px 16px rgba(46, 46, 46, 0.1);
+
 	/* ----- Z-index scale ----- */
 	--z-dropdown: 10;
 	--z-sticky: 20;
@@ -112,7 +120,7 @@
 
 /* Optional: apply design-system base to body when class is present */
 .ds-root {
-	font-family: var(--font-family);
+	font-family: var(--font-family-body);
 	font-size: var(--text-base);
 	font-weight: var(--font-weight-normal);
 	line-height: var(--leading-normal);
@@ -306,8 +314,13 @@
 }
 
 /* -------------------------------------------------------------------------
-   TYPOGRAPHY – Headings (optional use with .ds-root)
+   TYPOGRAPHY – Headings (optional use with .ds-root) – Poppins per MASTER
    ------------------------------------------------------------------------- */
+
+.ds-root h1, .ds-root h2, .ds-root h3, .ds-root h4, .ds-root h5, .ds-root h6,
+.heading-1, .heading-2, .heading-3, .heading-4, .heading-5, .heading-6 {
+	font-family: var(--font-family-heading);
+}
 
 .ds-root h1, .heading-1 { font-size: var(--text-4xl); font-weight: var(--font-weight-bold); line-height: var(--leading-tight); color: var(--color-primary-dark); }
 .ds-root h2, .heading-2 { font-size: var(--text-3xl); font-weight: var(--font-weight-bold); line-height: var(--leading-tight); color: var(--color-primary-dark); }
