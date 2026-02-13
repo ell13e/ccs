@@ -41,48 +41,54 @@ class CCS_Autoloader {
 	 * @param string $class Fully qualified class name.
 	 */
 	public static function load( $class ) {
-		$filename = self::class_to_filename( $class );
-		if ( ! $filename ) {
+		$filenames = self::class_to_filenames( $class );
+		if ( ! $filenames ) {
 			return;
 		}
 
-		$path = self::$base_dir . '/' . $filename;
-		if ( is_readable( $path ) ) {
-			require_once $path;
-			return;
-		}
-
-		// Search one level of subdirectories under inc/.
-		$dirs = glob( self::$base_dir . '/*', GLOB_ONLYDIR );
-		if ( ! is_array( $dirs ) ) {
-			self::autoload_error( $class, 'Subdirectories not readable' );
-			return;
-		}
-
-		foreach ( $dirs as $dir ) {
-			$path = $dir . '/' . $filename;
+		foreach ( $filenames as $filename ) {
+			$path = self::$base_dir . '/' . $filename;
 			if ( is_readable( $path ) ) {
 				require_once $path;
 				return;
+			}
+
+			// Search one level of subdirectories under inc/.
+			$dirs = glob( self::$base_dir . '/*', GLOB_ONLYDIR );
+			if ( is_array( $dirs ) ) {
+				foreach ( $dirs as $dir ) {
+					$path = $dir . '/' . $filename;
+					if ( is_readable( $path ) ) {
+						require_once $path;
+						return;
+					}
+				}
 			}
 		}
 
 		// Class file not found; allow other autoloaders to run.
 		// Uncomment below to surface missing-class issues during development:
-		// self::autoload_error( $class, 'File not found: ' . $filename );
+		// self::autoload_error( $class, 'File not found' );
 	}
 
 	/**
-	 * Convert WordPress class name to file name.
+	 * Convert WordPress class name to possible file names.
 	 *
-	 * My_Class_Name → class-my-class-name.php
+	 * Tries full name first (CCS_Form_Handlers → class-ccs-form-handlers.php),
+	 * then without CCS_ prefix (CCS_Register_Post_Types → class-register-post-types.php)
+	 * so both naming conventions work.
 	 *
 	 * @param string $class Class name.
-	 * @return string|null File name or null if not a valid theme class file name.
+	 * @return array<string>|null List of filenames to try, or null.
 	 */
-	private static function class_to_filename( $class ) {
+	private static function class_to_filenames( $class ) {
 		$name = strtolower( str_replace( '_', '-', $class ) );
-		return 'class-' . $name . '.php';
+		$full = 'class-' . $name . '.php';
+		$filenames = array( $full );
+		if ( strpos( $name, 'ccs-' ) === 0 ) {
+			$filenames[] = 'class-' . substr( $name, 4 ) . '.php';
+		}
+		return $filenames;
 	}
 
 	/**
