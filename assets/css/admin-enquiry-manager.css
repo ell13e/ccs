@@ -1,0 +1,165 @@
+/**
+ * Enquiry list table: columns, badges, filters, Quick View modal, status dropdown.
+ *
+ * @package CCS_WP_Theme
+ * @since 1.0.0
+ */
+
+/* Contact column links */
+.ccs-contact-link {
+	display: inline-block;
+}
+.ccs-contact-link + .ccs-contact-link {
+	margin-top: 2px;
+}
+
+/* Name column message preview */
+.ccs-enquiry-preview {
+	opacity: 0.6;
+	cursor: help;
+	margin-left: 2px;
+}
+
+/* Assigned avatar */
+.ccs-assigned-avatar {
+	vertical-align: middle;
+	border-radius: 50%;
+	margin-right: 4px;
+}
+
+/* Urgency badges */
+.ccs-urgency-badge {
+	display: inline-block;
+	padding: 2px 8px;
+	font-size: 11px;
+	border-radius: 9999px;
+}
+.ccs-urgency-urgent {
+	background: rgba(198, 75, 75, 0.15);
+	color: #b71c1c;
+}
+.ccs-urgency-normal {
+	background: #f0f0f1;
+	color: #50575e;
+}
+
+/* Follow-up date highlights */
+.ccs-follow-up-overdue {
+	color: #b71c1c;
+	font-weight: 600;
+}
+.ccs-follow-up-today {
+	color: #0e5c4d;
+	font-weight: 500;
+}
+
+/* Status badge + dropdown */
+.ccs-status-wrap {
+	position: relative;
+	display: inline-block;
+}
+.ccs-status-badge {
+	display: inline-block;
+	padding: 2px 8px;
+	font-size: 11px;
+	border-radius: 3px;
+	cursor: pointer;
+	border: 1px solid transparent;
+}
+.ccs-status-badge:hover {
+	opacity: 0.9;
+}
+.ccs-status-badge:focus {
+	outline: 1px solid #2271b1;
+}
+.ccs-status-new { background: rgba(86, 66, 153, 0.12); color: #3F2F70; }
+.ccs-status-contacted { background: #f0f0f1; color: #50575e; }
+.ccs-status-assessment_scheduled { background: rgba(33, 115, 177, 0.12); color: #2271b1; }
+.ccs-status-proposal_sent { background: rgba(33, 115, 177, 0.08); color: #50575e; }
+.ccs-status-won { background: rgba(133, 196, 184, 0.25); color: #0e5c4d; }
+.ccs-status-lost,
+.ccs-status-not_right_fit { background: rgba(0,0,0,0.06); color: #50575e; }
+
+.ccs-status-select.hide {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	cursor: pointer;
+	margin: 0;
+	min-height: 22px;
+}
+.ccs-status-select:not(.hide) {
+	position: absolute;
+	left: 0;
+	top: 0;
+	min-width: 140px;
+	z-index: 10;
+}
+
+/* Quick View modal */
+.ccs-qv-modal {
+	position: fixed;
+	inset: 0;
+	z-index: 100000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+}
+.ccs-qv-backdrop {
+	position: absolute;
+	inset: 0;
+	background: rgba(0,0,0,0.5);
+}
+.ccs-qv-content {
+	position: relative;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+	max-width: 520px;
+	width: 100%;
+	max-height: 85vh;
+	overflow: auto;
+	padding: 20px 24px;
+	border-radius: 4px;
+}
+.ccs-qv-close {
+	position: absolute;
+	right: 12px;
+	top: 12px;
+	background: none;
+	border: none;
+	font-size: 24px;
+	line-height: 1;
+	cursor: pointer;
+	color: #50575e;
+	padding: 0;
+}
+.ccs-qv-close:hover {
+	color: #1d2327;
+}
+.ccs-qv-title {
+	margin: 0 0 16px;
+	font-size: 18px;
+}
+.ccs-qv-body {
+	margin-bottom: 16px;
+}
+.ccs-qv-table {
+	width: 100%;
+	border-collapse: collapse;
+}
+.ccs-qv-table th,
+.ccs-qv-table td {
+	padding: 6px 10px 6px 0;
+	text-align: left;
+	vertical-align: top;
+}
+.ccs-qv-table th {
+	width: 35%;
+	color: #50575e;
+	font-weight: 500;
+}

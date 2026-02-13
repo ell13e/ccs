@@ -1,0 +1,408 @@
+/**
+ * Responsive layout and utilities
+ *
+ * Breakpoints (mobile-first):
+ *   Mobile:  320px – 767px  (default, no min-width)
+ *   Tablet:  768px – 1023px (@media (min-width: 768px) and (max-width: 1023px))
+ *   Desktop: 1024px+        (@media (min-width: 1024px))
+ *
+ * Touch targets: minimum 44×44px, spacing between interactive elements.
+ * No hover-only interactions; focus-visible and active states used.
+ *
+ * @package CCS_WP_Theme
+ * @since 1.0.0
+ */
+
+/* -------------------------------------------------------------------------
+   BREAKPOINT CUSTOM PROPERTIES (for JS / consistency)
+   ------------------------------------------------------------------------- */
+
+:root {
+	--bp-mobile-max: 767px;
+	--bp-tablet-min: 768px;
+	--bp-tablet-max: 1023px;
+	--bp-desktop-min: 1024px;
+	--touch-target-min: 2.75rem; /* 44px */
+}
+
+/* -------------------------------------------------------------------------
+   MOBILE-FIRST BASE (320px+)
+   ------------------------------------------------------------------------- */
+
+/* Prevent horizontal overflow from wide content */
+html {
+	overflow-x: hidden;
+}
+
+/* Content images: responsive by default */
+img,
+picture,
+video {
+	max-width: 100%;
+	height: auto;
+	vertical-align: middle;
+}
+
+/* Ensure iframes (maps, embeds) don't overflow */
+iframe {
+	max-width: 100%;
+}
+
+/* -------------------------------------------------------------------------
+   TOUCH TARGETS (44×44px minimum, spacing)
+   ------------------------------------------------------------------------- */
+
+@media (max-width: 1023px) {
+	/* Buttons: enforce minimum touch target on mobile/tablet */
+	.btn {
+		min-height: var(--touch-target-min);
+		padding: var(--space-xs) var(--space-md);
+	}
+
+	.btn-sm {
+		min-height: var(--touch-target-min);
+		padding: var(--space-sm) var(--space-md);
+	}
+
+	/* Spacing between stacked buttons / CTAs */
+	.home-hero__ctas,
+	.home-services__cta-box .btn,
+	.service-cta__actions {
+		gap: var(--space-sm);
+	}
+
+	.home-hero__ctas .btn {
+		min-height: var(--touch-target-min);
+	}
+
+	/* FAQ accordion: tap target for question button */
+	.ccs-faq__question {
+		min-height: var(--touch-target-min);
+		padding: var(--space-sm) var(--space-md);
+		display: flex;
+		align-items: center;
+	}
+
+	/* Contact form submit and primary actions */
+	.contact-form__submit,
+	.contact-form__input,
+	.contact-form__select,
+	.contact-form__textarea {
+		min-height: var(--touch-target-min);
+	}
+
+	.contact-form__textarea {
+		min-height: 8rem;
+	}
+
+	/* No hover-only: ensure focus-visible is primary for keyboard/touch */
+	a:focus,
+	button:focus {
+		outline: var(--focus-ring);
+		outline-offset: var(--focus-ring-offset);
+	}
+}
+
+/* -------------------------------------------------------------------------
+   TABLES – horizontal scroll on small viewports
+   ------------------------------------------------------------------------- */
+
+.table-scroll-wrapper {
+	width: 100%;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+	margin-bottom: var(--space-md);
+}
+
+.table-scroll-wrapper table {
+	width: 100%;
+	min-width: 480px;
+	border-collapse: collapse;
+}
+
+/* Block editor table block: horizontal scroll on small viewports */
+.wp-block-table {
+	width: 100%;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+.wp-block-table table {
+	min-width: 320px;
+}
+
+/* Optional wrapper for custom/legacy tables */
+.service-content .table-scroll-wrapper,
+.contact-form-col .table-scroll-wrapper {
+	max-width: 100%;
+}
+
+/* -------------------------------------------------------------------------
+   HERO – stacking and order (mobile)
+   ------------------------------------------------------------------------- */
+
+.home-hero__grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: var(--space-xl);
+}
+
+/* Content first on mobile for readability and CTA priority */
+.home-hero__content {
+	order: 1;
+}
+
+.home-hero__media {
+	order: 2;
+}
+
+.home-hero__stats-card {
+	/* Slightly smaller padding on very small screens */
+	padding: var(--space-sm) var(--space-md);
+}
+
+@media (max-width: 374px) {
+	.home-hero__stats-card {
+		padding: var(--space-xs) var(--space-sm);
+	}
+
+	.home-hero__stats-value {
+		font-size: var(--text-xl);
+	}
+}
+
+/* -------------------------------------------------------------------------
+   SERVICE CARDS – responsive grid
+   ------------------------------------------------------------------------- */
+
+.home-services__grid,
+.home-scenarios__grid,
+.home-differentiators__grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: var(--space-lg);
+}
+
+.contact-cards__grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: var(--space-lg);
+}
+
+/* -------------------------------------------------------------------------
+   TABLET: 768px – 1023px
+   (home-services__grid, home-scenarios__grid use 3 col from homepage.css)
+   ------------------------------------------------------------------------- */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+	.contact-cards__grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+/* -------------------------------------------------------------------------
+   DESKTOP: 1024px+
+   ------------------------------------------------------------------------- */
+
+@media (min-width: 1024px) {
+	.home-hero__grid {
+		grid-template-columns: 1fr 1fr;
+		gap: var(--space-2xl);
+	}
+
+	.home-hero__content,
+	.home-hero__media {
+		order: unset;
+	}
+
+	.home-differentiators__grid {
+		grid-template-columns: repeat(2, 1fr);
+		gap: var(--space-xl);
+	}
+
+	.contact-cards__grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+/* -------------------------------------------------------------------------
+   TYPOGRAPHY – readable at all sizes
+   ------------------------------------------------------------------------- */
+
+/* Base body: prevent tiny text on very small viewports */
+@media (max-width: 374px) {
+	body {
+		font-size: var(--text-base);
+	}
+
+	h1, .heading-1 {
+		font-size: var(--text-3xl);
+	}
+
+	h2, .heading-2 {
+		font-size: var(--text-2xl);
+	}
+
+	.contact-form-col__title,
+	.home-services__heading,
+	.home-scenarios__heading,
+	.home-differentiators__heading {
+		font-size: var(--text-2xl);
+	}
+}
+
+/* Minimum line length / max width for readability on large screens is in design-system container classes */
+
+/* -------------------------------------------------------------------------
+   UTILITY CLASSES – show / hide by breakpoint
+   ------------------------------------------------------------------------- */
+
+/* Mobile only: show 320–767 */
+.show-mobile {
+	display: block !important;
+}
+
+@media (min-width: 768px) {
+	.show-mobile {
+		display: none !important;
+	}
+}
+
+/* Tablet and up: hide on mobile */
+.hide-mobile {
+	display: none !important;
+}
+
+@media (min-width: 768px) {
+	.hide-mobile {
+		display: block !important;
+	}
+}
+
+/* Flex/inline variants */
+@media (min-width: 768px) {
+	.hide-mobile-inline {
+		display: inline !important;
+	}
+}
+
+.show-mobile-inline {
+	display: inline !important;
+}
+
+@media (min-width: 768px) {
+	.show-mobile-inline {
+		display: none !important;
+	}
+}
+
+/* Desktop only: show 1024+ */
+.show-desktop {
+	display: none !important;
+}
+
+@media (min-width: 1024px) {
+	.show-desktop {
+		display: block !important;
+	}
+}
+
+.hide-desktop {
+	display: block !important;
+}
+
+@media (min-width: 1024px) {
+	.hide-desktop {
+		display: none !important;
+	}
+}
+
+/* Flex variants for layout toggles */
+.show-desktop-flex {
+	display: none !important;
+}
+
+@media (min-width: 1024px) {
+	.show-desktop-flex {
+		display: flex !important;
+	}
+}
+
+/* -------------------------------------------------------------------------
+   CONTAINER PADDING – safe area on very small screens
+   ------------------------------------------------------------------------- */
+
+@media (max-width: 374px) {
+	.container {
+		padding-inline: var(--space-sm);
+	}
+}
+
+/* -------------------------------------------------------------------------
+   CONTACT LAYOUT – single column on mobile
+   ------------------------------------------------------------------------- */
+
+.contact-layout__inner {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: var(--space-2xl);
+}
+
+/* -------------------------------------------------------------------------
+   SERVICE PAGE – sidebar below content on mobile
+   ------------------------------------------------------------------------- */
+
+.service-body__inner {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: var(--space-xl);
+}
+
+/* -------------------------------------------------------------------------
+   TOP BAR – wrap and truncate on small screens
+   ------------------------------------------------------------------------- */
+
+@media (max-width: 767px) {
+	.site-header__top-inner {
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: var(--space-xs);
+	}
+
+	.site-header__top-left,
+	.site-header__top-right {
+		justify-content: center;
+	}
+
+	.site-header__hours {
+		white-space: normal;
+	}
+}
+
+/* -------------------------------------------------------------------------
+   EMERGENCY BANNER – stack on mobile
+   ------------------------------------------------------------------------- */
+
+@media (max-width: 479px) {
+	.emergency-banner__inner {
+		flex-direction: column;
+		gap: var(--space-xs);
+	}
+
+	.emergency-banner__phone.btn {
+		width: 100%;
+		max-width: 20rem;
+	}
+}
+
+/* -------------------------------------------------------------------------
+   REDUCED MOTION
+   ------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+	.table-scroll-wrapper,
+	.site-main table {
+		scroll-behavior: auto;
+	}
+}

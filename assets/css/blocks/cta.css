@@ -1,0 +1,270 @@
+/**
+ * CTA block: primary, secondary, dark variants; gradients; buttons; responsive.
+ *
+ * @package CCS_WP_Theme
+ */
+
+/* -------------------------------------------------------------------------
+   Base
+   ------------------------------------------------------------------------- */
+
+.wp-block-ccs-cta,
+.ccs-cta {
+	box-sizing: border-box;
+	padding: 2rem 1.5rem;
+	border-radius: 8px;
+}
+
+.ccs-cta__inner {
+	max-width: 42rem;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.ccs-cta__heading {
+	margin: 0 0 0.5rem;
+	font-size: clamp(1.5rem, 4vw, 2rem);
+	line-height: 1.2;
+	font-weight: 700;
+}
+
+.ccs-cta__heading:empty {
+	display: none;
+}
+
+.ccs-cta__subheading {
+	margin: 0 0 1.5rem;
+	font-size: 1.125rem;
+	line-height: 1.5;
+	opacity: 0.95;
+}
+
+.ccs-cta__subheading:empty {
+	display: none;
+}
+
+.ccs-cta__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem 1rem;
+	justify-content: center;
+	align-items: center;
+}
+
+.ccs-cta__btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.75rem 1.5rem;
+	font-size: 1rem;
+	font-weight: 600;
+	line-height: 1.25;
+	text-decoration: none;
+	border-radius: 6px;
+	border: 2px solid transparent;
+	transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.1s;
+	cursor: pointer;
+}
+
+.ccs-cta__btn:hover {
+	text-decoration: none;
+}
+
+.ccs-cta__btn:focus {
+	outline: 2px solid currentColor;
+	outline-offset: 2px;
+}
+
+.ccs-cta__actions-hint {
+	font-size: 0.875rem;
+	opacity: 0.8;
+}
+
+/* -------------------------------------------------------------------------
+   Primary variant – blue gradient
+   ------------------------------------------------------------------------- */
+
+.ccs-cta--primary {
+	background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e40af 100%);
+	color: #fff;
+}
+
+.ccs-cta--primary .ccs-cta__subheading {
+	color: rgba(255, 255, 255, 0.9);
+}
+
+.ccs-cta--primary .ccs-cta__btn--primary {
+	background: #fff;
+	color: #1e40af;
+	border-color: #fff;
+}
+
+.ccs-cta--primary .ccs-cta__btn--primary:hover {
+	background: #f1f5f9;
+	border-color: #f1f5f9;
+	color: #1e3a8a;
+}
+
+.ccs-cta--primary .ccs-cta__btn--phone {
+	background: transparent;
+	color: #fff;
+	border-color: rgba(255, 255, 255, 0.8);
+}
+
+.ccs-cta--primary .ccs-cta__btn--phone:hover {
+	background: rgba(255, 255, 255, 0.15);
+	border-color: #fff;
+}
+
+/* -------------------------------------------------------------------------
+   Secondary variant – neutral gradient
+   ------------------------------------------------------------------------- */
+
+.ccs-cta--secondary {
+	background: linear-gradient(135deg, #475569 0%, #334155 50%, #1e293b 100%);
+	color: #fff;
+}
+
+.ccs-cta--secondary .ccs-cta__subheading {
+	color: rgba(255, 255, 255, 0.9);
+}
+
+.ccs-cta--secondary .ccs-cta__btn--primary {
+	background: #0ea5e9;
+	color: #fff;
+	border-color: #0ea5e9;
+}
+
+.ccs-cta--secondary .ccs-cta__btn--primary:hover {
+	background: #0284c7;
+	border-color: #0284c7;
+}
+
+.ccs-cta--secondary .ccs-cta__btn--phone {
+	background: transparent;
+	color: #fff;
+	border-color: rgba(255, 255, 255, 0.8);
+}
+
+.ccs-cta--secondary .ccs-cta__btn--phone:hover {
+	background: rgba(255, 255, 255, 0.15);
+	border-color: #fff;
+}
+
+/* -------------------------------------------------------------------------
+   Dark variant – near black
+   ------------------------------------------------------------------------- */
+
+.ccs-cta--dark {
+	background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+	color: #f8fafc;
+}
+
+.ccs-cta--dark .ccs-cta__subheading {
+	color: rgba(248, 250, 252, 0.85);
+}
+
+.ccs-cta--dark .ccs-cta__btn--primary {
+	background: #f59e0b;
+	color: #0f172a;
+	border-color: #f59e0b;
+}
+
+.ccs-cta--dark .ccs-cta__btn--primary:hover {
+	background: #d97706;
+	border-color: #d97706;
+}
+
+.ccs-cta--dark .ccs-cta__btn--phone {
+	background: transparent;
+	color: #f8fafc;
+	border-color: rgba(248, 250, 252, 0.6);
+}
+
+.ccs-cta--dark .ccs-cta__btn--phone:hover {
+	background: rgba(248, 250, 252, 0.1);
+	border-color: #f8fafc;
+}
+
+/* -------------------------------------------------------------------------
+   Phone button (shared)
+   ------------------------------------------------------------------------- */
+
+.ccs-cta__btn--phone::before {
+	content: "";
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	margin-right: 0.35em;
+	background: currentColor;
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z'/%3E%3C/svg%3E") center / contain no-repeat;
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z'/%3E%3C/svg%3E") center / contain no-repeat;
+	vertical-align: -0.15em;
+}
+
+/* -------------------------------------------------------------------------
+   Wide / full align
+   ------------------------------------------------------------------------- */
+
+.wp-block-ccs-cta.alignwide,
+.ccs-cta.alignwide {
+	padding-left: 2rem;
+	padding-right: 2rem;
+}
+
+.wp-block-ccs-cta.alignfull,
+.ccs-cta.alignfull {
+	border-radius: 0;
+	padding-left: 1.5rem;
+	padding-right: 1.5rem;
+}
+
+/* -------------------------------------------------------------------------
+   Responsive
+   ------------------------------------------------------------------------- */
+
+@media (min-width: 600px) {
+	.ccs-cta {
+		padding: 2.5rem 2rem;
+	}
+
+	.ccs-cta__actions {
+		gap: 1rem;
+	}
+
+	.ccs-cta__btn {
+		padding: 0.875rem 1.75rem;
+		font-size: 1.0625rem;
+	}
+}
+
+@media (min-width: 782px) {
+	.ccs-cta {
+		padding: 3rem 2.5rem;
+	}
+
+	.ccs-cta__heading {
+		margin-bottom: 0.75rem;
+	}
+
+	.ccs-cta__subheading {
+		margin-bottom: 2rem;
+		font-size: 1.25rem;
+	}
+}
+
+@media (max-width: 479px) {
+	.ccs-cta {
+		padding: 1.5rem 1rem;
+	}
+
+	.ccs-cta__actions {
+		flex-direction: column;
+		width: 100%;
+	}
+
+	.ccs-cta__btn {
+		width: 100%;
+		max-width: 20rem;
+	}
+}

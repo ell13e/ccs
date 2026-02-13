@@ -1,0 +1,68 @@
+# WordPress
+.DS_Store
+Thumbs.db
+*.log
+wp-config.php
+wp-content/advanced-cache.php
+wp-content/backup-db/
+wp-content/backups/
+wp-content/blogs.dir/
+wp-content/cache/
+wp-content/upgrade/
+wp-content/uploads/
+wp-content/mu-plugins/
+wp-content/wp-cache-config.php
+wp-content/plugins/hello.php
+
+# Theme development
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+composer.lock
+vendor/
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Build / compiled
+*.map
+*.min.css
+*.min.js
+dist/
+build/
+.cache/
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+*.pem
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+
+# Debug
+debug.log
+*.log
+phpunit.xml
+.phpunit.result.cache
+coverage/
+.nyc_output/
+
+# Sass/SCSS (keep source only if you prefer)
+# *.css
+# Uncomment above if you commit only .scss and build CSS in CI
+
+# Optional: ignore generated assets during dev (uncomment if using build step)
+# /assets/css/*.css
+# /assets/js/*.js
