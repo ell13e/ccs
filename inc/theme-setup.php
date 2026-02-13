@@ -46,6 +46,7 @@ add_action( 'after_setup_theme', 'ccs_theme_setup' );
 
 /**
  * Register meta boxes (Service, Location, Enquiry).
+ * Must run on add_meta_boxes: add_meta_box() is only available in admin.
  */
 function ccs_register_meta_boxes() {
 	$service_meta_box = new CCS_Service_Meta_Box();
@@ -55,7 +56,7 @@ function ccs_register_meta_boxes() {
 	$enquiry_meta_box = new CCS_Enquiry_Meta_Box();
 	$enquiry_meta_box->register();
 }
-add_action( 'init', 'ccs_register_meta_boxes', 20 );
+add_action( 'add_meta_boxes', 'ccs_register_meta_boxes' );
 
 /**
  * Register email notifications (admin enquiry, user confirmation, urgent Slack/SMS/on-call).
