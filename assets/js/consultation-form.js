@@ -101,6 +101,9 @@
 				var msg = (json.data && json.data.message) ? json.data.message : (json.message || 'Thank you. We will be in touch shortly.');
 				if (json.success) {
 					showMessage(msg, 'success');
+					if (typeof window.triggerFormSuccessConfetti === 'function') {
+						window.triggerFormSuccessConfetti();
+					}
 					form.reset();
 					var newsletter = form.querySelector('[name="consultation_newsletter"]');
 					if (newsletter) newsletter.checked = true;

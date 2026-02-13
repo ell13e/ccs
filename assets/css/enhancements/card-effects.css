@@ -1,0 +1,50 @@
+/**
+ * Card hover/focus lift and shadow. Uses design tokens.
+ * Targets: .card, .home-service-col, .cqc-section__widget-card, optional .service-card, .benefit-card, .testimonial-card.
+ * .reduced-motion: no transform on hover.
+ *
+ * @package CCS_WP_Theme
+ * @since 1.0.0
+ */
+
+.card,
+.home-service-col,
+.cqc-section__widget-card,
+.service-card,
+.benefit-card,
+.testimonial-card {
+	transition:
+		transform var(--duration-normal) var(--ease-out),
+		box-shadow var(--duration-normal) var(--ease-out);
+}
+
+.card:hover,
+.card:focus-within,
+.home-service-col:hover,
+.home-service-col:focus-within,
+.cqc-section__widget-card:hover,
+.cqc-section__widget-card:focus-within,
+.service-card:hover,
+.service-card:focus-within,
+.benefit-card:hover,
+.benefit-card:focus-within,
+.testimonial-card:hover,
+.testimonial-card:focus-within {
+	transform: translateY(var(--card-lift));
+	box-shadow: var(--card-shadow-hover);
+}
+
+.reduced-motion .card:hover,
+.reduced-motion .card:focus-within,
+.reduced-motion .home-service-col:hover,
+.reduced-motion .home-service-col:focus-within,
+.reduced-motion .cqc-section__widget-card:hover,
+.reduced-motion .cqc-section__widget-card:focus-within,
+.reduced-motion .service-card:hover,
+.reduced-motion .service-card:focus-within,
+.reduced-motion .benefit-card:hover,
+.reduced-motion .benefit-card:focus-within,
+.reduced-motion .testimonial-card:hover,
+.reduced-motion .testimonial-card:focus-within {
+	transform: none;
+}

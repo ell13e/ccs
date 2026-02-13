@@ -1,0 +1,67 @@
+/**
+ * Scroll-reveal: initial state for [data-animate]; .animated + .animate-{type}; data-delay; reduced-motion overrides.
+ *
+ * @package CCS_WP_Theme
+ * @since 1.0.0
+ */
+
+[data-animate] {
+	opacity: 0;
+	transform: translateY(1rem);
+	transition:
+		opacity var(--duration-slow) var(--ease-out),
+		transform var(--duration-slow) var(--ease-out);
+}
+
+[data-animate="fade-up"] {
+	transform: translateY(1rem);
+}
+
+[data-animate="fade-left"] {
+	transform: translateX(1rem);
+}
+
+[data-animate="fade-right"] {
+	transform: translateX(-1rem);
+}
+
+[data-animate="scale"] {
+	transform: scale(0.95);
+}
+
+[data-animate].animated {
+	opacity: 1;
+	transform: translate(0);
+}
+
+[data-animate="fade-up"].animated {
+	transform: translateY(0);
+}
+
+[data-animate="fade-left"].animated {
+	transform: translateX(0);
+}
+
+[data-animate="fade-right"].animated {
+	transform: translateX(0);
+}
+
+[data-animate="scale"].animated {
+	transform: scale(1);
+}
+
+/* Stagger via data-delay (applied by JS or inline style) */
+[data-animate][data-delay] {
+	transition-delay: calc(var(--scroll-animation-delay, 0) * 1ms);
+}
+
+.reduced-motion [data-animate] {
+	opacity: 1;
+	transform: none;
+	transition: none;
+}
+
+.reduced-motion [data-animate].animated {
+	opacity: 1;
+	transform: none;
+}

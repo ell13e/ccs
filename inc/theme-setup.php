@@ -10,6 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+require_once THEME_DIR . '/inc/schema-markup.php';
+
 /**
  * Sets up theme defaults and registers support for WordPress features.
  */
@@ -126,6 +128,18 @@ function ccs_theme_scripts() {
 		$version
 	);
 	wp_enqueue_style(
+		'ccs-scroll-animations',
+		$theme_uri . '/assets/css/enhancements/scroll-animations.css',
+		array( 'ccs-components' ),
+		$version
+	);
+	wp_enqueue_style(
+		'ccs-card-effects',
+		$theme_uri . '/assets/css/enhancements/card-effects.css',
+		array( 'ccs-components' ),
+		$version
+	);
+	wp_enqueue_style(
 		'ccs-header',
 		$theme_uri . '/assets/css/header.css',
 		array( 'ccs-design-system', 'ccs-components' ),
@@ -150,6 +164,24 @@ function ccs_theme_scripts() {
 			'ccs-homepage',
 			$theme_uri . '/assets/css/homepage.css',
 			array( 'ccs-design-system', 'ccs-components' ),
+			$version
+		);
+		wp_enqueue_style(
+			'ccs-hero-homepage',
+			$theme_uri . '/assets/css/blocks/hero-homepage.css',
+			array( 'ccs-design-system', 'ccs-components', 'ccs-homepage' ),
+			$version
+		);
+		wp_enqueue_style(
+			'ccs-why-choose-us',
+			$theme_uri . '/assets/css/blocks/why-choose-us.css',
+			array( 'ccs-design-system', 'ccs-components', 'ccs-homepage' ),
+			$version
+		);
+		wp_enqueue_style(
+			'ccs-cqc-section',
+			$theme_uri . '/assets/css/blocks/cqc-section.css',
+			array( 'ccs-design-system', 'ccs-components', 'ccs-homepage' ),
 			$version
 		);
 	}
@@ -181,6 +213,15 @@ function ccs_theme_scripts() {
 		);
 	}
 
+	if ( is_page_template( 'page-templates/template-careers.php' ) ) {
+		wp_enqueue_style(
+			'ccs-sticky-cta',
+			$theme_uri . '/assets/css/enhancements/sticky-cta.css',
+			array( 'ccs-components' ),
+			$version
+		);
+	}
+
 	wp_enqueue_script(
 		'ccs-navigation',
 		$theme_uri . '/assets/js/navigation.js',
@@ -188,6 +229,29 @@ function ccs_theme_scripts() {
 		$version,
 		true
 	);
+	wp_enqueue_script(
+		'ccs-site-interactions',
+		$theme_uri . '/assets/js/site-interactions.js',
+		array(),
+		$version,
+		true
+	);
+	wp_enqueue_script(
+		'ccs-scroll-animations',
+		$theme_uri . '/assets/js/scroll-animations.js',
+		array(),
+		$version,
+		true
+	);
+	if ( is_page_template( 'page-templates/template-careers.php' ) ) {
+		wp_enqueue_script(
+			'ccs-careers-interactions',
+			$theme_uri . '/assets/js/careers-interactions.js',
+			array(),
+			$version,
+			true
+		);
+	}
 	wp_localize_script(
 		'ccs-navigation',
 		'ccsNavigation',
@@ -224,7 +288,7 @@ add_action( 'wp_enqueue_scripts', 'ccs_theme_scripts' );
  * Defer non-critical scripts for better LCP (they run after HTML parse; no document.write).
  */
 function ccs_defer_scripts( $tag, $handle, $src ) {
-	$defer_handles = array( 'ccs-navigation', 'ccs-form-handler', 'ccs-consultation-form' );
+	$defer_handles = array( 'ccs-navigation', 'ccs-form-handler', 'ccs-consultation-form', 'ccs-site-interactions', 'ccs-scroll-animations', 'ccs-careers-interactions' );
 	if ( in_array( $handle, $defer_handles, true ) ) {
 		return str_replace( ' src', ' defer src', $tag );
 	}

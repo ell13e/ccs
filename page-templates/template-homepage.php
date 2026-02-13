@@ -20,7 +20,9 @@ $ccs_phone_tel = $ccs_phone ? preg_replace( '/\s+/', '', $ccs_phone ) : '';
 
 <main id="main" class="site-main site-main--homepage" role="main">
 
-	<?php get_template_part( 'template-parts/home/hero' ); ?>
+	<?php get_template_part( 'template-parts/hero-homepage' ); ?>
+	<?php get_template_part( 'template-parts/why-choose-us' ); ?>
+	<?php get_template_part( 'template-parts/cqc-section' ); ?>
 	<?php get_template_part( 'template-parts/home/scenarios' ); ?>
 	<?php get_template_part( 'template-parts/home/services' ); ?>
 	<?php get_template_part( 'template-parts/home/differentiators' ); ?>

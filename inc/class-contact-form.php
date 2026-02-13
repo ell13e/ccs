@@ -88,6 +88,13 @@ class CCS_Contact_Form {
 			THEME_VERSION,
 			true
 		);
+		wp_enqueue_script(
+			'ccs-form-success-confetti',
+			THEME_URL . '/assets/js/form-success-confetti.js',
+			array( 'ccs-consultation-form' ),
+			THEME_VERSION,
+			true
+		);
 		wp_localize_script(
 			'ccs-consultation-form',
 			'ccsConsultationForm',
