@@ -51,12 +51,12 @@ $services = array(
 
 <section class="home-services" aria-labelledby="home-services-heading">
 	<div class="home-services__inner container container--lg">
-		<h2 id="home-services-heading" class="home-services__heading">
+		<h2 id="home-services-heading" class="home-services__heading" data-animate="fade-up" data-delay="0">
 			<?php esc_html_e( 'Our services', 'ccs-wp-theme' ); ?>
 		</h2>
 		<div class="home-services__grid">
-			<?php foreach ( $services as $svc ) : ?>
-				<div class="home-service-col">
+			<?php foreach ( $services as $i => $svc ) : ?>
+				<div class="home-service-col" data-animate="fade-up" data-delay="<?php echo (int) $i * 100; ?>">
 					<h3 class="home-service-col__title"><?php echo esc_html( $svc['title'] ); ?></h3>
 					<p class="home-service-col__intro"><?php echo esc_html( $svc['intro'] ); ?></p>
 					<ul class="home-service-col__list">

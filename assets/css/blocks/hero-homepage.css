@@ -1,0 +1,251 @@
+/**
+ * Homepage hero block – full-bleed background, H1, H2, description, CTAs.
+ * BEM: .hero-homepage, .hero-homepage__*. Design: MASTER.md. WCAG AA overlay.
+ *
+ * @package CCS_WP_Theme
+ */
+
+/* -------------------------------------------------------------------------
+   ROOT
+   ------------------------------------------------------------------------- */
+
+.hero-homepage {
+	--hero-overlay: rgba(46, 46, 46, 0.55);
+	--hero-min-height-mobile: 420px;
+	--hero-min-height-tablet: 480px;
+	--hero-min-height-desktop: 560px;
+	position: relative;
+	min-height: var(--hero-min-height-mobile);
+	display: flex;
+	align-items: center;
+	overflow: hidden;
+}
+
+/* Background layer (image + overlay for contrast) */
+.hero-homepage__backdrop {
+	position: absolute;
+	inset: 0;
+	background-color: var(--color-background-grey);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	/* Parallax: --scroll set by site-interactions.js; disabled on mobile and reduced-motion below */
+	transform: translateY(calc(var(--scroll, 0) * 0.25px));
+}
+
+@media (max-width: 768px) {
+	.hero-homepage__backdrop {
+		transform: none;
+	}
+}
+
+.reduced-motion .hero-homepage__backdrop {
+	transform: none;
+}
+
+/* Responsive background images (set by PHP inline style) */
+@media (max-width: 767px) {
+	.hero-homepage__backdrop {
+		background-image: var(--hero-bg-mobile, none);
+	}
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+	.hero-homepage__backdrop {
+		background-image: var(--hero-bg-tablet, var(--hero-bg-mobile, none));
+	}
+}
+
+@media (min-width: 1024px) {
+	.hero-homepage__backdrop {
+		background-image: var(--hero-bg-desktop, var(--hero-bg-tablet, none));
+	}
+}
+
+/* Overlay for WCAG AA text contrast on photo */
+.hero-homepage__backdrop::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: var(--hero-overlay);
+	pointer-events: none;
+}
+
+/* -------------------------------------------------------------------------
+   CONTAINER & CONTENT
+   ------------------------------------------------------------------------- */
+
+.hero-homepage__container {
+	position: relative;
+	z-index: 1;
+	width: 100%;
+	max-width: var(--bp-xl);
+	margin-inline: auto;
+	padding-inline: var(--space-sm);
+	padding-block: var(--space-2xl);
+}
+
+@media (min-width: 768px) {
+	.hero-homepage {
+		min-height: var(--hero-min-height-tablet);
+	}
+	.hero-homepage__container {
+		padding-inline: var(--space-lg);
+	}
+}
+
+@media (min-width: 1024px) {
+	.hero-homepage {
+		min-height: var(--hero-min-height-desktop);
+	}
+	.hero-homepage__container {
+		padding-inline: var(--space-xl);
+	}
+}
+
+.hero-homepage__content {
+	max-width: 36em;
+}
+
+/* -------------------------------------------------------------------------
+   TYPOGRAPHY (design tokens; WCAG AA on overlay)
+   ------------------------------------------------------------------------- */
+
+.hero-homepage__title {
+	margin: 0 0 var(--space-sm);
+	font-family: var(--font-family-heading);
+	font-size: var(--text-2xl);
+	font-weight: var(--font-weight-bold);
+	line-height: var(--leading-tight);
+	color: #fff;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.hero-homepage__subtitle {
+	margin: 0 0 var(--space-md);
+	font-family: var(--font-family-heading);
+	font-size: var(--text-lg);
+	font-weight: var(--font-weight-semibold);
+	line-height: var(--leading-normal);
+	color: rgba(255, 255, 255, 0.95);
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.hero-homepage__description {
+	margin: 0 0 var(--space-lg);
+	font-family: var(--font-family-body);
+	font-size: var(--text-base);
+	line-height: var(--leading-relaxed);
+	color: rgba(255, 255, 255, 0.95);
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+@media (min-width: 768px) {
+	.hero-homepage__title {
+		font-size: var(--text-3xl);
+		margin-bottom: var(--space-md);
+	}
+	.hero-homepage__subtitle {
+		font-size: var(--text-xl);
+	}
+	.hero-homepage__description {
+		font-size: var(--text-md);
+	}
+}
+
+@media (min-width: 1024px) {
+	.hero-homepage__title {
+		font-size: var(--text-4xl);
+	}
+}
+
+/* -------------------------------------------------------------------------
+   CTAs – brand purple primary; mobile stack full width
+   ------------------------------------------------------------------------- */
+
+.hero-homepage__ctas {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-sm);
+}
+
+@media (max-width: 767px) {
+	.hero-homepage__ctas {
+		flex-direction: column;
+	}
+}
+
+.hero-homepage__cta {
+	/* Extend .btn; ensure brand purple for primary */
+}
+
+.hero-homepage__cta--primary {
+	background-color: var(--color-primary);
+	border-color: var(--color-primary);
+	color: #fff;
+}
+
+.hero-homepage__cta--primary:hover {
+	background-color: var(--color-primary-dark);
+	border-color: var(--color-primary-dark);
+	color: #fff;
+}
+
+.hero-homepage__cta--secondary {
+	background-color: transparent;
+	border-color: #fff;
+	color: #fff;
+}
+
+.hero-homepage__cta--secondary:hover {
+	background-color: rgba(255, 255, 255, 0.15);
+	border-color: #fff;
+	color: #fff;
+}
+
+/* Focus visible on dark overlay: high-contrast outline for keyboard users */
+.hero-homepage__cta:focus-visible {
+	outline: 2px solid #fff;
+	outline-offset: 2px;
+}
+
+@media (max-width: 767px) {
+	.hero-homepage__cta {
+		width: 100%;
+		justify-content: center;
+	}
+}
+
+.hero-homepage__stat {
+	margin: var(--space-md) 0 0;
+	font-size: var(--text-sm);
+	color: rgba(255, 255, 255, 0.9);
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* -------------------------------------------------------------------------
+   Fade-in on load (respect prefers-reduced-motion)
+   ------------------------------------------------------------------------- */
+
+@keyframes hero-homepage-fade-in {
+	from {
+		opacity: 0;
+		transform: translateY(0.5rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.hero-homepage__content {
+		animation: hero-homepage-fade-in var(--duration-slow) var(--ease-out) both;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hero-homepage__content {
+		animation: none;
+	}
+}

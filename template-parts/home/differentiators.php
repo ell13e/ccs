@@ -45,12 +45,12 @@ $items = array(
 
 <section class="home-differentiators" aria-labelledby="home-diff-heading">
 	<div class="home-differentiators__inner container container--lg">
-		<h2 id="home-diff-heading" class="home-differentiators__heading">
+		<h2 id="home-diff-heading" class="home-differentiators__heading" data-animate="fade-up" data-delay="0">
 			<?php esc_html_e( 'Why choose us', 'ccs-wp-theme' ); ?>
 		</h2>
 		<div class="home-differentiators__grid">
 			<?php foreach ( $items as $i => $item ) : ?>
-				<article class="home-diff-item">
+				<article class="home-diff-item" data-animate="fade-up" data-delay="<?php echo (int) $i * 100; ?>">
 					<span class="home-diff-item__number" aria-hidden="true"><?php echo (int) $i + 1; ?></span>
 					<h3 class="home-diff-item__title"><?php echo esc_html( $item['title'] ); ?></h3>
 					<p class="home-diff-item__desc"><?php echo esc_html( $item['desc'] ); ?></p>

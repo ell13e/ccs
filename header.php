@@ -114,35 +114,6 @@ $ccs_emergency       = $ccs_emergency_on && ( $ccs_emergency_text || $ccs_phone 
 	</div>
 </header>
 
-<?php
-$schema_logo = '';
-if ( has_custom_logo() ) {
-	$logo_id = get_theme_mod( 'custom_logo' );
-	$logo    = wp_get_attachment_image_src( $logo_id, 'full' );
-	if ( $logo ) {
-		$schema_logo = $logo[0];
-	}
-}
-?>
-<script type="application/ld+json">
-{
-	"@context": "https://schema.org",
-	"@type": "Organization",
-	"name": "<?php echo esc_js( get_bloginfo( 'name' ) ); ?>",
-	"url": "<?php echo esc_url( home_url( '/' ) ); ?>"
-	<?php if ( $schema_logo ) : ?>
-	,"logo": "<?php echo esc_url( $schema_logo ); ?>"
-	<?php endif; ?>
-	<?php if ( $ccs_phone ) : ?>
-	,"contactPoint": {
-		"@type": "ContactPoint",
-		"telephone": "<?php echo esc_js( preg_replace( '/\s+/', '', $ccs_phone ) ); ?>",
-		"contactType": "customer service",
-		"areaServed": "GB",
-		"availableLanguage": "English"
-	}
-	<?php endif; ?>
-}
-</script>
+<?php /* Organization schema: inc/schema-markup.php */ ?>
 
 <div id="content" class="site-content">

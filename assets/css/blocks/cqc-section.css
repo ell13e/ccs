@@ -1,0 +1,179 @@
+/**
+ * Homepage CQC regulatory section (trust & authority).
+ * BEM: .cqc-section, .cqc-section__*. Design: cream background, white card, loading skeleton, hover lift.
+ *
+ * @package CCS_WP_Theme
+ */
+
+/* -------------------------------------------------------------------------
+   SECTION & LAYOUT
+   ------------------------------------------------------------------------- */
+
+.cqc-section {
+	background-color: var(--color-background-grey, #f6f5ef);
+	padding-block: var(--space-2xl);
+}
+
+.cqc-section__inner {
+	max-width: 800px;
+	margin-inline: auto;
+	padding-inline: var(--space-sm);
+}
+
+.cqc-section__heading {
+	margin: 0 0 var(--space-sm);
+	font-size: var(--text-xl);
+	font-weight: 700;
+	line-height: 1.3;
+	color: var(--color-text);
+}
+
+.cqc-section__subheading {
+	margin: 0 0 var(--space-xs);
+	font-size: var(--text-base);
+	font-weight: var(--font-weight-semibold, 600);
+	line-height: 1.5;
+	color: var(--color-primary);
+}
+
+.cqc-section__registration {
+	margin: 0 0 var(--space-lg);
+	font-size: var(--text-sm);
+	line-height: 1.5;
+	color: var(--color-text-muted);
+}
+
+/* -------------------------------------------------------------------------
+   WIDGET CARD (reserved height for CLS)
+   ------------------------------------------------------------------------- */
+
+.cqc-section__widget-card {
+	background-color: var(--color-background, #fff);
+	border-radius: 16px;
+	box-shadow: var(--shadow-soft-lg, 0 4px 16px rgba(46, 46, 46, 0.1));
+	padding: var(--space-md);
+	min-height: 200px;
+	transition: transform var(--duration-normal) ease, box-shadow var(--duration-normal) ease;
+}
+
+.cqc-section__widget-card:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 20px rgba(46, 46, 46, 0.12);
+}
+
+.cqc-section__widget-wrap {
+	position: relative;
+	min-height: 200px;
+}
+
+/* Hide skeleton when CQC widget has injected content (iframe or widget root) */
+.cqc-section__widget-wrap:has(iframe),
+.cqc-section__widget-wrap:has([id^="cqc"]),
+.cqc-section__widget-wrap:has(.cqc-widget) {
+	min-height: 0;
+}
+
+.cqc-section__widget-wrap:has(iframe) .cqc-section__skeleton,
+.cqc-section__widget-wrap:has([id^="cqc"]) .cqc-section__skeleton,
+.cqc-section__widget-wrap:has(.cqc-widget) .cqc-section__skeleton {
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.2s ease;
+}
+
+/* -------------------------------------------------------------------------
+   LOADING SKELETON
+   ------------------------------------------------------------------------- */
+
+.cqc-section__skeleton {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: var(--space-sm);
+	padding: var(--space-sm);
+	pointer-events: none;
+}
+
+.cqc-section__skeleton-line {
+	display: block;
+	height: 1em;
+	background: linear-gradient(
+		90deg,
+		var(--color-background-grey, #f6f5ef) 0%,
+		rgba(0, 0, 0, 0.06) 50%,
+		var(--color-background-grey, #f6f5ef) 100%
+	);
+	background-size: 200% 100%;
+	border-radius: 4px;
+	animation: cqc-skeleton-shimmer 1.2s ease-in-out infinite;
+}
+
+.cqc-section__skeleton-line--title {
+	width: 70%;
+	max-width: 280px;
+	height: 1.25em;
+}
+
+.cqc-section__skeleton-line--body {
+	width: 100%;
+}
+
+.cqc-section__skeleton-line--short {
+	width: 60%;
+}
+
+@keyframes cqc-skeleton-shimmer {
+	0% {
+		background-position: 200% 0;
+	}
+	100% {
+		background-position: -200% 0;
+	}
+}
+
+/* -------------------------------------------------------------------------
+   NOSCRIPT FALLBACK
+   ------------------------------------------------------------------------- */
+
+.cqc-section__fallback {
+	margin: var(--space-md) 0 0;
+	font-size: var(--text-base);
+}
+
+.cqc-section__fallback-link {
+	color: var(--color-primary);
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+.cqc-section__fallback-link:hover,
+.cqc-section__fallback-link:focus {
+	text-decoration: none;
+}
+
+.cqc-section__fallback-link:focus-visible {
+	outline: var(--focus-ring-width) solid var(--focus-ring-color);
+	outline-offset: 2px;
+}
+
+/* -------------------------------------------------------------------------
+   RESPONSIVE
+   ------------------------------------------------------------------------- */
+
+@media (min-width: 768px) {
+	.cqc-section__heading {
+		font-size: var(--text-2xl);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.cqc-section__widget-card {
+		transition: none;
+	}
+	.cqc-section__skeleton-line {
+		animation: none;
+		background: rgba(0, 0, 0, 0.06);
+	}
+}
