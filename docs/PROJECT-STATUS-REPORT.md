@@ -104,7 +104,7 @@
 
 - **Local setup:** Not defined in repo (no wp-env, Docker, or Playground config); assume standard WP install with theme in `wp-content/themes/`.
 - **Build:** No npm/build step; edit CSS/JS directly.
-- **WP-CLI:** Optional; `wp ccs regenerate-critical-css` when WP_CLI is defined.
+- **WP-CLI:** Optional; `wp ccs regenerate-critical-css` when WP_CLI is defined. If you can’t run WP-CLI: while logged in as admin, visit the clear-CSS URL (with nonce `ccs_clear_critical_css`) to clear stored critical CSS; the theme then uses `assets/css/critical.css` from disk.
 - **Testing:** No test suite or CI; manual verification checklists in docs.
 
 ---
@@ -139,7 +139,7 @@
 - **Quick wins:** (1) Run and document Lighthouse once; (2) add PHPCS and fix top issues; (3) tick off a11y checklist and note any fixes in ACCESSIBILITY-COMPLIANCE-REPORT.md.
 - **Modern WordPress patterns:** When adding new features, prefer: native lazy loading and responsive images; semantic HTML and ARIA only where needed; nonce + capability for any new form or admin action; defer for any new JS.
 - **REST:** Rely on core `wp/v2` for service/location/testimonial and taxonomies; avoid custom REST routes unless required (e.g. headless or app consumption).
-- **Performance:** After major CSS/layout changes, run `wp ccs regenerate-critical-css` if WP-CLI is available; keep defer list and conditional enqueues in sync with new templates.
+- **Performance:** After changing critical or design-system CSS: run `wp ccs regenerate-critical-css --clear` when WP-CLI is available, or (when logged in as admin) use the clear-CSS URL so the theme falls back to `assets/css/critical.css` from disk. Keep defer list and conditional enqueues in sync with new templates.
 
 ---
 

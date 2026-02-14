@@ -319,6 +319,37 @@ function ccs_register_critical_css() {
 add_action( 'init', 'ccs_register_critical_css', 15 );
 
 /**
+ * Allow admins to clear stored critical CSS without WP-CLI (theme will fall back to assets/css/critical.css).
+ * Visit: add_query_arg( 'ccs_clear_critical_css', '1', home_url( '/' ) ) with _wpnonce=wp_create_nonce( 'ccs_clear_critical_css' ).
+ */
+function ccs_handle_clear_critical_css() {
+	if ( ! isset( $_GET['ccs_clear_critical_css'] ) || $_GET['ccs_clear_critical_css'] !== '1' ) {
+		return;
+	}
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'ccs_clear_critical_css' ) ) {
+		return;
+	}
+	CCS_Critical_CSS::clear_stored_css();
+	wp_safe_redirect( add_query_arg( 'ccs_critical_css_cleared', '1', admin_url() ) );
+	exit;
+}
+add_action( 'init', 'ccs_handle_clear_critical_css', 5 );
+
+/**
+ * One-time admin notice after clearing stored critical CSS.
+ */
+function ccs_notice_critical_css_cleared() {
+	if ( ! current_user_can( 'manage_options' ) || ! isset( $_GET['ccs_critical_css_cleared'] ) ) {
+		return;
+	}
+	echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Stored critical CSS cleared. Theme is using assets/css/critical.css.', 'ccs' ) . '</p></div>';
+}
+add_action( 'admin_notices', 'ccs_notice_critical_css_cleared' );
+
+/**
  * Analytics & conversion tracking (GA4, Facebook Pixel, Google Ads). Customizer runs in admin; tracking runs on front.
  */
 function ccs_register_analytics() {

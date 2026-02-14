@@ -252,6 +252,14 @@ class CCS_Welcome_Screen {
 				</p>
 			</section>
 
+			<section class="ccs-welcome-section ccs-welcome-critical-css">
+				<h2><?php esc_html_e( 'Critical CSS', 'ccs-wp-theme' ); ?></h2>
+				<p><?php esc_html_e( 'After changing critical or design-system CSS, either run WP-CLI: wp ccs regenerate-critical-css --clear, or clear stored CSS below so the theme uses assets/css/critical.css from disk.', 'ccs-wp-theme' ); ?></p>
+				<p>
+					<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'ccs_clear_critical_css', '1', home_url( '/' ) ), 'ccs_clear_critical_css' ) ); ?>" class="button"><?php esc_html_e( 'Clear stored critical CSS', 'ccs-wp-theme' ); ?></a>
+				</p>
+			</section>
+
 			<section class="ccs-welcome-section ccs-welcome-requirements">
 				<h2><?php esc_html_e( 'Server requirements', 'ccs-wp-theme' ); ?></h2>
 				<?php $this->render_requirements(); ?>

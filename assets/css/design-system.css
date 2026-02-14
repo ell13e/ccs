@@ -24,11 +24,12 @@
 	--color-secondary-light: #C5EAE4;
 	--color-secondary-dark: #85C4B8;
 
-	/* ----- Neutrals ----- */
+	/* ----- Neutrals (MASTER: background-warm = page tint) ----- */
 	--color-text: #2e2e2e;
 	--color-text-light: #666666;
 	--color-background: #FFFFFF;
-	--color-background-grey: #f6f5ef;
+	--color-background-warm: #f6f5ef;
+	--color-background-grey: var(--color-background-warm);
 	--color-border: #E0E0E0;
 
 	/* ----- Utility (contrast: urgent ≥4.5:1 on white for body text) ----- */
@@ -36,6 +37,7 @@
 	--color-warning: #D4A843;
 	--color-urgent: #C64B4B;
 	--color-accent: #9b8fb5;
+	--color-info: #2563eb;
 
 	/* ----- Typography (MASTER: Poppins headings, Open Sans body) ----- */
 	--font-family-heading: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -59,10 +61,14 @@
 	--font-weight-bold: 700;
 
 	--leading-tight: 1.2;
+	--leading-snug: 1.35;
 	--leading-normal: 1.5;
-	--leading-relaxed: 1.7;
+	--leading-relaxed: 1.6;
+	--tracking-tight: -0.02em;
+	--tracking-normal: 0;
 
-	/* ----- Spacing (8px base) ----- */
+	/* ----- Spacing (8px base, MASTER §3) ----- */
+	--space-2xs: 0.25rem; /* 4px */
 	--space-xs: 0.5rem;   /* 8px */
 	--space-sm: 1rem;     /* 16px */
 	--space-md: 1.5rem;   /* 24px */
@@ -90,12 +96,17 @@
 	--focus-ring-color: var(--color-primary);
 	--focus-ring: var(--focus-ring-width) solid var(--focus-ring-color);
 
-	/* ----- Soft UI Evolution (MASTER) ----- */
+	/* ----- Soft UI Evolution (MASTER §4–5) ----- */
 	--radius-sm: 6px;
 	--radius-md: 10px;
 	--radius-lg: 14px;
-	--shadow-soft: 0 2px 8px rgba(46, 46, 46, 0.08);
-	--shadow-soft-lg: 0 4px 16px rgba(46, 46, 46, 0.1);
+	--radius-xl: 20px;
+	--shadow-subtle: 0 2px 8px rgba(46, 46, 46, 0.06);
+	--shadow-elevated: 0 4px 16px rgba(46, 46, 46, 0.1);
+	--shadow-prominent: 0 8px 24px rgba(46, 46, 46, 0.12);
+	/* Legacy aliases (prefer --shadow-subtle / --shadow-elevated) */
+	--shadow-soft: var(--shadow-subtle);
+	--shadow-soft-lg: var(--shadow-elevated);
 
 	/* ----- Z-index scale ----- */
 	--z-dropdown: 10;
@@ -269,8 +280,12 @@
 .font-bold     { font-weight: var(--font-weight-bold); }
 
 .leading-tight   { line-height: var(--leading-tight); }
+.leading-snug   { line-height: var(--leading-snug); }
 .leading-normal  { line-height: var(--leading-normal); }
 .leading-relaxed { line-height: var(--leading-relaxed); }
+
+.tracking-tight  { letter-spacing: var(--tracking-tight); }
+.tracking-normal { letter-spacing: var(--tracking-normal); }
 
 /* Semantic text colours */
 .text-primary   { color: var(--color-text); }
@@ -285,6 +300,7 @@
    ------------------------------------------------------------------------- */
 
 .bg-white        { background-color: var(--color-background); }
+.bg-warm         { background-color: var(--color-background-warm); }
 .bg-grey         { background-color: var(--color-background-grey); }
 .bg-primary      { background-color: var(--color-primary); }
 .bg-primary-light { background-color: var(--color-primary-light); }
