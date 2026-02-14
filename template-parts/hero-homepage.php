@@ -2,6 +2,7 @@
 /**
  * Homepage hero section: full-bleed background, H1, H2, description, primary/secondary CTAs.
  * Content from CCS-THEME-AND-CONTENT-GUIDE.md Section 2b. Design: MASTER.md.
+ * Organization/LocalBusiness schema is output by inc/schema-markup.php (not in this partial).
  *
  * @package CCS_WP_Theme
  */

@@ -110,6 +110,16 @@ add_action( 'init', 'ccs_register_form_handlers', 5 );
 
 /**
  * Enqueue scripts and styles.
+ *
+ * Loading strategy (skills: /wpds, /web-performance-optimization):
+ * - Global: design-system, components, scroll-animations, card-effects, header, responsive, theme-style.
+ * - Conditional: homepage blocks (hero, why-choose-us, cqc-section) on template-homepage.php;
+ *   service-page / location-page on singular CPT; contact / careers (sticky-cta) on their templates.
+ * - Critical CSS is inlined by inc/performance/class-critical-css.php; non-critical CSS is deferred
+ *   via style_loader_tag (media=print + onload).
+ * - Scripts are enqueued in footer; ccs_defer_scripts() adds defer to: navigation, form-handler,
+ *   consultation-form, site-interactions, scroll-animations, careers-interactions.
+ * - Version: THEME_VERSION for cache busting.
  */
 function ccs_theme_scripts() {
 	$theme_uri = THEME_URL;

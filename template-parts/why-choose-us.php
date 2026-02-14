@@ -18,7 +18,7 @@ $heading = __( 'Why Choose Us for Home Care in Maidstone?', 'ccs-wp-theme' );
 /* translators: %1$s and %2$s are placeholders for <em>what</em> and <em>how</em> */
 $subheading = sprintf( __( "It's not just %1\$s we do, it's %2\$s we do it.", 'ccs-wp-theme' ), '<em>' . esc_html__( 'what', 'ccs-wp-theme' ) . '</em>', '<em>' . esc_html__( 'how', 'ccs-wp-theme' ) . '</em>' );
 $quote = __( 'Our caring, local team is dedicated to supporting families across Kent.', 'ccs-wp-theme' );
-$link_text = __( 'Learn more about the home care services we offer in Maidstone & Kent.', 'ccs-wp-theme' );
+$link_text = __( 'Explore our home care services in Maidstone & Kent', 'ccs-wp-theme' );
 $image_alt = __( 'Young woman supported by Continuity of Care Services home care staff at the Summer Party at Lainey\'s Care Farm in Kent', 'ccs-wp-theme' );
 ?>
 

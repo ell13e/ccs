@@ -29,8 +29,16 @@
 }
 
 .cqc-section__subheading {
-	margin: 0 0 var(--space-lg);
+	margin: 0 0 var(--space-xs);
 	font-size: var(--text-base);
+	font-weight: var(--font-weight-semibold, 600);
+	line-height: 1.5;
+	color: var(--color-primary);
+}
+
+.cqc-section__registration {
+	margin: 0 0 var(--space-lg);
+	font-size: var(--text-sm);
 	line-height: 1.5;
 	color: var(--color-text-muted);
 }

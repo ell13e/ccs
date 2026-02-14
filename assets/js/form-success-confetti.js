@@ -32,7 +32,14 @@
 		};
 	}
 
+	function prefersReducedMotion() {
+		return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	}
+
 	function triggerFormSuccessConfetti() {
+		if (prefersReducedMotion()) {
+			return;
+		}
 		var canvas = document.createElement('canvas');
 		canvas.setAttribute('aria-hidden', 'true');
 		canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;';

@@ -203,6 +203,12 @@
 	color: #fff;
 }
 
+/* Focus visible on dark overlay: high-contrast outline for keyboard users */
+.hero-homepage__cta:focus-visible {
+	outline: 2px solid #fff;
+	outline-offset: 2px;
+}
+
 @media (max-width: 767px) {
 	.hero-homepage__cta {
 		width: 100%;

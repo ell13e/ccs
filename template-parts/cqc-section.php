@@ -24,6 +24,12 @@ $cqc_fallback_url = 'https://www.cqc.org.uk/location/' . $cqc_location_id;
 		<p class="cqc-section__subheading" data-animate="fade-up" data-delay="100">
 			<?php esc_html_e( "Proud to be rated 'Good' by the CQC", 'ccs-wp-theme' ); ?>
 		</p>
+		<p class="cqc-section__registration" data-animate="fade-up" data-delay="100">
+			<?php
+			/* translators: %s: CQC location/registration ID */
+			printf( esc_html__( 'Registration no. %s', 'ccs-wp-theme' ), esc_html( $cqc_location_id ) );
+			?>
+		</p>
 
 		<div class="cqc-section__widget-card" data-animate="fade-up" data-delay="200" role="complementary" aria-label="<?php esc_attr_e( 'Care Quality Commission rating and registration', 'ccs-wp-theme' ); ?>">
 			<div class="cqc-section__widget-wrap" id="cqc-widget-mount">
