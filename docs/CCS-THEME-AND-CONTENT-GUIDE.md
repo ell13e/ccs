@@ -6,6 +6,8 @@ Theme status, content to add, WordPress setup, and implementation checklist. Eve
 
 **Tagline (use everywhere):** **Your Team, Your Time, Your Life**
 
+**Use CTA files; tailor content to CCS:** Migrated pages and sections use the same files/structure as CTA, but content is CCS-only. Examples: **Resources** = **Home care guides** (care guides, FAQs, referral info); **CQC Hub** page = **CQC and our care** (reassurance, not training hub); **Group Training** page slot = **Book a care consultation** / **Arrange a visit** or **Getting started with care**. No course catalogues, training bookings, or employer training copy.
+
 ---
 
 ## 1. Current status
@@ -26,6 +28,8 @@ Theme status, content to add, WordPress setup, and implementation checklist. Eve
 ---
 
 ## 2. Quick reference
+
+**Live site (canonical):** **https://www.continuitycareservices.co.uk**
 
 ### Contact
 
@@ -253,8 +257,8 @@ Yes, we’re experts in clinical care. But we’re also committed to ensuring ou
 | **Who You’ll Meet** | `/home/who-youll-meet/` | Keelie Varney & Nikki Mackay bios, team info, values & training |
 | **Care Careers Maidstone Kent** | `/home/care-careers-maidstone-kent/` | Intro and benefits listed in this section below |
 | **Contact Us** | `/home/contact-us/` | Consultation form: heading, description and all fields in Section 10 |
-| **Resources** (parent) | `/home/resources/` | Parent for children below |
-| **Care Guides** | `/home/resources/care-guides/` | Educational resources |
+| **Resources** (parent) | `/home/resources/` | Use CTA resources/downloads structure; label as **Home care guides** or **Care guides**. Parent for children below. |
+| **Care Guides** | `/home/resources/care-guides/` | Home care guides (educational PDFs, how-to, info for families) |
 | **FAQs** | `/home/resources/faqs/` | Frequently asked questions |
 | **Referral Information** | `/home/resources/referral-information/` | For professionals making referrals |
 | **News & Updates** | e.g. `/home/news-and-updates/` | Assign as Posts page in Reading |

@@ -212,3 +212,10 @@ Use `--radius-md` or `--radius-lg` for cards and hero content; avoid sharp corne
 - **This document:** `design-system/MASTER.md`
 
 Implement the revised tokens in `design-system.css` (colour roles, typography scale with line-height/letter-spacing, spacing scale including `space-2xs`, shadow system, radius, and component tokens). Enqueue Poppins and Open Sans (e.g. Google Fonts) with weights 400, 500, 600, 700.
+
+---
+
+## 9. WordPress theme integration
+
+- **theme.json** (theme root) and **assets/css/editor-style.css** expose the same design tokens (palette, typography, spacing) so the block/classic editor and front end stay aligned. Both are driven by this design system and `assets/css/design-system.css`.
+- **Block patterns** (CCS Patterns category in the block inserter) are defined in `inc/block-patterns.php` and use theme.json presets for colours and spacing.

@@ -1,0 +1,21 @@
+# PHPStan for Kent Care Provider theme (classic).
+# Requires: composer require --dev phpstan/phpstan szepeviktor/phpstan-wordpress
+# Then: vendor/bin/phpstan analyse
+# Optional: add "includes: [ phpstan-baseline.neon ]" after generating a baseline.
+
+parameters:
+    level: 5
+    paths:
+        - inc/
+        - page-templates/
+        - template-parts/
+        - functions.php
+        - header.php
+        - footer.php
+        - index.php
+        - single-service.php
+        - single-location.php
+    excludePaths:
+        - node_modules/
+        - vendor/
+        - .cursor/

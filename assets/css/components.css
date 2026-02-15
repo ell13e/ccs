@@ -299,3 +299,65 @@
 		transition: none;
 	}
 }
+
+/* -------------------------------------------------------------------------
+   BREADCRUMB (inner pages)
+   ------------------------------------------------------------------------- */
+.breadcrumb {
+	margin-bottom: var(--space-md);
+}
+
+.breadcrumb__list {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-2xs) var(--space-xs);
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	font-size: var(--text-sm);
+	line-height: var(--leading-normal);
+	color: var(--color-text-light);
+}
+
+.breadcrumb__item {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-xs);
+}
+
+.breadcrumb__item:not(:last-child)::after {
+	content: none;
+}
+
+.breadcrumb__link {
+	color: var(--color-primary);
+	text-decoration: none;
+	transition: color var(--duration-fast) var(--ease-out);
+}
+
+.breadcrumb__link:hover {
+	color: var(--color-primary-light);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.breadcrumb__link:focus {
+	outline: none;
+}
+
+.breadcrumb__link:focus-visible {
+	outline: var(--focus-ring);
+	outline-offset: var(--focus-ring-offset);
+	border-radius: 2px;
+}
+
+.breadcrumb__sep {
+	color: var(--color-text-light);
+	user-select: none;
+}
+
+.breadcrumb__current {
+	color: var(--color-text);
+	font-weight: var(--font-weight-semibold);
+}

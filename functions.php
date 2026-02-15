@@ -40,6 +40,31 @@ new CCS_Register_Taxonomies();
 require_once THEME_DIR . '/inc/theme-setup.php';
 
 /**
+ * Header and footer helpers (contact info, footer fallback menus).
+ */
+require_once THEME_DIR . '/inc/header-footer-helpers.php';
+
+/**
+ * Block patterns (CCS Patterns category).
+ */
+require_once THEME_DIR . '/inc/block-patterns.php';
+
+/**
+ * Page editor enhancements (classic editor for pages, SEO meta box).
+ */
+require_once THEME_DIR . '/inc/page-editor-enhancements.php';
+
+/**
+ * Resource downloads: CPT ccs_resource, taxonomy, download table, metaboxes (care guides).
+ */
+require_once THEME_DIR . '/inc/resource-downloads.php';
+
+/**
+ * Resource download: AJAX request handler, email delivery, token-based download URL.
+ */
+require_once THEME_DIR . '/inc/resource-download-ajax.php';
+
+/**
  * Theme activation: demo pages, services, menus, Reading, permalinks. Idempotent; handles Reset Demo Content.
  */
 new CCS_Theme_Activation();

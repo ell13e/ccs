@@ -78,38 +78,77 @@ $ccs_emergency       = $ccs_emergency_on && ( $ccs_emergency_text || $ccs_phone 
 		</div>
 	</div>
 
-	<!-- Main header -->
-	<div class="site-header__main">
-		<div class="site-header__main-inner">
-			<div class="site-header__brand">
+	<!-- Main header (CTA-style) -->
+	<?php
+	$ccs_contact = function_exists( 'ccs_get_contact_info' ) ? ccs_get_contact_info() : array( 'phone' => $ccs_phone, 'phone_link' => $ccs_phone ? 'tel:' . preg_replace( '/\s+/', '', $ccs_phone ) : '' );
+	$ccs_cta_url = get_theme_mod( 'ccs_cta_url', home_url( '/contact/' ) );
+	?>
+	<div class="header-container">
+		<div class="header-inner-wrapper">
+			<div class="header-logo">
 				<?php if ( has_custom_logo() ) : ?>
 					<?php the_custom_logo(); ?>
 				<?php else : ?>
-					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-header__logo-link" rel="home"><?php bloginfo( 'name' ); ?></a>
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="logo-link" rel="home"><?php bloginfo( 'name' ); ?></a>
 				<?php endif; ?>
 			</div>
 
-			<nav id="site-navigation" class="site-header__nav" aria-label="<?php esc_attr_e( 'Primary navigation', 'ccs-wp-theme' ); ?>">
+			<button type="button" id="mobile-menu-button" class="mobile-menu-btn" aria-expanded="false" aria-controls="mobile-navigation" aria-label="<?php esc_attr_e( 'Open menu', 'ccs-wp-theme' ); ?>">
+				<span class="mobile-menu-btn__icon" aria-hidden="true"></span>
+			</button>
+
+			<nav id="site-navigation" class="nav-desktop" aria-label="<?php esc_attr_e( 'Primary navigation', 'ccs-wp-theme' ); ?>">
 				<?php
-				wp_nav_menu(
-					array(
-						'theme_location'  => 'primary',
-						'menu_id'         => 'primary-menu',
-						'menu_class'      => 'site-header__menu',
-						'container'       => false,
-						'fallback_cb'     => false,
-						'items_wrap'      => '<ul id="%1$s" class="%2$s" role="menubar">%3$s</ul>',
-					)
-				);
+				if ( has_nav_menu( 'primary' ) ) {
+					wp_nav_menu(
+						array(
+							'theme_location'  => 'primary',
+							'menu_id'         => 'primary-menu',
+							'menu_class'      => 'nav-list',
+							'container'       => false,
+							'fallback_cb'     => false,
+							'items_wrap'      => '<ul id="%1$s" class="%2$s" role="menubar">%3$s</ul>',
+							'link_class'      => 'nav-link',
+						)
+					);
+				} else {
+					ccs_primary_menu_fallback();
+				}
 				?>
 			</nav>
 
-			<div class="site-header__actions">
-				<a href="<?php echo esc_url( get_theme_mod( 'ccs_cta_url', home_url( '/contact/' ) ) ); ?>" class="site-header__cta btn btn-primary"><?php esc_html_e( 'Get Started', 'ccs-wp-theme' ); ?></a>
-				<button type="button" class="site-header__toggle" aria-expanded="false" aria-controls="primary-menu" aria-label="<?php esc_attr_e( 'Open menu', 'ccs-wp-theme' ); ?>">
-					<span class="site-header__toggle-icon" aria-hidden="true"></span>
-				</button>
+			<div class="header-actions">
+				<?php if ( ! empty( $ccs_contact['phone'] ) ) : ?>
+					<a href="<?php echo esc_url( $ccs_contact['phone_link'] ); ?>" class="header-actions__phone"><?php echo esc_html( $ccs_contact['phone'] ); ?></a>
+				<?php endif; ?>
+				<a href="<?php echo esc_url( $ccs_cta_url ); ?>" class="header-actions__cta btn btn-primary"><?php esc_html_e( 'Book a care consultation', 'ccs-wp-theme' ); ?></a>
 			</div>
+		</div>
+
+		<div id="mobile-navigation" class="mobile-menu" aria-label="<?php esc_attr_e( 'Mobile navigation', 'ccs-wp-theme' ); ?>" hidden>
+			<nav class="mobile-menu-content" aria-label="<?php esc_attr_e( 'Primary navigation', 'ccs-wp-theme' ); ?>">
+				<?php
+				if ( has_nav_menu( 'primary' ) ) {
+					wp_nav_menu(
+						array(
+							'theme_location'  => 'primary',
+							'menu_id'         => 'mobile-menu-list',
+							'menu_class'      => 'mobile-menu-list',
+							'container'       => false,
+							'fallback_cb'     => false,
+							'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
+							'link_class'      => 'mobile-menu-link',
+						)
+					);
+				} else {
+					ccs_primary_menu_fallback_mobile();
+				}
+				?>
+			</nav>
+			<?php if ( ! empty( $ccs_contact['phone'] ) ) : ?>
+				<a href="<?php echo esc_url( $ccs_contact['phone_link'] ); ?>" class="mobile-menu__phone"><?php echo esc_html( $ccs_contact['phone'] ); ?></a>
+			<?php endif; ?>
+			<a href="<?php echo esc_url( $ccs_cta_url ); ?>" class="mobile-menu__cta btn btn-primary"><?php esc_html_e( 'Book a care consultation', 'ccs-wp-theme' ); ?></a>
 		</div>
 	</div>
 </header>

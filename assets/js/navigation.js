@@ -14,9 +14,11 @@
 	var NAV_OPEN_CLASS_NAV = 'is-open';
 	var SUBMENU_EXPANDED_CLASS = 'is-expanded';
 
-	var toggle = document.querySelector('.site-header__toggle');
-	var nav = document.querySelector('#site-navigation');
-	var menu = document.querySelector('#primary-menu');
+	/* CTA-style: #mobile-menu-button toggles #mobile-navigation; else legacy .site-header__toggle + #site-navigation */
+	var toggle = document.querySelector('#mobile-menu-button') || document.querySelector('.site-header__toggle');
+	var mobilePanel = document.querySelector('#mobile-navigation');
+	var nav = mobilePanel || document.querySelector('#site-navigation');
+	var menu = document.querySelector('#primary-menu') || document.querySelector('#mobile-menu-list');
 
 	/* Labels (can be overridden via wp_localize_script) */
 	var labels = window.ccsNavigation || {};
@@ -29,13 +31,26 @@
 		return window.innerWidth < MOBILE_BREAKPOINT;
 	}
 
+	var isCtaStyle = !!mobilePanel;
+
 	function setMenuOpen(open) {
 		if (!toggle || !nav) return;
 		toggle.setAttribute('aria-expanded', open);
 		toggle.setAttribute('aria-label', open ? closeLabel : openLabel);
-		nav.classList.toggle(NAV_OPEN_CLASS_NAV, open);
-		document.documentElement.classList.toggle(NAV_OPEN_CLASS, open);
-		document.body.style.overflow = open ? 'hidden' : '';
+		if (isCtaStyle) {
+			if (open) {
+				nav.removeAttribute('hidden');
+			} else {
+				nav.setAttribute('hidden', '');
+			}
+			nav.classList.toggle(NAV_OPEN_CLASS_NAV, open);
+			document.body.classList.toggle('ccs-mobile-nav-open', open);
+			document.body.style.overflow = open ? 'hidden' : '';
+		} else {
+			nav.classList.toggle(NAV_OPEN_CLASS_NAV, open);
+			document.documentElement.classList.toggle(NAV_OPEN_CLASS, open);
+			document.body.style.overflow = open ? 'hidden' : '';
+		}
 	}
 
 	function closeMenu() {

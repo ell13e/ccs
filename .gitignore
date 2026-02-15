@@ -25,6 +25,7 @@ composer.lock
 vendor/
 .idea/
 .vscode/
+.cursor/
 *.sublime-project
 *.sublime-workspace
 

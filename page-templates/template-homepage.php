@@ -2,7 +2,7 @@
 /**
  * Template Name: Homepage
  *
- * Full-width homepage: hero, scenarios, services overview, differentiators.
+ * Full-width homepage per content guide §2b: hero, why choose us, CQC, care options (services), info cards, partnerships, testimonial.
  *
  * @package CCS_WP_Theme
  * @since 1.0.0
@@ -21,9 +21,12 @@ $ccs_phone_tel = $ccs_phone ? preg_replace( '/\s+/', '', $ccs_phone ) : '';
 <main id="main" class="site-main site-main--homepage" role="main">
 
 	<?php get_template_part( 'template-parts/home/hero' ); ?>
-	<?php get_template_part( 'template-parts/home/scenarios' ); ?>
+	<?php get_template_part( 'template-parts/home/why-choose-us' ); ?>
+	<?php get_template_part( 'template-parts/home/cqc-section' ); ?>
 	<?php get_template_part( 'template-parts/home/services' ); ?>
-	<?php get_template_part( 'template-parts/home/differentiators' ); ?>
+	<?php get_template_part( 'template-parts/home/info-cards' ); ?>
+	<?php get_template_part( 'template-parts/home/partnerships' ); ?>
+	<?php get_template_part( 'template-parts/home/testimonial' ); ?>
 
 </main>
 
@@ -59,11 +62,12 @@ $schema_org = array(
 			'publisher' => array( '@id' => esc_url( home_url( '/' ) ) . '#organization' ),
 		),
 		array(
-			'@type'  => 'LocalBusiness',
-			'@id'    => esc_url( home_url( '/' ) ) . '#organization',
-			'name'   => get_bloginfo( 'name' ),
-			'url'    => esc_url( home_url( '/' ) ),
-			'areaServed' => array(
+			'@type'       => 'LocalBusiness',
+			'@id'         => esc_url( home_url( '/' ) ) . '#organization',
+			'name'        => get_bloginfo( 'name' ),
+			'description' => get_bloginfo( 'description' ) ?: __( 'Home care in Maidstone & Kent. Complex care, personal care and companionship — your team, your time, your life.', 'ccs-wp-theme' ),
+			'url'         => esc_url( home_url( '/' ) ),
+			'areaServed'  => array(
 				'@type' => 'AdministrativeArea',
 				'name'  => 'Kent',
 			),

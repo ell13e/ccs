@@ -1,0 +1,135 @@
+/**
+ * Editor styles – WYSIWYG in block/classic editor.
+ * Brings CCS design tokens and base typography into the admin so editor content
+ * matches the front end. Driven by design-system/MASTER.md and design-system.css.
+ *
+ * @package CCS_WP_Theme
+ * @since 1.0.0
+ */
+
+/* Design tokens (subset needed in editor; matches design-system.css :root) */
+.editor-styles-wrapper {
+	--color-primary: #564298;
+	--color-primary-light: #7B63B8;
+	--color-primary-dark: #3F2F70;
+	--color-secondary: #a8ddd4;
+	--color-secondary-light: #C5EAE4;
+	--color-secondary-dark: #85C4B8;
+	--color-text: #2e2e2e;
+	--color-text-light: #666666;
+	--color-background: #ffffff;
+	--color-background-warm: #f6f5ef;
+	--color-border: #E0E0E0;
+	--color-accent: #9b8fb5;
+
+	--font-family-heading: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+	--font-family-body: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+	--text-xs: 0.875rem;
+	--text-sm: 0.9375rem;
+	--text-base: 1rem;
+	--text-md: 1.125rem;
+	--text-lg: 1.375rem;
+	--text-xl: 1.75rem;
+	--text-2xl: 2.1875rem;
+	--text-3xl: 2.75rem;
+	--text-4xl: 3rem;
+
+	--font-weight-normal: 400;
+	--font-weight-medium: 500;
+	--font-weight-semibold: 600;
+	--font-weight-bold: 700;
+
+	--leading-tight: 1.2;
+	--leading-snug: 1.35;
+	--leading-normal: 1.5;
+	--leading-relaxed: 1.6;
+	--tracking-tight: -0.02em;
+
+	--space-xs: 0.5rem;
+	--space-sm: 1rem;
+	--space-md: 1.5rem;
+	--space-lg: 2rem;
+	--space-xl: 3rem;
+
+	--radius-md: 10px;
+}
+
+/* Base: body and typography */
+.editor-styles-wrapper {
+	font-family: var(--font-family-body);
+	font-size: var(--text-base);
+	font-weight: var(--font-weight-normal);
+	line-height: var(--leading-relaxed);
+	color: var(--color-text);
+	background-color: var(--color-background-warm);
+}
+
+.editor-styles-wrapper p {
+	margin-bottom: var(--space-md);
+}
+
+/* Links */
+.editor-styles-wrapper a {
+	color: var(--color-primary);
+	text-underline-offset: 0.15em;
+}
+
+.editor-styles-wrapper a:hover {
+	color: var(--color-primary-dark);
+}
+
+/* Headings */
+.editor-styles-wrapper h1,
+.editor-styles-wrapper h2,
+.editor-styles-wrapper h3,
+.editor-styles-wrapper h4,
+.editor-styles-wrapper h5,
+.editor-styles-wrapper h6 {
+	font-family: var(--font-family-heading);
+	color: var(--color-text);
+	font-weight: var(--font-weight-bold);
+	line-height: var(--leading-tight);
+	letter-spacing: var(--tracking-tight);
+	margin-top: 0;
+}
+
+.editor-styles-wrapper h1 { font-size: var(--text-4xl); margin-bottom: var(--space-md); }
+.editor-styles-wrapper h2 { font-size: var(--text-3xl); margin-bottom: var(--space-md); }
+.editor-styles-wrapper h3 { font-size: var(--text-2xl); margin-bottom: var(--space-sm); }
+.editor-styles-wrapper h4 { font-size: var(--text-xl); margin-bottom: var(--space-sm); }
+.editor-styles-wrapper h5 { font-size: var(--text-lg); margin-bottom: var(--space-sm); }
+.editor-styles-wrapper h6 { font-size: var(--text-md); margin-bottom: var(--space-xs); }
+
+/* Buttons (block editor and classic) */
+.editor-styles-wrapper .wp-block-button__link,
+.editor-styles-wrapper .wp-element-button {
+	background-color: var(--color-primary);
+	color: var(--color-background);
+	font-weight: var(--font-weight-bold);
+	border-radius: var(--radius-md);
+	padding: var(--space-sm) var(--space-lg);
+	border: none;
+}
+
+.editor-styles-wrapper .wp-block-button__link:hover,
+.editor-styles-wrapper .wp-element-button:hover {
+	background-color: var(--color-primary-dark);
+	color: var(--color-background);
+}
+
+/* Lists */
+.editor-styles-wrapper ul,
+.editor-styles-wrapper ol {
+	margin-bottom: var(--space-md);
+	padding-left: 1.5em;
+}
+
+.editor-styles-wrapper li {
+	margin-bottom: var(--space-xs);
+}
+
+/* Block gap alignment with theme.json */
+.editor-styles-wrapper .block-editor-block-list__block {
+	margin-bottom: var(--space-md);
+}

@@ -9,8 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$ccs_phone     = get_theme_mod( 'ccs_phone', '01234 567890' );
-$ccs_phone_tel = $ccs_phone ? preg_replace( '/\s+/', '', $ccs_phone ) : '';
 $hero_image_id = get_theme_mod( 'ccs_hero_image', 0 );
 $hero_image    = $hero_image_id ? wp_get_attachment_image_url( $hero_image_id, 'large' ) : '';
 $hero_alt      = $hero_image_id ? get_post_meta( $hero_image_id, '_wp_attachment_image_alt', true ) : '';
@@ -22,25 +20,26 @@ $hero_alt      = is_string( $hero_alt ) ? trim( $hero_alt ) : '';
 		<div class="home-hero__grid">
 			<div class="home-hero__content">
 				<h1 id="home-hero-heading" class="home-hero__title">
-					<?php esc_html_e( 'Complex and personal care in Kent — from hospital discharge to long-term support', 'ccs-wp-theme' ); ?>
+					<?php esc_html_e( 'Home Care in Maidstone & Kent — Your Team, Your Time, Your Life', 'ccs-wp-theme' ); ?>
 				</h1>
-				<p class="home-hero__subtitle">
-					<?php esc_html_e( 'We help individuals and families across Kent with tailored care at home. Whether you need support after a hospital stay or ongoing companionship and personal care, we’re here.', 'ccs-wp-theme' ); ?>
+				<p class="home-hero__subtitle home-hero__subtitle--h2">
+					<?php esc_html_e( 'Trusted Home Care Services in Maidstone & Kent', 'ccs-wp-theme' ); ?>
+				</p>
+				<p class="home-hero__description">
+					<?php esc_html_e( 'Compassionately supporting children and adults with domiciliary, disability, respite, complex, and palliative care, day or night, 24/7.', 'ccs-wp-theme' ); ?>
 				</p>
 				<div class="home-hero__ctas">
-					<?php if ( $ccs_phone_tel ) : ?>
-						<a href="<?php echo esc_url( 'tel:' . $ccs_phone_tel ); ?>" class="btn btn-phone btn-lg home-hero__cta-primary">
-							<span aria-hidden="true"><?php echo esc_html( $ccs_phone ); ?></span>
-						</a>
-					<?php endif; ?>
-					<a href="<?php echo esc_url( get_permalink( get_theme_mod( 'ccs_learn_more_page', 0 ) ) ?: home_url( '/our-care/' ) ); ?>" class="btn btn-secondary btn-lg home-hero__cta-secondary">
-						<?php esc_html_e( 'Learn more', 'ccs-wp-theme' ); ?>
+					<a href="<?php echo esc_url( home_url( '/home/home-care-services-kent/' ) ); ?>" class="btn btn-primary btn-lg home-hero__cta-primary">
+						<?php esc_html_e( 'Explore Our Services', 'ccs-wp-theme' ); ?>
+					</a>
+					<a href="<?php echo esc_url( home_url( '/home/care-careers-maidstone-kent/' ) ); ?>" class="btn btn-secondary btn-lg home-hero__cta-secondary">
+						<?php esc_html_e( 'Explore Career Paths', 'ccs-wp-theme' ); ?>
 					</a>
 				</div>
 				<div class="home-hero__trust">
 					<span class="home-hero__trust-item"><?php esc_html_e( 'CQC regulated', 'ccs-wp-theme' ); ?></span>
 					<span class="home-hero__trust-item"><?php esc_html_e( 'Based in Maidstone', 'ccs-wp-theme' ); ?></span>
-					<span class="home-hero__trust-item"><?php esc_html_e( 'Covering Kent', 'ccs-wp-theme' ); ?></span>
+					<span class="home-hero__trust-item"><?php esc_html_e( 'Serving Kent', 'ccs-wp-theme' ); ?></span>
 				</div>
 			</div>
 			<div class="home-hero__media">

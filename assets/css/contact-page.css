@@ -35,11 +35,18 @@
    ------------------------------------------------------------------------- */
 
 .contact-form-col__title {
-	margin: 0 0 var(--space-lg);
+	margin: 0 0 var(--space-md);
 	font-size: var(--text-2xl);
 	font-weight: var(--font-weight-bold);
 	line-height: var(--leading-tight);
 	color: var(--color-primary-dark);
+}
+
+.contact-form-col__desc {
+	margin: 0 0 var(--space-lg);
+	font-size: var(--text-base);
+	line-height: var(--leading-normal);
+	color: var(--color-text);
 }
 
 .contact-form {

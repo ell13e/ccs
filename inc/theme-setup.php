@@ -34,15 +34,36 @@ function ccs_theme_setup() {
 		'flex-width'  => true,
 	) );
 	add_theme_support( 'editor-styles' );
+	add_editor_style( 'assets/css/editor-style.css' );
+	add_theme_support( 'wp-block-styles' );
 	add_theme_support( 'customize-selective-refresh-widgets' );
 	add_theme_support( 'responsive-embeds' );
 
+	add_post_type_support( 'page', 'editor' );
+
 	register_nav_menus( array(
-		'primary' => __( 'Primary Navigation', 'ccs-wp-theme' ),
-		'footer'  => __( 'Footer Navigation', 'ccs-wp-theme' ),
+		'primary'        => __( 'Primary Navigation', 'ccs-wp-theme' ),
+		'footer'         => __( 'Footer Navigation', 'ccs-wp-theme' ),
+		'footer_company' => __( 'Footer – Company', 'ccs-wp-theme' ),
+		'footer_help'    => __( 'Footer – Help', 'ccs-wp-theme' ),
 	) );
 }
 add_action( 'after_setup_theme', 'ccs_theme_setup' );
+
+/**
+ * Use classic editor for pages (Visual/Code tabs).
+ *
+ * @param bool   $use_block_editor Whether to use the block editor.
+ * @param string $post_type       Post type.
+ * @return bool
+ */
+function ccs_use_classic_editor_for_pages( $use_block_editor, $post_type ) {
+	if ( $post_type === 'page' ) {
+		return false;
+	}
+	return $use_block_editor;
+}
+add_filter( 'use_block_editor_for_post_type', 'ccs_use_classic_editor_for_pages', 10, 2 );
 
 /**
  * Ensure custom logo has descriptive alt text for accessibility.
@@ -132,9 +153,15 @@ function ccs_theme_scripts() {
 		$version
 	);
 	wp_enqueue_style(
+		'ccs-footer',
+		$theme_uri . '/assets/css/footer.css',
+		array( 'ccs-design-system', 'ccs-components', 'ccs-header' ),
+		$version
+	);
+	wp_enqueue_style(
 		'ccs-responsive',
 		$theme_uri . '/assets/css/responsive.css',
-		array( 'ccs-design-system', 'ccs-components', 'ccs-header' ),
+		array( 'ccs-design-system', 'ccs-components', 'ccs-header', 'ccs-footer' ),
 		$version
 	);
 	wp_enqueue_style(
@@ -216,6 +243,28 @@ function ccs_theme_scripts() {
 				'nonceCallback' => wp_create_nonce( 'ccs_callback_form' ),
 			)
 		);
+
+		wp_enqueue_style(
+			'ccs-resource-download-modal',
+			$theme_uri . '/assets/css/resource-download-modal.css',
+			array( 'ccs-design-system', 'ccs-components' ),
+			$version
+		);
+		wp_enqueue_script(
+			'ccs-resource-download',
+			$theme_uri . '/assets/js/resource-download.js',
+			array(),
+			$version,
+			true
+		);
+		wp_localize_script(
+			'ccs-resource-download',
+			'ccsResourceDownload',
+			array(
+				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+				'nonce'   => wp_create_nonce( 'ccs_resource_download' ),
+			)
+		);
 	}
 }
 add_action( 'wp_enqueue_scripts', 'ccs_theme_scripts' );
@@ -224,7 +273,7 @@ add_action( 'wp_enqueue_scripts', 'ccs_theme_scripts' );
  * Defer non-critical scripts for better LCP (they run after HTML parse; no document.write).
  */
 function ccs_defer_scripts( $tag, $handle, $src ) {
-	$defer_handles = array( 'ccs-navigation', 'ccs-form-handler', 'ccs-consultation-form' );
+	$defer_handles = array( 'ccs-navigation', 'ccs-form-handler', 'ccs-consultation-form', 'ccs-resource-download' );
 	if ( in_array( $handle, $defer_handles, true ) ) {
 		return str_replace( ' src', ' defer src', $tag );
 	}
@@ -345,7 +394,7 @@ function ccs_notice_critical_css_cleared() {
 	if ( ! current_user_can( 'manage_options' ) || ! isset( $_GET['ccs_critical_css_cleared'] ) ) {
 		return;
 	}
-	echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Stored critical CSS cleared. Theme is using assets/css/critical.css.', 'ccs' ) . '</p></div>';
+	echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Stored critical CSS cleared. Theme is using assets/css/critical.css.', 'ccs-wp-theme' ) . '</p></div>';
 }
 add_action( 'admin_notices', 'ccs_notice_critical_css_cleared' );
 
@@ -370,9 +419,7 @@ add_action( 'init', 'ccs_register_theme_customizer', 20 );
  */
 function ccs_register_blocks() {
 	new CCS_Testimonial_Block();
-	require_once THEME_DIR . '/inc/blocks/class-cta-block.php';
 	new CCS_CTA_Block();
-	require_once THEME_DIR . '/inc/blocks/class-faq-block.php';
 	new CCS_FAQ_Block();
 }
 add_action( 'init', 'ccs_register_blocks', 20 );

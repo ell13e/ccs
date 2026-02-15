@@ -48,6 +48,9 @@ $items = array(
 		<h2 id="home-diff-heading" class="home-differentiators__heading">
 			<?php esc_html_e( 'Why choose us', 'ccs-wp-theme' ); ?>
 		</h2>
+		<p class="home-differentiators__intro">
+			<?php esc_html_e( 'We are a Kent-based home care provider committed to quality, consistency and transparency. Here’s what sets us apart.', 'ccs-wp-theme' ); ?>
+		</p>
 		<div class="home-differentiators__grid">
 			<?php foreach ( $items as $i => $item ) : ?>
 				<article class="home-diff-item">

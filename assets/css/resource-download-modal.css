@@ -1,0 +1,276 @@
+/**
+ * Resource download and unavailable modals (care guides).
+ * Uses design-system tokens; aligned with MASTER.md.
+ *
+ * @package CCS_WP_Theme
+ * @since 1.0.0
+ */
+
+/* -------------------------------------------------------------------------
+   Download modal
+   ------------------------------------------------------------------------- */
+
+.resource-download-modal {
+	position: fixed;
+	inset: 0;
+	z-index: 9999;
+	display: none;
+}
+
+.resource-download-modal[aria-hidden="false"] {
+	display: block;
+}
+
+.resource-download-backdrop {
+	position: absolute;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.55);
+}
+
+.resource-download-card {
+	position: relative;
+	max-width: 720px;
+	margin: 6vh auto;
+	background: var(--color-background);
+	border-radius: var(--radius-lg);
+	padding: var(--space-md);
+	box-shadow: var(--shadow-prominent);
+}
+
+@media (min-width: 640px) {
+	.resource-download-card {
+		padding: var(--space-lg);
+	}
+}
+
+.resource-download-close {
+	position: absolute;
+	top: var(--space-sm);
+	right: var(--space-sm);
+	width: 44px;
+	height: 44px;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
+	background: var(--color-background);
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--color-text);
+}
+
+.resource-download-close:hover {
+	background: var(--color-background-warm);
+}
+
+.resource-download-close:focus-visible {
+	outline: var(--focus-ring);
+	outline-offset: var(--focus-ring-offset);
+}
+
+.resource-download-header {
+	text-align: center;
+	margin-bottom: var(--space-md);
+}
+
+.resource-download-icon {
+	width: 48px;
+	height: 48px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 999px;
+	background: rgba(86, 66, 152, 0.1);
+	color: var(--color-primary);
+	margin-bottom: var(--space-sm);
+}
+
+.resource-download-title {
+	margin: 0 0 var(--space-xs) 0;
+	font-size: var(--text-xl);
+	font-weight: var(--font-weight-bold);
+	color: var(--color-primary-dark);
+}
+
+.resource-download-subtitle {
+	margin: 0;
+	font-size: var(--text-base);
+	color: var(--color-text-light);
+}
+
+.resource-download-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: var(--space-sm);
+}
+
+@media (min-width: 640px) {
+	.resource-download-grid {
+		grid-template-columns: 1fr 1fr;
+	}
+	.resource-download-field-full {
+		grid-column: 1 / -1;
+	}
+}
+
+.resource-download-label {
+	display: block;
+	font-weight: var(--font-weight-semibold);
+	margin-bottom: var(--space-xs);
+	font-size: var(--text-sm);
+	color: var(--color-text);
+}
+
+.resource-download-input {
+	width: 100%;
+	min-height: 48px;
+	padding: var(--space-xs) var(--space-sm);
+	font-family: var(--font-family);
+	font-size: var(--text-base);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
+	background: var(--color-background);
+}
+
+.resource-download-input:focus {
+	outline: none;
+	border-color: var(--color-primary);
+	box-shadow: 0 0 0 3px rgba(86, 66, 152, 0.15);
+}
+
+.resource-download-input[aria-invalid="true"] {
+	border-color: var(--color-urgent);
+}
+
+.resource-download-error {
+	margin: var(--space-xs) 0 0 0;
+	font-size: var(--text-sm);
+	color: var(--color-urgent);
+}
+
+.resource-download-consent {
+	margin-top: var(--space-sm);
+}
+
+.resource-download-consent-row {
+	display: flex;
+	gap: var(--space-sm);
+	align-items: flex-start;
+}
+
+.resource-download-checkbox {
+	margin-top: 4px;
+}
+
+.resource-download-consent-label {
+	font-size: var(--text-sm);
+	color: var(--color-text);
+}
+
+.resource-download-privacy-link {
+	margin-left: 0.25rem;
+	color: var(--color-primary);
+	text-underline-offset: 2px;
+}
+
+.resource-download-privacy-link:hover {
+	color: var(--color-primary-dark);
+}
+
+.resource-download-submit {
+	width: 100%;
+	margin-top: var(--space-sm);
+}
+
+.resource-download-note {
+	margin: var(--space-sm) 0 0 0;
+	font-size: var(--text-sm);
+	color: var(--color-text-light);
+	text-align: center;
+}
+
+/* -------------------------------------------------------------------------
+   Unavailable modal
+   ------------------------------------------------------------------------- */
+
+.resource-unavailable-modal {
+	position: fixed;
+	inset: 0;
+	z-index: 9999;
+	display: none;
+}
+
+.resource-unavailable-modal[aria-hidden="false"] {
+	display: block;
+}
+
+.resource-unavailable-backdrop {
+	position: absolute;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.55);
+}
+
+.resource-unavailable-card {
+	position: relative;
+	max-width: 600px;
+	margin: 6vh auto;
+	background: var(--color-background);
+	border-radius: var(--radius-lg);
+	padding: var(--space-md);
+	box-shadow: var(--shadow-prominent);
+}
+
+@media (min-width: 640px) {
+	.resource-unavailable-card {
+		padding: var(--space-lg);
+	}
+}
+
+.resource-unavailable-close {
+	position: absolute;
+	top: var(--space-sm);
+	right: var(--space-sm);
+	width: 44px;
+	height: 44px;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
+	background: var(--color-background);
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--color-text-light);
+}
+
+.resource-unavailable-close:hover {
+	background: var(--color-background-warm);
+	color: var(--color-text);
+}
+
+.resource-unavailable-close:focus-visible {
+	outline: var(--focus-ring);
+	outline-offset: var(--focus-ring-offset);
+}
+
+.resource-unavailable-body {
+	text-align: center;
+	padding-top: var(--space-sm);
+}
+
+.resource-unavailable-title {
+	margin: 0 0 var(--space-xs) 0;
+	font-size: var(--text-xl);
+	font-weight: var(--font-weight-bold);
+	color: var(--color-primary-dark);
+}
+
+.resource-unavailable-text {
+	margin: 0 0 var(--space-md) 0;
+	font-size: var(--text-base);
+	color: var(--color-text-light);
+	line-height: var(--leading-normal);
+}
+
+.resource-unavailable-body .btn {
+	min-width: 120px;
+}

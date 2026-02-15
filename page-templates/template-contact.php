@@ -28,11 +28,19 @@ $ccs_parking  = get_theme_mod( 'ccs_contact_parking', '' );
 
 	<div class="contact-layout">
 		<div class="contact-layout__inner container container--lg">
-
-			<!-- LEFT: Contact form -->
+			<?php get_template_part( 'template-parts/breadcrumb' ); ?>
+			<!-- LEFT: Contact form (content guide §10) -->
 			<div class="contact-form-col">
-				<h1 class="contact-form-col__title"><?php esc_html_e( 'Send us a message', 'ccs-wp-theme' ); ?></h1>
-				<form id="contact-form" class="contact-form ccs-form" data-ccs-action="submit_enquiry" method="post" action="" novalidate aria-describedby="contact-form-message">
+				<h1 class="contact-form-col__title"><?php esc_html_e( 'Book Your Free Care Consultation', 'ccs-wp-theme' ); ?></h1>
+				<p id="contact-form-desc" class="contact-form-col__desc">
+					<?php
+					esc_html_e(
+						"Please let us know what you'd like to discuss below, whether you're seeking home care in Maidstone or across Kent, and we'll get in touch to arrange a call or visit. We can't promise we'll be able to make your exact date, but we'll use this as a rough guideline on when to get in touch!",
+						'ccs-wp-theme'
+					);
+					?>
+				</p>
+				<form id="contact-form" class="contact-form ccs-form" data-ccs-action="submit_enquiry" method="post" action="" novalidate aria-describedby="contact-form-desc contact-form-message">
 					<label for="contact-name" class="contact-form__label"><?php esc_html_e( 'Name', 'ccs-wp-theme' ); ?> <span class="required" aria-hidden="true">*</span></label>
 					<input type="text" id="contact-name" name="enquiry_name" class="contact-form__input" required aria-required="true" autocomplete="name">
 
@@ -71,7 +79,7 @@ $ccs_parking  = get_theme_mod( 'ccs_contact_parking', '' );
 
 					<input type="text" name="_company" value="" tabindex="-1" autocomplete="off" aria-hidden="true" class="ccs-honeypot">
 
-					<button type="submit" class="btn btn-primary contact-form__submit"><?php esc_html_e( 'Send message', 'ccs-wp-theme' ); ?></button>
+					<button type="submit" class="btn btn-primary contact-form__submit"><?php esc_html_e( 'Send Request', 'ccs-wp-theme' ); ?></button>
 					<div id="contact-form-message" data-ccs-form-message class="ccs-form-message contact-form__message" role="alert" aria-live="polite" hidden></div>
 				</form>
 			</div>
