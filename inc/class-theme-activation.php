@@ -26,19 +26,20 @@ class CCS_Theme_Activation {
 	 */
 	private $pages = array(
 		'home'                        => array( 'title' => 'Home', 'template' => 'page-templates/template-homepage.php' ),
-		'about-home-care-maidstone'   => array( 'title' => 'About Home Care Maidstone', 'parent_slug' => 'home' ),
+		'about-home-care-maidstone'   => array( 'title' => 'About Home Care Maidstone', 'parent_slug' => 'home', 'template' => 'page-templates/template-about.php' ),
 		'home-care-services-kent'      => array( 'title' => 'Home Care Services Kent', 'parent_slug' => 'home' ),
 		'who-youll-meet'              => array( 'title' => "Who You'll Meet", 'parent_slug' => 'home' ),
 		'care-careers-maidstone-kent'  => array( 'title' => 'Care Careers Maidstone Kent', 'parent_slug' => 'home' ),
-		'contact-us'                  => array( 'title' => 'Contact Us', 'parent_slug' => 'home' ),
+		'contact-us'                  => array( 'title' => 'Contact Us', 'parent_slug' => 'home', 'template' => 'page-templates/template-contact.php' ),
 		'resources'                   => array( 'title' => 'Resources', 'parent_slug' => 'home' ),
-		'care-guides'                 => array( 'title' => 'Care Guides', 'parent_slug' => 'resources' ),
-		'faqs'                        => array( 'title' => 'FAQs', 'parent_slug' => 'resources' ),
+		'care-guides'                 => array( 'title' => 'Care Guides', 'parent_slug' => 'resources', 'template' => 'page-templates/template-care-guides.php' ),
+		'faqs'                        => array( 'title' => 'FAQs', 'parent_slug' => 'resources', 'template' => 'page-templates/template-faqs.php' ),
 		'referral-information'        => array( 'title' => 'Referral Information', 'parent_slug' => 'resources' ),
 		'news-and-updates'            => array( 'title' => 'News & Updates', 'parent_slug' => 'home' ),
-		'privacy-policy'              => array( 'title' => 'Privacy Policy' ),
-		'terms-and-conditions'        => array( 'title' => 'Terms & Conditions' ),
-		'accessibility-statement'     => array( 'title' => 'Accessibility Statement' ),
+		'privacy-policy'              => array( 'title' => 'Privacy Policy', 'template' => 'page-templates/template-content-page.php' ),
+		'terms-and-conditions'        => array( 'title' => 'Terms & Conditions', 'template' => 'page-templates/template-content-page.php' ),
+		'accessibility-statement'     => array( 'title' => 'Accessibility Statement', 'template' => 'page-templates/template-content-page.php' ),
+		'cookies'                     => array( 'title' => 'Cookie Policy', 'template' => 'page-templates/template-content-page.php' ),
 	);
 
 	/**
@@ -77,6 +78,7 @@ class CCS_Theme_Activation {
 		'contact-us',
 		'privacy-policy',
 		'terms-and-conditions',
+		'cookies',
 		'accessibility-statement',
 	);
 
@@ -255,6 +257,7 @@ class CCS_Theme_Activation {
 			'privacy-policy' => '<p>This page outlines how we collect, use and protect your personal data. Please replace this placeholder with your full privacy policy.</p>',
 			'terms-and-conditions' => '<p>Terms and conditions of using our website and services. Please replace this placeholder with your full terms.</p>',
 			'accessibility-statement' => '<p>We are committed to making our website accessible. If you have difficulty accessing any content or need information in a different format, please contact us.</p>',
+			'cookies' => '<p>This page explains how we use cookies and similar technologies. Please replace this placeholder with your full cookie policy.</p>',
 		);
 		if ( isset( $content[ $slug ] ) ) {
 			return $content[ $slug ];
@@ -267,7 +270,7 @@ class CCS_Theme_Activation {
 	 */
 	private function ensure_pages() {
 		// Create in dependency order: home first, then resources, then children.
-		$order = array( 'home', 'resources', 'about-home-care-maidstone', 'home-care-services-kent', 'who-youll-meet', 'care-careers-maidstone-kent', 'contact-us', 'news-and-updates', 'care-guides', 'faqs', 'referral-information', 'privacy-policy', 'terms-and-conditions', 'accessibility-statement' );
+		$order = array( 'home', 'resources', 'about-home-care-maidstone', 'home-care-services-kent', 'who-youll-meet', 'care-careers-maidstone-kent', 'contact-us', 'news-and-updates', 'care-guides', 'faqs', 'referral-information', 'privacy-policy', 'terms-and-conditions', 'accessibility-statement', 'cookies' );
 
 		foreach ( $order as $slug ) {
 			if ( ! isset( $this->pages[ $slug ] ) ) {
