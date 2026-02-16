@@ -37,6 +37,10 @@ class CCS_Theme_Customizer {
 	const CQC_REPORT_URL        = 'ccs_cqc_report_url';
 	const CQC_URL               = 'ccs_cqc_url';
 	const CQC_BADGE_URL         = 'ccs_cqc_badge_url';
+	const CQC_WIDGET_DATA_ID    = 'ccs_cqc_widget_data_id';
+	const CQC_WIDGET_HIDE      = 'ccs_cqc_widget_hide';
+	const CVM_USE              = 'ccs_cvm_use';
+	const CVM_IFRAME_SRC       = 'ccs_cvm_iframe_src';
 	const EMERGENCY_ENABLED     = 'ccs_emergency_banner_enabled';
 	const EMERGENCY_TEXT        = 'ccs_emergency_banner';
 	const EMERGENCY_LINK        = 'ccs_emergency_banner_link';
@@ -59,6 +63,7 @@ class CCS_Theme_Customizer {
 		$this->register_social_section( $wp_customize );
 		$this->register_analytics_section( $wp_customize );
 		$this->register_cqc_section( $wp_customize );
+		$this->register_cvm_section( $wp_customize );
 		$this->register_emergency_section( $wp_customize );
 	}
 
@@ -356,6 +361,74 @@ class CCS_Theme_Customizer {
 			'label'   => __( 'CQC badge image URL', 'ccs-wp-theme' ),
 			'section' => 'ccs_cqc',
 			'type'    => 'url',
+		) );
+
+		$wp_customize->add_setting( self::CQC_WIDGET_DATA_ID, array(
+			'type'              => 'theme_mod',
+			'capability'        => 'edit_theme_options',
+			'default'           => '1-2624556588',
+			'sanitize_callback' => 'sanitize_text_field',
+		) );
+		$wp_customize->add_control( self::CQC_WIDGET_DATA_ID, array(
+			'label'       => __( 'CQC widget data-id', 'ccs-wp-theme' ),
+			'description' => __( 'Used in the CQC rating widget on the homepage and CQC page. Leave empty to use default.', 'ccs-wp-theme' ),
+			'section'     => 'ccs_cqc',
+			'type'        => 'text',
+			'input_attrs' => array( 'placeholder' => '1-2624556588' ),
+		) );
+
+		$wp_customize->add_setting( self::CQC_WIDGET_HIDE, array(
+			'type'              => 'theme_mod',
+			'capability'        => 'edit_theme_options',
+			'default'           => false,
+			'sanitize_callback' => function( $value ) {
+				return ! empty( $value );
+			},
+		) );
+		$wp_customize->add_control( self::CQC_WIDGET_HIDE, array(
+			'label'   => __( 'Hide CQC rating widget', 'ccs-wp-theme' ),
+			'section' => 'ccs_cqc',
+			'type'    => 'checkbox',
+		) );
+	}
+
+	/**
+	 * CV Minder / Careers section (job portal embed).
+	 *
+	 * @param WP_Customize_Manager $wp_customize Customizer manager.
+	 */
+	private function register_cvm_section( $wp_customize ) {
+		$wp_customize->add_section( 'ccs_cvm', array(
+			'title'       => __( 'Careers – Job Portal (CV Minder)', 'ccs-wp-theme' ),
+			'description' => __( 'Embed the CV Minder job portal on the Current Vacancies page.', 'ccs-wp-theme' ),
+			'priority'    => 55,
+		) );
+
+		$wp_customize->add_setting( self::CVM_USE, array(
+			'type'              => 'theme_mod',
+			'capability'        => 'edit_theme_options',
+			'default'           => true,
+			'sanitize_callback' => function( $value ) {
+				return ! empty( $value );
+			},
+		) );
+		$wp_customize->add_control( self::CVM_USE, array(
+			'label'   => __( 'Show CV Minder job portal on Current Vacancies page', 'ccs-wp-theme' ),
+			'section' => 'ccs_cvm',
+			'type'    => 'checkbox',
+		) );
+
+		$wp_customize->add_setting( self::CVM_IFRAME_SRC, array(
+			'type'              => 'theme_mod',
+			'capability'        => 'edit_theme_options',
+			'default'           => 'https://cvminder.com/jobportal/index.php?gid=60&pk=2347289374823605326759060200713',
+			'sanitize_callback' => 'esc_url_raw',
+		) );
+		$wp_customize->add_control( self::CVM_IFRAME_SRC, array(
+			'label'       => __( 'CV Minder iframe URL', 'ccs-wp-theme' ),
+			'description' => __( 'Override the default job portal URL if you use a different CV Minder account.', 'ccs-wp-theme' ),
+			'section'     => 'ccs_cvm',
+			'type'        => 'url',
 		) );
 	}
 

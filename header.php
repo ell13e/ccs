@@ -82,6 +82,26 @@ $ccs_emergency       = $ccs_emergency_on && ( $ccs_emergency_text || $ccs_phone 
 	<?php
 	$ccs_contact = function_exists( 'ccs_get_contact_info' ) ? ccs_get_contact_info() : array( 'phone' => $ccs_phone, 'phone_link' => $ccs_phone ? 'tel:' . preg_replace( '/\s+/', '', $ccs_phone ) : '' );
 	$ccs_cta_url = get_theme_mod( 'ccs_cta_url', home_url( '/contact/' ) );
+
+	// On careers pages, show careers menu if assigned; otherwise primary.
+	$ccs_careers_page_ids = (array) get_option( 'ccs_careers_page_ids', array() );
+	$ccs_is_careers_context = false;
+	if ( is_page() ) {
+		$ccs_page_id = get_queried_object_id();
+		if ( in_array( $ccs_page_id, array_values( $ccs_careers_page_ids ), true ) ) {
+			$ccs_is_careers_context = true;
+		} else {
+			$ccs_ancestors = get_post_ancestors( $ccs_page_id );
+			foreach ( $ccs_ancestors as $ccs_aid ) {
+				$ccs_p = get_post( $ccs_aid );
+				if ( $ccs_p && $ccs_p->post_name === 'careers' ) {
+					$ccs_is_careers_context = true;
+					break;
+				}
+			}
+		}
+	}
+	$ccs_nav_location = ( $ccs_is_careers_context && has_nav_menu( 'careers' ) ) ? 'careers' : 'primary';
 	?>
 	<div class="header-container">
 		<div class="header-inner-wrapper">
@@ -99,7 +119,19 @@ $ccs_emergency       = $ccs_emergency_on && ( $ccs_emergency_text || $ccs_phone 
 
 			<nav id="site-navigation" class="nav-desktop" aria-label="<?php esc_attr_e( 'Primary navigation', 'ccs-wp-theme' ); ?>">
 				<?php
-				if ( has_nav_menu( 'primary' ) ) {
+				if ( has_nav_menu( $ccs_nav_location ) ) {
+					wp_nav_menu(
+						array(
+							'theme_location'  => $ccs_nav_location,
+							'menu_id'         => 'primary-menu',
+							'menu_class'      => 'nav-list',
+							'container'       => false,
+							'fallback_cb'     => false,
+							'items_wrap'      => '<ul id="%1$s" class="%2$s" role="menubar">%3$s</ul>',
+							'link_class'      => 'nav-link',
+						)
+					);
+				} elseif ( has_nav_menu( 'primary' ) ) {
 					wp_nav_menu(
 						array(
 							'theme_location'  => 'primary',
@@ -128,7 +160,19 @@ $ccs_emergency       = $ccs_emergency_on && ( $ccs_emergency_text || $ccs_phone 
 		<div id="mobile-navigation" class="mobile-menu" aria-label="<?php esc_attr_e( 'Mobile navigation', 'ccs-wp-theme' ); ?>" hidden>
 			<nav class="mobile-menu-content" aria-label="<?php esc_attr_e( 'Primary navigation', 'ccs-wp-theme' ); ?>">
 				<?php
-				if ( has_nav_menu( 'primary' ) ) {
+				if ( has_nav_menu( $ccs_nav_location ) ) {
+					wp_nav_menu(
+						array(
+							'theme_location'  => $ccs_nav_location,
+							'menu_id'         => 'mobile-menu-list',
+							'menu_class'      => 'mobile-menu-list',
+							'container'       => false,
+							'fallback_cb'     => false,
+							'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
+							'link_class'      => 'mobile-menu-link',
+						)
+					);
+				} elseif ( has_nav_menu( 'primary' ) ) {
 					wp_nav_menu(
 						array(
 							'theme_location'  => 'primary',

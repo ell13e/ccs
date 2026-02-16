@@ -42,7 +42,7 @@ class CCS_SEO_Optimizer {
 		add_action( 'wp_head', array( $this, 'output_open_graph' ), 2 );
 		add_action( 'wp_head', array( $this, 'output_twitter_card' ), 3 );
 		add_action( 'wp_head', array( $this, 'output_canonical' ), 4 );
-		add_action( 'wp_head', array( $this, 'output_structured_data' ), 5 );
+		// Structured data: output only from CCS_Structured_Data (class-structured-data.php) to avoid duplicate JSON-LD.
 
 		add_filter( 'wp_sitemaps_post_types', array( $this, 'filter_sitemap_post_types' ), 10, 1 );
 		add_filter( 'wp_sitemaps_posts_entry', array( $this, 'filter_sitemap_posts_entry' ), 10, 3 );

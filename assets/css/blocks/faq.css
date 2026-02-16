@@ -40,6 +40,7 @@
 	align-items: center;
 	justify-content: space-between;
 	width: 100%;
+	min-height: 2.75rem; /* 44px touch target */
 	padding: 1rem 1.25rem;
 	font-family: inherit;
 	font-size: 1.0625rem;
@@ -60,7 +61,7 @@
 	background: var(--ccs-faq-question-bg-hover, rgba(0, 0, 0, 0.04));
 }
 
-.ccs-faq__question:focus {
+.ccs-faq__question:focus-visible {
 	outline: 2px solid var(--ccs-faq-focus, currentColor);
 	outline-offset: 2px;
 }
@@ -111,6 +112,18 @@
 
 .ccs-faq__item.is-open .ccs-faq__answer[hidden] {
 	visibility: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ccs-faq__question {
+		transition: none;
+	}
+	.ccs-faq__icon {
+		transition: none;
+	}
+	.ccs-faq__answer {
+		transition: none;
+	}
 }
 
 .ccs-faq__answer-inner {

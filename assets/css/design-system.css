@@ -329,6 +329,13 @@
 	outline-offset: var(--focus-ring-offset);
 }
 
+/* Cursor: interactive elements (ui-ux-pro-max / WCAG) */
+a[href],
+button:not(:disabled):not(.is-disabled),
+[role="button"]:not([aria-disabled="true"]) {
+	cursor: pointer;
+}
+
 /* -------------------------------------------------------------------------
    TYPOGRAPHY – Headings (optional use with .ds-root) – Poppins per MASTER
    ------------------------------------------------------------------------- */

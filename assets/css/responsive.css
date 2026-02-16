@@ -95,9 +95,9 @@ iframe {
 		min-height: 8rem;
 	}
 
-	/* No hover-only: ensure focus-visible is primary for keyboard/touch */
-	a:focus,
-	button:focus {
+	/* Focus ring only on keyboard focus (not mouse click) */
+	a:focus-visible,
+	button:focus-visible {
 		outline: var(--focus-ring);
 		outline-offset: var(--focus-ring-offset);
 	}

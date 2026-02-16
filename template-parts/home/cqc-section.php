@@ -9,7 +9,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$cqc_url = defined( 'CCS_CQC_REPORT_URL' ) ? CCS_CQC_REPORT_URL : 'https://www.cqc.org.uk/provider/1-2624556588';
+$cqc_url   = defined( 'CCS_CQC_REPORT_URL' ) ? CCS_CQC_REPORT_URL : 'https://www.cqc.org.uk/provider/1-2624556588';
+$cqc_hide  = get_theme_mod( 'ccs_cqc_widget_hide', false );
+$cqc_id    = get_theme_mod( 'ccs_cqc_widget_data_id', '1-2624556588' );
+$cqc_id    = $cqc_id ? $cqc_id : '1-2624556588';
 ?>
 
 <section class="home-cqc" aria-labelledby="home-cqc-heading">
@@ -26,5 +29,8 @@ $cqc_url = defined( 'CCS_CQC_REPORT_URL' ) ? CCS_CQC_REPORT_URL : 'https://www.c
 				<span aria-hidden="true">&rarr;</span>
 			</a>
 		</p>
+		<?php if ( ! $cqc_hide ) : ?>
+			<script type="text/javascript" src="<?php echo esc_url( 'https://www.cqc.org.uk/sites/all/modules/custom/cqc_widget/widget.js?data-id=' . rawurlencode( $cqc_id ) . '&data-host=https://www.cqc.org.uk&type=location' ); ?>"></script>
+		<?php endif; ?>
 	</div>
 </section>

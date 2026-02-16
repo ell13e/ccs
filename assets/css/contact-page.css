@@ -313,6 +313,7 @@
 	text-decoration: none;
 	color: inherit;
 	height: 100%;
+	cursor: pointer;
 	transition:
 		transform var(--duration-normal) var(--ease-out),
 		box-shadow var(--duration-normal) var(--ease-out),

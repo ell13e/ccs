@@ -43,12 +43,25 @@ function ccs_theme_setup() {
 
 	register_nav_menus( array(
 		'primary'        => __( 'Primary Navigation', 'ccs-wp-theme' ),
+		'careers'        => __( 'Careers Navigation', 'ccs-wp-theme' ),
 		'footer'         => __( 'Footer Navigation', 'ccs-wp-theme' ),
 		'footer_company' => __( 'Footer – Company', 'ccs-wp-theme' ),
 		'footer_help'    => __( 'Footer – Help', 'ccs-wp-theme' ),
 	) );
 }
 add_action( 'after_setup_theme', 'ccs_theme_setup' );
+
+/**
+ * Add design-system root class to body so typography and tokens apply site-wide.
+ *
+ * @param array $classes Body classes.
+ * @return array
+ */
+function ccs_body_class_ds_root( $classes ) {
+	$classes[] = 'ds-root';
+	return $classes;
+}
+add_filter( 'body_class', 'ccs_body_class_ds_root', 10, 1 );
 
 /**
  * Use classic editor for pages (Visual/Code tabs).
@@ -203,6 +216,15 @@ function ccs_theme_scripts() {
 		wp_enqueue_style(
 			'ccs-contact-page',
 			$theme_uri . '/assets/css/contact-page.css',
+			array( 'ccs-design-system', 'ccs-components' ),
+			$version
+		);
+	}
+
+	if ( is_page_template( 'page-templates/template-current-vacancies.php' ) ) {
+		wp_enqueue_style(
+			'ccs-current-vacancies',
+			$theme_uri . '/assets/css/current-vacancies.css',
 			array( 'ccs-design-system', 'ccs-components' ),
 			$version
 		);
