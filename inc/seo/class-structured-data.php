@@ -354,52 +354,6 @@ class CCS_Structured_Data {
 	}
 
 	/**
-	 * FAQPage schema for the standalone FAQs page (parses H2/P pairs from page content).
-	 *
-	 * @param WP_Post $post FAQs page post.
-	 * @return array Schema array or empty.
-	 */
-	public function get_faq_page_schema( WP_Post $post ) {
-		$content = get_post_field( 'post_content', $post->ID );
-		if ( $content === '' ) {
-			return array();
-		}
-
-		// Match H2 (question) followed by P (answer). Default content uses single <p> per answer.
-		$pattern = '#<h2[^>]*>(.*?)</h2>\s*<p>(.*?)</p>#s';
-		if ( ! preg_match_all( $pattern, $content, $matches, PREG_SET_ORDER ) ) {
-			return array();
-		}
-
-		$questions = array();
-		foreach ( $matches as $m ) {
-			$q = wp_strip_all_tags( trim( $m[1] ) );
-			$a = wp_strip_all_tags( trim( $m[2] ) );
-			if ( $q === '' ) {
-				continue;
-			}
-			$questions[] = array(
-				'@type'          => 'Question',
-				'name'           => $q,
-				'acceptedAnswer' => array(
-					'@type' => 'Answer',
-					'text'  => $a !== '' ? $a : $q,
-				),
-			);
-		}
-
-		if ( empty( $questions ) ) {
-			return array();
-		}
-
-		return array(
-			'@type'       => 'FAQPage',
-			'@id'         => get_permalink( $post->ID ) . '#faq',
-			'mainEntity'  => $questions,
-		);
-	}
-
-	/**
 	 * LocalBusiness schema for a location post (address, geo).
 	 *
 	 * @param WP_Post $post Location post.
