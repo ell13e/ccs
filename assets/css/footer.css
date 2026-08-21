@@ -74,6 +74,34 @@
 	margin: 0;
 }
 
+.footer-modern-contact {
+	margin-top: var(--space-md);
+	font-size: var(--text-sm);
+	color: var(--color-text-light);
+}
+
+.footer-modern-contact__phone {
+	display: block;
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-primary-dark);
+	text-decoration: none;
+	margin-bottom: var(--space-2xs);
+}
+
+.footer-modern-contact__phone:hover,
+.footer-modern-contact__phone:focus-visible {
+	color: var(--color-primary);
+}
+
+.footer-modern-contact__address {
+	font-style: normal;
+	line-height: var(--leading-normal);
+}
+
+.footer-modern-brand .cqc-regulated-badge {
+	margin-top: var(--space-md);
+}
+
 @media (min-width: 1024px) {
 	.footer-modern-description {
 		max-width: 28rem;

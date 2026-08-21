@@ -90,7 +90,7 @@ class CCS_Service_Meta_Box extends CCS_Meta_Box_Base {
 				'id'          => 'service_urgent',
 				'type'        => 'checkbox',
 				'label'       => __( 'Urgent service', 'ccs-wp-theme' ),
-				'description' => __( 'If checked, the service page shows a "Call now" CTA instead of "Get in touch". Use for hospital discharge, urgent care, etc.', 'ccs-wp-theme' ),
+				'description' => __( 'If checked, the service page shows a "Call now" CTA instead of "Get in touch". Use sparingly — CCS leads with a planned, unhurried start, not rushed care.', 'ccs-wp-theme' ),
 			),
 			array(
 				'id'          => 'service_price_from',

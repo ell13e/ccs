@@ -1,6 +1,9 @@
 <?php
 /**
- * Homepage testimonial – Claire Pitchford (content guide §5).
+ * Homepage testimonial (content guide §5).
+ *
+ * Attributed by initials only, never a full name — see reference/strategy.md
+ * guardrails and the Testimonial CPT's own field note.
  *
  * @package CCS_WP_Theme
  */
@@ -25,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				?>
 			</p>
 			<cite class="home-testimonial__cite">
-				<?php esc_html_e( 'Claire Pitchford', 'ccs-wp-theme' ); ?>
+				<?php esc_html_e( 'C.P.', 'ccs-wp-theme' ); ?>
 			</cite>
 		</blockquote>
 	</div>

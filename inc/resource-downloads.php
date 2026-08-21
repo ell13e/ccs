@@ -12,6 +12,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Whether the current request actually uses the resource-download flow.
+ *
+ * The download/unavailable modals, their CSS and their JS used to load on every
+ * page of the site. That put two stray <h2>s ("Get this care guide", "Care guide
+ * temporarily unavailable") into the heading outline of every page, plus unused
+ * DOM and assets. Scoped to the pages that can trigger a download (2026-08-19).
+ *
+ * @return bool
+ */
+function ccs_needs_resource_downloads() {
+	$needed = is_page_template( 'page-templates/template-care-guides.php' )
+		|| is_singular( 'ccs_resource' )
+		|| is_post_type_archive( 'ccs_resource' )
+		|| is_tax( 'ccs_resource_category' );
+
+	/**
+	 * Filter whether resource-download assets and modals load for this request.
+	 *
+	 * @param bool $needed Whether the resource-download flow is in use.
+	 */
+	return (bool) apply_filters( 'ccs_needs_resource_downloads', $needed );
+}
+
+/**
  * Register Resource CPT and category taxonomy.
  */
 function ccs_register_resource_post_type() {

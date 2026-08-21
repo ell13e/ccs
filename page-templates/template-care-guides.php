@@ -20,12 +20,9 @@ get_header();
 	while ( have_posts() ) :
 		the_post();
 		?>
+		<?php get_template_part( 'template-parts/page-header' ); ?>
 		<article id="post-<?php the_ID(); ?>" <?php post_class( 'page-content' ); ?>>
 			<div class="container container--lg">
-				<?php get_template_part( 'template-parts/breadcrumb' ); ?>
-				<header class="page-header entry-header">
-					<?php the_title( '<h1 class="page-title entry-title">', '</h1>' ); ?>
-				</header>
 				<?php if ( get_the_content() ) : ?>
 					<div class="page-body entry-content care-guides-intro">
 						<?php the_content(); ?>
@@ -81,6 +78,8 @@ get_header();
 		<?php
 	endwhile;
 	?>
+
+	<?php get_template_part( 'template-parts/cta-band' ); ?>
 </main>
 
 <?php

@@ -161,7 +161,8 @@ Enqueue logic and dependencies live in `inc/theme-setup.php`.
 
 - **Content and UX:** `docs/CCS-THEME-AND-CONTENT-GUIDE.md` – copy, pages, menus, forms, URLs, implementation checklist.
 - **Migration (historical):** `docs/FINALCTAIHOPE-inventory.md`, `docs/FINALCTAIHOPE-to-CCS-workflow.md` (CTA → CCS migration; FINALCTAIHOPE folder removed).
-- **Design strategy:** `docs/DESIGN-SYSTEM-CRITICAL-CSS-STRATEGY.md`, `docs/PROJECT-STATUS-REPORT.md`.
+- **Design strategy:** `docs/DESIGN-SYSTEM-CRITICAL-CSS-STRATEGY.md`.
+- **Rebuild strategy (newest, authoritative for direction):** `reference/strategy.md`.
 
 ---
 
@@ -179,6 +180,17 @@ Enqueue logic and dependencies live in `inc/theme-setup.php`.
 | Colours, type, spacing | `design-system/MASTER.md`, `theme.json`, `assets/css/design-system.css` |
 | Block patterns | `inc/block-patterns.php` |
 | SEO / schema | `inc/seo/class-seo-optimizer.php`, `inc/seo/class-structured-data.php` |
+
+---
+
+## 13. Known gaps / outstanding work
+
+Carried forward from an earlier status report so the open items aren't lost:
+
+- **No automated tests** — no PHPUnit, wp-env, Playwright, or Jest; no CI for lint/test.
+- **No PHPCS ruleset in repo** — no `phpcs.xml` (WordPress Coding Standards not enforced by tooling, though code generally follows WP conventions). `phpstan.neon` does exist at the repo root.
+- **Lighthouse / manual a11y checklist** — run Lighthouse on homepage, contact, careers (mobile + desktop) and record LCP/INP/CLS; complete a manual accessibility pass (keyboard, 320px/200% zoom, screen reader) if not already done since the `docs/ACCESSIBILITY-AUDIT.md` pass.
+- **Optional refactor** — `ccs_theme_scripts` / `ccs_defer_scripts` currently live in `inc/theme-setup.php`; could move to a dedicated `inc/enqueue.php` for discoverability.
 
 ---
 

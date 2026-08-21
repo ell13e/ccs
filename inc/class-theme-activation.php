@@ -22,37 +22,86 @@ class CCS_Theme_Activation {
 	const CAREERS_PAGE_OPTION = 'ccs_careers_page_ids';
 
 	/** Scope steps for run_with_scope(). */
-	const SCOPES = array( 'general', 'pages', 'contact_page', 'services', 'menus', 'reading', 'permalinks' );
+	const SCOPES = array( 'general', 'pages', 'contact_page', 'services', 'locations', 'menus', 'reading', 'permalinks' );
 
 	/**
 	 * Page definitions: slug => [ 'title', 'parent_slug' (optional), 'template' (optional) ].
 	 *
+	 * Top-level pages are deliberately NOT nested under the Home page. Home is the
+	 * front page (served at "/"), so parenting other pages to it only produced
+	 * redundant, deeper URLs like /home/home-care-services-kent/ — worse to read
+	 * and worse for SEO. Meaningful nesting (Resources, Careers) is kept.
+	 *
 	 * @var array<string, array>
 	 */
 	private $pages = array(
-		'home'                        => array( 'title' => 'Home', 'template' => 'page-templates/template-homepage.php' ),
-		'about-home-care-maidstone'   => array( 'title' => 'About Home Care Maidstone', 'parent_slug' => 'home', 'template' => 'page-templates/template-about.php' ),
-		'home-care-services-kent'     => array( 'title' => 'Home Care Services Kent', 'parent_slug' => 'home' ),
-		'who-youll-meet'              => array( 'title' => "Who You'll Meet", 'parent_slug' => 'home' ),
-		'care-careers-maidstone-kent' => array( 'title' => 'Care Careers Maidstone Kent', 'parent_slug' => 'home' ),
-		'contact-us'                  => array( 'title' => 'Contact Us', 'parent_slug' => 'home', 'template' => 'page-templates/template-contact.php' ),
-		'resources'                   => array( 'title' => 'Resources', 'parent_slug' => 'home' ),
+		'home'                        => array(
+			'title'           => 'Home',
+			'template'        => 'page-templates/template-homepage.php',
+			'seo_title'       => 'Home Care in Maidstone & Kent',
+			'seo_description' => "Home care for children and adults in Maidstone and across Kent. A small, matched team of carers you'll get to know. CQC regulated.",
+		),
+		'about-home-care-maidstone'   => array(
+			'title'           => 'About Home Care Maidstone',
+			'heading'         => 'About us',
+			'intro'           => 'We\'re a Kent home care provider built around one idea: you should know the people who come into your home, and they should know you.',
+			'template'        => 'page-templates/template-about.php',
+			'hero_image'      => 'assets/images/site-photos-extra/client-summer-party-laineys-care-farm.webp',
+			'seo_title'       => 'About Us',
+			'seo_description' => 'Meet Continuity of Care Services — a CQC-regulated, family-run home care provider in Maidstone and Kent. Real carers, matched to you, not a rota.',
+		),
+		'home-care-services-kent'     => array(
+			'title'           => 'Home Care Services Kent',
+			'heading'         => 'Our care services',
+			'intro'           => 'From everyday help at home to complex and specialist care, across Maidstone and Kent.',
+			'template'        => 'page-templates/template-services.php',
+			'hero_image'      => 'assets/images/site-photos/services-hero-desktop.webp',
+			'seo_title'       => 'Our Care Services',
+			'seo_description' => 'Domiciliary, respite and complex care at home across Maidstone and Kent. CQC regulated, matched carers, transparent pricing. Book a free consultation.',
+		),
+		'who-youll-meet'              => array(
+			'title'           => "Who You'll Meet",
+			'template'        => 'page-templates/template-team.php',
+			'heading'         => "Who you'll meet",
+			'intro'           => 'The people behind your care, with real names and real faces. You should know who is walking through your door.',
+			'seo_title'       => "Who You'll Meet",
+			'seo_description' => "Meet the real people behind your care — our Kent-based team, from registered manager to field care supervisors. Real names, real photos.",
+		),
+		'contact-us'                  => array(
+			'title'           => 'Contact Us',
+			// Breadcrumb/label matches the nav ("Contact Us"); the page's own H1 stays
+			// action-oriented ("Book Your Free Care Consultation"). Three different
+			// labels for one page was just confusing.
+			'heading'         => 'Contact us',
+			'intro'           => 'Tell us what you need and we\'ll arrange a call or a visit. No pressure, no obligation.',
+			'template'        => 'page-templates/template-contact.php',
+			'seo_title'       => 'Contact Us',
+			'seo_description' => 'Get in touch with Continuity of Care Services. Call 01622 809 881 or book a free care consultation online — Maidstone and Kent.',
+		),
+		'resources'                   => array( 'title' => 'Resources' ),
 		'care-guides'                 => array( 'title' => 'Care Guides', 'parent_slug' => 'resources', 'template' => 'page-templates/template-care-guides.php' ),
 		'faqs'                        => array( 'title' => 'FAQs', 'parent_slug' => 'resources', 'template' => 'page-templates/template-faqs.php' ),
 		'referral-information'        => array( 'title' => 'Referral Information', 'parent_slug' => 'resources' ),
-		'news-and-updates'            => array( 'title' => 'News & Updates', 'parent_slug' => 'home' ),
+		'news-and-updates'            => array( 'title' => 'News & Updates' ),
 		'privacy-policy'              => array( 'title' => 'Privacy Policy', 'template' => 'page-templates/template-content-page.php' ),
 		'terms-and-conditions'        => array( 'title' => 'Terms & Conditions', 'template' => 'page-templates/template-content-page.php' ),
 		'accessibility-statement'     => array( 'title' => 'Accessibility Statement', 'template' => 'page-templates/template-content-page.php' ),
 		'cookies'                     => array( 'title' => 'Cookie Policy', 'template' => 'page-templates/template-content-page.php' ),
 		// Careers section (mini-site).
-		'careers'                     => array( 'title' => 'Careers', 'template' => 'page-templates/template-careers.php' ),
+		'careers'                     => array(
+			'title'           => 'Careers',
+			'heading'         => 'Careers in care',
+			'intro'           => 'Flexible hours, proper training, and enough time to do the job well.',
+			'template'        => 'page-templates/template-careers.php',
+			'seo_title'       => 'Careers in Care',
+			'seo_description' => 'Join our Kent home care team. Flexible hours, ongoing training and real support — see current vacancies and what it\'s like to work with us.',
+		),
 		'professional-development'    => array( 'title' => 'Professional Development', 'parent_slug' => 'careers' ),
 		'current-vacancies'           => array( 'title' => 'Current Vacancies', 'parent_slug' => 'careers', 'template' => 'page-templates/template-current-vacancies.php' ),
 		'working-for-us'              => array( 'title' => 'Working for Us', 'parent_slug' => 'careers' ),
 		// Optional care pages (Section 7).
-		'cqc-and-our-care'            => array( 'title' => 'CQC and Our Care', 'parent_slug' => 'home', 'template' => 'page-templates/template-cqc.php' ),
-		'getting-started'              => array( 'title' => 'Getting Started', 'parent_slug' => 'home', 'template' => 'page-templates/template-getting-started.php' ),
+		'cqc-and-our-care'            => array( 'title' => 'CQC and Our Care', 'template' => 'page-templates/template-cqc.php' ),
+		'getting-started'              => array( 'title' => 'Getting Started', 'template' => 'page-templates/template-getting-started.php' ),
 	);
 
 	/**
@@ -63,21 +112,42 @@ class CCS_Theme_Activation {
 	private $services = array();
 
 	/**
+	 * Location posts: post_name => [ 'title', 'excerpt', 'content', 'meta' ].
+	 *
+	 * @var array<string, array>
+	 */
+	private $locations = array();
+
+	/**
 	 * Primary menu item order (slug or special key). Children under 'resources' for dropdown.
+	 *
+	 * @var array
+	 */
+	/**
+	 * Top-level primary menu slugs, in order. Restructured 2026-08-19 from a flat
+	 * 10-item list (wrapped to 3 lines in the header) down to 6 — items that used
+	 * to sit flat now nest under About Us / Resources via $primary_menu_children.
 	 *
 	 * @var array
 	 */
 	private $primary_order = array(
 		'home',
-		'about-home-care-maidstone',
 		'home-care-services-kent',
-		'who-youll-meet',
-		'careers',
+		'about-home-care-maidstone',
 		'resources',
-		'news-and-updates',
-		'cqc-and-our-care',
-		'getting-started',
+		'careers',
 		'contact-us',
+	);
+
+	/**
+	 * Dropdown children for top-level primary menu items (parent slug => child slugs, in order).
+	 * Any slug not listed here (and not 'home', which has no dropdown) renders flat.
+	 *
+	 * @var array<string, array<int, string>>
+	 */
+	private $primary_menu_children = array(
+		'about-home-care-maidstone' => array( 'who-youll-meet', 'cqc-and-our-care', 'getting-started' ),
+		'resources'                 => array( 'care-guides', 'faqs', 'referral-information', 'news-and-updates' ),
 	);
 
 	/**
@@ -141,6 +211,7 @@ class CCS_Theme_Activation {
 		add_action( 'admin_init', array( $this, 'handle_reset_request' ) );
 		add_action( 'admin_init', array( $this, 'handle_populate_request' ) );
 		$this->define_services();
+		$this->define_locations();
 	}
 
 	/**
@@ -150,8 +221,9 @@ class CCS_Theme_Activation {
 		$this->services = array(
 			'domiciliary-care' => array(
 				'title'   => 'Domiciliary Care',
+				'image'   => 'assets/images/site-photos/ccs-domiciliary-care.webp',
 				'excerpt' => 'Getting dressed. Making breakfast. Remembering the right meds at the right time. Our carers provide gentle assistance with everyday tasks, ensuring care calls are always scheduled to fit your daily routine.',
-				'content' => "<p>At Continuity Care Services, we understand that sometimes you just need a helping hand with daily tasks. Our domiciliary care services provide compassionate support in the comfort of your own home.</p>
+				'content' => "<p>At Continuity Care Services, we understand that sometimes you just need a helping hand with daily tasks. Our domiciliary care gives you steady, unhurried support at home.</p>
 <h2>What We Help With:</h2>
 <ul>
 <li>Personal care (washing, dressing, grooming)</li>
@@ -168,8 +240,9 @@ class CCS_Theme_Activation {
 			),
 			'respite-care' => array(
 				'title'   => 'Respite Care',
+				'image'   => 'assets/images/site-photos/ccs-respite-care-guitar-1.webp',
 				'excerpt' => "Whether it's for a few hours or a few days, our team are here to step in and provide a client's family and friends with gentle, reliable respite support. Take some time to rest, you can't pour from an empty cup.",
-				'content' => "<p>Caring for a loved one is rewarding, but it's also exhausting. Everyone needs a break. Our respite care services give family carers the time they need to rest, recharge, or simply take care of themselves.</p>
+				'content' => "<p>Caring for someone you love is rewarding, and it's also exhausting. Everyone needs a break. Our respite care services give family carers the time they need to rest, recharge, or simply take care of themselves.</p>
 <h2>Flexible Respite Options:</h2>
 <ul>
 <li>Short breaks (a few hours to a day)</li>
@@ -179,7 +252,7 @@ class CCS_Theme_Activation {
 <li>Holiday cover for regular carers</li>
 </ul>
 <h2>Seamless Continuity of Care</h2>
-<p>We take time to understand your loved one's routines, preferences, and needs so the transition is smooth. Your family member will receive the same high standard of care they're used to.</p>
+<p>We take time to learn the routines, preferences and needs of the person you care for, so the handover is smooth. They get the same standard of care they're used to.</p>
 <h2>Give Yourself Permission to Rest</h2>
 <p>There's no guilt in needing a break. Whether you need to attend an appointment, catch up on sleep, visit friends, or just have some time to yourself, we're here to make that possible.</p>
 <h2>What Our Respite Care Includes:</h2>
@@ -194,7 +267,8 @@ class CCS_Theme_Activation {
 			),
 			'complex-care' => array(
 				'title'   => 'Complex Care',
-				'excerpt' => 'From epilepsy care to PEG and mobility support, we provide complex care in the comfort of your own home. We work closely with families, nurses and healthcare teams to ensure we get it right, every time.',
+				'image'   => 'assets/images/site-photos/ccs-complex-care-wheelchair-1.webp',
+				'excerpt' => 'From epilepsy care to PEG and mobility support, we provide complex care at home. We work closely with families, nurses and healthcare teams to ensure we get it right, every time.',
 				'content' => "<p>Complex care requires specialist knowledge, clinical skills, and unwavering attention to detail. At Continuity Care Services, our trained care team provides expert support for individuals with complex health needs.</p>
 <h2>Conditions We Support:</h2>
 <ul>
@@ -224,8 +298,132 @@ class CCS_Theme_Activation {
 <p>We don't work in isolation. We collaborate with occupational therapists, physiotherapists, speech and language therapists, community nurses, GPs and consultants, social workers, and family members.</p>
 <h2>24/7 Support When You Need It</h2>
 <p>Complex care needs don't follow a 9–5 schedule. Our team is available day and night to provide the consistent, skilled care required.</p>
-<h2>Person-Centred, Not Just Medical</h2>
+<h2>A life, not just a condition</h2>
 <p>Yes, we're experts in clinical care. But we're also committed to ensuring our clients live full, happy lives. We support hobbies, outings, social connections, and everything that makes life worth living.</p>",
+			),
+		);
+	}
+
+	/**
+	 * Define the location posts (post type: location).
+	 *
+	 * Launch-priority (P1) towns only, per reference/sitemap-urls.md. P2/P3 towns
+	 * (Sevenoaks, Ashford, Staplehurst, Headcorn, Thanet, Whitstable, Hythe, Rye)
+	 * are not yet defined here.
+	 *
+	 * 'meta' only carries fields we can state with confidence: town/county/postcode
+	 * area, nearby villages, approximate map coordinates, and hospital *names* (no
+	 * phone numbers or addresses — those go stale and a wrong one on a care site is
+	 * actively harmful). GP practices, CHC contact, council adult services contact,
+	 * support groups, coordinator and team stats are deliberately left unset: they
+	 * need real, current, Ellie-verified detail, not a guess. Fill them in via the
+	 * Location Details meta box on each post.
+	 *
+	 * @return void
+	 */
+	private function define_locations() {
+		$this->locations = array(
+			'maidstone'       => array(
+				'title'   => 'Home Care in Maidstone',
+				'excerpt' => 'Home care across Maidstone and the surrounding villages, delivered by a small team who get to know you, not just your care plan.',
+				'content' => '<p>Maidstone is where Continuity of Care Services is based, so it\'s the area our team knows best — which GP surgeries run late clinics, which pharmacies deliver, how the traffic moves at different times of day. That local knowledge means less time explaining and more time getting on with your day.</p>
+<p>We support families across the town and in the villages around it — Bearsted, Loose, Barming, Coxheath and Detling among them — with everything from a short daily visit to round-the-clock complex care. Whatever the need, you\'re matched with the same small team, not a rotating rota.</p>',
+				'meta'    => array(
+					'location_town'           => 'Maidstone',
+					'location_county'         => 'Kent',
+					'location_postcode_area'  => 'ME',
+					'location_areas_covered'  => "Bearsted\nLoose\nBarming\nCoxheath\nDetling\nGrove Green\nPenenden Heath\nOtham",
+					'location_latitude'       => 51.2704,
+					'location_longitude'      => 0.5227,
+					'location_local_hospitals' => array(
+						array( 'hospital_name' => 'Maidstone Hospital', 'hospital_phone' => '', 'hospital_address' => '' ),
+					),
+				),
+			),
+			'west-malling'    => array(
+				'title'   => 'Home Care in West Malling',
+				'excerpt' => 'Home care in West Malling and the villages around it, from a team based just down the road in Maidstone.',
+				'content' => '<p>West Malling is a small town with a strong sense of itself — the high street, the abbey, the villages that ring it. We provide home care here the way the town works: unhurried, familiar, nothing rushed.</p>
+<p>Families in West Malling, Kings Hill, Offham, Leybourne and Ditton are supported by carers matched to them and kept consistent, whether that\'s a short daily visit or ongoing complex care. Your carer knows your routine because they\'re the one who\'s been coming.</p>',
+				'meta'    => array(
+					'location_town'           => 'West Malling',
+					'location_county'         => 'Kent',
+					'location_postcode_area'  => 'ME',
+					'location_areas_covered'  => "Kings Hill\nOffham\nLeybourne\nDitton\nEast Malling\nLarkfield",
+					'location_latitude'       => 51.2870,
+					'location_longitude'      => 0.4090,
+					'location_local_hospitals' => array(
+						array( 'hospital_name' => 'Maidstone Hospital', 'hospital_phone' => '', 'hospital_address' => '' ),
+					),
+				),
+			),
+			'aylesford'       => array(
+				'title'   => 'Home Care in Aylesford',
+				'excerpt' => 'Home care in Aylesford and along the Medway villages, with carers who stay the same visit to visit.',
+				'content' => '<p>Aylesford sits on the Medway, with a spread of villages either side that we know well. Care here means the same familiar face at the door, not a different carer every week.</p>
+<p>We support people across Aylesford, Eccles, Ditton, Wouldham and Blue Bell Hill, from a few hours of help a week to complex, clinically-led care at home. Every plan starts with a free, no-obligation conversation about what would actually help.</p>',
+				'meta'    => array(
+					'location_town'           => 'Aylesford',
+					'location_county'         => 'Kent',
+					'location_postcode_area'  => 'ME',
+					'location_areas_covered'  => "Eccles\nDitton\nWouldham\nBlue Bell Hill\nWalderslade\nLarkfield",
+					'location_latitude'       => 51.3009,
+					'location_longitude'      => 0.4707,
+					'location_local_hospitals' => array(
+						array( 'hospital_name' => 'Maidstone Hospital', 'hospital_phone' => '', 'hospital_address' => '' ),
+					),
+				),
+			),
+			'snodland'        => array(
+				'title'   => 'Home Care in Snodland',
+				'excerpt' => 'Home care in Snodland and the villages along the Medway, from a small, consistent local team.',
+				'content' => '<p>Snodland and the villages around it — Halling, Wouldham, Birling, Ryarsh — sit just north of our Maidstone base, and it\'s an area we visit often. That means shorter travel time for your carer and more of it spent with you.</p>
+<p>Whether you need daily help getting started in the morning or ongoing complex care, we build a plan around your routine and keep the same small team coming back, so nobody\'s a stranger.</p>',
+				'meta'    => array(
+					'location_town'           => 'Snodland',
+					'location_county'         => 'Kent',
+					'location_postcode_area'  => 'ME',
+					'location_areas_covered'  => "Halling\nWouldham\nBirling\nRyarsh\nBurham",
+					'location_latitude'       => 51.3327,
+					'location_longitude'      => 0.4479,
+					'location_local_hospitals' => array(
+						array( 'hospital_name' => 'Maidstone Hospital', 'hospital_phone' => '', 'hospital_address' => '' ),
+					),
+				),
+			),
+			'tonbridge'       => array(
+				'title'   => 'Home Care in Tonbridge',
+				'excerpt' => 'Home care in Tonbridge and the surrounding villages, with a consistent, matched team of carers.',
+				'content' => '<p>Tonbridge is a market town with the river and the castle at its centre, and villages spreading out from it in every direction. We cover the town and those villages with the same promise: the carer who starts with you is the one who stays.</p>
+<p>Families in Tonbridge, Hildenborough, Leigh, Hadlow and East Peckham are supported with everything from short daily visits to complex care at home, all CQC regulated and built around what actually helps, not a standard package.</p>',
+				'meta'    => array(
+					'location_town'           => 'Tonbridge',
+					'location_county'         => 'Kent',
+					'location_postcode_area'  => 'TN',
+					'location_areas_covered'  => "Hildenborough\nLeigh\nHadlow\nEast Peckham\nTudeley\nHigham",
+					'location_latitude'       => 51.1931,
+					'location_longitude'      => 0.2748,
+					'location_local_hospitals' => array(
+						array( 'hospital_name' => 'Tunbridge Wells Hospital', 'hospital_phone' => '', 'hospital_address' => '' ),
+					),
+				),
+			),
+			'tunbridge-wells' => array(
+				'title'   => 'Home Care in Tunbridge Wells',
+				'excerpt' => 'Home care in Royal Tunbridge Wells and the villages around it, delivered by carers you\'ll actually get to know.',
+				'content' => '<p>Royal Tunbridge Wells and the villages that surround it — Southborough, Rusthall, Pembury, Speldhurst — are part of our regular patch. However spread out the address, the approach is the same: a small, matched team, not a different carer each visit.</p>
+<p>From a short visit for personal care to full complex care at home, every plan starts with a free conversation about what would help, and stays flexible as your needs change.</p>',
+				'meta'    => array(
+					'location_town'           => 'Tunbridge Wells',
+					'location_county'         => 'Kent',
+					'location_postcode_area'  => 'TN',
+					'location_areas_covered'  => "Southborough\nRusthall\nPembury\nSpeldhurst\nLangton Green\nSherwood",
+					'location_latitude'       => 51.1324,
+					'location_longitude'      => 0.2637,
+					'location_local_hospitals' => array(
+						array( 'hospital_name' => 'Tunbridge Wells Hospital', 'hospital_phone' => '', 'hospital_address' => '' ),
+					),
+				),
 			),
 		);
 	}
@@ -240,7 +438,7 @@ class CCS_Theme_Activation {
 	/**
 	 * Run activation steps for the given scope. Use for granular populate from Welcome Screen.
 	 *
-	 * @param array $scope Steps: general, pages, contact_page, services, menus, reading, permalinks.
+	 * @param array $scope Steps: general, pages, contact_page, services, locations, menus, reading, permalinks.
 	 */
 	public function run_with_scope( array $scope ) {
 		$scope = array_intersect( $scope, self::SCOPES );
@@ -267,6 +465,9 @@ class CCS_Theme_Activation {
 		}
 		if ( in_array( 'services', $scope, true ) ) {
 			$this->ensure_services();
+		}
+		if ( in_array( 'locations', $scope, true ) ) {
+			$this->ensure_locations();
 		}
 		if ( in_array( 'menus', $scope, true ) ) {
 			$this->ensure_menus();
@@ -305,21 +506,18 @@ class CCS_Theme_Activation {
 	 */
 	private function get_default_page_content( $slug ) {
 		$content = array(
-			'about-home-care-maidstone' => '<p>Reliably supporting adults and children across Maidstone and Kent, we\'re here to provide personalised care, day or night, tailored to you. <strong>Our caring, local team is dedicated to supporting families across Kent.</strong></p>
+			'about-home-care-maidstone' => '<p>Reliably supporting adults and children across Maidstone and Kent, we\'re here to provide care that fits your life, day or night. <strong>Our local team supports families right across Kent.</strong></p>
 <p>We don\'t rush or rotate staff every other week. Instead, we take the time to get to know each person, not just their care plan. Our staff commit to discovering the quirks of every client, from how they like their toast to what puts them at ease on a tough day.</p>
-<p>We believe that the best care doesn\'t stop when the to-do list is ticked; it continues through our staff showing up in a way that feels friendly, familiar, and person-centred. <strong>Learn more about the home care services we offer in Maidstone &amp; Kent.</strong></p>',
+<p>We believe that the best care doesn\'t stop when the to-do list is ticked; it carries on in how our carers show up: familiar, unhurried and glad to see you. <strong>Learn more about the home care services we offer in Maidstone &amp; Kent.</strong></p>',
+			// The service list itself is rendered as a card grid by
+			// page-templates/template-services.php, so this intro no longer repeats it.
 			'home-care-services-kent' => '<p>Whether you need a little help dressing in the mornings, round-the-clock complex care, or just someone to pop in for a cuppa and a catch-up, we\'re here to make life feel a little lighter.</p>
-<p>We offer three main types of home care across Maidstone and Kent:</p>
-<ul>
-<li><a href="' . esc_url( home_url( '/services/domiciliary-care/' ) ) . '">Domiciliary Care</a> – day-to-day support with personal care, medication, meals and companionship</li>
-<li><a href="' . esc_url( home_url( '/services/respite-care/' ) ) . '">Respite Care</a> – short breaks for family carers, from a few hours to extended stays</li>
-<li><a href="' . esc_url( home_url( '/services/complex-care/' ) ) . '">Complex Care</a> – specialist clinical care at home, from epilepsy to PEG feeding and 24/7 support</li>
-</ul>
-<p>For expert home care Maidstone families trust, get in touch today and we\'ll create a plan tailored to your needs.</p>',
-			'who-youll-meet' => '<p>Our team is at the heart of everything we do. You\'ll meet familiar, friendly faces who take the time to get to know you.</p>
-<h2>Meet the team</h2>
-<p>Keelie Varney and Nikki Mackay lead our care team with a focus on consistency, compassion and person-centred support. We invest in training and values so every member of our team delivers the same high standard of care.</p>
-<p>We\'re here to make life feel a little lighter – your team, your time, your life.</p>',
+<p>Every care plan starts the same way: a free conversation about what would actually help, at your pace. Nothing is fixed until you are happy with it.</p>',
+			// The roster itself is rendered by page-templates/template-team.php from
+			// ccs_team_members(), so this intro sets it up rather than listing names.
+			'who-youll-meet' => '<p>Letting someone into your home is a big thing to ask. So before you do, here is who we are.</p>
+<p>Every person below is office or management team, and they are the people you will actually speak to when you call. Your carers are matched to you separately, and you meet them before care starts, never on the doorstep on day one.</p>
+<p>If someone is not the right fit, tell us and we will change it. That is the whole point.</p>',
 			'care-careers-maidstone-kent' => '<p>Make a real impact by joining our team. Offering rewarding roles, flexible hours, and ongoing training, we\'d love to hear from you. If you\'re passionate about helping others, explore how you can grow your career with us.</p>
 <h2>Why join us</h2>
 <ul>
@@ -419,20 +617,14 @@ class CCS_Theme_Activation {
 <p>Our site may include content from third parties (e.g. CQC widget, job portal iframe). Those services may set their own cookies; we do not control them. Please check their privacy policies for more information.</p>
 <h2>Updates</h2>
 <p>We may update this cookie policy from time to time. The latest version will be on this page. If you have questions, please <a href="' . esc_url( home_url( '/contact-us/' ) ) . '">contact us</a>.</p>',
-			'careers' => '<p>Make a real impact by joining our team. We offer rewarding roles, flexible hours, and ongoing training. If you\'re passionate about helping others, explore how you can grow your career with us.</p>
-<h2>Why join us</h2>
-<ul>
-<li>Flexible working hours</li>
-<li>Competitive pay rates</li>
-<li>Ongoing training and professional development</li>
-<li>Supportive team environment</li>
-<li>Make a real difference in people\'s lives</li>
-</ul>
-<p><a href="' . esc_url( home_url( '/current-vacancies/' ) ) . '">View current vacancies</a> or get in touch to find out more.</p>',
+			'careers' => '<h2>Why choose a career with Continuity?</h2>
+<p>We do things differently. At Continuity of Care Services, you\'re more than just a name on a rota. We\'re a people-first care company based in Maidstone, Kent, and our values apply to our team as much as our clients.</p>
+<p>We aim to deliver compassionate care to not only our clients, but our carers, through a workplace culture built on trust, support, and effective communication. Our promise to prioritise the value of \'Your Time, Your Team, Your Life\' is just as much to you, as it is to the clients we work with.</p>
+<p><a href="' . esc_url( home_url( '/careers/current-vacancies/' ) ) . '">View current vacancies</a> or get in touch to find out more.</p>',
 			'professional-development' => '<p>We invest in our team. From induction and mandatory training to specialist qualifications, we support your growth so you can deliver the best care and progress your career.</p>
 <h2>Development opportunities</h2>
 <p>Training, mentorship, and clear progression paths. More detail can be added here.</p>
-<p><a href="' . esc_url( home_url( '/current-vacancies/' ) ) . '">View current vacancies</a></p>',
+<p><a href="' . esc_url( home_url( '/careers/current-vacancies/' ) ) . '">View current vacancies</a></p>',
 			'current-vacancies' => '<p>Browse our current vacancies and apply online. We\'re always looking for caring, reliable people to join our team across Maidstone and Kent.</p>
 <p>Use the job portal below to see open roles and submit your application.</p>',
 			'working-for-us' => '<p>What it\'s like to work at Continuity Care Services: our culture, benefits, and the day-to-day reality of supporting clients and families.</p>
@@ -443,9 +635,9 @@ class CCS_Theme_Activation {
 <li>Training and career development</li>
 <li>Supportive, local team</li>
 </ul>
-<p><a href="' . esc_url( home_url( '/current-vacancies/' ) ) . '">View current vacancies</a> or contact us to learn more.</p>',
+<p><a href="' . esc_url( home_url( '/careers/current-vacancies/' ) ) . '">View current vacancies</a> or contact us to learn more.</p>',
 			'cqc-and-our-care' => '<p>Continuity Care Services is registered with the Care Quality Commission (CQC). We are committed to delivering safe, effective, caring, responsive and well-led care. Our CQC rating reflects how we\'re performing.</p>
-<p>We believe the best care doesn\'t stop at the checklist – it shows in our staff turning up in a way that feels friendly, familiar and person-centred. If you\'d like to know more about how we work or our latest inspection, view our CQC profile below or get in touch.</p>',
+<p>We believe the best care doesn\'t stop at the checklist – it shows in our carers turning up in a way that feels friendly and familiar. If you\'d like to know more about how we work or our latest inspection, view our CQC profile below or get in touch.</p>',
 			'getting-started' => '<p>Taking the first step towards home care can feel overwhelming. We\'re here to make it straightforward.</p>
 <p>After you get in touch, we\'ll arrange a no-obligation consultation to understand your situation, answer your questions and discuss how we can help. Together we\'ll agree a care plan that fits your life. When you\'re ready, we\'ll introduce you to your care team and get started.</p>
 <p><strong>Ready to talk?</strong> <a href="' . esc_url( home_url( '/contact-us/' ) ) . '">Contact us</a> to book a care consultation or find out more.</p>',
@@ -494,13 +686,32 @@ class CCS_Theme_Activation {
 				$parent_id = (int) $this->page_ids[ $def['parent_slug'] ];
 			}
 
-			$page = get_page_by_path( $slug, OBJECT, 'page' );
+			/*
+			 * Look up by slug AND parent, not get_page_by_path( $slug ).
+			 * get_page_by_path() expects a full hierarchical path, so a bare slug
+			 * never matched any child page ("home/about-home-care-maidstone").
+			 * Every populate run therefore fell through to the create branch and
+			 * WordPress appended -2, -3, -4 … to dodge the slug collision, silently
+			 * multiplying the page count on each run.
+			 */
+			$existing = get_posts(
+				array(
+					'post_type'        => 'page',
+					'name'             => $slug,
+					'post_parent'      => $parent_id,
+					'post_status'      => array( 'publish', 'draft', 'pending', 'private' ),
+					'numberposts'      => 1,
+					'suppress_filters' => false,
+				)
+			);
+			$page = ! empty( $existing ) ? $existing[0] : null;
 			if ( $page ) {
 				$this->page_ids[ $slug ] = (int) $page->ID;
 				$this->mark_as_demo( $page->ID, 'page' );
 				if ( ! empty( $def['template'] ) ) {
 					update_post_meta( $page->ID, '_wp_page_template', $def['template'] );
 				}
+				$this->set_page_seo_meta( $page->ID, $def );
 				continue;
 			}
 
@@ -522,6 +733,7 @@ class CCS_Theme_Activation {
 			if ( ! empty( $def['template'] ) ) {
 				update_post_meta( $id, '_wp_page_template', $def['template'] );
 			}
+			$this->set_page_seo_meta( $id, $def );
 		}
 
 		// Persist careers page IDs for header menu switch.
@@ -531,6 +743,41 @@ class CCS_Theme_Activation {
 			if ( isset( $this->page_ids[ $cslug ] ) ) {
 				$this->careers_page_ids[ $cslug ] = $this->page_ids[ $cslug ];
 			}
+		}
+	}
+
+	/**
+	 * Set SEO title/description post meta from a page definition, if present.
+	 *
+	 * Read by CCS_SEO_Optimizer via the ccs_seo_title / ccs_meta_description meta
+	 * keys. Without this, pages fall back to WordPress's raw post title and output
+	 * no meta description at all — confirmed missing on Home before this fix
+	 * (2026-08-19). Only writes keys that are defined, so hand-edited values in
+	 * wp-admin are preserved for pages with no definition.
+	 *
+	 * @param int   $page_id Page post ID.
+	 * @param array $def     Page definition (may contain 'seo_title', 'seo_description').
+	 */
+	private function set_page_seo_meta( $page_id, $def ) {
+		if ( ! empty( $def['seo_title'] ) ) {
+			update_post_meta( (int) $page_id, 'ccs_seo_title', $def['seo_title'] );
+		}
+		if ( ! empty( $def['seo_description'] ) ) {
+			update_post_meta( (int) $page_id, 'ccs_meta_description', $def['seo_description'] );
+		}
+		// Visible <h1>. Several page titles are keyword strings ("About Home Care
+		// Maidstone") that read badly as a heading; the slug still carries the keywords.
+		if ( ! empty( $def['heading'] ) ) {
+			update_post_meta( (int) $page_id, 'ccs_page_heading', $def['heading'] );
+		}
+		if ( ! empty( $def['intro'] ) ) {
+			update_post_meta( (int) $page_id, 'ccs_page_intro', $def['intro'] );
+		}
+		// Page-header hero photo, read via has_post_thumbnail() in
+		// template-parts/page-header.php. Backfill-only, like the service
+		// images above — never overrides an image an editor already set.
+		if ( ! empty( $def['hero_image'] ) && ! has_post_thumbnail( $page_id ) ) {
+			$this->set_featured_image_from_theme( $page_id, $def['hero_image'], get_the_title( $page_id ) );
 		}
 	}
 
@@ -569,7 +816,15 @@ class CCS_Theme_Activation {
 				'posts_per_page' => 1,
 			) );
 			if ( ! empty( $existing ) ) {
-				$this->mark_as_demo( $existing[0]->ID, 'service' );
+				$id = $existing[0]->ID;
+				$this->mark_as_demo( $id, 'service' );
+				// Backfill only — never overrides a featured image an editor has
+				// already set, but fixes it for posts created before this image
+				// existed in $this->services (like every service post in any
+				// pre-existing install).
+				if ( ! empty( $data['image'] ) && ! has_post_thumbnail( $id ) ) {
+					$this->set_featured_image_from_theme( $id, $data['image'], $data['title'] );
+				}
 				continue;
 			}
 
@@ -584,6 +839,60 @@ class CCS_Theme_Activation {
 			), true );
 			if ( ! is_wp_error( $id ) ) {
 				$this->mark_as_demo( $id, 'service' );
+				if ( ! empty( $data['image'] ) ) {
+					$this->set_featured_image_from_theme( $id, $data['image'], $data['title'] );
+				}
+			}
+		}
+	}
+
+	/**
+	 * Import a theme-bundled image (if not already imported) and set it as a
+	 * post's featured image.
+	 *
+	 * @param int    $post_id       Post to attach the thumbnail to.
+	 * @param string $relative_path Theme-relative image path.
+	 * @param string $title         Attachment title if it needs importing.
+	 */
+	private function set_featured_image_from_theme( $post_id, $relative_path, $title = '' ) {
+		$attach_id = $this->import_theme_image_as_attachment( $relative_path, $title );
+		if ( $attach_id ) {
+			set_post_thumbnail( $post_id, $attach_id );
+		}
+	}
+
+	/**
+	 * Create or get the location posts (post type: location).
+	 *
+	 * Meta is only written on first creation (matches ensure_services()'s
+	 * behaviour, and the same known limitation applies: editing $this->locations
+	 * later won't touch posts that already exist).
+	 */
+	private function ensure_locations() {
+		foreach ( $this->locations as $post_name => $data ) {
+			$existing = get_posts( array(
+				'post_type'      => 'location',
+				'name'           => $post_name,
+				'post_status'    => 'any',
+				'posts_per_page' => 1,
+			) );
+			if ( ! empty( $existing ) ) {
+				$this->mark_as_demo( $existing[0]->ID, 'location' );
+				continue;
+			}
+
+			$id = wp_insert_post( array(
+				'post_type'    => 'location',
+				'post_title'   => $data['title'],
+				'post_name'    => $post_name,
+				'post_content' => $data['content'],
+				'post_excerpt' => $data['excerpt'],
+				'post_status'  => 'publish',
+				'post_author'  => $this->get_author_id(),
+				'meta_input'   => isset( $data['meta'] ) ? $data['meta'] : array(),
+			), true );
+			if ( ! is_wp_error( $id ) ) {
+				$this->mark_as_demo( $id, 'location' );
 			}
 		}
 	}
@@ -668,24 +977,24 @@ class CCS_Theme_Activation {
 		if ( ! $menu_id ) {
 			return;
 		}
-		$resource_children = array( 'care-guides', 'faqs', 'referral-information' );
 		$position = 0;
 		foreach ( $this->primary_order as $slug ) {
-			$title = isset( $this->primary_menu_labels[ $slug ] ) ? $this->primary_menu_labels[ $slug ] : null;
-			if ( $slug === 'resources' ) {
-				$parent_id = $this->add_menu_item( $menu_id, $this->page_ids['resources'], 0, $position, $title );
-				$position++;
-				foreach ( $resource_children as $child_slug ) {
-					if ( isset( $this->page_ids[ $child_slug ] ) ) {
-						$child_title = isset( $this->primary_menu_labels[ $child_slug ] ) ? $this->primary_menu_labels[ $child_slug ] : null;
-						$this->add_menu_item( $menu_id, $this->page_ids[ $child_slug ], $parent_id, $position, $child_title );
-						$position++;
-					}
-				}
+			if ( ! isset( $this->page_ids[ $slug ] ) ) {
 				continue;
 			}
-			if ( isset( $this->page_ids[ $slug ] ) ) {
-				$this->add_menu_item( $menu_id, $this->page_ids[ $slug ], 0, $position, $title );
+			$title     = isset( $this->primary_menu_labels[ $slug ] ) ? $this->primary_menu_labels[ $slug ] : null;
+			$parent_id = $this->add_menu_item( $menu_id, $this->page_ids[ $slug ], 0, $position, $title );
+			$position++;
+
+			if ( ! isset( $this->primary_menu_children[ $slug ] ) ) {
+				continue;
+			}
+			foreach ( $this->primary_menu_children[ $slug ] as $child_slug ) {
+				if ( ! isset( $this->page_ids[ $child_slug ] ) ) {
+					continue;
+				}
+				$child_title = isset( $this->primary_menu_labels[ $child_slug ] ) ? $this->primary_menu_labels[ $child_slug ] : null;
+				$this->add_menu_item( $menu_id, $this->page_ids[ $child_slug ], $parent_id, $position, $child_title );
 				$position++;
 			}
 		}
@@ -804,6 +1113,69 @@ class CCS_Theme_Activation {
 	}
 
 	/**
+	 * Import a theme-bundled image into the media library, so it can be used as a
+	 * real featured image (has_post_thumbnail(), get_the_post_thumbnail(), etc.)
+	 * rather than a hardcoded <img> tag. Idempotent: re-running activation finds
+	 * the same attachment by its recorded source path instead of duplicating it.
+	 *
+	 * @param string $relative_path Path relative to the theme root, e.g. 'assets/images/site-photos/foo.webp'.
+	 * @param string $title         Optional attachment title.
+	 * @return int Attachment ID, or 0 on failure.
+	 */
+	private function import_theme_image_as_attachment( $relative_path, $title = '' ) {
+		$existing = get_posts( array(
+			'post_type'      => 'attachment',
+			'post_status'    => 'inherit',
+			'posts_per_page' => 1,
+			'meta_key'       => '_ccs_source_theme_path',
+			'meta_value'     => $relative_path,
+		) );
+		if ( ! empty( $existing ) ) {
+			return (int) $existing[0]->ID;
+		}
+
+		$source_path = get_template_directory() . '/' . $relative_path;
+		if ( ! file_exists( $source_path ) ) {
+			return 0;
+		}
+
+		$upload_dir = wp_upload_dir();
+		if ( ! empty( $upload_dir['error'] ) ) {
+			return 0;
+		}
+
+		$filename        = wp_unique_filename( $upload_dir['path'], wp_basename( $source_path ) );
+		$destination     = trailingslashit( $upload_dir['path'] ) . $filename;
+		$file_contents   = file_get_contents( $source_path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		if ( $file_contents === false || file_put_contents( $destination, $file_contents ) === false ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
+			return 0;
+		}
+
+		$filetype   = wp_check_filetype( $filename, null );
+		$attach_id  = wp_insert_attachment(
+			array(
+				'post_mime_type' => $filetype['type'],
+				'post_title'     => $title !== '' ? $title : preg_replace( '/\.[^.]+$/', '', $filename ),
+				'post_content'   => '',
+				'post_status'    => 'inherit',
+				'post_author'    => $this->get_author_id(),
+			),
+			$destination
+		);
+		if ( is_wp_error( $attach_id ) || ! $attach_id ) {
+			return 0;
+		}
+
+		if ( ! function_exists( 'wp_generate_attachment_metadata' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/image.php';
+		}
+		wp_update_attachment_metadata( $attach_id, wp_generate_attachment_metadata( $attach_id, $destination ) );
+		update_post_meta( $attach_id, '_ccs_source_theme_path', $relative_path );
+
+		return (int) $attach_id;
+	}
+
+	/**
 	 * Register admin menu for Reset Demo Content.
 	 * Skipped when CCS_Welcome_Screen is present (it registers "CCS Theme Setup" under Appearance).
 	 */
@@ -821,14 +1193,14 @@ class CCS_Theme_Activation {
 	}
 
 	/**
-	 * Handle Populate (pages / services / menus / entire) from Welcome Screen.
+	 * Handle Populate (pages / services / locations / menus / entire) from Welcome Screen.
 	 */
 	public function handle_populate_request() {
 		if ( ! isset( $_GET['ccs_populate'] ) || ! isset( $_GET['_wpnonce'] ) ) {
 			return;
 		}
 		$scope = sanitize_text_field( wp_unslash( $_GET['ccs_populate'] ) );
-		$allowed = array( 'pages', 'services', 'menus', 'entire' );
+		$allowed = array( 'pages', 'services', 'locations', 'menus', 'entire' );
 		if ( ! in_array( $scope, $allowed, true ) ) {
 			return;
 		}
@@ -841,6 +1213,8 @@ class CCS_Theme_Activation {
 			$this->run_with_scope( array( 'general', 'pages' ) );
 		} elseif ( $scope === 'services' ) {
 			$this->run_with_scope( array( 'services' ) );
+		} elseif ( $scope === 'locations' ) {
+			$this->run_with_scope( array( 'locations' ) );
 		} else {
 			$this->run_with_scope( array( 'menus', 'reading', 'permalinks' ) );
 		}
@@ -872,7 +1246,7 @@ class CCS_Theme_Activation {
 		$post_ids = $wpdb->get_col( $wpdb->prepare(
 			"SELECT p.ID FROM {$wpdb->posts} p
 			INNER JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id AND pm.meta_key = %s AND pm.meta_value = '1'
-			WHERE p.post_type IN ('page', 'service')",
+			WHERE p.post_type IN ('page', 'service', 'location')",
 			self::DEMO_META_KEY
 		) );
 		if ( ! empty( $post_ids ) ) {

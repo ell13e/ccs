@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$services_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'home-care-services-kent' ) : home_url( '/home/home-care-services-kent/' );
+$services_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'home-care-services-kent' ) : home_url( '/home-care-services-kent/' );
 ?>
 
 <section class="home-why-choose" aria-labelledby="home-why-heading">
@@ -22,11 +22,13 @@ $services_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'home-care-ser
 		</p>
 		<div class="home-why-choose__body">
 			<p>
-				<?php
-				echo wp_kses_post(
-					__( 'Reliably supporting adults and children across Maidstone and Kent, we\'re here to provide personalised care, day or night, tailored to you. <strong>Our caring, local team is dedicated to supporting families across Kent.</strong> We don\'t rush or rotate staff every other week. Instead, we take the time to get to know each person, not just their care plan. Our staff commit to discovering the quirks of every client, from how they like their toast to what puts them at ease on a tough day. We believe that the best care doesn\'t stop when the to-do list is ticked; it continues through our staff showing up in a way that feels friendly, familiar, and person-centred. <strong>Learn more about the home care services we offer in Maidstone & Kent.</strong>', 'ccs-wp-theme' )
-				);
-				?>
+				<?php esc_html_e( 'We support adults and children across Maidstone and Kent, day or night. Our carers are local, and the same small team comes back to you each visit.', 'ccs-wp-theme' ); ?>
+			</p>
+			<p>
+				<?php esc_html_e( 'We don’t rush, and we don’t rotate staff every other week. We take the time to learn how you like your tea, what makes you laugh, and what puts you at ease on a harder day. That’s the part a care plan can’t write down.', 'ccs-wp-theme' ); ?>
+			</p>
+			<p>
+				<?php esc_html_e( 'Good care doesn’t stop when the to-do list is ticked. It carries on in how our carers show up: familiar, unhurried, and glad to see you.', 'ccs-wp-theme' ); ?>
 			</p>
 			<p>
 				<a href="<?php echo esc_url( $services_url ); ?>" class="home-why-choose__link">

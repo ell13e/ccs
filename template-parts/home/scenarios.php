@@ -1,6 +1,11 @@
 <?php
 /**
- * Homepage scenarios section: three cards (hospital discharge, 24/7 care, comparing options).
+ * Homepage scenarios section: three cards (starting care for the first time, 24/7 care,
+ * comparing options).
+ *
+ * Deliberately no "urgent" / hospital-discharge framing — the USP is a planned, unhurried
+ * start with a matched carer, never a rushed same-day takeover. See the guardrails in
+ * reference/strategy.md.
  *
  * @package CCS_WP_Theme
  */
@@ -11,17 +16,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $scenarios = array(
 	array(
-		'title'       => __( 'Hospital discharge', 'ccs-wp-theme' ),
-		'description' => __( 'Need support straight after a hospital stay? We coordinate with the hospital and your GP so you can return home safely with a clear care plan.', 'ccs-wp-theme' ),
+		'title'       => __( 'Starting care for the first time', 'ccs-wp-theme' ),
+		'description' => __( 'Not sure where to begin? We start with a free, no-obligation conversation about what would actually help, then take the time to match you with the right carer before anything starts.', 'ccs-wp-theme' ),
 		'bullets'     => array(
-			__( 'Coordination with hospital and GP', 'ccs-wp-theme' ),
-			__( 'Smooth transition home', 'ccs-wp-theme' ),
-			__( 'Clear care plan from day one', 'ccs-wp-theme' ),
+			__( 'Free care consultation, no pressure', 'ccs-wp-theme' ),
+			__( 'Matched with your carer before day one', 'ccs-wp-theme' ),
+			__( 'A plan built around you, not a rota', 'ccs-wp-theme' ),
 		),
-		'link_text'   => __( 'Hospital discharge support', 'ccs-wp-theme' ),
-		'link_url'    => home_url( '/hospital-discharge/' ),
-		'urgent'      => true,
-		'icon'        => 'hospital',
+		'link_text'   => __( 'How it works', 'ccs-wp-theme' ),
+		'link_url'    => ( function_exists( 'ccs_page_url' ) ? ccs_page_url( 'getting-started' ) : home_url( '/getting-started/' ) ),
+		'icon'        => 'plan',
 	),
 	array(
 		'title'       => __( '24/7 care at home', 'ccs-wp-theme' ),
@@ -32,8 +36,7 @@ $scenarios = array(
 			__( 'Consistent, familiar carers', 'ccs-wp-theme' ),
 		),
 		'link_text'   => __( '24/7 care', 'ccs-wp-theme' ),
-		'link_url'    => home_url( '/our-care/' ),
-		'urgent'      => false,
+		'link_url'    => ( function_exists( 'ccs_page_url' ) ? ccs_page_url( 'home-care-services-kent' ) : home_url( '/home-care-services-kent/' ) ),
 		'icon'        => 'home',
 	),
 	array(
@@ -45,8 +48,7 @@ $scenarios = array(
 			__( 'Clear, jargon-free guidance', 'ccs-wp-theme' ),
 		),
 		'link_text'   => __( 'Compare options', 'ccs-wp-theme' ),
-		'link_url'    => home_url( '/contact/' ),
-		'urgent'      => false,
+		'link_url'    => ( function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' ) : home_url( '/contact-us/' ) ),
 		'icon'        => 'compare',
 	),
 );
@@ -61,9 +63,6 @@ $scenarios = array(
 			<?php foreach ( $scenarios as $s ) : ?>
 				<article class="home-scenario-card card">
 					<div class="home-scenario-card__header">
-						<?php if ( ! empty( $s['urgent'] ) ) : ?>
-							<span class="badge badge-urgent"><?php esc_html_e( 'Urgent', 'ccs-wp-theme' ); ?></span>
-						<?php endif; ?>
 						<h3 class="home-scenario-card__title"><?php echo esc_html( $s['title'] ); ?></h3>
 					</div>
 					<div class="home-scenario-card__body card-body">
@@ -83,7 +82,7 @@ $scenarios = array(
 		</div>
 		<p class="home-scenarios__footer-cta">
 			<?php esc_html_e( 'Still not sure?', 'ccs-wp-theme' ); ?>
-			<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>"><?php esc_html_e( 'Talk to us', 'ccs-wp-theme' ); ?></a>
+			<a href="<?php echo esc_url( ( function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' ) : home_url( '/contact-us/' ) ) ); ?>"><?php esc_html_e( 'Talk to us', 'ccs-wp-theme' ); ?></a>
 		</p>
 	</div>
 </section>

@@ -50,7 +50,7 @@
 					"name": "Body"
 				},
 				{
-					"fontFamily": "\"Poppins\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+					"fontFamily": "\"Lora\", Georgia, \"Times New Roman\", serif",
 					"slug": "heading",
 					"name": "Heading"
 				}

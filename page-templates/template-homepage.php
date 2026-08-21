@@ -2,7 +2,11 @@
 /**
  * Template Name: Homepage
  *
- * Full-width homepage per content guide §2b: hero, why choose us, CQC, care options (services), info cards, partnerships, testimonial.
+ * Full-width homepage per content guide §2b: hero, why choose us, differentiators, CQC, care options (services), info cards, partnerships, testimonial.
+ *
+ * Note: template-parts/home/scenarios.php exists but is deliberately NOT included here yet.
+ * Its scenarios and links now match the site's URL structure and the "no rushed care" USP;
+ * still needs a design pass before it's wired in.
  *
  * @package CCS_WP_Theme
  * @since 1.0.0
@@ -20,13 +24,23 @@ $ccs_phone_tel = $ccs_phone ? preg_replace( '/\s+/', '', $ccs_phone ) : '';
 
 <main id="main" class="site-main site-main--homepage" role="main">
 
+	<?php
+	/*
+	 * Section order follows the family's decision path:
+	 * hero (who/what/where + CTA) -> CQC (regulatory proof, checked early)
+	 * -> why choose us (narrative) -> services (the offer)
+	 * -> differentiators (concrete proof) -> testimonial (social proof)
+	 * -> info cards (next steps) -> partnerships (supporting credibility).
+	 */
+	?>
 	<?php get_template_part( 'template-parts/home/hero' ); ?>
-	<?php get_template_part( 'template-parts/home/why-choose-us' ); ?>
 	<?php get_template_part( 'template-parts/home/cqc-section' ); ?>
+	<?php get_template_part( 'template-parts/home/why-choose-us' ); ?>
 	<?php get_template_part( 'template-parts/home/services' ); ?>
+	<?php get_template_part( 'template-parts/home/differentiators' ); ?>
+	<?php get_template_part( 'template-parts/home/testimonial' ); ?>
 	<?php get_template_part( 'template-parts/home/info-cards' ); ?>
 	<?php get_template_part( 'template-parts/home/partnerships' ); ?>
-	<?php get_template_part( 'template-parts/home/testimonial' ); ?>
 
 </main>
 
@@ -48,7 +62,7 @@ $schema_org = array(
 			'@id'             => esc_url( home_url( '/' ) ) . '#webpage',
 			'url'             => esc_url( home_url( '/' ) ),
 			'name'            => wp_get_document_title(),
-			'description'     => get_bloginfo( 'description' ) ?: __( 'Complex and personal care in Kent — from hospital discharge to long-term support.', 'ccs-wp-theme' ),
+			'description'     => get_bloginfo( 'description' ) ?: __( 'Complex and personal home care in Kent — a small, consistent team matched to you, for however long you need us.', 'ccs-wp-theme' ),
 			'isPartOf'        => array(
 				'@id' => esc_url( home_url( '/' ) ) . '#website',
 			),

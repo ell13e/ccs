@@ -43,6 +43,7 @@ require_once THEME_DIR . '/inc/theme-setup.php';
  * Header and footer helpers (contact info, footer fallback menus).
  */
 require_once THEME_DIR . '/inc/header-footer-helpers.php';
+require_once THEME_DIR . '/inc/team.php';
 
 /**
  * Block patterns (CCS Patterns category).

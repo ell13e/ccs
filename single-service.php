@@ -68,23 +68,31 @@ while ( have_posts() ) :
 <main id="main" class="site-main site-main--service" role="main">
 
 	<!-- Hero: full-width, light background -->
-	<header class="service-hero">
+	<header class="service-hero<?php echo has_post_thumbnail( $post_id ) ? ' service-hero--photo' : ''; ?>">
 		<div class="service-hero__inner container container--lg">
-			<nav class="service-hero__breadcrumbs" aria-label="<?php esc_attr_e( 'Breadcrumb', 'ccs-wp-theme' ); ?>">
-				<ol class="service-hero__breadcrumb-list">
-					<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Home', 'ccs-wp-theme' ); ?></a></li>
-					<li><a href="<?php echo esc_url( get_post_type_archive_link( 'service' ) ); ?>"><?php esc_html_e( 'Services', 'ccs-wp-theme' ); ?></a></li>
-					<li aria-current="page"><?php the_title(); ?></li>
-				</ol>
-			</nav>
-			<h1 class="service-hero__title"><?php the_title(); ?></h1>
-			<?php if ( $short_desc ) : ?>
-				<p class="service-hero__desc"><?php echo esc_html( $short_desc ); ?></p>
-			<?php endif; ?>
-			<?php if ( $ccs_phone_tel ) : ?>
-				<a href="<?php echo esc_url( 'tel:' . $ccs_phone_tel ); ?>" class="btn btn-phone btn-lg service-hero__cta">
-					<?php echo esc_html( $ccs_phone ); ?>
-				</a>
+			<div class="service-hero__text">
+				<?php
+				/*
+				 * Shared partial, so these match every other page. The old inline
+				 * version linked its middle crumb to get_post_type_archive_link(),
+				 * which now returns false — the service archive is disabled.
+				 */
+				get_template_part( 'template-parts/breadcrumb' );
+				?>
+				<h1 class="service-hero__title"><?php the_title(); ?></h1>
+				<?php if ( $short_desc ) : ?>
+					<p class="service-hero__desc"><?php echo esc_html( $short_desc ); ?></p>
+				<?php endif; ?>
+				<?php if ( $ccs_phone_tel ) : ?>
+					<a href="<?php echo esc_url( 'tel:' . $ccs_phone_tel ); ?>" class="btn btn-phone btn-lg service-hero__cta">
+						<?php echo esc_html( $ccs_phone ); ?>
+					</a>
+				<?php endif; ?>
+			</div>
+			<?php if ( has_post_thumbnail( $post_id ) ) : ?>
+				<div class="service-hero__media">
+					<?php echo get_the_post_thumbnail( $post_id, 'large', array( 'class' => 'service-hero__img', 'loading' => 'eager', 'fetchpriority' => 'high' ) ); ?>
+				</div>
 			<?php endif; ?>
 		</div>
 	</header>
@@ -217,7 +225,7 @@ while ( have_posts() ) :
 			<h2 id="service-cta-heading" class="service-cta__heading">
 				<?php
 				if ( $is_urgent ) {
-					esc_html_e( 'Need help now?', 'ccs-wp-theme' );
+					esc_html_e( 'Prefer to call?', 'ccs-wp-theme' );
 				} else {
 					esc_html_e( 'Ready to find out more?', 'ccs-wp-theme' );
 				}
@@ -226,7 +234,7 @@ while ( have_posts() ) :
 			<p class="service-cta__text">
 				<?php
 				if ( $is_urgent ) {
-					esc_html_e( 'Call us to discuss urgent care and we’ll respond as quickly as we can.', 'ccs-wp-theme' );
+					esc_html_e( 'Call us directly to talk through what you need.', 'ccs-wp-theme' );
 				} else {
 					esc_html_e( 'Request a callback or call us to talk through your options.', 'ccs-wp-theme' );
 				}
@@ -237,7 +245,7 @@ while ( have_posts() ) :
 					<a href="<?php echo esc_url( 'tel:' . $ccs_phone_tel ); ?>" class="btn <?php echo $is_urgent ? 'btn-phone' : 'btn-secondary'; ?> btn-lg"><?php echo esc_html( $ccs_phone ); ?></a>
 				<?php endif; ?>
 				<?php if ( ! $is_urgent ) : ?>
-					<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-primary btn-lg"><?php esc_html_e( 'Get in touch', 'ccs-wp-theme' ); ?></a>
+					<a href="<?php echo esc_url( ( function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' ) : home_url( '/contact-us/' ) ) ); ?>" class="btn btn-primary btn-lg"><?php esc_html_e( 'Get in touch', 'ccs-wp-theme' ); ?></a>
 				<?php endif; ?>
 			</div>
 		</div>

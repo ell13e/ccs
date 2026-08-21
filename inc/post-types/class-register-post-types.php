@@ -71,7 +71,14 @@ class CCS_Register_Post_Types {
 				'show_in_menu'        => true,
 				'show_in_nav_menus'   => true,
 				'show_in_rest'        => true,
-				'has_archive'         => true,
+				/*
+				 * Archive disabled deliberately. It rendered a second services hub at
+				 * /services/ that competed with the real hub page for the same
+				 * keyword (and took its <h1> from the first post, so the archive was
+				 * headed "Complex Care"). The hub page does the job properly: intro
+				 * copy, a card grid and a CTA. Singles still live at /services/<slug>/.
+				 */
+				'has_archive'         => false,
 				'rewrite'             => array( 'slug' => 'services', 'with_front' => false ),
 				'capability_type'     => 'post',
 				'map_meta_cap'        => true,
@@ -84,7 +91,7 @@ class CCS_Register_Post_Types {
 	}
 
 	/**
-	 * Locations – public, archive at /care-services/.
+	 * Locations – public, town pages at /areas/<town>/ with an archive at /areas/.
 	 */
 	private function register_locations() {
 		$labels = array(
@@ -119,8 +126,14 @@ class CCS_Register_Post_Types {
 				'show_in_menu'        => true,
 				'show_in_nav_menus'   => true,
 				'show_in_rest'        => true,
+				/*
+				 * Was 'care-services', which served every town page under
+				 * /care-services/<town>/ — semantically wrong (a town is not a
+				 * service) and colliding with the services IA. /areas/ matches
+				 * reference/sitemap-urls.md and the launch redirect map.
+				 */
 				'has_archive'         => true,
-				'rewrite'             => array( 'slug' => 'care-services', 'with_front' => false ),
+				'rewrite'             => array( 'slug' => 'areas', 'with_front' => false ),
 				'capability_type'     => 'post',
 				'map_meta_cap'        => true,
 				'hierarchical'        => false,

@@ -9,30 +9,33 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$about_url   = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'about-home-care-maidstone' ) : home_url( '/home/about-home-care-maidstone/' );
-$services_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'home-care-services-kent' ) : home_url( '/home/home-care-services-kent/' );
-$careers_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'care-careers-maidstone-kent' ) : home_url( '/home/care-careers-maidstone-kent/' );
+$about_url   = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'about-home-care-maidstone' ) : home_url( '/about-home-care-maidstone/' );
+$services_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'home-care-services-kent' ) : home_url( '/home-care-services-kent/' );
+// FAQs previously pointed at $services_url (wrong destination); careers pointed at the
+// legacy 'care-careers-maidstone-kent' page rather than the real /careers/ hub. Both fixed 2026-08-19.
+$faqs_url    = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'faqs' ) : home_url( '/resources/faqs/' );
+$careers_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'careers' ) : home_url( '/careers/' );
 
 $cards = array(
 	array(
 		'subheading' => __( 'About Us', 'ccs-wp-theme' ),
 		'title'      => __( 'Our Care Approach', 'ccs-wp-theme' ),
-		'body'       => __( 'Compassionate care, tailored to you. We\'re dedicated to supporting your independence, dignity, and wellbeing, by delivering trusted care services with a personal touch. Discover how our team makes a difference every day.', 'ccs-wp-theme' ),
-		'cta_text'   => __( 'Learn More', 'ccs-wp-theme' ),
+		'body'       => __( 'We’re a family-run, CQC-regulated provider in Maidstone. See how we build a care team around one person rather than filling a rota, and what that looks like week to week.', 'ccs-wp-theme' ),
+		'cta_text'   => __( 'Learn more', 'ccs-wp-theme' ),
 		'cta_url'    => $about_url,
 	),
 	array(
 		'subheading' => __( 'FAQs', 'ccs-wp-theme' ),
 		'title'      => __( 'Home Care FAQs', 'ccs-wp-theme' ),
-		'body'       => __( 'Have questions about our home care in Maidstone & Kent? Find answers about our services, care plans, and what to expect. If you\'re finding the care search overwhelming, or need more information, our team is just a call away.', 'ccs-wp-theme' ),
-		'cta_text'   => __( 'Get Answers', 'ccs-wp-theme' ),
-		'cta_url'    => $services_url,
+		'body'       => __( 'What does care cost? How quickly can it start? Who will actually turn up? Straight answers to the questions families ask us most, with no jargon.', 'ccs-wp-theme' ),
+		'cta_text'   => __( 'Get answers', 'ccs-wp-theme' ),
+		'cta_url'    => $faqs_url,
 	),
 	array(
 		'subheading' => __( 'Careers', 'ccs-wp-theme' ),
 		'title'      => __( 'Care Careers in Kent', 'ccs-wp-theme' ),
-		'body'       => __( 'Make a real impact by joining our team. Offering rewarding roles, flexible hours, and ongoing training, we\'d love to hear from you. If you\'re passionate about helping others, explore how you can grow your career with us.', 'ccs-wp-theme' ),
-		'cta_text'   => __( 'Explore Roles', 'ccs-wp-theme' ),
+		'body'       => __( 'Flexible hours, proper training, and a team that backs you up. If you want care work where you’re given time to do the job well, we’d like to hear from you.', 'ccs-wp-theme' ),
+		'cta_text'   => __( 'Explore roles', 'ccs-wp-theme' ),
 		'cta_url'    => $careers_url,
 	),
 );

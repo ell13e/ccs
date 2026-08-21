@@ -89,6 +89,42 @@
 	text-decoration: none;
 }
 
+/* Photo variant: opt-in per service via its featured image. */
+.service-hero--photo .service-hero__inner {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: var(--space-xl);
+	align-items: center;
+}
+
+.service-hero__media {
+	order: -1;
+}
+
+.service-hero__img {
+	width: 100%;
+	height: auto;
+	max-height: 320px;
+	object-fit: cover;
+	border-radius: var(--radius-lg);
+	display: block;
+}
+
+@media (min-width: 900px) {
+	.service-hero--photo .service-hero__inner {
+		grid-template-columns: 1.1fr 1fr;
+		gap: var(--space-2xl);
+	}
+
+	.service-hero__media {
+		order: 0;
+	}
+
+	.service-hero__img {
+		max-height: 360px;
+	}
+}
+
 /* -------------------------------------------------------------------------
    MAIN BODY – two-column (content + sidebar)
    ------------------------------------------------------------------------- */
