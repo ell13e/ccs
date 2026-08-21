@@ -101,12 +101,12 @@ class CCS_Critical_CSS {
 	}
 
 	/**
-	 * Default Google Fonts URL (Poppins + Open Sans per design system).
+	 * Default Google Fonts URL (Lora + Open Sans per design system, 2026-08-19 refresh).
 	 *
 	 * @return string
 	 */
 	private function get_default_google_fonts_url() {
-		return 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap';
+		return 'https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Open+Sans:wght@400;500;600;700&display=swap';
 	}
 
 	/**

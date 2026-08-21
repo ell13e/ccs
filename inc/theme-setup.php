@@ -237,6 +237,15 @@ function ccs_theme_scripts() {
 		$version,
 		true
 	);
+	// Tiny, dependency-free, and a safe no-op on pages with no .video-embed —
+	// cheaper to load everywhere than to thread a per-template conditional.
+	wp_enqueue_script(
+		'ccs-video-embed',
+		$theme_uri . '/assets/js/video-embed.js',
+		array(),
+		$version,
+		true
+	);
 	wp_localize_script(
 		'ccs-navigation',
 		'ccsNavigation',
@@ -266,27 +275,30 @@ function ccs_theme_scripts() {
 			)
 		);
 
-		wp_enqueue_style(
-			'ccs-resource-download-modal',
-			$theme_uri . '/assets/css/resource-download-modal.css',
-			array( 'ccs-design-system', 'ccs-components' ),
-			$version
-		);
-		wp_enqueue_script(
-			'ccs-resource-download',
-			$theme_uri . '/assets/js/resource-download.js',
-			array(),
-			$version,
-			true
-		);
-		wp_localize_script(
-			'ccs-resource-download',
-			'ccsResourceDownload',
-			array(
-				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-				'nonce'   => wp_create_nonce( 'ccs_resource_download' ),
-			)
-		);
+		// Resource-download modal assets: only where a download can actually be triggered.
+		if ( ! function_exists( 'ccs_needs_resource_downloads' ) || ccs_needs_resource_downloads() ) {
+			wp_enqueue_style(
+				'ccs-resource-download-modal',
+				$theme_uri . '/assets/css/resource-download-modal.css',
+				array( 'ccs-design-system', 'ccs-components' ),
+				$version
+			);
+			wp_enqueue_script(
+				'ccs-resource-download',
+				$theme_uri . '/assets/js/resource-download.js',
+				array(),
+				$version,
+				true
+			);
+			wp_localize_script(
+				'ccs-resource-download',
+				'ccsResourceDownload',
+				array(
+					'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+					'nonce'   => wp_create_nonce( 'ccs_resource_download' ),
+				)
+			);
+		}
 	}
 }
 add_action( 'wp_enqueue_scripts', 'ccs_theme_scripts' );

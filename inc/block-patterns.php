@@ -26,7 +26,7 @@ add_action( 'init', 'ccs_register_block_pattern_category' );
  * Register block patterns.
  */
 function ccs_register_block_patterns() {
-	$contact_url = esc_url( home_url( '/contact/' ) );
+	$contact_url = esc_url( ( function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' ) : home_url( '/contact-us/' ) ) );
 
 	// Service / CTA box
 	register_block_pattern( 'ccs-wp-theme/service-cta-box', array(
@@ -78,7 +78,7 @@ function ccs_register_block_patterns() {
 <div class="wp-block-group has-background-background-color has-background" style="border-radius:14px;padding-top:var(--wp--preset--spacing--md);padding-right:var(--wp--preset--spacing--lg);padding-bottom:var(--wp--preset--spacing--md);padding-left:var(--wp--preset--spacing--lg)"><!-- wp:columns -->
 <div class="wp-block-columns"><!-- wp:column -->
 <div class="wp-block-column"><!-- wp:paragraph {"align":"center","style":{"typography":{"fontSize":"1.75rem","fontWeight":"700"}}} -->
-<p class="has-text-align-center" style="font-size:1.75rem;font-weight:700">15+</p>
+<p class="has-text-align-center" style="font-size:1.75rem;font-weight:700">10+</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph {"align":"center","style":{"typography":{"fontSize":"0.9375rem"}}} -->

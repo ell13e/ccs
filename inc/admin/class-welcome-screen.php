@@ -161,20 +161,22 @@ class CCS_Welcome_Screen {
 			add_query_arg( 'ccs_reset_demo', '1', admin_url( 'themes.php?page=' . self::PAGE_SLUG ) ),
 			'ccs_reset_demo'
 		);
-		$reset_confirm = __( 'This will delete all demo pages (care and careers), all service posts, and the Primary, Footer, and Careers menus, then recreate them. Continue?', 'ccs-wp-theme' );
+		$reset_confirm = __( 'This will delete all demo pages (care and careers), all service posts, all location posts, and the Primary, Footer, and Careers menus, then recreate them. Continue?', 'ccs-wp-theme' );
 		$demo_reset_message = isset( $_GET['ccs_demo_reset'] ) ? __( 'Demo content has been reset and recreated.', 'ccs-wp-theme' ) : '';
 		$populate_done = isset( $_GET['ccs_populate_done'] ) ? sanitize_text_field( wp_unslash( $_GET['ccs_populate_done'] ) ) : '';
 		$populate_messages = array(
 			'pages'   => __( 'Pages have been created or updated.', 'ccs-wp-theme' ),
 			'services' => __( 'Service posts have been created or updated.', 'ccs-wp-theme' ),
+			'locations' => __( 'Location posts have been created or updated.', 'ccs-wp-theme' ),
 			'menus'   => __( 'Menus and settings have been updated.', 'ccs-wp-theme' ),
-			'entire'  => __( 'Entire site has been populated (pages, services, menus, reading, permalinks).', 'ccs-wp-theme' ),
+			'entire'  => __( 'Entire site has been populated (pages, services, locations, menus, reading, permalinks).', 'ccs-wp-theme' ),
 		);
 		$populate_message = isset( $populate_messages[ $populate_done ] ) ? $populate_messages[ $populate_done ] : '';
 		$updated_message   = isset( $_GET['updated'] ) ? __( 'Checklist updated.', 'ccs-wp-theme' ) : '';
 
 		$populate_pages_url  = wp_nonce_url( add_query_arg( 'ccs_populate', 'pages', admin_url( 'themes.php?page=' . self::PAGE_SLUG ) ), 'ccs_populate_pages' );
 		$populate_services_url = wp_nonce_url( add_query_arg( 'ccs_populate', 'services', admin_url( 'themes.php?page=' . self::PAGE_SLUG ) ), 'ccs_populate_services' );
+		$populate_locations_url = wp_nonce_url( add_query_arg( 'ccs_populate', 'locations', admin_url( 'themes.php?page=' . self::PAGE_SLUG ) ), 'ccs_populate_locations' );
 		$populate_menus_url  = wp_nonce_url( add_query_arg( 'ccs_populate', 'menus', admin_url( 'themes.php?page=' . self::PAGE_SLUG ) ), 'ccs_populate_menus' );
 		$populate_entire_url = wp_nonce_url( add_query_arg( 'ccs_populate', 'entire', admin_url( 'themes.php?page=' . self::PAGE_SLUG ) ), 'ccs_populate_entire' );
 
@@ -262,10 +264,11 @@ class CCS_Welcome_Screen {
 
 			<section class="ccs-welcome-section ccs-welcome-reset">
 				<h2><?php esc_html_e( 'Demo content', 'ccs-wp-theme' ); ?></h2>
-				<p><?php esc_html_e( 'On theme activation, the theme creates demo pages (care and careers), service posts, menus, and configures Reading and permalinks. You can run individual populate steps or reset and recreate everything.', 'ccs-wp-theme' ); ?></p>
+				<p><?php esc_html_e( 'On theme activation, the theme creates demo pages (care and careers), service posts, location posts, menus, and configures Reading and permalinks. You can run individual populate steps or reset and recreate everything.', 'ccs-wp-theme' ); ?></p>
 				<p>
 					<a href="<?php echo esc_url( $populate_pages_url ); ?>" class="button"><?php esc_html_e( 'Populate pages', 'ccs-wp-theme' ); ?></a>
 					<a href="<?php echo esc_url( $populate_services_url ); ?>" class="button"><?php esc_html_e( 'Populate services', 'ccs-wp-theme' ); ?></a>
+					<a href="<?php echo esc_url( $populate_locations_url ); ?>" class="button"><?php esc_html_e( 'Populate locations', 'ccs-wp-theme' ); ?></a>
 					<a href="<?php echo esc_url( $populate_menus_url ); ?>" class="button"><?php esc_html_e( 'Populate menus &amp; settings', 'ccs-wp-theme' ); ?></a>
 					<a href="<?php echo esc_url( $populate_entire_url ); ?>" class="button button-primary"><?php esc_html_e( 'Populate entire site', 'ccs-wp-theme' ); ?></a>
 				</p>

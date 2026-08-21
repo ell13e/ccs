@@ -26,9 +26,20 @@ $ccs_parking  = get_theme_mod( 'ccs_contact_parking', '' );
 
 <main id="main" class="site-main site-main--contact" role="main">
 
+	<?php
+	/*
+	 * Breadcrumb sits outside .contact-layout__inner. It used to be a direct child
+	 * of that two-column grid (1fr 380px), so it consumed the first cell and
+	 * pushed the form into the narrow right column while the info column wrapped
+	 * to the wide left one — exactly inverting the intended layout.
+	 */
+	?>
+	<div class="contact-breadcrumb container container--lg">
+		<?php get_template_part( 'template-parts/breadcrumb' ); ?>
+	</div>
+
 	<div class="contact-layout">
 		<div class="contact-layout__inner container container--lg">
-			<?php get_template_part( 'template-parts/breadcrumb' ); ?>
 			<!-- LEFT: Contact form (content guide §10) -->
 			<div class="contact-form-col">
 				<h1 class="contact-form-col__title"><?php esc_html_e( 'Book Your Free Care Consultation', 'ccs-wp-theme' ); ?></h1>
@@ -59,7 +70,6 @@ $ccs_parking  = get_theme_mod( 'ccs_contact_parking', '' );
 						<option value="live-in"><?php esc_html_e( 'Live-in care', 'ccs-wp-theme' ); ?></option>
 						<option value="visiting"><?php esc_html_e( 'Visiting care', 'ccs-wp-theme' ); ?></option>
 						<option value="respite"><?php esc_html_e( 'Respite care', 'ccs-wp-theme' ); ?></option>
-						<option value="hospital-discharge"><?php esc_html_e( 'Hospital discharge', 'ccs-wp-theme' ); ?></option>
 						<option value="not-sure"><?php esc_html_e( 'Not sure yet', 'ccs-wp-theme' ); ?></option>
 					</select>
 
@@ -69,7 +79,7 @@ $ccs_parking  = get_theme_mod( 'ccs_contact_parking', '' );
 					<label for="contact-urgency" class="contact-form__label"><?php esc_html_e( 'Urgency', 'ccs-wp-theme' ); ?></label>
 					<select id="contact-urgency" name="enquiry_urgency" class="contact-form__select">
 						<option value=""><?php esc_html_e( '— Select —', 'ccs-wp-theme' ); ?></option>
-						<option value="urgent"><?php esc_html_e( 'Urgent (e.g. hospital discharge)', 'ccs-wp-theme' ); ?></option>
+						<option value="urgent"><?php esc_html_e( 'As soon as possible', 'ccs-wp-theme' ); ?></option>
 						<option value="soon"><?php esc_html_e( 'Within the next few weeks', 'ccs-wp-theme' ); ?></option>
 						<option value="exploring"><?php esc_html_e( 'Just exploring options', 'ccs-wp-theme' ); ?></option>
 					</select>
@@ -146,7 +156,7 @@ $ccs_parking  = get_theme_mod( 'ccs_contact_parking', '' );
 
 					<?php if ( $ccs_phone_tel ) : ?>
 						<div class="contact-info__emergency" role="note">
-							<p class="contact-info__emergency-text"><?php esc_html_e( 'Urgent hospital discharge? Call now.', 'ccs-wp-theme' ); ?></p>
+							<p class="contact-info__emergency-text"><?php esc_html_e( 'Prefer to talk it through? Call us.', 'ccs-wp-theme' ); ?></p>
 							<a href="<?php echo esc_url( 'tel:' . $ccs_phone_tel ); ?>" class="btn btn-phone contact-info__emergency-cta"><?php echo esc_html( $ccs_phone ); ?></a>
 						</div>
 					<?php endif; ?>
@@ -161,7 +171,7 @@ $ccs_parking  = get_theme_mod( 'ccs_contact_parking', '' );
 		<div class="contact-cards__inner container container--lg">
 			<h2 id="contact-cards-heading" class="contact-cards__heading"><?php esc_html_e( 'How can we help?', 'ccs-wp-theme' ); ?></h2>
 			<div class="contact-cards__grid">
-				<a href="<?php echo esc_url( home_url( '/contact/#contact-form' ) ); ?>" class="contact-card card">
+				<a href="<?php echo esc_url( ( ( function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' ) : home_url( '/contact-us/' ) ) . '#contact-form' ) ); ?>" class="contact-card card">
 					<div class="contact-card__body card-body">
 						<h3 class="contact-card__title"><?php esc_html_e( 'Book assessment', 'ccs-wp-theme' ); ?></h3>
 						<p class="contact-card__desc"><?php esc_html_e( 'Schedule a visit so we can understand your needs and discuss options.', 'ccs-wp-theme' ); ?></p>
@@ -171,13 +181,13 @@ $ccs_parking  = get_theme_mod( 'ccs_contact_parking', '' );
 				<?php if ( $ccs_phone_tel ) : ?>
 					<a href="<?php echo esc_url( 'tel:' . $ccs_phone_tel ); ?>" class="contact-card contact-card--urgent card">
 						<div class="contact-card__body card-body">
-							<h3 class="contact-card__title"><?php esc_html_e( 'Emergency care', 'ccs-wp-theme' ); ?></h3>
-							<p class="contact-card__desc"><?php esc_html_e( 'Urgent situations including hospital discharge. We’ll respond as quickly as we can.', 'ccs-wp-theme' ); ?></p>
-							<span class="contact-card__link"><?php esc_html_e( 'Call now', 'ccs-wp-theme' ); ?> &rarr;</span>
+							<h3 class="contact-card__title"><?php esc_html_e( 'Prefer to call?', 'ccs-wp-theme' ); ?></h3>
+							<p class="contact-card__desc"><?php esc_html_e( 'Speak to our team directly if that\'s easier than the form. We\'ll talk through what would help.', 'ccs-wp-theme' ); ?></p>
+							<span class="contact-card__link"><?php esc_html_e( 'Call us', 'ccs-wp-theme' ); ?> &rarr;</span>
 						</div>
 					</a>
 				<?php endif; ?>
-				<a href="<?php echo esc_url( home_url( '/contact/#contact-form' ) ); ?>" class="contact-card card">
+				<a href="<?php echo esc_url( ( ( function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' ) : home_url( '/contact-us/' ) ) . '#contact-form' ) ); ?>" class="contact-card card">
 					<div class="contact-card__body card-body">
 						<h3 class="contact-card__title"><?php esc_html_e( 'General enquiry', 'ccs-wp-theme' ); ?></h3>
 						<p class="contact-card__desc"><?php esc_html_e( 'Questions about our services, funding, or how we work. We’re happy to help.', 'ccs-wp-theme' ); ?></p>

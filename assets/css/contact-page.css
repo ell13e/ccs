@@ -255,11 +255,13 @@
 	border: 0;
 }
 
-/* Emergency note */
+/* "Prefer to call?" note — deliberately calm, not an alert. Was styled in
+   --color-urgent red/pink when this was an "Emergency care" callout; the
+   copy changed but the styling didn't, so it visually contradicted itself. */
 .contact-info__emergency {
 	padding: var(--space-md);
-	background-color: #fef2f2;
-	border: 1px solid rgba(198, 75, 75, 0.3);
+	background-color: rgba(86, 66, 152, 0.06);
+	border: 1px solid rgba(86, 66, 152, 0.18);
 	border-radius: var(--card-radius, 0.5rem);
 }
 
@@ -267,7 +269,7 @@
 	margin: 0 0 var(--space-sm);
 	font-size: var(--text-sm);
 	font-weight: var(--font-weight-semibold);
-	color: var(--color-urgent);
+	color: var(--color-primary-dark);
 }
 
 .contact-info__emergency-cta {
@@ -357,16 +359,23 @@
 	color: var(--color-primary);
 }
 
-.contact-card--urgent .contact-card__title {
-	color: var(--color-urgent);
-}
-
-.contact-card--urgent .contact-card__link {
-	color: var(--color-urgent);
-}
+/*
+ * .contact-card--urgent (still on the "Prefer to call?" card in
+ * template-contact.php) previously forced this red — that was right when
+ * the card was labelled "Emergency care." Now that it's a plain "prefer to
+ * call" option, it should look like any other contact card: the shared
+ * .contact-card__title / __link purple above already does that, so there's
+ * nothing left to override here.
+ */
 
 @media (prefers-reduced-motion: reduce) {
 	.contact-card {
 		transition: none;
 	}
+}
+
+/* Breadcrumb row above the two-column grid. It previously sat inside the grid
+   and consumed a column cell, inverting the form/info layout. */
+.contact-breadcrumb {
+	padding-top: var(--space-lg);
 }

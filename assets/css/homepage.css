@@ -17,152 +17,301 @@
 }
 
 /* -------------------------------------------------------------------------
-   HERO SECTION
+   HERO SECTION — full-bleed photo, gradient scrim, content anchored bottom-left.
+   Mirrors reference/finding-what-fits-prototype/ (agreed design quality bar).
    ------------------------------------------------------------------------- */
 
 .home-hero {
-	padding-block: var(--space-xl) var(--space-2xl);
-	background-color: var(--color-background-grey);
+	position: relative;
+	z-index: 5;
+	display: flex;
+	align-items: flex-end;      /* copy sits in the lower band so the photo breathes above */
+	min-height: min(82vh, 760px);
+	min-height: min(82svh, 760px);
+	padding-block: var(--space-3xl) var(--space-2xl);
+	overflow: hidden;
+	isolation: isolate;
+	color: #fff;
+	background-color: var(--color-primary-dark); /* shows through before the photo paints */
+}
+
+.home-hero__bg {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	width: 100%;
+	height: 100%;
+	max-width: none;
+	object-fit: cover;
+	/* Subjects sit right of centre in this photo; hold them there so they stay
+	   clear of the text panel and the heaviest part of the scrim. */
+	object-position: 58% 45%;
+}
+
+/* Dual gradient: diagonal for left-side type legibility, bottom-up for the
+   content band. Guarantees WCAG contrast for white text over any photo. */
+.home-hero__scrim {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	background:
+		linear-gradient(105deg, rgba(28, 18, 52, 0.92) 0%, rgba(48, 34, 90, 0.78) 30%, rgba(48, 34, 90, 0.3) 55%, transparent 88%),
+		linear-gradient(to top, rgba(28, 18, 52, 0.6) 0%, rgba(28, 18, 52, 0.2) 34%, transparent 60%);
 }
 
 .home-hero__inner {
-	max-width: var(--bp-xl);
-}
-
-.home-hero__grid {
-	display: grid;
-	gap: var(--space-xl);
-	align-items: center;
-}
-
-@media (min-width: 1024px) {
-	.home-hero__grid {
-		grid-template-columns: 1fr 1fr;
-		gap: var(--space-2xl);
-	}
-}
-
-.home-hero__title {
-	margin: 0 0 var(--space-md);
-	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-bold);
-	line-height: var(--leading-tight);
-	color: var(--color-primary-dark);
-}
-
-@media (min-width: 768px) {
-	.home-hero__title {
-		font-size: var(--text-3xl);
-	}
-}
-
-@media (min-width: 1024px) {
-	.home-hero__title {
-		font-size: var(--text-4xl);
-	}
-}
-
-.home-hero__subtitle {
-	margin: 0 0 var(--space-lg);
-	font-size: var(--text-base);
-	line-height: var(--leading-relaxed);
-	color: var(--color-text);
-}
-
-@media (min-width: 768px) {
-	.home-hero__subtitle {
-		font-size: var(--text-md);
-	}
-}
-
-.home-hero__ctas {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--space-sm);
-	margin-bottom: var(--space-lg);
-}
-
-.home-hero__cta-primary,
-.home-hero__cta-secondary {
-	text-decoration: none;
-}
-
-.home-hero__trust {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--space-sm);
-	font-size: var(--text-sm);
-	color: var(--color-text);
-}
-
-.home-hero__trust-item {
 	position: relative;
-	padding-inline-end: var(--space-sm);
-}
-
-.home-hero__trust-item:not(:last-child)::after {
-	content: "·";
-	position: absolute;
-	right: 0;
-}
-
-/* Hero image + overlay stats card */
-.home-hero__media {
-	position: relative;
-}
-
-.home-hero__image-wrap {
-	position: relative;
-	border-radius: var(--card-radius, 0.5rem);
-	overflow: hidden;
-	aspect-ratio: 4 / 3;
-	background-color: var(--color-border);
-}
-
-.home-hero__image {
+	z-index: 2;
 	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	display: block;
 }
 
-.home-hero__image-wrap--placeholder {
-	aspect-ratio: 4 / 3;
+.home-hero__panel {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	width: 100%;
+	max-width: min(42rem, 100%);
 }
 
-.home-hero__placeholder {
-	position: absolute;
-	inset: 0;
-	background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-secondary) 100%);
-	opacity: 0.2;
-}
-
-.home-hero__stats-card {
-	position: absolute;
-	bottom: var(--space-md);
-	left: var(--space-md);
-	right: var(--space-md);
-	padding: var(--space-md) var(--space-lg);
-	background-color: var(--color-background);
-	border-radius: var(--radius-lg, 0.5rem);
-	border-inline-start: 4px solid var(--color-secondary);
-	box-shadow: var(--shadow-elevated);
-	z-index: var(--z-dropdown);
-}
-
-.home-hero__stats-value {
-	display: block;
-	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-bold);
-	color: var(--color-primary);
+/* Scoped with the section class so it beats `.ds-root h1` (0,1,1), which
+   otherwise repaints this dark purple and makes it vanish into the scrim. */
+.home-hero .home-hero__title {
+	margin: 0;
+	font-family: var(--font-family-heading);
+	font-size: var(--text-4xl);
+	font-weight: var(--font-weight-normal);
 	line-height: var(--leading-tight);
+	letter-spacing: -0.02em;
+	color: #fff;
+	text-wrap: balance;
+	text-shadow: 0 2px 24px rgba(46, 32, 74, 0.45);
 }
 
-.home-hero__stats-label {
+/* Brand promise: serif, mint accent. The one line that carries the identity. */
+.home-hero__promise {
+	margin: var(--space-sm) 0 0;
+	font-family: var(--font-family-heading);
+	font-size: var(--text-lg);
+	font-style: italic;
+	font-weight: var(--font-weight-medium);
+	line-height: var(--leading-snug);
+	color: var(--color-secondary);
+	text-shadow: 0 2px 20px rgba(12, 8, 28, 0.75), 0 1px 2px rgba(12, 8, 28, 0.5);
+}
+
+.home-hero__support {
+	max-width: 36rem;
+	margin: var(--space-md) 0 0;
+	font-size: var(--text-md);
+	line-height: var(--leading-relaxed);
+	color: #fff;
+	text-wrap: pretty;
+	text-shadow: 0 2px 20px rgba(12, 8, 28, 0.8), 0 1px 3px rgba(12, 8, 28, 0.55);
+}
+
+.home-hero__actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-sm) var(--space-md);
+	margin-top: var(--space-lg);
+}
+
+.home-hero__cta {
+	min-height: 3rem;
+	padding: var(--space-sm) var(--space-lg);
+	font-size: var(--text-base);
+	box-shadow: 0 8px 24px rgba(20, 12, 40, 0.35);
+}
+
+/* Secondary: outline only, so the accent CTA stays the single clear primary. */
+.home-hero__call {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 3rem;
+	padding: var(--space-sm) var(--space-lg);
 	font-size: var(--text-sm);
-	color: var(--color-text);
+	font-weight: var(--font-weight-semibold);
+	color: #fff;
+	text-decoration: none;
+	background: transparent;
+	border: 1.5px solid rgba(255, 255, 255, 0.7);
+	border-radius: 999px;
+	transition:
+		background-color var(--duration-fast) var(--ease-out),
+		border-color var(--duration-fast) var(--ease-out);
 }
 
+.home-hero__call:hover {
+	background: rgba(255, 255, 255, 0.14);
+	border-color: #fff;
+	color: #fff;
+}
+
+.home-hero__call:focus-visible {
+	outline: 2px solid #fff;
+	outline-offset: 2px;
+}
+
+/* Quiet proof line: deliberately small and muted so it reassures without
+   competing with the CTA. The mint dot and mint underline are what stop it
+   reading as plain grey small print. */
+.home-hero__proof {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-xs) var(--space-sm);
+	margin: var(--space-lg) 0 0;
+	font-size: var(--text-xs);
+	line-height: var(--leading-normal);
+	color: rgba(255, 255, 255, 0.75);
+	text-shadow: 0 1px 12px rgba(12, 8, 28, 0.8);
+}
+
+.home-hero__proof strong {
+	font-weight: var(--font-weight-bold);
+	color: #fff;
+}
+
+.home-hero__proof-sep {
+	width: 4px;
+	height: 4px;
+	border-radius: 50%;
+	background: var(--color-secondary);
+	opacity: 0.85;
+	flex-shrink: 0;
+}
+
+.home-hero__cqc {
+	color: #fff;
+	font-weight: var(--font-weight-semibold);
+	text-decoration: none;
+	border-bottom: 1px solid var(--color-secondary);
+	padding-bottom: 1px;
+}
+
+.home-hero__cqc:hover {
+	color: var(--color-secondary);
+}
+
+.home-hero__cqc:focus-visible {
+	outline: 2px solid #fff;
+	outline-offset: 2px;
+}
+
+/* Floating CQC rating badge, overlapping the hero photo bottom-right — the
+   same "impossible to miss" treatment used by every regulated competitor
+   benchmarked in the UI audit. The text link above stays as the mobile
+   fallback (see the 767px breakpoint below), so the rating is never lost. */
+.home-hero__cqc-badge {
+	position: absolute;
+	z-index: 3;
+	right: var(--space-lg);
+	bottom: var(--space-lg);
+	display: block;
+	width: 104px;
+	line-height: 0;
+	border-radius: var(--radius-md, 8px);
+	box-shadow: 0 6px 20px rgba(12, 8, 28, 0.35);
+	transition: transform var(--duration-fast, 150ms) var(--ease-out, ease);
+}
+
+.home-hero__cqc-badge:hover,
+.home-hero__cqc-badge:focus-visible {
+	transform: translateY(-2px);
+}
+
+.home-hero__cqc-badge:focus-visible {
+	outline: 2px solid #fff;
+	outline-offset: 3px;
+}
+
+.home-hero__cqc-badge img {
+	width: 100%;
+	height: auto;
+	display: block;
+	border-radius: inherit;
+}
+
+@media (min-width: 1024px) {
+	.home-hero__cqc-badge {
+		width: 130px;
+		right: var(--space-2xl);
+		bottom: var(--space-2xl);
+	}
+}
+
+/* Shorter hero on small screens so the fold still shows content below. */
+@media (max-width: 767px) {
+	/* Hero is already content-dense at this width; the proof-line text link
+	   carries the CQC rating instead of a second floating element. */
+	.home-hero__cqc-badge {
+		display: none;
+	}
+
+	.home-hero {
+		min-height: min(76vh, 620px);
+		min-height: min(76svh, 620px);
+		padding-block: var(--space-2xl) var(--space-xl);
+	}
+
+	.home-hero__bg {
+		/* Bias the crop upward so faces sit above the content block. */
+		object-position: 62% 22%;
+	}
+
+	/* Text spans the full width here, so it can't sit in a clear side band the
+	   way it does on desktop. Lean on the bottom-up gradient instead. */
+	.home-hero__scrim {
+		background:
+			linear-gradient(to top, rgba(28, 18, 52, 0.92) 0%, rgba(28, 18, 52, 0.72) 42%, rgba(28, 18, 52, 0.35) 70%, rgba(28, 18, 52, 0.15) 100%);
+	}
+
+	/*
+	 * Mobile carries a lot in one viewport, so trim rather than shrink:
+	 * - drop the second support sentence (desktop keeps it)
+	 * - drop the secondary call button, since the header already shows a
+	 *   persistent "Call" pill at this width
+	 * That leaves one heading, one promise, one line of support, one action.
+	 */
+	.home-hero__support-extra {
+		display: none;
+	}
+
+	.home-hero__call {
+		display: none;
+	}
+
+	.home-hero__actions {
+		align-items: stretch;
+		width: 100%;
+		margin-top: var(--space-md);
+	}
+
+	.home-hero__cta {
+		width: 100%;
+	}
+
+	.home-hero__support {
+		margin-top: var(--space-sm);
+	}
+
+	.home-hero__proof {
+		margin-top: var(--space-md);
+	}
+
+	/* Proof items stack, so the vertical rule would dangle at a line end. */
+	.home-hero__proof {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: var(--space-xs);
+	}
+
+	.home-hero__proof-sep {
+		display: none;
+	}
+}
 /* -------------------------------------------------------------------------
    WHY CHOOSE US
    ------------------------------------------------------------------------- */
@@ -173,11 +322,14 @@
 }
 
 .home-why-choose__heading {
+	max-width: 20ch;
 	margin: 0 0 var(--space-sm);
+	font-family: var(--font-family-heading);
 	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-bold);
+	font-weight: var(--font-weight-medium);
 	line-height: var(--leading-tight);
 	color: var(--color-primary-dark);
+	text-wrap: balance;
 }
 
 .home-why-choose__subheading {
@@ -188,10 +340,12 @@
 	font-style: italic;
 }
 
+/* Left-aligned with the heading. `margin-inline: auto` used to centre this
+   block inside the container while the heading stayed left, so the copy sat
+   visibly indented from its own heading. */
 .home-why-choose__body {
-	max-width: 42em;
-	margin-inline: auto;
-	font-size: var(--text-base);
+	max-width: var(--measure);
+	font-size: var(--text-md);
 	line-height: var(--leading-relaxed);
 	color: var(--color-text);
 }
@@ -204,14 +358,8 @@
 	margin-bottom: 0;
 }
 
-@media (min-width: 768px) {
-	.home-why-choose__heading {
-		font-size: var(--text-3xl);
-	}
-}
-
 /* -------------------------------------------------------------------------
-   CQC SECTION
+   CQC SECTION — trust band. Copy left, live CQC rating widget right.
    ------------------------------------------------------------------------- */
 
 .home-cqc {
@@ -219,23 +367,56 @@
 	background-color: var(--color-background-grey);
 }
 
+.home-cqc__inner {
+	display: grid;
+	gap: var(--space-lg);
+	align-items: center;
+}
+
+@media (min-width: 900px) {
+	.home-cqc__inner {
+		grid-template-columns: minmax(0, 1fr) auto;
+		gap: var(--space-2xl);
+	}
+}
+
 .home-cqc__heading {
 	margin: 0 0 var(--space-sm);
+	font-family: var(--font-family-heading);
 	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-bold);
+	font-weight: var(--font-weight-medium);
 	line-height: var(--leading-tight);
 	color: var(--color-primary-dark);
+	text-wrap: balance;
 }
 
 .home-cqc__subheading {
+	max-width: 52ch;
 	margin: 0 0 var(--space-md);
 	font-size: var(--text-md);
-	line-height: var(--leading-normal);
+	line-height: var(--leading-relaxed);
 	color: var(--color-text);
+	text-wrap: pretty;
 }
 
 .home-cqc__link-wrap {
 	margin: 0;
+}
+
+.home-cqc__badge {
+	display: flex;
+	justify-content: flex-start;
+}
+
+@media (min-width: 900px) {
+	.home-cqc__badge {
+		justify-content: flex-end;
+	}
+}
+
+.home-cqc__badge-img {
+	width: auto;
+	max-height: 8rem;
 }
 
 .home-cqc__link {
@@ -258,6 +439,81 @@
 	.home-cqc__heading {
 		font-size: var(--text-3xl);
 	}
+}
+
+/* -------------------------------------------------------------------------
+   DIFFERENTIATORS — numbered proof points. Carries the core USP (item 2:
+   client-specific recruitment). The grid columns live in responsive.css;
+   the item styling below had never been written, so this section previously
+   rendered as unstyled running text.
+   ------------------------------------------------------------------------- */
+
+.home-differentiators {
+	padding-block: var(--space-3xl);
+	background-color: var(--color-background);
+}
+
+.home-differentiators__heading {
+	max-width: 18ch;
+	margin: 0 0 var(--space-sm);
+	font-family: var(--font-family-heading);
+	font-size: var(--text-2xl);
+	font-weight: var(--font-weight-medium);
+	line-height: var(--leading-tight);
+	color: var(--color-primary-dark);
+	text-wrap: balance;
+}
+
+.home-differentiators__intro {
+	max-width: 52ch;
+	margin: 0 0 var(--space-2xl);
+	font-size: var(--text-md);
+	line-height: var(--leading-relaxed);
+	color: var(--color-text-light);
+	text-wrap: pretty;
+}
+
+.home-diff-item {
+	position: relative;
+	padding-top: var(--space-md);
+	border-top: 2px solid var(--color-secondary);
+}
+
+/* Large muted serif numeral: gives the grid rhythm without shouting. */
+.home-diff-item__number {
+	display: block;
+	margin-bottom: var(--space-2xs);
+	font-family: var(--font-family-heading);
+	font-size: var(--text-md);
+	font-weight: var(--font-weight-medium);
+	line-height: 1;
+	color: var(--color-accent);
+	font-variant-numeric: tabular-nums;
+}
+
+.home-diff-item__title {
+	margin: 0 0 var(--space-xs);
+	font-family: var(--font-family-body);
+	font-size: var(--text-lg);
+	font-weight: var(--font-weight-bold);
+	line-height: var(--leading-snug);
+	color: var(--color-primary-dark);
+	text-wrap: balance;
+}
+
+.home-diff-item__desc {
+	margin: 0 0 var(--space-sm);
+	font-size: var(--text-base);
+	line-height: var(--leading-relaxed);
+	color: var(--color-text);
+	text-wrap: pretty;
+}
+
+.home-diff-item__detail {
+	font-size: var(--text-sm);
+	line-height: var(--leading-relaxed);
+	color: var(--color-text-light);
+	text-wrap: pretty;
 }
 
 /* -------------------------------------------------------------------------
@@ -329,12 +585,17 @@
 	border-color: var(--color-primary-light);
 }
 
+/* Card titles use the body sans, not the display serif: the serif is reserved
+   for section-level headings, so component titles don't compete with the H2
+   above them (and don't wrap onto two lines in a narrow column). */
 .home-service-col__title {
 	margin: 0 0 var(--space-sm);
-	font-size: var(--text-xl);
-	font-weight: var(--font-weight-semibold);
-	line-height: var(--leading-tight);
+	font-family: var(--font-family-body);
+	font-size: var(--text-lg);
+	font-weight: var(--font-weight-bold);
+	line-height: var(--leading-snug);
 	color: var(--color-primary-dark);
+	text-wrap: balance;
 }
 
 .home-service-col__intro {
@@ -450,10 +711,12 @@
 
 .home-info-card__title {
 	margin: 0 0 var(--space-sm);
+	font-family: var(--font-family-body);
 	font-size: var(--text-lg);
-	font-weight: var(--font-weight-semibold);
-	line-height: var(--leading-tight);
+	font-weight: var(--font-weight-bold);
+	line-height: var(--leading-snug);
 	color: var(--color-primary-dark);
+	text-wrap: balance;
 }
 
 .home-info-card__text {

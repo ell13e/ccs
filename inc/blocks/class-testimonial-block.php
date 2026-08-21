@@ -32,6 +32,21 @@ class CCS_Testimonial_Block {
 		add_action( 'init', array( $this, 'register_block' ) );
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
 		add_action( 'save_post_testimonial', array( $this, 'save_meta' ), 10, 2 );
+		add_filter( 'enter_title_here', array( $this, 'filter_title_placeholder' ), 10, 2 );
+	}
+
+	/**
+	 * Title placeholder hint: testimonials are attributed by initials only, never a full name.
+	 *
+	 * @param string  $title Default placeholder.
+	 * @param WP_Post $post  Current post.
+	 * @return string
+	 */
+	public function filter_title_placeholder( $title, $post ) {
+		if ( isset( $post->post_type ) && $post->post_type === 'testimonial' ) {
+			return __( 'Initials only, e.g. J.S.', 'ccs-wp-theme' );
+		}
+		return $title;
 	}
 
 	/**
@@ -59,6 +74,9 @@ class CCS_Testimonial_Block {
 		$rating   = get_post_meta( $post->ID, self::META_RATING, true );
 		$rating   = $rating !== '' ? (int) $rating : '';
 		?>
+		<p class="description">
+			<?php esc_html_e( 'Title: attribute by initials only (e.g. "J.S."), never a full name — families and staff must stay unidentifiable.', 'ccs-wp-theme' ); ?>
+		</p>
 		<p>
 			<label for="ccs_testimonial_role"><strong><?php esc_html_e( 'Role / title', 'ccs-wp-theme' ); ?></strong></label><br>
 			<input type="text" id="ccs_testimonial_role" name="ccs_testimonial_role" value="<?php echo esc_attr( $role ); ?>" class="widefat">

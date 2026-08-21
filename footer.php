@@ -19,6 +19,21 @@
 				<?php if ( get_bloginfo( 'description' ) ) : ?>
 					<p class="footer-modern-description"><?php echo esc_html( get_bloginfo( 'description' ) ); ?></p>
 				<?php endif; ?>
+				<?php
+				$footer_phone   = get_theme_mod( 'ccs_phone', '01234 567890' );
+				$footer_address = get_theme_mod( 'ccs_contact_address', '' );
+				if ( $footer_phone || $footer_address ) :
+					?>
+					<div class="footer-modern-contact">
+						<?php if ( $footer_phone ) : ?>
+							<a href="<?php echo esc_url( 'tel:' . preg_replace( '/\s+/', '', $footer_phone ) ); ?>" class="footer-modern-contact__phone"><?php echo esc_html( $footer_phone ); ?></a>
+						<?php endif; ?>
+						<?php if ( $footer_address ) : ?>
+							<address class="footer-modern-contact__address"><?php echo nl2br( esc_html( $footer_address ) ); ?></address>
+						<?php endif; ?>
+					</div>
+				<?php endif; ?>
+				<?php get_template_part( 'template-parts/cqc-regulated-badge', null, array( 'variant' => 'purple' ) ); ?>
 			</div>
 		</div>
 
@@ -118,8 +133,11 @@
 </script>
 
 <?php
-get_template_part( 'template-parts/resource-download-modal' );
-get_template_part( 'template-parts/resource-unavailable-modal' );
+// Only on pages that can actually trigger a care-guide download; see ccs_needs_resource_downloads().
+if ( ! function_exists( 'ccs_needs_resource_downloads' ) || ccs_needs_resource_downloads() ) {
+	get_template_part( 'template-parts/resource-download-modal' );
+	get_template_part( 'template-parts/resource-unavailable-modal' );
+}
 ?>
 
 <?php wp_footer(); ?>

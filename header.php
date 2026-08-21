@@ -53,35 +53,24 @@ $ccs_emergency       = $ccs_emergency_on && ( $ccs_emergency_text || $ccs_phone 
 <?php endif; ?>
 
 <header id="masthead" class="site-header" role="banner">
-	<!-- Top bar -->
-	<div class="site-header__top">
-		<div class="site-header__top-inner">
-			<div class="site-header__top-left">
-				<?php if ( $ccs_cqc_url ) : ?>
-					<a href="<?php echo esc_url( $ccs_cqc_url ); ?>" class="site-header__cqc" target="_blank" rel="noopener noreferrer" aria-label="<?php esc_attr_e( 'Care Quality Commission – view our profile (opens in new window)', 'ccs-wp-theme' ); ?>">
-						<?php if ( $ccs_cqc_img ) : ?>
-							<img src="<?php echo esc_url( $ccs_cqc_img ); ?>" alt="" width="80" height="32" loading="lazy">
-						<?php else : ?>
-							<span class="site-header__cqc-text"><?php esc_html_e( 'CQC Regulated', 'ccs-wp-theme' ); ?></span>
-						<?php endif; ?>
-					</a>
-				<?php endif; ?>
-			</div>
-			<div class="site-header__top-right">
-				<?php if ( $ccs_office_hours ) : ?>
-					<span class="site-header__hours" aria-label="<?php esc_attr_e( 'Office hours', 'ccs-wp-theme' ); ?>"><?php echo esc_html( $ccs_office_hours ); ?></span>
-				<?php endif; ?>
-				<?php if ( $ccs_phone ) : ?>
-					<a href="<?php echo esc_url( 'tel:' . preg_replace( '/\s+/', '', $ccs_phone ) ); ?>" class="site-header__phone"><?php echo esc_html( $ccs_phone ); ?></a>
-				<?php endif; ?>
-			</div>
-		</div>
-	</div>
+	<?php
+	/*
+	 * Top utility bar removed 2026-08-19: it added a strip of chrome above the
+	 * header that the agreed reference design doesn't have. The phone moved
+	 * into the main row as a pill; CQC and office hours are carried by the
+	 * hero proof line and the footer instead.
+	 */
+	?>
 
 	<!-- Main header (CTA-style) -->
 	<?php
 	$ccs_contact = function_exists( 'ccs_get_contact_info' ) ? ccs_get_contact_info() : array( 'phone' => $ccs_phone, 'phone_link' => $ccs_phone ? 'tel:' . preg_replace( '/\s+/', '', $ccs_phone ) : '' );
-	$ccs_cta_url = get_theme_mod( 'ccs_cta_url', home_url( '/contact/' ) );
+	// Resolve the real Contact permalink; the previous home_url( '/contact/' )
+	// default pointed at a URL that doesn't exist (the page slug is contact-us).
+	$ccs_contact_default = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' ) : home_url( '/contact-us/' );
+	$ccs_cta_url = get_theme_mod( 'ccs_cta_url', $ccs_contact_default );
+	// "Switch to us" — dedicated CTA for families unhappy with their current provider (see BUILD-LOG.md 2026-08-19). Points at Contact until a dedicated page/form exists.
+	$ccs_switch_url = get_theme_mod( 'ccs_switch_to_us_url', $ccs_contact_default );
 
 	// On careers pages, show careers menu if assigned; otherwise primary.
 	$ccs_careers_page_ids = (array) get_option( 'ccs_careers_page_ids', array() );
@@ -106,8 +95,24 @@ $ccs_emergency       = $ccs_emergency_on && ( $ccs_emergency_text || $ccs_phone 
 	<div class="header-container">
 		<div class="header-inner-wrapper">
 			<div class="header-logo">
-				<?php if ( has_custom_logo() ) : ?>
-					<?php the_custom_logo(); ?>
+				<?php
+				$ccs_logo_rel     = '/assets/images/brand/ccs-logo-long.png';
+				$ccs_logo_default = get_template_directory() . $ccs_logo_rel;
+				if ( has_custom_logo() ) :
+					the_custom_logo();
+				elseif ( file_exists( $ccs_logo_default ) ) :
+					// Packaged brand lockup, so the header shows the real logo rather than
+					// plain text before anyone uploads one in the Customizer.
+					?>
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="logo-link logo-link--img" rel="home">
+						<img
+							src="<?php echo esc_url( get_template_directory_uri() . $ccs_logo_rel ); ?>"
+							alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>"
+							class="header-logo__img"
+							width="1617"
+							height="276"
+						>
+					</a>
 				<?php else : ?>
 					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="logo-link" rel="home"><?php bloginfo( 'name' ); ?></a>
 				<?php endif; ?>
@@ -150,10 +155,19 @@ $ccs_emergency       = $ccs_emergency_on && ( $ccs_emergency_text || $ccs_phone 
 			</nav>
 
 			<div class="header-actions">
+				<?php
+				/*
+				 * Two actions only. "Book a free consultation" is deliberately absent:
+				 * the hero and page-level CTAs carry it, so repeating it here just
+				 * competed with itself.
+				 */
+				?>
 				<?php if ( ! empty( $ccs_contact['phone'] ) ) : ?>
-					<a href="<?php echo esc_url( $ccs_contact['phone_link'] ); ?>" class="header-actions__phone"><?php echo esc_html( $ccs_contact['phone'] ); ?></a>
+					<a href="<?php echo esc_url( $ccs_contact['phone_link'] ); ?>" class="header-actions__phone btn btn-primary">
+						<?php echo esc_html( $ccs_contact['phone'] ); ?>
+					</a>
 				<?php endif; ?>
-				<a href="<?php echo esc_url( $ccs_cta_url ); ?>" class="header-actions__cta btn btn-primary"><?php esc_html_e( 'Book a care consultation', 'ccs-wp-theme' ); ?></a>
+				<a href="<?php echo esc_url( $ccs_switch_url ); ?>" class="header-actions__switch btn btn-accent"><?php esc_html_e( 'Switch to us', 'ccs-wp-theme' ); ?></a>
 			</div>
 		</div>
 
@@ -189,10 +203,16 @@ $ccs_emergency       = $ccs_emergency_on && ( $ccs_emergency_text || $ccs_phone 
 				}
 				?>
 			</nav>
-			<?php if ( ! empty( $ccs_contact['phone'] ) ) : ?>
-				<a href="<?php echo esc_url( $ccs_contact['phone_link'] ); ?>" class="mobile-menu__phone"><?php echo esc_html( $ccs_contact['phone'] ); ?></a>
-			<?php endif; ?>
-			<a href="<?php echo esc_url( $ccs_cta_url ); ?>" class="mobile-menu__cta btn btn-primary"><?php esc_html_e( 'Book a care consultation', 'ccs-wp-theme' ); ?></a>
+			<?php
+			/*
+			 * No phone here: the header bar already shows a persistent Call pill at
+			 * this width, so repeating it inside the panel just crowded the actions.
+			 */
+			?>
+			<div class="mobile-menu__actions">
+				<a href="<?php echo esc_url( $ccs_cta_url ); ?>" class="mobile-menu__cta btn btn-primary"><?php esc_html_e( 'Book a free consultation', 'ccs-wp-theme' ); ?></a>
+				<a href="<?php echo esc_url( $ccs_switch_url ); ?>" class="mobile-menu__switch btn btn-accent"><?php esc_html_e( 'Switch to us', 'ccs-wp-theme' ); ?></a>
+			</div>
 		</div>
 	</div>
 </header>

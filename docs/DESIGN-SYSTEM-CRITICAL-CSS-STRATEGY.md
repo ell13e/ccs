@@ -165,4 +165,4 @@ To force invalidation on theme upgrade without running WP-CLI manually:
 - [ ] Set `body` line-height to 1.6 in critical if MASTER is adopted for body.
 - [ ] Run `wp ccs regenerate-critical-css --clear` after editing critical.css.
 - [ ] Confirm first paint (header, hero, buttons) with new tokens and no FOUC; confirm inline size &lt; 14KB.
-- [ ] Document in PROJECT-STATUS-REPORT or README that after critical/design-system CSS changes, run `wp ccs regenerate-critical-css --clear` (or re-import from file per template).
+- [ ] Document in `docs/CODEBASE-PARSE.md` or README that after critical/design-system CSS changes, run `wp ccs regenerate-critical-css --clear` (or re-import from file per template).

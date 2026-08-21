@@ -60,6 +60,13 @@ phpunit.xml
 coverage/
 .nyc_output/
 
+# Video (belongs in the WP Media Library or external hosting, e.g. YouTube —
+# not theme source control; GitHub hard-rejects anything over 100MB anyway)
+*.mp4
+*.mov
+*.avi
+*.webm
+
 # Sass/SCSS (keep source only if you prefer)
 # *.css
 # Uncomment above if you commit only .scss and build CSS in CI

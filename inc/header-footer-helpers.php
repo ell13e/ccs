@@ -38,16 +38,75 @@ function ccs_get_contact_info() {
 }
 
 /**
+ * Whether the current request is inside the Careers section.
+ *
+ * The careers side is deliberately segregated from the care side: it has its own
+ * nav, its own CTA, and must not show care CTAs like "Switch to us" or
+ * "Book a free consultation" — those are aimed at families, not job seekers.
+ *
+ * @return bool
+ */
+function ccs_is_careers_context() {
+	if ( ! is_page() ) {
+		return false;
+	}
+
+	$page_id = get_queried_object_id();
+	if ( ! $page_id ) {
+		return false;
+	}
+
+	$careers_ids = (array) get_option( 'ccs_careers_page_ids', array() );
+	if ( in_array( $page_id, array_map( 'intval', array_values( $careers_ids ) ), true ) ) {
+		return true;
+	}
+
+	foreach ( get_post_ancestors( $page_id ) as $ancestor_id ) {
+		$ancestor = get_post( $ancestor_id );
+		if ( $ancestor && 'careers' === $ancestor->post_name ) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
  * Get URL for a page by slug (for footer fallback links).
  *
  * @param string $slug Page slug or path.
  * @return string URL or home_url('/slug/').
  */
 function ccs_page_url( $slug ) {
+	/*
+	 * get_page_by_path() expects a full hierarchical path, so it only ever
+	 * matched top-level pages. Every child page fell through to the
+	 * home_url( '/' . $slug . '/' ) guess below, which drops the parent segment
+	 * ("/contact-us/" instead of "/home/contact-us/"). Those URLs still resolved,
+	 * but only via WordPress's canonical redirect — so every internal CTA on the
+	 * site took a needless 301 hop. Resolve by slug across all pages instead.
+	 */
 	$page = get_page_by_path( $slug );
+
+	if ( ! $page instanceof WP_Post ) {
+		$found = get_posts(
+			array(
+				'post_type'        => 'page',
+				'name'             => $slug,
+				'post_status'      => 'publish',
+				'numberposts'      => 1,
+				'suppress_filters' => false,
+			)
+		);
+		if ( ! empty( $found ) ) {
+			$page = $found[0];
+		}
+	}
+
 	if ( $page instanceof WP_Post ) {
 		return get_permalink( $page );
 	}
+
 	return home_url( '/' . $slug . '/' );
 }
 
@@ -63,7 +122,7 @@ function ccs_primary_menu_fallback_items() {
 		array( 'title' => __( 'About Us', 'ccs-wp-theme' ), 'url' => ccs_page_url( 'about-home-care-maidstone' ) ),
 		array( 'title' => __( 'Our Services', 'ccs-wp-theme' ), 'url' => ccs_page_url( 'home-care-services-kent' ) ),
 		array( 'title' => __( "Who You'll Meet", 'ccs-wp-theme' ), 'url' => ccs_page_url( 'who-youll-meet' ) ),
-		array( 'title' => __( 'Careers', 'ccs-wp-theme' ), 'url' => ccs_page_url( 'care-careers-maidstone-kent' ) ),
+		array( 'title' => __( 'Careers', 'ccs-wp-theme' ), 'url' => ccs_page_url( 'careers' ) ),
 		array(
 			'title'    => _x( 'Resources', 'Primary nav – Home care guides parent', 'ccs-wp-theme' ),
 			'url'      => ccs_page_url( 'resources' ),
@@ -133,7 +192,7 @@ function ccs_footer_company_fallback_menu() {
 	$items = array(
 		array( 'title' => __( 'About Us', 'ccs-wp-theme' ), 'slug' => 'about-home-care-maidstone' ),
 		array( 'title' => __( 'Our Services', 'ccs-wp-theme' ), 'slug' => 'home-care-services-kent' ),
-		array( 'title' => __( 'Careers', 'ccs-wp-theme' ), 'slug' => 'care-careers-maidstone-kent' ),
+		array( 'title' => __( 'Careers', 'ccs-wp-theme' ), 'slug' => 'careers' ),
 		array( 'title' => __( 'Contact Us', 'ccs-wp-theme' ), 'slug' => 'contact-us' ),
 	);
 
@@ -154,15 +213,15 @@ function ccs_footer_help_fallback_menu() {
 		array( 'title' => __( 'FAQs', 'ccs-wp-theme' ), 'slug' => 'faqs' ),
 		array( 'title' => __( 'Privacy Policy', 'ccs-wp-theme' ), 'slug' => 'privacy-policy' ),
 		array( 'title' => __( 'Terms & Conditions', 'ccs-wp-theme' ), 'slug' => 'terms-and-conditions' ),
-		array( 'title' => __( 'Accessibility Statement', 'ccs-wp-theme' ), 'slug' => 'accessibility-statement', 'fallback' => home_url( '/accessibility/' ) ),
+		array( 'title' => __( 'Accessibility Statement', 'ccs-wp-theme' ), 'slug' => 'accessibility-statement' ),
 	);
 
 	echo '<ul class="footer-modern-links">';
 	foreach ( $items as $item ) {
+		// Previously swapped in a /accessibility/ fallback whenever ccs_page_url()
+		// returned a top-level permalink — which, now that helper resolves
+		// correctly, meant it rewrote the right URL into a redirecting one.
 		$url = ccs_page_url( $item['slug'] );
-		if ( ! empty( $item['fallback'] ) && $url === home_url( '/' . $item['slug'] . '/' ) ) {
-			$url = $item['fallback'];
-		}
 		echo '<li><a href="' . esc_url( $url ) . '" class="footer-modern-link">' . esc_html( $item['title'] ) . '</a></li>';
 	}
 	echo '</ul>';

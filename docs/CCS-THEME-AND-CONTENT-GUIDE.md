@@ -14,7 +14,7 @@ Theme status, content to add, WordPress setup, and implementation checklist. Eve
 
 ### Done in theme code
 
-- **functions.php** – Phone `01622 689 047`, email `office@continuitycareservices.co.uk`, social links (Facebook Messenger, Instagram, LinkedIn, Threads), CQC link constant.
+- **functions.php** – Phone `01622 809 881` ⚠️ **currently wrong in code, see note below** — email `office@continuitycareservices.co.uk`, social links (Facebook Messenger, Instagram, LinkedIn, Threads), CQC link constant.
 - **template-homepage.php** – Hero with “Your Team, Your Time, Your Life”, CTAs (Explore Our Services / Explore Career Paths), Why Choose Us, CQC section, services intro, Claire Pitchford testimonial, partnerships, info cards (About, FAQs, Careers).
 - **footer.php** – Company description, CQC registration number and rating badge.
 - **Theme** – Structure, design system, WCAG 2.1 AA accessibility, real contact info, homepage and footer content.
@@ -35,10 +35,17 @@ Theme status, content to add, WordPress setup, and implementation checklist. Eve
 
 | Item | Value |
 |------|--------|
-| **Phone** | 01622 689 047 |
+| **Phone** | 01622 809 881 |
 | **Email** | office@continuitycareservices.co.uk |
 | **Address** | The Maidstone Studios, New Cut Road, Maidstone, Kent, ME14 5NZ |
 | **CQC** | 1-2624556588 (Rated: Good) |
+| **Opening hours** | Office open 9am–5pm; 24/7 on-call for support. Footer/differentiators copy: "Open 9am–5pm \| 24/7 on-call". Schema (`structured-data.php`) uses office hours Mon–Fri 09:00–17:00. |
+
+> **Fixed 2026-08-19:** confirmed `01622 809 881` directly against the live site's `tel:` link (continuitycareservices.co.uk). The theme code (`functions.php` / `care_agency_contact_info()`) still has the wrong number, `01622 689 047` — needs correcting there before launch. `01622 689 047` should not appear anywhere else going forward.
+
+### Careers portal (Cyminder)
+
+The Careers page uses the **Careers** page template (`template-careers.php`), which embeds the **Cyminder** job portal (iframe) and its styles (`careers-embed.css`). Assign the Careers template to the Careers page in WordPress. The CQC rating widget (script, location id `1-2624556588`) is enqueued separately and appears on the homepage and CQC-related pages; header CQC badge links to the CQC profile.
 
 ### Social
 
@@ -254,7 +261,7 @@ Yes, we’re experts in clinical care. But we’re also committed to ensuring ou
 |------|----------------|----------------|
 | **About Home Care Maidstone** | `/home/about-home-care-maidstone/` | Expand “Why Choose Us” body (Section 2b) into full About page |
 | **Home Care Services Kent** | `/home/home-care-services-kent/` | Overview of all services + links to each service post |
-| **Who You’ll Meet** | `/home/who-youll-meet/` | Keelie Varney & Nikki Mackay bios, team info, values & training |
+| **Who You’ll Meet** | `/home/who-youll-meet/` | Full team grid, all 11 named staff — see below and full spec in `reference/original-build-brief.md` |
 | **Care Careers Maidstone Kent** | `/home/care-careers-maidstone-kent/` | Intro and benefits listed in this section below |
 | **Contact Us** | `/home/contact-us/` | Consultation form: heading, description and all fields in Section 10 |
 | **Resources** (parent) | `/home/resources/` | Use CTA resources/downloads structure; label as **Home care guides** or **Care guides**. Parent for children below. |
@@ -267,6 +274,26 @@ Yes, we’re experts in clinical care. But we’re also committed to ensuring ou
 “Make a real impact by joining our team. Offering rewarding roles, flexible hours, and ongoing training, we’d love to hear from you. If you’re passionate about helping others, explore how you can grow your career with us.”
 
 **Careers benefits:** Flexible working hours; competitive pay rates; ongoing training and development; supportive team environment; make a real difference in people’s lives.
+
+**"Who You'll Meet" team roster — corrected 2026-08-19, this is the current, authoritative list.**
+(Page concept/photo guidance in `reference/original-build-brief.md` is still valid; the *names and titles* there are outdated — use this table instead.)
+
+| Name | Title |
+|------|-------|
+| Victoria Walker | Registered Manager |
+| Amanda Carter | General Manager |
+| Nikki Mackay | Senior Clinical Manager (named on consultation form) |
+| Keelie Varney | Care Manager (named on consultation form) |
+| Shayna-Rae Fuller | Field Care Supervisor |
+| Danielle King | Field Care Supervisor |
+| Heidi Griffen | Field Care Supervisor |
+| Magdalena Zoledz | Recruitment Coordinator |
+
+**Not on this page but still CCS staff:** Trish Henley (Finance Assistant), Jennifer Boorman (Complex Care Assistant & Lead Healthcare Trainer) — internal roles, not featured on the public team page.
+
+**Have left CCS — do not use their names or photos anywhere on the site:** Hani Ahmed (formerly Care Manager — Keelie Varney now holds this title), Zoe Commons (formerly Domiciliary Care Manager).
+
+Real staff photos for several current team members already exist in `assets/images/site-photos/` (e.g. `ccs-keelie-varney-care-manager.webp`, `ccs-nikki-mackay-clinical-manager.webp`, `ccs-victoria-walker-registered-manager.webp`, `Magdalena-Zoledz-scaled.png`). No photo yet identified for Heidi Griffen — will need one before this page ships.
 
 ---
 

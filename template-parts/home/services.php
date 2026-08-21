@@ -10,8 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$services_overview_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'home-care-services-kent' ) : home_url( '/home/home-care-services-kent/' );
-$contact_url           = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' ) : home_url( '/home/contact-us/' );
+$services_overview_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'home-care-services-kent' ) : home_url( '/home-care-services-kent/' );
+$contact_url           = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' ) : home_url( '/contact-us/' );
 
 // Try to get three service posts (Domiciliary, Respite, Complex) by slug.
 $service_slugs = array( 'domiciliary-care', 'respite-care', 'complex-care' );
@@ -34,12 +34,12 @@ foreach ( $service_slugs as $slug ) {
 $fallback_services = array(
 	array(
 		'title'    => __( 'Domiciliary Care', 'ccs-wp-theme' ),
-		'intro'    => __( 'Personalised care in the comfort of your own home. We support daily living, from personal care and medication to companionship and household tasks, so you can live independently and safely.', 'ccs-wp-theme' ),
+		'intro'    => __( 'Everyday help at home. Washing, dressing, meals and medication, plus company and a hand with the housework, done at your pace.', 'ccs-wp-theme' ),
 		'link_url' => home_url( '/services/domiciliary-care/' ),
 	),
 	array(
 		'title'    => __( 'Respite Care', 'ccs-wp-theme' ),
-		'intro'    => __( 'Short-term support when you or your family need a break. Flexible respite options from a few hours to overnight or longer, so carers can recharge while your loved one is in safe hands.', 'ccs-wp-theme' ),
+		'intro'    => __( 'Short breaks so family carers can properly rest. A few hours, an overnight, or longer, with someone you’ve already met stepping in.', 'ccs-wp-theme' ),
 		'link_url' => home_url( '/services/respite-care/' ),
 	),
 	array(
@@ -83,7 +83,7 @@ if ( count( $service_posts ) >= 3 ) {
 		<p class="home-services__intro">
 			<?php
 			esc_html_e(
-				"Whether you need a little help dressing in the mornings, round-the-clock complex care, or just someone to pop in for a cuppa and a catch-up, we're here to make life feel a little lighter. For expert home care Maidstone families trust, get in touch today, and we'll create a plan tailored to your needs.",
+				"Whether it's a hand getting dressed in the mornings, round-the-clock complex care, or someone popping in for a cuppa and a catch-up, we'll build the right support with you. Start with a conversation, not a commitment.",
 				'ccs-wp-theme'
 			);
 			?>
@@ -105,7 +105,7 @@ if ( count( $service_posts ) >= 3 ) {
 				<?php esc_html_e( 'Tell us what you need. We’ll match you with a care plan that works.', 'ccs-wp-theme' ); ?>
 			</p>
 			<a href="<?php echo esc_url( $contact_url ); ?>" class="btn btn-primary btn-lg home-services__cta-btn">
-				<?php esc_html_e( 'Book a care consultation', 'ccs-wp-theme' ); ?>
+				<?php esc_html_e( 'Book a free consultation', 'ccs-wp-theme' ); ?>
 			</a>
 		</div>
 	</div>

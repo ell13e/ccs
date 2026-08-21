@@ -39,21 +39,21 @@
 	--color-accent: #9b8fb5;
 	--color-info: #2563eb;
 
-	/* ----- Typography (MASTER: Poppins headings, Open Sans body) ----- */
-	--font-family-heading: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+	/* ----- Typography (2026-08-19 refresh: Lora display serif + Open Sans body) ----- */
+	--font-family-heading: "Lora", Georgia, "Times New Roman", serif;
 	--font-family-body: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 	--font-family: var(--font-family-body);
 
-	/* Modular scale (approx. 1.25): 14 → 18 → 22 → 28 → 35 → 44 → 48 */
-	--text-xs: 0.875rem;    /* 14px */
-	--text-sm: 0.9375rem;   /* 15px */
-	--text-base: 1rem;     /* 16px */
-	--text-md: 1.125rem;    /* 18px */
-	--text-lg: 1.375rem;    /* 22px */
-	--text-xl: 1.75rem;     /* 28px */
-	--text-2xl: 2.1875rem; /* 35px */
-	--text-3xl: 2.75rem;   /* 44px */
-	--text-4xl: 3rem;      /* 48px */
+	/* Fluid type scale — clamp(min, preferred, max), scales smoothly with viewport instead of jumping at breakpoints */
+	--text-xs: clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);    /* ~12–13px */
+	--text-sm: clamp(0.8125rem, 0.78rem + 0.2vw, 0.875rem);    /* ~13–14px */
+	--text-base: clamp(0.9375rem, 0.9rem + 0.25vw, 1rem);      /* ~15–16px */
+	--text-md: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);         /* ~16–18px */
+	--text-lg: clamp(1.125rem, 1.02rem + 0.5vw, 1.375rem);     /* ~18–22px */
+	--text-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.75rem);       /* ~20–28px */
+	--text-2xl: clamp(1.75rem, 1.35rem + 1.6vw, 2.5rem);       /* ~28–40px, section titles */
+	--text-3xl: clamp(2rem, 1.55rem + 2vw, 3.25rem);           /* ~32–52px */
+	--text-4xl: clamp(2.25rem, 1.6rem + 3vw, 3.75rem);         /* ~36–60px, hero headline */
 
 	--font-weight-normal: 400;
 	--font-weight-medium: 500;
@@ -67,15 +67,24 @@
 	--tracking-tight: -0.02em;
 	--tracking-normal: 0;
 
-	/* ----- Spacing (8px base, MASTER §3) ----- */
-	--space-2xs: 0.25rem; /* 4px */
-	--space-xs: 0.5rem;   /* 8px */
-	--space-sm: 1rem;     /* 16px */
-	--space-md: 1.5rem;   /* 24px */
-	--space-lg: 2rem;     /* 32px */
-	--space-xl: 3rem;     /* 48px */
-	--space-2xl: 4rem;    /* 64px */
-	--space-3xl: 6rem;    /* 96px */
+	/* ----- Spacing (2026-08-19 refresh: fluid via clamp(), same token names so existing utility classes upgrade automatically) ----- */
+	--space-2xs: 0.25rem;                                  /* 4px, fixed — too small to need fluidity */
+	--space-xs: 0.5rem;                                    /* 8px, fixed */
+	--space-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);   /* ~14–16px */
+	--space-md: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);   /* ~20–24px */
+	--space-lg: clamp(1.75rem, 1.5rem + 1.25vw, 2rem);     /* ~28–32px */
+	--space-xl: clamp(2.25rem, 1.8rem + 2.25vw, 3rem);     /* ~36–48px */
+	--space-2xl: clamp(3rem, 2.4rem + 3vw, 4rem);          /* ~48–64px */
+	--space-3xl: clamp(4rem, 3rem + 5vw, 6rem);            /* ~64–96px */
+
+	/* ----- Semantic section rhythm (new 2026-08-19) — equal vertical pad per page band, use instead of raw --space-* in section rules ----- */
+	--space-section: clamp(64px, 8vw, 104px);
+	--space-section-lead: clamp(72px, 9vw, 120px);
+
+	/* ----- Page geometry (new 2026-08-19) — one width + gutter system for every horizontal band ----- */
+	--page-width: 1200px;
+	--page-gutter: clamp(16px, 3.5vw, 28px);
+	--measure: min(48rem, 100%);
 
 	/* ----- Breakpoints (for reference / JS; use in media queries) ----- */
 	--bp-sm: 375px;
@@ -321,6 +330,40 @@
 .border-urgent   { border-color: var(--color-urgent); }
 
 /* -------------------------------------------------------------------------
+   ACCESSIBILITY – Screen-reader-only text
+
+   Was referenced by templates (single-service.php, home/cqc-section.php) but
+   never defined, so text meant only for screen readers rendered visibly.
+   Standard WordPress implementation: removed from the visual flow but still
+   announced, and revealed on focus so skip-style links remain usable.
+   ------------------------------------------------------------------------- */
+
+.screen-reader-text {
+	position: absolute !important;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	clip-path: inset(50%);
+	border: 0;
+	white-space: nowrap;
+	word-wrap: normal;
+}
+
+.screen-reader-text:focus {
+	position: static !important;
+	width: auto;
+	height: auto;
+	margin: 0;
+	overflow: visible;
+	clip: auto;
+	clip-path: none;
+	white-space: normal;
+}
+
+/* -------------------------------------------------------------------------
    FOCUS – Visible focus for keyboard users
    ------------------------------------------------------------------------- */
 
@@ -337,17 +380,28 @@ button:not(:disabled):not(.is-disabled),
 }
 
 /* -------------------------------------------------------------------------
-   TYPOGRAPHY – Headings (optional use with .ds-root) – Poppins per MASTER
+   TYPOGRAPHY – Headings (optional use with .ds-root) – Lora display serif, 2026-08-19
+   Serif carries display/heading weight only, at a lighter weight than a sans
+   bold would use — Lora reads as confident, not heavy, at medium (500).
    ------------------------------------------------------------------------- */
 
-.ds-root h1, .ds-root h2, .ds-root h3, .ds-root h4, .ds-root h5, .ds-root h6,
+/*
+ * Element selectors are wrapped in :where() so these defaults carry the
+ * specificity of `.ds-root` alone (0,1,0) instead of (0,1,1). Component
+ * classes like .home-service-col__title are also (0,1,0) and load after this
+ * file, so they now win on source order. Without :where() these rules beat
+ * every single-class component rule in the theme, which silently forced the
+ * display serif and the h3 size onto card titles that had explicitly opted out.
+ */
+.ds-root :where(h1, h2, h3, h4, h5, h6),
 .heading-1, .heading-2, .heading-3, .heading-4, .heading-5, .heading-6 {
 	font-family: var(--font-family-heading);
+	letter-spacing: -0.01em;
 }
 
-.ds-root h1, .heading-1 { font-size: var(--text-4xl); font-weight: var(--font-weight-bold); line-height: var(--leading-tight); color: var(--color-primary-dark); }
-.ds-root h2, .heading-2 { font-size: var(--text-3xl); font-weight: var(--font-weight-bold); line-height: var(--leading-tight); color: var(--color-primary-dark); }
-.ds-root h3, .heading-3 { font-size: var(--text-2xl); font-weight: var(--font-weight-semibold); line-height: var(--leading-tight); }
-.ds-root h4, .heading-4 { font-size: var(--text-xl); font-weight: var(--font-weight-semibold); line-height: var(--leading-normal); }
-.ds-root h5, .heading-5 { font-size: var(--text-lg); font-weight: var(--font-weight-medium); line-height: var(--leading-normal); }
-.ds-root h6, .heading-6 { font-size: var(--text-md); font-weight: var(--font-weight-medium); line-height: var(--leading-normal); }
+.ds-root :where(h1), .heading-1 { font-size: var(--text-4xl); font-weight: var(--font-weight-medium); line-height: var(--leading-tight); color: var(--color-primary-dark); }
+.ds-root :where(h2), .heading-2 { font-size: var(--text-3xl); font-weight: var(--font-weight-medium); line-height: var(--leading-tight); color: var(--color-primary-dark); }
+.ds-root :where(h3), .heading-3 { font-size: var(--text-2xl); font-weight: var(--font-weight-medium); line-height: var(--leading-tight); }
+.ds-root :where(h4), .heading-4 { font-family: var(--font-family-body); font-size: var(--text-xl); font-weight: var(--font-weight-bold); line-height: var(--leading-normal); }
+.ds-root :where(h5), .heading-5 { font-family: var(--font-family-body); font-size: var(--text-lg); font-weight: var(--font-weight-bold); line-height: var(--leading-normal); }
+.ds-root :where(h6), .heading-6 { font-family: var(--font-family-body); font-size: var(--text-md); font-weight: var(--font-weight-semibold); line-height: var(--leading-normal); }

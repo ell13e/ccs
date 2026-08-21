@@ -32,28 +32,53 @@ Custom WordPress theme for a Kent-based home care provider. Built for speed, con
 ## File structure
 
 ```
-CCS-WP-THEME/
-├── style.css              # Theme header + base styles
-├── functions.php           # Loader only; includes inc/setup.php
-├── index.php               # Main template
-├── header.php              # Document head + masthead
-├── footer.php              # Footer + wp_footer()
-├── inc/
-│   └── setup.php           # Theme support, menus, enqueue
-├── template-parts/
-│   ├── content.php         # Default post/content loop
-│   └── content-none.php    # No results
+CCS/
+├── style.css                # Theme header only; real styles in assets/css
+├── functions.php             # Loader: constants, autoloader, CPTs, taxonomies
+├── theme.json                 # Block-editor palette, typography, spacing
+├── header.php / footer.php / page.php / search.php / index.php
+├── single-service.php / single-location.php
+├── inc/                       # All theme logic — see docs/CODEBASE-PARSE.md §5
+├── page-templates/             # PHP page templates — see docs/CODEBASE-PARSE.md §6
+├── template-parts/             # Reusable parts (home/*, breadcrumb, modals)
 ├── assets/
-│   ├── css/                # Stylesheets
-│   ├── js/                 # Scripts
-│   ├── images/             # Theme images
-│   └── fonts/              # Web fonts (if any)
-└── README.md
+│   ├── css/                  # design-system.css, components, header, footer, per-page CSS
+│   ├── js/                   # navigation, resource-download, consultation-form
+│   ├── images/, fonts/
+├── design-system/
+│   └── MASTER.md              # Canonical, live design system (colours, type, spacing, WCAG)
+├── docs/                      # Technical/architecture docs + audits (see below)
+│   └── research/               # Market, brand and UX research
+├── reference/                  # Copy, strategy, sitemap, reviews, rebuild-direction design docs
+└── BUILD-LOG.md                # Historical session log
 ```
 
-- **Root PHP:** `index.php`, `header.php`, `footer.php` are the core templates; `functions.php` only loads `inc/setup.php`.
-- **inc/** All theme logic (setup, enqueue, custom functionality) lives here.
+- **Root PHP:** `header.php`, `footer.php`, `page.php`, `search.php`, `index.php` are the core templates; `functions.php` is the bootstrap (constants, autoloader, CPT/taxonomy registration).
+- **inc/** All theme logic (setup, enqueue, forms, admin, SEO, performance, accessibility, blocks) lives here, grouped by area.
 - **assets/** Static assets; organised by type (css, js, images, fonts).
+
+---
+
+## Documentation map
+
+Docs are `.md`-only and split by purpose:
+
+| Looking for… | Go to |
+|---|---|
+| **The live design system** (colours, type, spacing, shadows, WCAG — matches `theme.json` / `design-system.css` today) | [`design-system/MASTER.md`](design-system/MASTER.md) |
+| **The rebuild's proposed design direction** (different "Mint Purple" palette, not yet live) | [`reference/design-tokens.md`](reference/design-tokens.md) + [`reference/design-language.md`](reference/design-language.md) |
+| **The current, authoritative site strategy & build plan** (IA, page templates, wireframes, SEO, accessibility standards, coding standards) | [`reference/strategy.md`](reference/strategy.md) |
+| **Redirect map / URL build tracker** | [`reference/sitemap-urls.md`](reference/sitemap-urls.md) |
+| **Real reviews, competitor teardowns, homepage copy, coverage data** | [`reference/reviews.md`](reference/reviews.md), [`reference/inspo-teardowns.md`](reference/inspo-teardowns.md), [`reference/copy/homepage.md`](reference/copy/homepage.md), [`reference/schema-data.md`](reference/schema-data.md) |
+| **Codebase architecture / where things live** | [`docs/CODEBASE-PARSE.md`](docs/CODEBASE-PARSE.md) |
+| **Site copy, page inventory, forms, menus** (content-and-implementation reference) | [`docs/CCS-THEME-AND-CONTENT-GUIDE.md`](docs/CCS-THEME-AND-CONTENT-GUIDE.md) |
+| **Critical CSS strategy** | [`docs/DESIGN-SYSTEM-CRITICAL-CSS-STRATEGY.md`](docs/DESIGN-SYSTEM-CRITICAL-CSS-STRATEGY.md) |
+| **Accessibility audit of the current implementation** | [`docs/ACCESSIBILITY-AUDIT.md`](docs/ACCESSIBILITY-AUDIT.md) |
+| **WCAG standards checklist to build against** | [`reference/a11y-checklist.md`](reference/a11y-checklist.md) |
+| **Security audit** | [`docs/SECURITY-AUDIT.md`](docs/SECURITY-AUDIT.md) |
+| **Market/brand/UX research** (comprehensive research, brand voice, design fundamentals, competitive landscape, UI polish backlog) | [`docs/research/`](docs/research/) |
+| **History of the CTA → CCS content migration** | [`docs/FINALCTAIHOPE-inventory.md`](docs/FINALCTAIHOPE-inventory.md), [`docs/FINALCTAIHOPE-to-CCS-workflow.md`](docs/FINALCTAIHOPE-to-CCS-workflow.md) |
+| **Build session history / decisions log** | [`BUILD-LOG.md`](BUILD-LOG.md) |
 
 ---
 

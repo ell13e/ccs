@@ -1,9 +1,11 @@
 # CCS Design System — Master
 
 **Continuity Care Services** — Wellness / care services (Kent-based home care).  
-Single source of truth for brand, UI style, typography, and WCAG 2.1 AA compliance.
+Single source of truth for the **currently implemented** brand, UI style, typography, and WCAG 2.1 AA compliance. Every token below is verified against the live theme (`theme.json`, `assets/css/design-system.css`) — if this doc and the CSS ever disagree, treat the CSS as the bug and fix it to match this file.
 
 **Design intent:** Warmth, trust, and approachability for a healthcare context. Purple remains the brand colour but is used deliberately; teal and cream carry most of the visual weight so the experience feels calm and supportive.
+
+> **This is the "as-built" design system, not the target rebuild.** `reference/strategy.md` (the newest, most thorough planning doc) proposes a different look for a future rebuild — a "Mint Purple" palette with tokens like `--ccs-purple-deep` / `--ccs-lavender` / `--ccs-mint`, documented in `reference/design-tokens.md` and `reference/design-language.md`. Those hex values (`#8b68da`, `#a68edd`, `#c4efea` as a highlight) are **not** live on the site today and don't match the palette below. Use *this* file for anything touching the current theme; use the `reference/` pair for rebuild planning.
 
 ---
 
@@ -203,6 +205,37 @@ Use `--radius-md` or `--radius-lg` for cards and hero content; avoid sharp corne
 ### 7.4 Text
 
 - Body font size ≥16px; line-height ≥1.5 (prefer 1.6). Support zoom to 200% without loss of content or functionality.
+
+---
+
+## 7a. Breakpoints, transitions & z-index
+
+*Implemented in `assets/css/design-system.css`; not in earlier drafts of this doc, added here so it's documented in one place.*
+
+| Token | Value | Use |
+|-------|--------|-----|
+| `--bp-sm` | 375px | Small phones |
+| `--bp-md` | 768px | Tablet |
+| `--bp-lg` | 1024px | Small desktop / large tablet |
+| `--bp-xl` | 1440px | Desktop |
+
+| Token | Value | Use |
+|-------|--------|-----|
+| `--duration-fast` | 150ms | Micro-interactions (hover colour) |
+| `--duration-normal` | 250ms | Default transitions |
+| `--duration-slow` | 350ms | Larger movements (menus, modals) |
+| `--ease-out` | `cubic-bezier(0.25, 0.46, 0.45, 0.94)` | Entrances |
+| `--ease-in-out` | `cubic-bezier(0.65, 0, 0.35, 1)` | Symmetric transitions |
+
+All durations collapse to `0ms` under `prefers-reduced-motion: reduce`.
+
+| Token | Value | Use |
+|-------|--------|-----|
+| `--z-dropdown` | 10 | Menus, dropdowns |
+| `--z-sticky` | 20 | Sticky header |
+| `--z-overlay` | 30 | Overlays behind modals |
+| `--z-modal` | 50 | Modal dialogs |
+| `--z-tooltip` | 60 | Tooltips (topmost) |
 
 ---
 

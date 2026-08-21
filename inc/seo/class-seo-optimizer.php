@@ -36,6 +36,7 @@ class CCS_SEO_Optimizer {
 	 * Constructor: hooks for title, meta, OG, Twitter, canonical, sitemap.
 	 */
 	public function __construct() {
+		add_filter( 'document_title_separator', array( $this, 'filter_document_title_separator' ), 10, 1 );
 		add_filter( 'document_title_parts', array( $this, 'filter_document_title_parts' ), 10, 1 );
 		add_filter( 'document_title', array( $this, 'filter_document_title_truncate' ), 10, 1 );
 		add_action( 'wp_head', array( $this, 'output_meta_description' ), 1 );
@@ -52,6 +53,15 @@ class CCS_SEO_Optimizer {
 	// -------------------------------------------------------------------------
 	// Meta titles
 	// -------------------------------------------------------------------------
+
+	/**
+	 * Title separator — "|" per the locked copy deck (reference/copy/homepage.md), not WP's default "-".
+	 *
+	 * @return string
+	 */
+	public function filter_document_title_separator() {
+		return '|';
+	}
 
 	/**
 	 * Set document title parts (title and site name). WordPress builds "Title | Site".
@@ -491,7 +501,7 @@ class CCS_SEO_Optimizer {
 	const ORG_NAME = 'Continuity Care Services';
 
 	/** CCS contact phone (E.164-style for schema). */
-	const ORG_PHONE = '+44-1622-689-047';
+	const ORG_PHONE = '+44-1622-809-881';
 
 	/** CCS area served. */
 	const ORG_AREA_SERVED = 'Maidstone, Kent';

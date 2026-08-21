@@ -18,7 +18,16 @@
 	var toggle = document.querySelector('#mobile-menu-button') || document.querySelector('.site-header__toggle');
 	var mobilePanel = document.querySelector('#mobile-navigation');
 	var nav = mobilePanel || document.querySelector('#site-navigation');
-	var menu = document.querySelector('#primary-menu') || document.querySelector('#mobile-menu-list');
+	/*
+	 * Both menus need submenu toggles. This used to be `#primary-menu ||
+	 * #mobile-menu-list`, so only the desktop list was processed (where CSS then
+	 * hides the toggles anyway) and the mobile panel got none at all — leaving
+	 * every child page unreachable on mobile.
+	 */
+	var menus = [
+		document.querySelector('#primary-menu'),
+		document.querySelector('#mobile-menu-list')
+	].filter(Boolean);
 
 	/* Labels (can be overridden via wp_localize_script) */
 	var labels = window.ccsNavigation || {};
@@ -111,10 +120,10 @@
 		document.body.style.overflow = '';
 	});
 
-	/* Submenu accordion: inject toggle buttons and bind */
-	if (menu) {
+	/* Submenu accordion: inject toggle buttons and bind, for every menu present */
+	var submenuIndex = 0;
+	menus.forEach(function(menu) {
 		var parents = menu.querySelectorAll('.menu-item-has-children');
-		var submenuIndex = 0;
 
 		parents.forEach(function(item) {
 			var link = item.querySelector(':scope > a');
@@ -158,5 +167,53 @@
 				}
 			});
 		});
+	});
+
+	/*
+	 * Publish the real header height as --ccs-header-h so the mobile panel can
+	 * start exactly below it. Previously the panel used a hardcoded 4.5rem top
+	 * padding tuned for an older, taller header, which left a white band at the
+	 * top and pushed the first item behind the header. Measured, so it stays
+	 * correct if the logo size or the emergency banner changes.
+	 */
+	var headerEl = document.getElementById('masthead');
+	if (headerEl) {
+		var setHeaderHeight = function() {
+			/*
+			 * Use the header's bottom edge, not its height: the WP admin bar (and
+			 * any emergency banner) pushes the header down the page, so height
+			 * alone left the panel starting partway up behind the header.
+			 */
+			document.documentElement.style.setProperty(
+				'--ccs-header-h',
+				Math.max(0, headerEl.getBoundingClientRect().bottom) + 'px'
+			);
+		};
+		setHeaderHeight();
+		window.addEventListener('resize', setHeaderHeight);
+		if (typeof ResizeObserver !== 'undefined') {
+			new ResizeObserver(setHeaderHeight).observe(headerEl);
+		}
+		/* The header is sticky, so its bottom edge moves until it sticks. */
+		window.addEventListener('scroll', setHeaderHeight, { passive: true });
+		/* And re-measure the moment the panel opens, whatever the scroll state. */
+		if (toggle) {
+			toggle.addEventListener('click', setHeaderHeight);
+		}
+	}
+
+	/* Sticky header scroll shadow: adds .is-scrolled once the page has scrolled past the top. */
+	var siteHeader = document.getElementById('masthead');
+	if (siteHeader) {
+		var scrolled = false;
+		var updateScrolled = function() {
+			var shouldBeScrolled = window.scrollY > 8;
+			if (shouldBeScrolled !== scrolled) {
+				scrolled = shouldBeScrolled;
+				siteHeader.classList.toggle('is-scrolled', scrolled);
+			}
+		};
+		updateScrolled();
+		window.addEventListener('scroll', updateScrolled, { passive: true });
 	}
 })();
