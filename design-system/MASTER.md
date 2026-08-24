@@ -33,7 +33,7 @@ Single source of truth for the **currently implemented** brand, UI style, typogr
 
 | Token | Hex | Usage |
 |-------|-----|--------|
-| **Accent** | `#9b8fb5` | **Use sparingly:** list bullets, small decorative elements, tags, borders. Do **not** use for body text or large areas; contrast on cream/white is insufficient for body copy. |
+| **Accent** | `#6f6291` | Eyebrow labels, subheadings, list bullets, small decorative elements, tags, borders. Passes AA as body text: **5.02:1** on cream, **5.48:1** on white. |
 
 ### 1.4 Neutrals
 
@@ -192,7 +192,7 @@ Use `--radius-md` or `--radius-lg` for cards and hero content; avoid sharp corne
 - **Normal text:** ≥4.5:1 on background. **Valid pairs:** `#2e2e2e` on `#ffffff`, `#f6f5ef`; `#564298` on `#ffffff` or `#f6f5ef` for large text or UI components only.
 - **Large text (18px+ or 14px bold+):** ≥3:1.
 - **UI components:** ≥3:1 against adjacent background.
-- **Avoid:** Body-sized text in `#9b8fb5` or `#a8ddd4` on cream/white. Use these for backgrounds, borders, bullets, or large decorative text only.
+- **Avoid:** Body-sized text in `#a8ddd4` (secondary/mint) on cream or white — it is a background and accent colour, not a text colour. Accent `#6f6291` **is** safe for body-sized text (5.02:1 on cream); it was darkened from `#9b8fb5` on 2026-08-23 precisely so the eyebrow-label and subheading patterns the homepage relies on could pass AA.
 
 ### 7.2 Focus
 

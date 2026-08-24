@@ -36,7 +36,18 @@
 	--color-success: #85C4B8;
 	--color-warning: #D4A843;
 	--color-urgent: #C64B4B;
-	--color-accent: #9b8fb5;
+	/* Darkened from #9b8fb5 (2026-08-23). The old value measured 2.75:1 on cream
+	   and 3.00:1 on white — below the WCAG 2.1 AA 4.5:1 minimum — and was in use
+	   for five pieces of real body-sized copy on the homepage: the Why Choose Us
+	   subheading, the "From" label on the headline price, and all three
+	   info-card eyebrow labels. MASTER.md §1 already forbade that usage ("do not
+	   use for body text ... contrast on cream/white is insufficient"), so this
+	   brings the token in line with the rule rather than changing the rule.
+	   #6f6291 is the lightest value clearing 4.5:1 against BOTH grounds the
+	   theme uses (5.02:1 on #f6f5ef, 5.48:1 on #ffffff), so the lavender
+	   character survives. Decorative uses — bullets, borders, tags — are
+	   unaffected by the shift. */
+	--color-accent: #6f6291;
 	--color-info: #2563eb;
 
 	/* ----- Typography (2026-08-19 refresh: Lora display serif + Open Sans body) ----- */
@@ -77,16 +88,55 @@
 	--space-2xl: clamp(3rem, 2.4rem + 3vw, 4rem);          /* ~48–64px */
 	--space-3xl: clamp(4rem, 3rem + 5vw, 6rem);            /* ~64–96px */
 
-	/* ----- Semantic section rhythm (new 2026-08-19) — equal vertical pad per page band, use instead of raw --space-* in section rules ----- */
-	--space-section: clamp(64px, 8vw, 104px);
-	--space-section-lead: clamp(72px, 9vw, 120px);
+	/* ---- Vertical rhythm -------------------------------------------------
+	   Page sections were alternating between --space-3xl and --space-2xl with
+	   no rule governing which got which, so the gaps between blocks changed
+	   size as you scrolled. Below is the rhythm: every section uses one of
+	   two tiers for its padding-block, and every section heading block is
+	   separated from its content by --section-heading-gap. Change the rhythm
+	   of the whole page by changing these, not by editing individual sections.
 
-	/* ----- Page geometry (new 2026-08-19) — one width + gutter system for every horizontal band ----- */
-	--page-width: 1200px;
-	--page-gutter: clamp(16px, 3.5vw, 28px);
+	   Two tiers, not one:
+	   - --section-space-y — the default. Primary content sections (services,
+	     differentiators, costs, why-choose-us): the blocks carrying the
+	     page's actual argument.
+	   - --section-space-y-compact — lighter bands that do not need the same
+	     weight of air around them: a single pull-quote testimonial, a strip
+	     of partner logos. Using the full tier on a one-line section made it
+	     read as padded-out rather than intentionally light.
+	   Both scale a little wider than --space-3xl at large viewports, because
+	   the editorial layout needs more air between blocks than a boxed one did.
+
+	   This replaces an earlier, unfinished attempt at the same idea —
+	   --space-section / --page-width / --page-gutter below, added 2026-08-19
+	   and never wired into any section. Three unreconciled spacing systems
+	   sitting in one file was its own version of this exact problem, so the
+	   dead one is removed rather than left as a second candidate answer. */
+	--section-space-y: clamp(3.5rem, 2.4rem + 5vw, 7rem);         /* ~56–112px */
+	--section-space-y-compact: clamp(2.5rem, 1.8rem + 3vw, 4.5rem); /* ~40–72px */
+	--section-heading-gap: clamp(1.75rem, 1.2rem + 2.5vw, 3rem);  /* ~28–48px */
+
+	/* Prose measure — caps line length on long-form text blocks regardless of
+	   how wide their containing section is. */
 	--measure: min(48rem, 100%);
 
-	/* ----- Breakpoints (for reference / JS; use in media queries) ----- */
+	/* Main content width, used by .container--lg and every direct
+	   var(--content-width-lg) reference — deliberately its own token, not
+	   --bp-lg below. .container--lg used to read max-width: var(--bp-lg), which
+	   made "the site's content column" and "the 1024px layout breakpoint"
+	   secretly the same number with no reason for them to be. On a wide desktop
+	   monitor that meant every page section below the (full-bleed) hero sat in
+	   a 1024px strip with equal margins pushing in from both sides — correctly
+	   centred, but at 1920px wide that is 46% of the screen sitting empty,
+	   which reads as the page having collapsed to one side even though nothing
+	   is actually off-centre. 1280px keeps the prose measure comfortable
+	   (paragraphs already cap at 48rem/~56–62ch via --measure and per-element
+	   ch limits, independent of this) while giving the card grids meaningfully
+	   more room and closing most of that gap. */
+	--content-width-lg: 1280px;
+
+	/* ----- Breakpoints (layout switches — nav, grid columns; NOT content
+	   width, see --content-width-lg above) ----- */
 	--bp-sm: 375px;
 	--bp-md: 768px;
 	--bp-lg: 1024px;
@@ -113,9 +163,55 @@
 	--shadow-subtle: 0 2px 8px rgba(46, 46, 46, 0.06);
 	--shadow-elevated: 0 4px 16px rgba(46, 46, 46, 0.1);
 	--shadow-prominent: 0 8px 24px rgba(46, 46, 46, 0.12);
+	/* Warm-tinted card lift. The neutral-grey shadows above read cold under a
+	   plum/cream palette — this one is the brand hue at low alpha, so a raised
+	   card looks lit rather than dirty. Two layers: a tight contact shadow so
+	   the edge reads, and a wide soft one so the lift is felt not seen. */
+	--shadow-card: 0 1px 2px rgba(63, 47, 112, 0.05), 0 8px 24px -12px rgba(63, 47, 112, 0.16);
+	--shadow-card-hover: 0 2px 4px rgba(63, 47, 112, 0.06), 0 16px 36px -14px rgba(63, 47, 112, 0.22);
 	/* Legacy aliases (prefer --shadow-subtle / --shadow-elevated) */
 	--shadow-soft: var(--shadow-subtle);
 	--shadow-soft-lg: var(--shadow-elevated);
+
+	/* ----- Bands: tonal steps of one hue -----------------------------------
+	   The homepage sectioned itself with only two grounds — #ffffff and cream
+	   #f6f5ef — which differ by 1.5% luminance. At that distance the "band
+	   alternation" the CSS comments describe is not perceptible, so ten
+	   sections read as one continuous scroll and the two dark bands land as
+	   unrelated interruptions rather than as the loudest steps in a scale.
+
+	   reference/inspo-teardowns.md identifies the fix in the strongest
+	   reference in the set (plum NDIS): "the band tints are tonal steps of a
+	   single hue — monochromatic harmony — which is why the page feels
+	   coherent rather than stripy". These five values are that scale, lightest
+	   to darkest, all derived from brand purple #564298:
+
+	     white -> cream -> tint -> deep -> deepest
+
+	   --color-band-tint is the missing middle: pale plum, 8% primary on white,
+	   distinct enough from both neutrals to read as a deliberate band. Checked
+	   against every text colour the theme puts on it — accent #6f6291 is the
+	   tightest at 4.81:1, still clear of the 4.5:1 AA floor.
+
+	   --color-band-deepest is a second dark step so the closing CTA is not a
+	   literal repeat of the differentiators band a few screens earlier; the
+	   page now ends on its most saturated moment rather than its second
+	   identical one. */
+	--color-band-cream: var(--color-background-warm);
+	--color-band-tint: #F1EFF7;
+	--color-band-deep: var(--color-primary-dark);
+	--color-band-deepest: #332659;
+
+	/* ----- Hairlines -------------------------------------------------------
+	   --color-border (#E0E0E0) is a neutral grey: on cream it reads as a
+	   smudge and on the tint it reads as dirt, because it carries no hue from
+	   the palette it is drawn on. These are the same lines in brand plum at
+	   low alpha, so a card edge tints with whatever it sits on. Decorative
+	   boundaries only — never the sole indicator of an interactive component,
+	   so the 3:1 non-text floor does not apply. */
+	--color-hairline: rgba(63, 47, 112, 0.16);
+	--color-hairline-strong: rgba(63, 47, 112, 0.24);
+	--color-hairline-on-dark: rgba(255, 255, 255, 0.16);
 
 	/* ----- Z-index scale ----- */
 	--z-dropdown: 10;
@@ -160,7 +256,7 @@
 
 .container--sm { max-width: var(--bp-sm); }
 .container--md { max-width: var(--bp-md); }
-.container--lg { max-width: var(--bp-lg); }
+.container--lg { max-width: var(--content-width-lg); }
 .container--xl { max-width: var(--bp-xl); }
 
 @media (min-width: 768px) {
@@ -338,7 +434,14 @@
    announced, and revealed on focus so skip-style links remain usable.
    ------------------------------------------------------------------------- */
 
-.screen-reader-text {
+/* .visually-hidden is an alias, not a duplicate. Two homepage templates
+   (info-cards.php, testimonial.php) hide their section heading with
+   .visually-hidden, which this theme never defined — so both headings
+   rendered visibly, jammed against the content beneath with no spacing.
+   Defining the alias fixes them without editing markup, and stops the next
+   person hitting the same trap. */
+.screen-reader-text,
+.visually-hidden {
 	position: absolute !important;
 	width: 1px;
 	height: 1px;
@@ -352,7 +455,8 @@
 	word-wrap: normal;
 }
 
-.screen-reader-text:focus {
+.screen-reader-text:focus,
+.visually-hidden:focus {
 	position: static !important;
 	width: auto;
 	height: auto;

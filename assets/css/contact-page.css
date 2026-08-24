@@ -34,10 +34,16 @@
    LEFT COLUMN – Contact form
    ------------------------------------------------------------------------- */
 
+/*
+ * Bold Lora corrected to medium here and in .contact-cards__heading below —
+ * both explicitly redeclared bold at the theme default's own specificity,
+ * silently overriding the medium weight design-system.css sets for every
+ * heading. Same fix as homepage.css and service-page.css.
+ */
 .contact-form-col__title {
 	margin: 0 0 var(--space-md);
 	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-bold);
+	font-weight: var(--font-weight-medium);
 	line-height: var(--leading-tight);
 	color: var(--color-primary-dark);
 }
@@ -287,13 +293,13 @@
 }
 
 .contact-cards__inner {
-	max-width: var(--bp-lg);
+	max-width: var(--content-width-lg); /* widened with .container--lg, see design-system.css */
 }
 
 .contact-cards__heading {
 	margin: 0 0 var(--space-xl);
 	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-bold);
+	font-weight: var(--font-weight-medium);
 	line-height: var(--leading-tight);
 	color: var(--color-primary-dark);
 	text-align: center;

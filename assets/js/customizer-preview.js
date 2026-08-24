@@ -10,12 +10,12 @@
 	'use strict';
 
 	wp.customize.bind('preview-ready', function () {
-		// Phone (header top bar and emergency banner "Call now" link)
+		// Phone (header pill and emergency banner "Call now" link)
 		wp.customize('ccs_phone', function (value) {
 			value.bind(function (to) {
 				var tel = (to || '').replace(/\s+/g, '');
 				var display = to || '';
-				document.querySelectorAll('.site-header__phone').forEach(function (el) {
+				document.querySelectorAll('.header-actions__phone').forEach(function (el) {
 					el.textContent = display;
 					el.href = tel ? 'tel:' + tel : '#';
 					el.style.display = display ? '' : 'none';
@@ -27,16 +27,15 @@
 			});
 		});
 
-		// Office hours (header top bar)
-		wp.customize('ccs_office_hours', function (value) {
-			value.bind(function (to) {
-				var el = document.querySelector('.site-header__hours');
-				if (el) {
-					el.textContent = to || '';
-					el.style.display = to ? '' : 'none';
-				}
-			});
-		});
+		/*
+		 * Office hours no longer render in the header (see header.php's "Top
+		 * utility bar removed" note) — they're on the contact-page template
+		 * (.contact-info__hours-text) and single-service sidebar
+		 * (.service-sidebar__hours) instead, neither of which is present while
+		 * previewing most pages. No single selector covers both, so there's no
+		 * live-preview binding for ccs_office_hours; the saved value still
+		 * applies correctly wherever it's actually printed.
+		 */
 
 		// Emergency banner: enabled
 		wp.customize('ccs_emergency_banner_enabled', function (value) {

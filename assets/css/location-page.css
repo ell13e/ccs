@@ -21,10 +21,13 @@
 	padding-block: var(--space-xl) var(--space-lg);
 }
 
+/* font-weight-medium throughout this file — every one of these headings
+   explicitly redeclared bold, overriding the theme default. Same fix as the
+   rest of the site's h1/h2s. */
 .location-hero__title {
 	margin: 0 0 var(--space-xs);
 	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-bold);
+	font-weight: var(--font-weight-medium);
 	line-height: var(--leading-tight);
 	color: var(--color-primary-dark);
 }
@@ -89,13 +92,13 @@
 }
 
 .location-areas__inner {
-	max-width: var(--bp-lg);
+	max-width: var(--content-width-lg); /* widened with .container--lg, see design-system.css */
 }
 
 .location-areas__heading {
 	margin: 0 0 var(--space-lg);
 	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-bold);
+	font-weight: var(--font-weight-medium);
 	line-height: var(--leading-tight);
 	color: var(--color-primary-dark);
 	text-align: center;
@@ -133,13 +136,13 @@
 }
 
 .location-partners__inner {
-	max-width: var(--bp-lg);
+	max-width: var(--content-width-lg); /* widened with .container--lg, see design-system.css */
 }
 
 .location-partners__heading {
 	margin: 0 0 var(--space-xl);
 	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-bold);
+	font-weight: var(--font-weight-medium);
 	line-height: var(--leading-tight);
 	color: var(--color-primary-dark);
 	text-align: center;
@@ -234,13 +237,13 @@
 }
 
 .location-services__inner {
-	max-width: var(--bp-lg);
+	max-width: var(--content-width-lg); /* widened with .container--lg, see design-system.css */
 }
 
 .location-services__heading {
 	margin: 0 0 var(--space-md);
 	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-bold);
+	font-weight: var(--font-weight-medium);
 	line-height: var(--leading-tight);
 	color: var(--color-primary-dark);
 }
@@ -274,13 +277,13 @@
 }
 
 .location-support__inner {
-	max-width: var(--bp-lg);
+	max-width: var(--content-width-lg); /* widened with .container--lg, see design-system.css */
 }
 
 .location-support__heading {
 	margin: 0 0 var(--space-xl);
 	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-bold);
+	font-weight: var(--font-weight-medium);
 	line-height: var(--leading-tight);
 	color: var(--color-primary-dark);
 	text-align: center;
@@ -346,7 +349,7 @@
 .location-team__heading {
 	margin: 0 0 var(--space-lg);
 	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-bold);
+	font-weight: var(--font-weight-medium);
 	line-height: var(--leading-tight);
 	color: var(--color-primary-dark);
 	text-align: center;

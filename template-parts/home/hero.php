@@ -74,7 +74,19 @@ $hero_has_fallback = file_exists( get_template_directory() . '/assets/images/sit
 		</a>
 	<?php endif; ?>
 
-	<div class="home-hero__inner container container--xl">
+	<?php
+	/*
+	 * container--lg, not --xl. This was the one container on the entire site
+	 * using the wider 1024px→1440px scale — every other section, on every page,
+	 * uses container--lg (1024px). At wide viewports that put the hero headline
+	 * up to 200px further out than the header logo directly above it and the
+	 * CQC/Why Choose/Services headings directly below it, which is the specific
+	 * misalignment this fixes. .home-hero__panel's own max-width: min(42rem,100%)
+	 * already keeps the headline from feeling lost inside the wider column, so
+	 * nothing about the hero's proportions actually depended on --xl.
+	 */
+	?>
+	<div class="home-hero__inner container container--lg">
 		<div class="home-hero__panel">
 
 			<h1 id="home-hero-heading" class="home-hero__title">

@@ -67,10 +67,28 @@ while ( have_posts() ) :
 
 <main id="main" class="site-main site-main--service" role="main">
 
-	<!-- Hero: full-width, light background -->
-	<header class="service-hero<?php echo has_post_thumbnail( $post_id ) ? ' service-hero--photo' : ''; ?>">
-		<div class="service-hero__inner container container--lg">
-			<div class="service-hero__text">
+	<?php
+	/*
+	 * Routed through the shared .page-hero / .page-hero--photo system
+	 * (template-parts/page-header.php, assets/css/components.css) instead of the
+	 * bespoke .service-hero this used to render. Full-bleed photo behind a
+	 * transparent header is now how every other page in the site opens; this
+	 * was the one template still drawing its own separate version of the same
+	 * idea, in its own stylesheet, styled before that pattern existed.
+	 *
+	 * 'full', not 'large', and sizes="100vw" for the same reason page-header.php
+	 * uses them: 'large' caps at 1024px behind a full-bleed banner, and without
+	 * an explicit sizes the browser assumes the image is capped at 1024px too
+	 * and ignores larger candidates in its own srcset.
+	 */
+	$ccs_service_has_photo = has_post_thumbnail( $post_id );
+	?>
+	<header class="page-hero<?php echo $ccs_service_has_photo ? ' page-hero--photo' : ''; ?>">
+		<?php if ( $ccs_service_has_photo ) : ?>
+			<div class="page-hero__scrim" aria-hidden="true"></div>
+		<?php endif; ?>
+		<div class="page-hero__inner container container--lg">
+			<div class="page-hero__text">
 				<?php
 				/*
 				 * Shared partial, so these match every other page. The old inline
@@ -79,9 +97,9 @@ while ( have_posts() ) :
 				 */
 				get_template_part( 'template-parts/breadcrumb' );
 				?>
-				<h1 class="service-hero__title"><?php the_title(); ?></h1>
+				<h1 class="page-hero__title"><?php the_title(); ?></h1>
 				<?php if ( $short_desc ) : ?>
-					<p class="service-hero__desc"><?php echo esc_html( $short_desc ); ?></p>
+					<p class="page-hero__intro"><?php echo esc_html( $short_desc ); ?></p>
 				<?php endif; ?>
 				<?php if ( $ccs_phone_tel ) : ?>
 					<a href="<?php echo esc_url( 'tel:' . $ccs_phone_tel ); ?>" class="btn btn-phone btn-lg service-hero__cta">
@@ -89,9 +107,20 @@ while ( have_posts() ) :
 					</a>
 				<?php endif; ?>
 			</div>
-			<?php if ( has_post_thumbnail( $post_id ) ) : ?>
-				<div class="service-hero__media">
-					<?php echo get_the_post_thumbnail( $post_id, 'large', array( 'class' => 'service-hero__img', 'loading' => 'eager', 'fetchpriority' => 'high' ) ); ?>
+			<?php if ( $ccs_service_has_photo ) : ?>
+				<div class="page-hero__media">
+					<?php
+					echo get_the_post_thumbnail(
+						$post_id,
+						'full',
+						array(
+							'class'         => 'page-hero__img',
+							'loading'       => 'eager',
+							'fetchpriority' => 'high',
+							'sizes'         => '100vw',
+						)
+					);
+					?>
 				</div>
 			<?php endif; ?>
 		</div>
@@ -151,6 +180,22 @@ while ( have_posts() ) :
 							<?php endif; ?>
 							<?php if ( $typical ) : ?>
 								<p class="service-pricing__hours"><?php echo esc_html( $typical ); ?></p>
+							<?php endif; ?>
+							<?php if ( $has_price ) : ?>
+								<?php
+								/*
+								 * Same caveat as the homepage costs section
+								 * (template-parts/home/costs.php), and for the same reason: a
+								 * "From £X" figure with nothing else beside it reads as a flat
+								 * rate. This template currently has no service posts with a
+								 * price set, so this has never rendered yet — but the moment
+								 * one is, the figure needs this next to it, not added later
+								 * once it's already live without it.
+								 */
+								?>
+								<p class="service-pricing__caveat">
+									<?php esc_html_e( 'Your actual cost depends on the type of care you need and when it happens — this is our lowest rate, not a flat price.', 'ccs-wp-theme' ); ?>
+								</p>
 							<?php endif; ?>
 							<?php if ( $funding ) : ?>
 								<div class="service-pricing__funding"><?php echo wp_kses_post( nl2br( esc_html( $funding ) ) ); ?></div>

@@ -40,9 +40,24 @@ $ccs_intro         = $ccs_posts_page_id ? get_post_meta( $ccs_posts_page_id, 'cc
 			<?php if ( have_posts() ) : ?>
 				<ul class="post-list" role="list">
 					<?php
+					/*
+					 * The newest post on page one leads. Only on page one, and
+					 * only when there is more than one post: promoting the sole
+					 * item on an otherwise empty index, or the fourth-newest
+					 * post at the top of page two, would both be lying about
+					 * what "lead story" means.
+					 */
+					$ccs_lead = ! is_paged() && $wp_query->post_count > 1;
+					$ccs_i    = 0;
+
 					while ( have_posts() ) :
 						the_post();
-						get_template_part( 'template-parts/post-card' );
+						get_template_part(
+							'template-parts/post-card',
+							null,
+							array( 'featured' => ( $ccs_lead && 0 === $ccs_i ) )
+						);
+						++$ccs_i;
 					endwhile;
 					?>
 				</ul>

@@ -46,6 +46,11 @@ require_once THEME_DIR . '/inc/header-footer-helpers.php';
 require_once THEME_DIR . '/inc/team.php';
 
 /**
+ * News display helpers (reading time, primary category, related posts).
+ */
+require_once THEME_DIR . '/inc/news-helpers.php';
+
+/**
  * Block patterns (CCS Patterns category).
  */
 require_once THEME_DIR . '/inc/block-patterns.php';
