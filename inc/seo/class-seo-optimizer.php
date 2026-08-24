@@ -88,7 +88,29 @@ class CCS_SEO_Optimizer {
 	}
 
 	/**
-	 * Truncate final document title to TITLE_MAX characters.
+	 * Truncate the final document title to TITLE_MAX characters.
+	 *
+	 * Truncating the assembled "Page Title | Site Name" string as one blob cut
+	 * wherever 60 characters happened to land, which on this site produced
+	 * "The quiet signs a relative may need help at home |" — a separator with
+	 * nothing after it — on three of the four news posts, and amputated the
+	 * business's own name to "Continuity Care" on the homepage. Both appear
+	 * verbatim in search results, so this is a shop-window defect.
+	 *
+	 * The two parts are not equally valuable. The page title is what somebody
+	 * searched for and is the reason the result is worth clicking; the site name
+	 * is a suffix that helps when it fits and hurts when it is half there. So
+	 * the rule is all-or-nothing on the suffix, never on the title: keep both
+	 * when both fit, otherwise keep the page title alone, and only shorten the
+	 * page title itself when it exceeds the budget on its own. An earlier
+	 * attempt at this preserved the site name at the title's expense and gave
+	 * "Home Care in Maidstone & | Continuity Care Services", dropping "Kent"
+	 * from the one title where the county is the whole point.
+	 *
+	 * Lengths are measured on the decoded string. WordPress has already turned
+	 * "&" into "&#038;" by this point, and counting the entity made a 56
+	 * character homepage title measure 61 and get cut for no reason — nobody
+	 * ever sees the entity, so nothing should be budgeted for it.
 	 *
 	 * @param string $title Full title string.
 	 * @return string Truncated title.
@@ -97,7 +119,48 @@ class CCS_SEO_Optimizer {
 		if ( is_admin() || is_feed() || is_robots() ) {
 			return $title;
 		}
-		return $this->truncate( $title, self::TITLE_MAX );
+
+		$title = wp_strip_all_tags( (string) $title );
+		if ( self::display_length( $title ) <= self::TITLE_MAX ) {
+			return $title;
+		}
+
+		$separator = ' ' . $this->filter_document_title_separator() . ' ';
+		$parts     = explode( $separator, $title );
+
+		// No separator to reason about — a plain title, trim it and be done.
+		if ( count( $parts ) < 2 ) {
+			return $this->truncate( $title, self::TITLE_MAX );
+		}
+
+		// Last segment is the site name; everything before it is the page title.
+		array_pop( $parts );
+		$page = trim( implode( $separator, $parts ) );
+
+		if ( $page === '' ) {
+			return $this->truncate( $title, self::TITLE_MAX );
+		}
+
+		// The page title alone fits: drop the suffix rather than cut either part.
+		if ( self::display_length( $page ) <= self::TITLE_MAX ) {
+			return $page;
+		}
+
+		return $this->truncate( $page, self::TITLE_MAX );
+	}
+
+	/**
+	 * Length of a string as a reader will actually see it.
+	 *
+	 * HTML entities occupy several characters in the markup and exactly one on
+	 * screen. Titles and descriptions are budgeted against what search engines
+	 * display, so they must be measured decoded.
+	 *
+	 * @param string $text Possibly entity-encoded text.
+	 * @return int Character count.
+	 */
+	private static function display_length( $text ) {
+		return mb_strlen( html_entity_decode( (string) $text, ENT_QUOTES | ENT_HTML5, 'UTF-8' ) );
 	}
 
 	/**
@@ -281,10 +344,21 @@ class CCS_SEO_Optimizer {
 		$desc  = $this->get_og_description();
 		$image = $this->get_og_image();
 		$url   = $this->get_canonical_url();
-		$type  = is_singular() ? 'website' : 'website';
-		if ( is_singular( 'service' ) || is_singular( 'location' ) || is_singular( 'page' ) || is_singular( 'post' ) ) {
-			$type = 'article';
-		}
+		/*
+		 * og:type — 'article' is only correct for things that genuinely are
+		 * articles: a published piece with an author and a date. News posts
+		 * qualify; service, location and ordinary pages do not, and the front
+		 * page least of all.
+		 *
+		 * The previous logic opened with `is_singular() ? 'website' : 'website'`
+		 * (both branches identical, so it decided nothing) and then set
+		 * 'article' for any singular page. Because the homepage is a static
+		 * page, that made the front page of the site advertise itself to
+		 * Facebook, LinkedIn and every other OG consumer as an article — the one
+		 * URL where 'website' matters most, since it is what gets shared when
+		 * someone links the business itself.
+		 */
+		$type = is_singular( 'post' ) && ! is_front_page() ? 'article' : 'website';
 
 		if ( $title !== '' ) {
 			echo '<meta property="og:title" content="' . esc_attr( $title ) . '">' . "\n";
@@ -294,10 +368,25 @@ class CCS_SEO_Optimizer {
 		}
 		if ( $image !== '' ) {
 			echo '<meta property="og:image" content="' . esc_attr( $image ) . '">' . "\n";
+			echo '<meta property="og:image:alt" content="' . esc_attr( $title ) . '">' . "\n";
+			/*
+			 * Dimensions let Facebook, LinkedIn and WhatsApp reserve the right
+			 * card size on first scrape instead of falling back to a small
+			 * thumbnail while they fetch the file.
+			 */
+			$dims = $this->get_image_dimensions( $image );
+			if ( $dims ) {
+				echo '<meta property="og:image:width" content="' . esc_attr( (string) $dims[0] ) . '">' . "\n";
+				echo '<meta property="og:image:height" content="' . esc_attr( (string) $dims[1] ) . '">' . "\n";
+			}
 		}
 		echo '<meta property="og:url" content="' . esc_attr( $url ) . '">' . "\n";
 		echo '<meta property="og:type" content="' . esc_attr( $type ) . '">' . "\n";
 		echo '<meta property="og:site_name" content="' . esc_attr( get_bloginfo( 'name', 'display' ) ) . '">' . "\n";
+		// en_GB rather than the WordPress default en_US — this is a Kent care
+		// provider, and the locale is a signal for a business whose entire value
+		// proposition is being local.
+		echo '<meta property="og:locale" content="' . esc_attr( str_replace( '-', '_', get_bloginfo( 'language' ) ) ) . '">' . "\n";
 	}
 
 	private function get_og_title() {
@@ -314,11 +403,56 @@ class CCS_SEO_Optimizer {
 	}
 
 	/**
-	 * og:image: featured image or theme logo.
+	 * Width/height for an image URL, from the media library where possible.
 	 *
-	 * @return string Image URL or empty.
+	 * Falls back to reading the file off disk for packaged theme images, which
+	 * are not attachments and so have no metadata. Returns null rather than
+	 * guessing if neither route works.
+	 *
+	 * @param string $url Image URL.
+	 * @return array{0:int,1:int}|null
+	 */
+	private function get_image_dimensions( $url ) {
+		$id = attachment_url_to_postid( $url );
+		if ( $id ) {
+			$meta = wp_get_attachment_metadata( $id );
+			if ( ! empty( $meta['width'] ) && ! empty( $meta['height'] ) ) {
+				return array( (int) $meta['width'], (int) $meta['height'] );
+			}
+		}
+
+		$theme_uri = get_template_directory_uri();
+		if ( strpos( $url, $theme_uri ) === 0 ) {
+			$path = get_template_directory() . substr( $url, strlen( $theme_uri ) );
+			if ( file_exists( $path ) ) {
+				$size = @getimagesize( $path ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- non-image or unreadable file returns false, handled below.
+				if ( is_array( $size ) && ! empty( $size[0] ) && ! empty( $size[1] ) ) {
+					return array( (int) $size[0], (int) $size[1] );
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * og:image with a guaranteed result.
+	 *
+	 * Previously this returned '' on the front page: the homepage has no featured
+	 * image, and the theme renders its logo from a packaged PNG rather than the
+	 * custom_logo theme mod, so both branches missed and every shared link
+	 * previewed as a blank card. That matters more here than on most sites —
+	 * families routinely send a provider's link to siblings on WhatsApp, and the
+	 * preview sat next to competitors' photography with no image at all.
+	 *
+	 * Order is deliberate: the most page-specific image first, then the editor's
+	 * chosen share image, then the hero (a warm photograph of real care, which
+	 * makes a far better social card than a logo on white), then the packaged
+	 * hero, and only then the logo as a last resort.
+	 *
+	 * @return string Image URL, or empty only if the theme files are missing.
 	 */
 	private function get_og_image() {
+		// 1. This page's own featured image.
 		if ( is_singular() ) {
 			$post = get_queried_object();
 			if ( $post instanceof WP_Post ) {
@@ -331,6 +465,26 @@ class CCS_SEO_Optimizer {
 				}
 			}
 		}
+
+		// 2. Explicit site-wide share image, then 3. the hero image.
+		foreach ( array( 'ccs_share_image', 'ccs_hero_image' ) as $mod ) {
+			$id = absint( get_theme_mod( $mod, 0 ) );
+			if ( $id ) {
+				$src = wp_get_attachment_image_src( $id, 'large' );
+				if ( is_array( $src ) && ! empty( $src[0] ) ) {
+					return $src[0];
+				}
+			}
+		}
+
+		// 4. Packaged default hero — the same file template-parts/home/hero.php
+		// falls back to, so the card matches what the visitor lands on.
+		$packaged = '/assets/images/site-photos/home-hero-family.jpg';
+		if ( file_exists( get_template_directory() . $packaged ) ) {
+			return get_template_directory_uri() . $packaged;
+		}
+
+		// 5. Logo, last.
 		$logo_id = get_theme_mod( 'custom_logo' );
 		if ( $logo_id ) {
 			$src = wp_get_attachment_image_src( $logo_id, 'full' );
@@ -491,301 +645,6 @@ class CCS_SEO_Optimizer {
 			$post_ids[] = $page->ID;
 		}
 		return $post_ids;
-	}
-
-	// -------------------------------------------------------------------------
-	// JSON-LD structured data (Organization, LocalBusiness, Service, BreadcrumbList)
-	// -------------------------------------------------------------------------
-
-	/** CCS organization name (schema and fallbacks). */
-	const ORG_NAME = 'Continuity Care Services';
-
-	/** CCS contact phone (E.164-style for schema). */
-	const ORG_PHONE = '+44-1622-809-881';
-
-	/** CCS area served. */
-	const ORG_AREA_SERVED = 'Maidstone, Kent';
-
-	/**
-	 * Output JSON-LD structured data script(s) in wp_head.
-	 */
-	public function output_structured_data() {
-		if ( is_admin() || is_feed() || is_robots() ) {
-			return;
-		}
-
-		$graphs = array();
-
-		$org = $this->get_organization_localbusiness_schema();
-		if ( ! empty( $org ) ) {
-			$graphs[] = $org;
-		}
-
-		if ( is_singular( 'service' ) ) {
-			$post = get_queried_object();
-			if ( $post instanceof WP_Post ) {
-				$service_schema = $this->get_service_schema( $post );
-				if ( ! empty( $service_schema ) ) {
-					$graphs[] = $service_schema;
-				}
-			}
-		}
-
-		$breadcrumb = $this->get_breadcrumb_schema();
-		if ( ! empty( $breadcrumb ) ) {
-			$graphs[] = $breadcrumb;
-		}
-
-		if ( empty( $graphs ) ) {
-			return;
-		}
-
-		$json = wp_json_encode(
-			array(
-				'@context' => 'https://schema.org',
-				'@graph'   => $graphs,
-			),
-			JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
-		);
-		if ( $json === false ) {
-			return;
-		}
-
-		echo '<!-- Schema.org JSON-LD (CCS SEO) -->' . "\n";
-		echo '<script type="application/ld+json">' . "\n" . $json . "\n" . '</script>' . "\n";
-	}
-
-	/**
-	 * Organization + LocalBusiness schema with exact CCS details from content guide.
-	 *
-	 * @return array Schema array for @graph.
-	 */
-	private function get_organization_localbusiness_schema() {
-		$url = home_url( '/' );
-		$name = self::ORG_NAME;
-		$logo_url = $this->get_schema_logo_url();
-
-		$schema = array(
-			'@type'       => array( 'Organization', 'LocalBusiness' ),
-			'@id'         => $url . '#organization',
-			'name'        => $name,
-			'url'         => $url,
-			'contactPoint' => array(
-				'@type'       => 'ContactPoint',
-				'telephone'   => self::ORG_PHONE,
-				'contactType' => 'Customer Service',
-			),
-			'address'     => array(
-				'@type'           => 'PostalAddress',
-				'streetAddress'   => 'The Maidstone Studios, New Cut Road',
-				'addressLocality' => 'Maidstone',
-				'addressRegion'   => 'Kent',
-				'postalCode'      => 'ME14 5NZ',
-				'addressCountry'  => 'GB',
-			),
-			'sameAs'      => array(
-				'https://instagram.com/continuityofcareservices',
-				'https://linkedin.com/company/continuitycareservices',
-			),
-			'priceRange'  => '$$',
-		);
-
-		if ( $logo_url !== '' ) {
-			$schema['logo'] = $logo_url;
-		}
-
-		return $schema;
-	}
-
-	/**
-	 * Service schema for a single service (care_service / service) post.
-	 *
-	 * @param WP_Post $post Service post.
-	 * @return array Schema array or empty.
-	 */
-	private function get_service_schema( WP_Post $post ) {
-		$name = get_the_title( $post->ID );
-		$url  = get_permalink( $post->ID );
-		if ( $name === '' || $url === '' ) {
-			return array();
-		}
-
-		$schema = array(
-			'@type'       => 'Service',
-			'@id'         => $url . '#service',
-			'serviceType' => $name,
-			'provider'    => array(
-				'@type' => 'LocalBusiness',
-				'name'  => self::ORG_NAME,
-			),
-			'areaServed'  => self::ORG_AREA_SERVED,
-		);
-
-		$description = $this->get_schema_service_description( $post );
-		if ( $description !== '' ) {
-			$schema['description'] = $description;
-		}
-
-		return $schema;
-	}
-
-	/**
-	 * BreadcrumbList from page hierarchy (ancestors) or context.
-	 *
-	 * @return array Schema array or empty.
-	 */
-	private function get_breadcrumb_schema() {
-		$items = $this->get_breadcrumb_items();
-		if ( count( $items ) < 2 ) {
-			return array();
-		}
-
-		$list_items = array();
-		$position   = 1;
-		foreach ( $items as $item ) {
-			$list_items[] = array(
-				'@type'    => 'ListItem',
-				'position' => $position,
-				'name'     => $item['name'],
-				'item'     => $item['url'],
-			);
-			$position++;
-		}
-
-		return array(
-			'@type'           => 'BreadcrumbList',
-			'itemListElement' => $list_items,
-		);
-	}
-
-	/**
-	 * Build breadcrumb trail: Home then hierarchy (pages) or archive + current (service/post).
-	 *
-	 * @return array List of array( 'name', 'url' ).
-	 */
-	private function get_breadcrumb_items() {
-		$items = array();
-		$items[] = array(
-			'name' => __( 'Home', 'ccs-wp-theme' ),
-			'url'  => home_url( '/' ),
-		);
-
-		if ( is_singular( 'service' ) ) {
-			$obj = get_post_type_object( 'service' );
-			$archive = get_post_type_archive_link( 'service' );
-			if ( $archive && $obj ) {
-				$items[] = array(
-					'name' => $obj->labels->name,
-					'url'  => $archive,
-				);
-			}
-			$post = get_queried_object();
-			if ( $post instanceof WP_Post ) {
-				$items[] = array(
-					'name' => get_the_title( $post->ID ),
-					'url'  => get_permalink( $post->ID ),
-				);
-			}
-		} elseif ( is_singular( 'page' ) ) {
-			$post = get_queried_object();
-			if ( $post instanceof WP_Post ) {
-				$ancestors = array_reverse( get_post_ancestors( $post->ID ) );
-				foreach ( $ancestors as $ancestor_id ) {
-					$ancestor_id = (int) $ancestor_id;
-					if ( $ancestor_id <= 0 ) {
-						continue;
-					}
-					$items[] = array(
-						'name' => get_the_title( $ancestor_id ),
-						'url'  => get_permalink( $ancestor_id ),
-					);
-				}
-				$items[] = array(
-					'name' => get_the_title( $post->ID ),
-					'url'  => get_permalink( $post->ID ),
-				);
-			}
-		} elseif ( is_singular( 'post' ) ) {
-			$posts_page_id = (int) get_option( 'page_for_posts' );
-			if ( $posts_page_id > 0 ) {
-				$items[] = array(
-					'name' => get_the_title( $posts_page_id ),
-					'url'  => get_permalink( $posts_page_id ),
-				);
-			}
-			$post = get_queried_object();
-			if ( $post instanceof WP_Post ) {
-				$items[] = array(
-					'name' => get_the_title( $post->ID ),
-					'url'  => get_permalink( $post->ID ),
-				);
-			}
-		} elseif ( is_singular( 'location' ) ) {
-			$obj = get_post_type_object( 'location' );
-			$archive = get_post_type_archive_link( 'location' );
-			if ( $archive && $obj ) {
-				$items[] = array(
-					'name' => $obj->labels->name,
-					'url'  => $archive,
-				);
-			}
-			$post = get_queried_object();
-			if ( $post instanceof WP_Post ) {
-				$items[] = array(
-					'name' => get_the_title( $post->ID ),
-					'url'  => get_permalink( $post->ID ),
-				);
-			}
-		} elseif ( is_post_type_archive() ) {
-			$obj = get_queried_object();
-			if ( $obj && isset( $obj->labels->name ) ) {
-				$items[] = array(
-					'name' => $obj->labels->name,
-					'url'  => get_post_type_archive_link( $obj->name ),
-				);
-			}
-		} elseif ( is_singular() ) {
-			$post = get_queried_object();
-			if ( $post instanceof WP_Post ) {
-				$items[] = array(
-					'name' => get_the_title( $post->ID ),
-					'url'  => get_permalink( $post->ID ),
-				);
-			}
-		}
-
-		return $items;
-	}
-
-	/**
-	 * Logo URL for schema (custom logo, full size).
-	 *
-	 * @return string URL or empty.
-	 */
-	private function get_schema_logo_url() {
-		$logo_id = get_theme_mod( 'custom_logo' );
-		if ( ! $logo_id ) {
-			return '';
-		}
-		$src = wp_get_attachment_image_src( (int) $logo_id, 'full' );
-		return is_array( $src ) && ! empty( $src[0] ) ? $src[0] : '';
-	}
-
-	/**
-	 * Service description for schema: excerpt or first 155 chars of content (strip tags).
-	 *
-	 * @param WP_Post $post Service post.
-	 * @return string Plain text.
-	 */
-	private function get_schema_service_description( WP_Post $post ) {
-		if ( has_excerpt( $post->ID ) ) {
-			$text = get_the_excerpt( $post->ID );
-		} else {
-			$text = get_post_field( 'post_content', $post->ID );
-			$text = wp_trim_words( wp_strip_all_tags( $text ), 25 );
-		}
-		$text = wp_strip_all_tags( trim( $text ) );
-		return $text === '' ? '' : $this->truncate( $text, self::DESC_MAX );
 	}
 
 	// -------------------------------------------------------------------------

@@ -93,8 +93,12 @@ body {
 	background-color: var(--color-background);
 }
 
-h1, .heading-1 { font-size: var(--text-4xl); font-weight: var(--font-weight-bold); line-height: var(--leading-tight); color: var(--color-primary-dark); margin: 0; }
-h2, .heading-2 { font-size: var(--text-3xl); font-weight: var(--font-weight-bold); line-height: var(--leading-tight); color: var(--color-primary-dark); margin: 0; }
+/* font-weight-medium, matching design-system.css's real default. Left at bold
+   here, first paint briefly showed a bolder h1/h2 than the page settles into
+   once the full stylesheet loads a moment later — a visible weight jump on
+   every page load rather than a clean one. */
+h1, .heading-1 { font-size: var(--text-4xl); font-weight: var(--font-weight-medium); line-height: var(--leading-tight); color: var(--color-primary-dark); margin: 0; }
+h2, .heading-2 { font-size: var(--text-3xl); font-weight: var(--font-weight-medium); line-height: var(--leading-tight); color: var(--color-primary-dark); margin: 0; }
 h3, .heading-3 { font-size: var(--text-2xl); font-weight: var(--font-weight-semibold); line-height: var(--leading-tight); margin: 0; }
 
 :where(a, button, [tabindex]:not([tabindex="-1"])):focus-visible {
@@ -156,123 +160,18 @@ h3, .heading-3 { font-size: var(--text-2xl); font-weight: var(--font-weight-semi
 }
 .emergency-banner__text { margin: 0; font-size: var(--text-sm); font-weight: var(--font-weight-medium); }
 
+/* Must match the base .site-header state in assets/css/header.css: the header
+   starts transparent and only picks up a background and shadow once scrolled.
+   Declaring the old solid-white-with-a-border version here painted a white bar
+   over the top of the hero photo on first paint, then snapped transparent when
+   header.css arrived. */
 .site-header {
 	position: sticky;
 	top: 0;
 	z-index: var(--z-sticky);
-	background: var(--color-background);
-	box-shadow: 0 1px 0 var(--color-border);
-}
-.site-header__top { background: var(--color-background-grey); border-bottom: 1px solid var(--color-border); }
-.site-header__top-inner {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	justify-content: space-between;
-	gap: var(--space-sm);
-	max-width: var(--bp-xl);
-	margin-inline: auto;
-	padding: var(--space-xs) var(--space-md);
-	font-size: var(--text-sm);
-	color: var(--color-text-light);
-}
-.site-header__top-left, .site-header__top-right { display: flex; align-items: center; gap: var(--space-md); }
-.site-header__phone { color: var(--color-primary); font-weight: var(--font-weight-semibold); text-decoration: none; }
-
-.site-header__main { border-bottom: 1px solid var(--color-border); }
-.site-header__main-inner {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: var(--space-lg);
-	max-width: var(--bp-xl);
-	margin-inline: auto;
-	padding: var(--space-sm) var(--space-md);
-}
-.site-header__brand { flex-shrink: 0; }
-.site-header__brand a, .site-header__logo-link {
-	display: block;
-	text-decoration: none;
-	color: var(--color-text);
-	font-weight: var(--font-weight-bold);
-	font-size: var(--text-lg);
-	line-height: var(--leading-tight);
-}
-.site-header__brand a:hover, .site-header__logo-link:hover { color: var(--color-primary); }
-.site-header__brand img { display: block; max-height: 3rem; width: auto; }
-
-.site-header__nav { display: none; flex: 1 1 auto; justify-content: center; }
-@media (min-width: 1024px) {
-	.site-header__nav { display: flex; }
-}
-.site-header__menu {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	justify-content: center;
-	gap: 0;
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-.site-header__menu .menu-item { position: relative; margin: 0; }
-.site-header__menu .menu-item a {
-	display: block;
-	padding: var(--space-xs) var(--space-sm);
-	font-size: var(--text-base);
-	font-weight: var(--font-weight-medium);
-	color: var(--color-text);
-	text-decoration: none;
-}
-.site-header__menu .menu-item a:hover, .site-header__menu .menu-item a:focus-visible { color: var(--color-primary); }
-.site-header__menu .menu-item.current-menu-item > a { color: var(--color-primary); font-weight: var(--font-weight-semibold); }
-
-.site-header__actions { display: flex; align-items: center; gap: var(--space-sm); flex-shrink: 0; }
-.site-header__cta { display: none; }
-@media (min-width: 1024px) {
-	.site-header__cta { display: inline-flex; }
-}
-
-.site-header__toggle {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 2.75rem;
-	height: 2.75rem;
-	padding: 0;
 	background: transparent;
-	border: none;
-	border-radius: var(--radius-sm);
-	cursor: pointer;
-	color: var(--color-text);
+	box-shadow: none;
 }
-.site-header__toggle:hover { background: var(--color-background-warm); }
-.site-header__toggle:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-ring-offset); }
-@media (min-width: 1024px) {
-	.site-header__toggle { display: none; }
-}
-.site-header__toggle-icon {
-	position: relative;
-	display: block;
-	width: 1.25rem;
-	height: 2px;
-	background: currentColor;
-}
-.site-header__toggle-icon::before, .site-header__toggle-icon::after {
-	content: '';
-	position: absolute;
-	left: 0;
-	width: 100%;
-	height: 2px;
-	background: currentColor;
-	transition: transform var(--duration-fast) var(--ease-out);
-}
-.site-header__toggle-icon::before { top: -6px; }
-.site-header__toggle-icon::after { top: 6px; }
-.site-header__toggle[aria-expanded="true"] .site-header__toggle-icon { background: transparent; }
-.site-header__toggle[aria-expanded="true"] .site-header__toggle-icon::before { top: 0; transform: rotate(45deg); }
-.site-header__toggle[aria-expanded="true"] .site-header__toggle-icon::after { top: 0; transform: rotate(-45deg); }
-
 /* -------------------------------------------------------------------------
    HERO (above the fold)
    ------------------------------------------------------------------------- */

@@ -9,120 +9,44 @@
  */
 
 /* -------------------------------------------------------------------------
-   HERO – full-width, light background
+   HERO
+
+   Was a full, independent hero implementation — its own header background,
+   breadcrumb classes, title, photo layout, all duplicating what
+   assets/css/components.css's .page-hero / .page-hero--photo already does for
+   every other inner page. single-service.php now renders those shared classes
+   directly, so the only service-specific thing left here is the one element
+   .page-hero has no equivalent for: the phone number CTA that sits under the
+   title on a service page.
    ------------------------------------------------------------------------- */
-
-.service-hero {
-	padding-block: var(--space-xl) var(--space-2xl);
-	background-color: var(--color-background-grey);
-}
-
-.service-hero__inner {
-	max-width: var(--bp-lg);
-}
-
-.service-hero__breadcrumbs {
-	margin-bottom: var(--space-md);
-}
-
-.service-hero__breadcrumb-list {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: var(--space-xs);
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	font-size: var(--text-sm);
-	color: var(--color-text-light);
-}
-
-.service-hero__breadcrumb-list li:not(:last-child)::after {
-	content: "›";
-	margin-inline-start: var(--space-xs);
-	color: var(--color-text-light);
-}
-
-.service-hero__breadcrumb-list a {
-	color: var(--color-primary);
-	text-decoration: none;
-}
-
-.service-hero__breadcrumb-list a:hover {
-	text-decoration: underline;
-}
-
-.service-hero__breadcrumb-list [aria-current="page"] {
-	color: var(--color-text);
-	font-weight: var(--font-weight-medium);
-}
-
-.service-hero__title {
-	margin: 0 0 var(--space-sm);
-	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-bold);
-	line-height: var(--leading-tight);
-	color: var(--color-primary-dark);
-}
-
-@media (min-width: 768px) {
-	.service-hero__title {
-		font-size: var(--text-3xl);
-	}
-}
-
-.service-hero__desc {
-	margin: 0 0 var(--space-lg);
-	font-size: var(--text-base);
-	line-height: var(--leading-relaxed);
-	color: var(--color-text);
-	max-width: 60ch;
-}
-
-@media (min-width: 768px) {
-	.service-hero__desc {
-		font-size: var(--text-md);
-	}
-}
 
 .service-hero__cta {
 	text-decoration: none;
 }
 
-/* Photo variant: opt-in per service via its featured image. */
-.service-hero--photo .service-hero__inner {
-	display: grid;
-	grid-template-columns: 1fr;
-	gap: var(--space-xl);
+/* White-outline treatment for the photo variant, matching .home-hero__call
+   (assets/css/homepage.css) — same problem, same answer: a solid brand-purple
+   button reads fine on the light .page-hero background but disappears against
+   a dark full-bleed photo, so the photo state needs an outline button instead
+   of a filled one. */
+.page-hero--photo .service-hero__cta {
+	display: inline-flex;
 	align-items: center;
+	justify-content: center;
+	background: transparent;
+	border: 1.5px solid rgba(255, 255, 255, 0.7);
+	color: #fff;
 }
 
-.service-hero__media {
-	order: -1;
+.page-hero--photo .service-hero__cta:hover {
+	background: rgba(255, 255, 255, 0.14);
+	border-color: #fff;
+	color: #fff;
 }
 
-.service-hero__img {
-	width: 100%;
-	height: auto;
-	max-height: 320px;
-	object-fit: cover;
-	border-radius: var(--radius-lg);
-	display: block;
-}
-
-@media (min-width: 900px) {
-	.service-hero--photo .service-hero__inner {
-		grid-template-columns: 1.1fr 1fr;
-		gap: var(--space-2xl);
-	}
-
-	.service-hero__media {
-		order: 0;
-	}
-
-	.service-hero__img {
-		max-height: 360px;
-	}
+.page-hero--photo .service-hero__cta:focus-visible {
+	outline: 2px solid #fff;
+	outline-offset: 2px;
 }
 
 /* -------------------------------------------------------------------------
@@ -240,6 +164,16 @@
 	margin: 0 0 var(--space-sm);
 	font-size: var(--text-sm);
 	color: var(--color-text-light);
+}
+
+/* Full body size, not styled as a footnote — same reasoning as
+   .home-costs__caveat in homepage.css. This is what stops the "From £X"
+   figure above it reading as a flat price, so it needs equal visual weight. */
+.service-pricing__caveat {
+	margin: 0 0 var(--space-sm);
+	font-size: var(--text-base);
+	line-height: var(--leading-relaxed);
+	color: var(--color-text);
 }
 
 .service-pricing__funding {
@@ -472,10 +406,13 @@
 	max-width: var(--bp-md);
 }
 
+/* font-weight-medium — same fix as the equivalent headings in homepage.css.
+   An explicit bold here overrode the theme's medium default for Lora headings
+   at the same specificity. */
 .service-cta__heading {
 	margin: 0 0 var(--space-sm);
 	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-bold);
+	font-weight: var(--font-weight-medium);
 	line-height: var(--leading-tight);
 	color: var(--color-primary-dark);
 }

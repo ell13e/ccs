@@ -13,7 +13,7 @@
 .resource-download-modal {
 	position: fixed;
 	inset: 0;
-	z-index: 9999;
+	z-index: var(--z-modal);
 	display: none;
 }
 
@@ -85,10 +85,12 @@
 	margin-bottom: var(--space-sm);
 }
 
+/* font-weight-medium — bold overrode the theme's default Lora weight for these
+   two modal titles, same fix applied throughout the rest of the theme. */
 .resource-download-title {
 	margin: 0 0 var(--space-xs) 0;
 	font-size: var(--text-xl);
-	font-weight: var(--font-weight-bold);
+	font-weight: var(--font-weight-medium);
 	color: var(--color-primary-dark);
 }
 
@@ -196,7 +198,7 @@
 .resource-unavailable-modal {
 	position: fixed;
 	inset: 0;
-	z-index: 9999;
+	z-index: var(--z-modal);
 	display: none;
 }
 
@@ -260,7 +262,7 @@
 .resource-unavailable-title {
 	margin: 0 0 var(--space-xs) 0;
 	font-size: var(--text-xl);
-	font-weight: var(--font-weight-bold);
+	font-weight: var(--font-weight-medium);
 	color: var(--color-primary-dark);
 }
 

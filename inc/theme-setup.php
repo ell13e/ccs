@@ -64,6 +64,95 @@ function ccs_body_class_ds_root( $classes ) {
 add_filter( 'body_class', 'ccs_body_class_ds_root', 10, 1 );
 
 /**
+ * Whether a page opens with the full-bleed photo hero.
+ *
+ * Single source of truth, and it needs to be. Two separate places decide things
+ * that must agree: template-parts/page-header.php picks the hero variant, and
+ * ccs_body_class_photo_hero() below tells the header to go transparent with a
+ * white logo and white nav. If those two ever disagree, the header paints white
+ * text onto a light background and the whole thing disappears — which is
+ * exactly the bug this theme has already shipped twice. They both call this.
+ *
+ * Policy pages are excluded: they are plain text documents with no featured
+ * image and no business carrying a photo hero.
+ *
+ * @param int|null $post_id Page ID. Defaults to the current post.
+ * @return bool
+ */
+function ccs_page_uses_photo_hero( $post_id = null ) {
+	$post_id = $post_id ? $post_id : get_the_ID();
+
+	if ( ! $post_id ) {
+		return false;
+	}
+
+	$post = get_post( $post_id );
+
+	if ( ! $post instanceof WP_Post ) {
+		return false;
+	}
+
+	/**
+	 * Filter the slugs that never receive a photo hero.
+	 *
+	 * @param array $slugs Excluded page slugs.
+	 */
+	$excluded = apply_filters(
+		'ccs_photo_hero_excluded_slugs',
+		array(
+			'privacy-policy',
+			'terms-and-conditions',
+			'accessibility-statement',
+			'cookies',
+		)
+	);
+
+	if ( in_array( $post->post_name, $excluded, true ) ) {
+		return false;
+	}
+
+	return has_post_thumbnail( $post_id );
+}
+
+/**
+ * Flag pages that open with a dark full-bleed photo directly under the header
+ * (the homepage hero, or an inner page's page-hero--photo — see
+ * template-parts/home/hero.php and template-parts/page-header.php) so the header
+ * can start transparent over the photo and only pick up its usual blurred
+ * background once .is-scrolled is added (assets/js/navigation.js).
+ *
+ * Uses get_queried_object_id() rather than get_the_ID(): body_class runs outside
+ * the loop, where get_the_ID() is not dependable.
+ *
+ * @param array $classes Body classes.
+ * @return array
+ */
+function ccs_body_class_photo_hero( $classes ) {
+	/*
+	 * is_singular( 'service' ) added alongside is_page(): single-service.php has
+	 * its own hero markup (page-hero classes now, formerly a separate
+	 * service-hero implementation — see assets/css/service-page.css), but it is
+	 * a CPT singular, not a page, so this check never matched it before. The
+	 * header stayed solid and dark-text even when the service hero itself had
+	 * gone full-bleed and dark, because nothing told it to.
+	 *
+	 * Location posts are deliberately NOT included. single-location.php's
+	 * featured-image slot is a map image, not a decorative photo — most
+	 * location pages have no image at all and show a plain gradient "Map"
+	 * placeholder there. Full-bleed-photo-behind-white-text is the wrong
+	 * treatment for that content even where a map image exists.
+	 */
+	if ( is_front_page()
+		|| ( is_page() && ccs_page_uses_photo_hero( get_queried_object_id() ) )
+		|| ( is_singular( 'service' ) && has_post_thumbnail( get_queried_object_id() ) )
+	) {
+		$classes[] = 'has-photo-hero';
+	}
+	return $classes;
+}
+add_filter( 'body_class', 'ccs_body_class_photo_hero', 10, 1 );
+
+/**
  * Use classic editor for pages (Visual/Code tabs).
  *
  * @param bool   $use_block_editor Whether to use the block editor.

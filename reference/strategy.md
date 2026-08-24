@@ -101,6 +101,16 @@
 - Lead every page with **continuity + carer matching + an unhurried, planned start** — never hospital-discharge or crisis-takeover angles.
 - **Staff or service-user stories/testimonials are fine, initials only** (e.g. "J.S.") — never a full name. Pair them with the **CQC rating, regulation badges, third-party review scores, and genuinely helpful educational content**, don't rely on them alone.
 - Write for **"Responsible Rachel"** — the adult son or daughter researching care for a parent — not for a faceless "audience".
+
+**Copy standards.** Terse and checkable on purpose — cross-referenced against a real, more mature sibling project's own standards doc rather than invented from scratch:
+
+- No "not X, it's Y" constructions ("it's not just what we do, it's how we do it") — state what the thing is.
+- No filler phrases: "in order to", "it's important to note", "whether you… or…".
+- Headings carry a real keyword or the reader's actual need — never a clever line that could belong to any provider ("Explore Your Care Options" tells nobody anything; "Home care services in Maidstone and across Kent" does).
+- No fabrication. Never invent a statistic, a claim about a condition, or a fact not already verified in this repo or told to Claude directly. If a detail isn't confirmed, write it as an open question, not a guess.
+- Every statistic gets an inline source link. A stats-heavy sentence with no citation is a claim, not evidence.
+- Address the reader directly without naming who they're arranging care for ("mum", "your child") — the relationship is theirs to bring, not ours to assume.
+- Testimonials stay initials-only per the guardrail above; this applies equally to any first-person quote used anywhere on the site, not just the homepage.
 </aside>
 
 ---

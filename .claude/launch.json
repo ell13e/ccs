@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "wp-playground",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "@wp-playground/cli@latest",
+        "server",
+        "--auto-mount",
+        "--port=9400",
+        "--wordpress-install-mode=install-from-existing-files-if-needed"
+      ],
+      "port": 9400
+    }
+  ]
+}

@@ -359,28 +359,6 @@ iframe {
 }
 
 /* -------------------------------------------------------------------------
-   TOP BAR – wrap and truncate on small screens
-   ------------------------------------------------------------------------- */
-
-@media (max-width: 767px) {
-	.site-header__top-inner {
-		flex-direction: column;
-		align-items: center;
-		text-align: center;
-		gap: var(--space-xs);
-	}
-
-	.site-header__top-left,
-	.site-header__top-right {
-		justify-content: center;
-	}
-
-	.site-header__hours {
-		white-space: normal;
-	}
-}
-
-/* -------------------------------------------------------------------------
    EMERGENCY BANNER – stack on mobile
    ------------------------------------------------------------------------- */
 

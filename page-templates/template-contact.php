@@ -105,7 +105,7 @@ $ccs_parking  = get_theme_mod( 'ccs_contact_parking', '' );
 
 					<?php if ( $ccs_hours ) : ?>
 						<div class="contact-info__hours">
-							<h3 class="contact-info__hours-heading"><?php esc_html_e( 'Office hours', 'ccs-wp-theme' ); ?></h3>
+							<h2 class="contact-info__hours-heading"><?php esc_html_e( 'Office hours', 'ccs-wp-theme' ); ?></h2>
 							<div class="contact-info__hours-calendar">
 								<p class="contact-info__hours-text"><?php echo esc_html( $ccs_hours ); ?></p>
 							</div>
@@ -120,7 +120,7 @@ $ccs_parking  = get_theme_mod( 'ccs_contact_parking', '' );
 
 					<?php if ( $ccs_address ) : ?>
 						<div class="contact-info__address">
-							<h3 class="contact-info__address-heading"><?php esc_html_e( 'Office address', 'ccs-wp-theme' ); ?></h3>
+							<h2 class="contact-info__address-heading"><?php esc_html_e( 'Office address', 'ccs-wp-theme' ); ?></h2>
 							<address class="contact-info__address-text"><?php echo nl2br( esc_html( $ccs_address ) ); ?></address>
 						</div>
 					<?php endif; ?>
@@ -149,7 +149,7 @@ $ccs_parking  = get_theme_mod( 'ccs_contact_parking', '' );
 
 					<?php if ( $ccs_parking ) : ?>
 						<div class="contact-info__parking">
-							<h3 class="contact-info__parking-heading"><?php esc_html_e( 'Parking', 'ccs-wp-theme' ); ?></h3>
+							<h2 class="contact-info__parking-heading"><?php esc_html_e( 'Parking', 'ccs-wp-theme' ); ?></h2>
 							<p class="contact-info__parking-text"><?php echo esc_html( $ccs_parking ); ?></p>
 						</div>
 					<?php endif; ?>

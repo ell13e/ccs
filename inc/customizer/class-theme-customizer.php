@@ -25,6 +25,10 @@ class CCS_Theme_Customizer {
 	const CONTACT_EMAIL         = 'ccs_contact_email';
 	const OFFICE_ADDRESS        = 'ccs_contact_address';
 	const OFFICE_HOURS          = 'ccs_office_hours';
+	const COST_FROM_RATE        = 'ccs_cost_from_rate';
+	const COST_BASIS            = 'ccs_cost_basis';
+	const COST_EFFECTIVE_FROM   = 'ccs_cost_effective_from';
+	const COST_EXTRAS           = 'ccs_cost_extras';
 	const FACEBOOK_URL          = 'ccs_facebook_url';
 	const LINKEDIN_URL          = 'ccs_linkedin_url';
 	const TWITTER_URL           = 'ccs_twitter_url';
@@ -60,11 +64,110 @@ class CCS_Theme_Customizer {
 	 */
 	public function register( $wp_customize ) {
 		$this->register_contact_section( $wp_customize );
+		$this->register_costs_section( $wp_customize );
 		$this->register_social_section( $wp_customize );
 		$this->register_analytics_section( $wp_customize );
 		$this->register_cqc_section( $wp_customize );
 		$this->register_cvm_section( $wp_customize );
 		$this->register_emergency_section( $wp_customize );
+	}
+
+	/**
+	 * Care Costs section.
+	 *
+	 * These figures were previously hardcoded into
+	 * template-parts/home/costs.php as a PHP array. That made the most
+	 * frequently changing and most business-critical number on the entire site —
+	 * the published hourly rate — editable only by a developer with deploy
+	 * access, on a page whose own file comment notes that rates are reviewed
+	 * annually. Published pricing is also this site's clearest advantage over
+	 * every benchmarked competitor, so it needs to stay current without a
+	 * release.
+	 *
+	 * Defaults match the 1 Sept 2026 schedule exactly, so an existing install
+	 * renders identically until someone deliberately changes a value.
+	 *
+	 * @param WP_Customize_Manager $wp_customize Customizer manager.
+	 */
+	private function register_costs_section( $wp_customize ) {
+		$wp_customize->add_section( 'ccs_costs', array(
+			'title'       => __( 'Care Costs', 'ccs-wp-theme' ),
+			'priority'    => 31,
+			'description' => __( 'The headline rate shown on the homepage. Update these when the annual fee schedule changes — no code edit needed.', 'ccs-wp-theme' ),
+		) );
+
+		$wp_customize->add_setting( self::COST_FROM_RATE, array(
+			'type'              => 'theme_mod',
+			'capability'        => 'edit_theme_options',
+			'default'           => '£36.38',
+			'sanitize_callback' => 'sanitize_text_field',
+			'transport'         => 'postMessage',
+		) );
+		$wp_customize->add_control( self::COST_FROM_RATE, array(
+			'label'       => __( 'Lowest hourly rate', 'ccs-wp-theme' ),
+			'description' => __( 'Include the currency symbol, e.g. £36.38', 'ccs-wp-theme' ),
+			'section'     => 'ccs_costs',
+			'type'        => 'text',
+		) );
+
+		$wp_customize->add_setting( self::COST_BASIS, array(
+			'type'              => 'theme_mod',
+			'capability'        => 'edit_theme_options',
+			'default'           => __( 'per hour for personal care, weekdays 7am–10pm', 'ccs-wp-theme' ),
+			'sanitize_callback' => 'sanitize_text_field',
+			'transport'         => 'postMessage',
+		) );
+		$wp_customize->add_control( self::COST_BASIS, array(
+			'label'       => __( 'What that rate covers', 'ccs-wp-theme' ),
+			'description' => __( 'Shown directly beneath the rate.', 'ccs-wp-theme' ),
+			'section'     => 'ccs_costs',
+			'type'        => 'text',
+		) );
+
+		$wp_customize->add_setting( self::COST_EFFECTIVE_FROM, array(
+			'type'              => 'theme_mod',
+			'capability'        => 'edit_theme_options',
+			'default'           => __( 'Rates from 1 September 2026', 'ccs-wp-theme' ),
+			'sanitize_callback' => 'sanitize_text_field',
+			'transport'         => 'postMessage',
+		) );
+		$wp_customize->add_control( self::COST_EFFECTIVE_FROM, array(
+			'label'       => __( 'Effective from', 'ccs-wp-theme' ),
+			'description' => __( 'Dating the rate is a trust signal — leave it filled in.', 'ccs-wp-theme' ),
+			'section'     => 'ccs_costs',
+			'type'        => 'text',
+		) );
+
+		$wp_customize->add_setting( self::COST_EXTRAS, array(
+			'type'              => 'theme_mod',
+			'capability'        => 'edit_theme_options',
+			'default'           => self::default_cost_extras(),
+			'sanitize_callback' => 'sanitize_textarea_field',
+			'transport'         => 'postMessage',
+		) );
+		$wp_customize->add_control( self::COST_EXTRAS, array(
+			'label'       => __( 'Additional charges', 'ccs-wp-theme' ),
+			'description' => __( 'One per line. These are what make the "no surprises" promise true — removing them all is not recommended.', 'ccs-wp-theme' ),
+			'section'     => 'ccs_costs',
+			'type'        => 'textarea',
+			'rows'        => 6,
+		) );
+	}
+
+	/**
+	 * Default "what else you might be charged" list, newline separated.
+	 *
+	 * Kept as a method rather than a constant so the strings stay translatable.
+	 *
+	 * @return string
+	 */
+	public static function default_cost_extras() {
+		return implode( "\n", array(
+			__( 'A one-off £30 fee when we set up your care package', 'ccs-wp-theme' ),
+			__( 'Evenings, weekends and complex care are charged at higher rates', 'ccs-wp-theme' ),
+			__( 'Bank holidays are charged at double, and Christmas Day, Boxing Day and New Year’s Day at treble', 'ccs-wp-theme' ),
+			__( 'Escort visits add mileage at 50p per mile, plus any parking', 'ccs-wp-theme' ),
+		) );
 	}
 
 	/**

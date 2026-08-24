@@ -92,7 +92,21 @@ $ccs_emergency       = $ccs_emergency_on && ( $ccs_emergency_text || $ccs_phone 
 	}
 	$ccs_nav_location = ( $ccs_is_careers_context && has_nav_menu( 'careers' ) ) ? 'careers' : 'primary';
 	?>
-	<div class="header-container">
+	<?php
+	/*
+	 * container container--lg — the site's one standard content width
+	 * (1024px, design-system.css), used everywhere except this header and the
+	 * homepage hero. Those two used their own separate rules pinned to
+	 * --bp-xl (1440px) instead, so on any viewport wider than about 1120px the
+	 * logo and nav sat up to 160-200px further out than every heading on every
+	 * page beneath them — provable with getBoundingClientRect, not a matter of
+	 * taste. Reusing the real classes here (see assets/css/header.css,
+	 * .header-container now only adds the transparent background and vertical
+	 * padding) means there is exactly one rule for "the site's content width,"
+	 * not two that can quietly drift apart again.
+	 */
+	?>
+	<div class="header-container container container--lg">
 		<div class="header-inner-wrapper">
 			<div class="header-logo">
 				<?php
@@ -218,34 +232,14 @@ $ccs_emergency       = $ccs_emergency_on && ( $ccs_emergency_text || $ccs_phone 
 </header>
 
 <?php
-$schema_logo = '';
-if ( has_custom_logo() ) {
-	$logo_id = get_theme_mod( 'custom_logo' );
-	$logo    = wp_get_attachment_image_src( $logo_id, 'full' );
-	if ( $logo ) {
-		$schema_logo = $logo[0];
-	}
-}
+/*
+ * The inline Organization JSON-LD that used to sit here was removed on
+ * 2026-08-23. It emitted a third, untyped-@id Organization node describing the
+ * same business that CCS_Structured_Data already publishes as
+ * #organization, so search engines received three overlapping descriptions of
+ * one entity with no way to reconcile them. All structured data now comes from
+ * inc/seo/class-structured-data.php in a single @graph. Add nothing here — use
+ * the ccs_structured_data_organization filter instead.
+ */
 ?>
-<script type="application/ld+json">
-{
-	"@context": "https://schema.org",
-	"@type": "Organization",
-	"name": "<?php echo esc_js( get_bloginfo( 'name' ) ); ?>",
-	"url": "<?php echo esc_url( home_url( '/' ) ); ?>"
-	<?php if ( $schema_logo ) : ?>
-	,"logo": "<?php echo esc_url( $schema_logo ); ?>"
-	<?php endif; ?>
-	<?php if ( $ccs_phone ) : ?>
-	,"contactPoint": {
-		"@type": "ContactPoint",
-		"telephone": "<?php echo esc_js( preg_replace( '/\s+/', '', $ccs_phone ) ); ?>",
-		"contactType": "customer service",
-		"areaServed": "GB",
-		"availableLanguage": "English"
-	}
-	<?php endif; ?>
-}
-</script>
-
 <div id="content" class="site-content">

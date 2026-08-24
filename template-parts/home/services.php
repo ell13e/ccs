@@ -70,39 +70,125 @@ if ( count( $service_posts ) >= 3 ) {
 		);
 	}
 }
+
+/*
+ * Imagery. These cards were three bordered boxes of prose, which is what made
+ * the section read as a template rather than as this company's work — and the
+ * theme already ships photographs named for exactly these three services that
+ * nothing was using.
+ *
+ * A service post's own featured image wins when it has one; otherwise fall back
+ * to the packaged asset. Cards render around 400px wide, so the 550px fallbacks
+ * hold up here in a way they would not in a full-bleed hero.
+ */
+$ccs_service_fallback_images = array(
+	'domiciliary-care' => 'site-photos/ccs-domiciliary-care.webp',
+	'respite-care'     => 'site-photos-extra/ccs-respite-care-guitar.webp',
+	'complex-care'     => 'site-photos/ccs-complex-care-maidstone-24-7.webp',
+);
+
+/*
+ * Intrinsic dimensions travel with the URL. The card's own box is fixed by
+ * `aspect-ratio: 4 / 3` in homepage.css, so layout is already stable without
+ * them — but an <img> with no width/height still reports as a CLS risk to
+ * every auditing tool, and leaves the browser nothing to work with in the
+ * (rare) event the stylesheet is slow or absent. Both sources can supply real
+ * numbers, so neither has to guess: attachments carry theirs in the metadata,
+ * and packaged files are measured through wp_getimagesize(), which caches so
+ * this is not a filesystem read on every request.
+ */
+foreach ( $services as $i => $svc ) {
+	$image  = '';
+	$width  = 0;
+	$height = 0;
+
+	if ( ! empty( $service_posts[ $i ] ) && has_post_thumbnail( $service_posts[ $i ] ) ) {
+		$src = wp_get_attachment_image_src( get_post_thumbnail_id( $service_posts[ $i ] ), 'large' );
+		if ( is_array( $src ) && ! empty( $src[0] ) ) {
+			$image  = $src[0];
+			$width  = isset( $src[1] ) ? (int) $src[1] : 0;
+			$height = isset( $src[2] ) ? (int) $src[2] : 0;
+		}
+	}
+
+	if ( ! $image && isset( $service_slugs[ $i ], $ccs_service_fallback_images[ $service_slugs[ $i ] ] ) ) {
+		$rel  = $ccs_service_fallback_images[ $service_slugs[ $i ] ];
+		$path = get_template_directory() . '/assets/images/' . $rel;
+		if ( file_exists( $path ) ) {
+			$image = get_template_directory_uri() . '/assets/images/' . $rel;
+			$size  = wp_getimagesize( $path );
+			if ( is_array( $size ) ) {
+				$width  = isset( $size[0] ) ? (int) $size[0] : 0;
+				$height = isset( $size[1] ) ? (int) $size[1] : 0;
+			}
+		}
+	}
+
+	$services[ $i ]['image']        = $image;
+	$services[ $i ]['image_width']  = $width;
+	$services[ $i ]['image_height'] = $height;
+}
 ?>
 
 <section class="home-services" aria-labelledby="home-services-heading">
 	<div class="home-services__inner container container--lg">
-		<p class="home-services__small-heading">
-			<?php esc_html_e( 'Beginning your home care journey', 'ccs-wp-theme' ); ?>
+		<p class="ccs-eyebrow">
+			<?php esc_html_e( 'How we can help', 'ccs-wp-theme' ); ?>
 		</p>
 		<h2 id="home-services-heading" class="home-services__heading">
-			<?php esc_html_e( 'Explore Your Care Options', 'ccs-wp-theme' ); ?>
+			<?php esc_html_e( 'Home care services in Maidstone and across Kent', 'ccs-wp-theme' ); ?>
 		</h2>
 		<p class="home-services__intro">
 			<?php
 			esc_html_e(
-				"Whether it's a hand getting dressed in the mornings, round-the-clock complex care, or someone popping in for a cuppa and a catch-up, we'll build the right support with you. Start with a conversation, not a commitment.",
+				"Some people need a hand for an hour in the morning. Others need someone there through the night, or a team trained for more complex health needs. We’ll work out which it is with you, before anything is agreed.",
 				'ccs-wp-theme'
 			);
 			?>
 		</p>
-		<div class="home-services__grid">
+		<ul class="home-services__grid">
 			<?php foreach ( $services as $svc ) : ?>
-				<div class="home-service-col">
-					<h3 class="home-service-col__title"><?php echo esc_html( $svc['title'] ); ?></h3>
+				<li class="home-service-col">
+					<?php if ( ! empty( $svc['image'] ) ) : ?>
+						<div class="home-service-col__media">
+							<img
+								src="<?php echo esc_url( $svc['image'] ); ?>"
+								alt=""
+								aria-hidden="true"
+								class="home-service-col__img"
+								<?php if ( ! empty( $svc['image_width'] ) && ! empty( $svc['image_height'] ) ) : ?>
+									width="<?php echo esc_attr( (string) $svc['image_width'] ); ?>"
+									height="<?php echo esc_attr( (string) $svc['image_height'] ); ?>"
+								<?php endif; ?>
+								loading="lazy"
+								decoding="async"
+							>
+						</div>
+					<?php endif; ?>
+					<h3 class="home-service-col__title">
+						<?php
+						/*
+						 * The link wraps the title and is stretched across the whole card
+						 * by ::after (see homepage.css). Previously the card repeated its
+						 * own title as a separate "Domiciliary Care →" link underneath,
+						 * which gave a screen reader the same words twice and left a
+						 * small target when the entire card could be one.
+						 */
+						?>
+						<a href="<?php echo esc_url( $svc['link_url'] ); ?>" class="home-service-col__link">
+							<?php echo esc_html( $svc['title'] ); ?>
+						</a>
+					</h3>
 					<p class="home-service-col__intro"><?php echo esc_html( $svc['intro'] ); ?></p>
-					<a href="<?php echo esc_url( $svc['link_url'] ); ?>" class="home-service-col__link">
-						<?php echo esc_html( $svc['title'] ); ?>
-						<span aria-hidden="true">&rarr;</span>
-					</a>
-				</div>
+					<span class="home-service-col__cue" aria-hidden="true">
+						<?php esc_html_e( 'Read more', 'ccs-wp-theme' ); ?> <span class="home-service-col__arrow">&rarr;</span>
+					</span>
+				</li>
 			<?php endforeach; ?>
-		</div>
+		</ul>
 		<div class="home-services__cta-box">
 			<p class="home-services__cta-text">
-				<?php esc_html_e( 'Tell us what you need. We’ll match you with a care plan that works.', 'ccs-wp-theme' ); ?>
+				<?php esc_html_e( 'Tell us what’s happening and we’ll say honestly whether we can help.', 'ccs-wp-theme' ); ?>
 			</p>
 			<a href="<?php echo esc_url( $contact_url ); ?>" class="btn btn-primary btn-lg home-services__cta-btn">
 				<?php esc_html_e( 'Book a free consultation', 'ccs-wp-theme' ); ?>

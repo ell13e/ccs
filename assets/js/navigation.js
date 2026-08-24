@@ -42,6 +42,18 @@
 
 	var isCtaStyle = !!mobilePanel;
 
+	/*
+	 * Scroll lock. Setting overflow on <body> alone did nothing: the document
+	 * scrolls on <html> (document.scrollingElement is documentElement here), so
+	 * the page behind the open menu scrolled freely while body sat there
+	 * obediently hidden. Both elements have to be locked.
+	 */
+	function setScrollLock(locked) {
+		var value = locked ? 'hidden' : '';
+		document.documentElement.style.overflow = value;
+		document.body.style.overflow = value;
+	}
+
 	function setMenuOpen(open) {
 		if (!toggle || !nav) return;
 		toggle.setAttribute('aria-expanded', open);
@@ -54,11 +66,11 @@
 			}
 			nav.classList.toggle(NAV_OPEN_CLASS_NAV, open);
 			document.body.classList.toggle('ccs-mobile-nav-open', open);
-			document.body.style.overflow = open ? 'hidden' : '';
+			setScrollLock(open);
 		} else {
 			nav.classList.toggle(NAV_OPEN_CLASS_NAV, open);
 			document.documentElement.classList.toggle(NAV_OPEN_CLASS, open);
-			document.body.style.overflow = open ? 'hidden' : '';
+			setScrollLock(open);
 		}
 	}
 
@@ -111,13 +123,13 @@
 		closeMenu();
 	});
 
-	/* Body scroll lock: ensure overflow reset if viewport resizes to desktop while open */
+	/* Scroll lock: ensure it is released if the viewport resizes to desktop while open */
 	window.addEventListener('resize', function() {
 		if (!isMobile() && nav && nav.classList.contains(NAV_OPEN_CLASS_NAV)) {
 			closeMenu();
 		}
 		if (isMobile()) return;
-		document.body.style.overflow = '';
+		setScrollLock(false);
 	});
 
 	/* Submenu accordion: inject toggle buttons and bind, for every menu present */

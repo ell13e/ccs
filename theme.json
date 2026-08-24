@@ -27,7 +27,7 @@
 				{ "slug": "text", "color": "#2e2e2e", "name": "Text" },
 				{ "slug": "text-light", "color": "#666666", "name": "Text Light" },
 				{ "slug": "border", "color": "#E0E0E0", "name": "Border" },
-				{ "slug": "accent", "color": "#9b8fb5", "name": "Accent" },
+				{ "slug": "accent", "color": "#6f6291", "name": "Accent" },
 				{ "slug": "success", "color": "#85C4B8", "name": "Success" },
 				{ "slug": "warning", "color": "#D4A843", "name": "Warning" },
 				{ "slug": "urgent", "color": "#C64B4B", "name": "Urgent" },

@@ -11,7 +11,7 @@
 .site-footer-modern {
 	background: var(--color-background-warm);
 	padding: var(--space-2xl) 0 0;
-	border-top: 1px solid var(--color-border);
+	border-top: 1px solid var(--color-hairline);
 }
 
 .footer-modern-container {
@@ -36,7 +36,7 @@
 .footer-modern-top {
 	margin-bottom: var(--space-2xl);
 	padding-bottom: var(--space-xl);
-	border-bottom: 1px solid var(--color-border);
+	border-bottom: 1px solid var(--color-hairline);
 }
 
 .footer-modern-brand {
@@ -55,6 +55,8 @@
 }
 
 .footer-modern-logo-link {
+	display: inline-block;
+	padding-block: 2px;
 	font-family: var(--font-family-heading);
 	font-weight: var(--font-weight-semibold);
 	font-size: var(--text-lg);
@@ -81,7 +83,12 @@
 }
 
 .footer-modern-contact__phone {
-	display: block;
+	/* inline-block, not block: a block-level anchor spans the whole column, so
+	   its 320px-wide hit area included a lot of empty space to the right of the
+	   number and taps landing there felt like misfires. Sized to the number,
+	   padded to clear the 24px target minimum. */
+	display: inline-block;
+	padding-block: 4px;
 	font-weight: var(--font-weight-semibold);
 	color: var(--color-primary-dark);
 	text-decoration: none;
@@ -123,6 +130,56 @@
 	}
 }
 
+/* Three columns once there is room. The grid held only Company and Help, which
+   at desktop left roughly the right-hand half of the footer empty; the third
+   column ("Where we work") both fills it and does real local-SEO work. */
+@media (min-width: 900px) {
+	.footer-modern-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+/* The areas list runs to a dozen towns, which is a tall single column next to
+   two short ones. Two sub-columns keep the footer balanced without truncating
+   the list — every town is a real internal link and worth keeping visible. */
+@media (min-width: 900px) {
+	.footer-modern-col:last-child .footer-modern-links {
+		/* display:block is load-bearing, not tidying. The base
+		   .footer-modern-links rule further down sets display:flex, and CSS
+		   multi-column layout has no effect on a flex container — the columns
+		   declaration below is simply ignored until the box goes back to block. */
+		display: block;
+		columns: 2;
+		column-gap: var(--space-md);
+	}
+
+	.footer-modern-col:last-child .footer-modern-links li {
+		break-inside: avoid;
+	}
+
+	/* Flex handled row spacing via gap; block layout needs it back. Matches the
+	   2px flex gap above — the links' own padding-block supplies the rest. */
+	.footer-modern-col:last-child .footer-modern-links li + li {
+		margin-top: 2px;
+	}
+}
+
+.footer-modern-contact__hours {
+	margin: var(--space-xs) 0 0;
+	font-size: var(--text-sm);
+	line-height: var(--leading-normal);
+	color: var(--color-text-light);
+}
+
+.footer-modern-contact__hours-label {
+	display: block;
+	font-size: var(--text-xs);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--color-text);
+}
+
 .footer-modern-col {
 	display: flex;
 	flex-direction: column;
@@ -144,10 +201,23 @@
 	padding: 0;
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-sm);
+	/* Row rhythm now comes mostly from the links' own padding-block (see
+	   .footer-modern-link) rather than from this gap, so the rendered spacing
+	   between rows is unchanged while the tappable area of each row roughly
+	   doubles. Changing only the gap would have separated the targets without
+	   making any of them bigger. */
+	gap: 2px;
 }
 
+/* WCAG 2.2 §2.5.8 sets a 24x24 CSS px minimum for pointer targets. These links
+   rendered as bare inline text at ~16px tall — under the minimum, and well
+   under a comfortable target for the older and motor-impaired visitors who are
+   a large share of this site's audience. inline-block plus vertical padding
+   takes each row to ~28px without moving a single pixel of visible text: the
+   padding absorbs the row gap that used to sit between them. */
 .footer-modern-link {
+	display: inline-block;
+	padding-block: 6px;
 	font-size: var(--text-sm);
 	color: var(--color-text-light);
 	text-decoration: none;
@@ -203,7 +273,7 @@
 /* Bottom: copyright */
 .footer-modern-bottom {
 	padding: var(--space-md) 0;
-	border-top: 1px solid var(--color-border);
+	border-top: 1px solid var(--color-hairline);
 	text-align: center;
 }
 
@@ -238,11 +308,15 @@
 	position: fixed;
 	bottom: var(--space-lg);
 	right: var(--space-lg);
-	z-index: 1000;
+	z-index: var(--z-overlay);
 	min-width: 48px;
 	min-height: 48px;
 	padding: var(--space-sm) var(--space-sm);
-	border-radius: 50%;
+	/* Pill, not 50%. A percentage radius resolves against each axis separately,
+	   so on a 101x45 button carrying the words "Back to top" it produced a
+	   stretched ellipse rather than a rounded end. 999px caps at a true
+	   semicircle on the short axis whatever the label length. */
+	border-radius: 999px;
 	background-color: var(--color-primary);
 	color: var(--color-background);
 	border: none;
@@ -295,5 +369,71 @@
 @media (prefers-reduced-motion: reduce) {
 	.back-to-top {
 		transition: opacity 0.1s ease, visibility 0.1s ease;
+	}
+}
+
+/* Persistent mobile call button — replaces the header phone pill below 768px
+   (see header.css). Always visible, unlike .back-to-top which only appears
+   after scrolling, since calling is the primary conversion action. Stacked
+   above .back-to-top on mobile so the two never overlap. */
+.mobile-call-fab {
+	display: none;
+	position: fixed;
+	bottom: var(--space-lg);
+	right: var(--space-lg);
+	z-index: var(--z-overlay);
+	width: 56px;
+	height: 56px;
+	flex-shrink: 0;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	background-color: var(--color-primary);
+	color: #fff;
+	box-shadow: var(--shadow-elevated);
+	transition: background-color var(--duration-normal) var(--ease-out), box-shadow var(--duration-normal) var(--ease-out), transform var(--duration-normal) var(--ease-out);
+}
+
+.mobile-call-fab:hover {
+	background-color: var(--color-primary-dark);
+	box-shadow: var(--shadow-prominent);
+	transform: translateY(-2px);
+}
+
+.mobile-call-fab:focus-visible {
+	outline: var(--focus-ring);
+	outline-offset: var(--focus-ring-offset);
+}
+
+.mobile-call-fab:active {
+	transform: translateY(0) scale(0.96);
+}
+
+.mobile-call-fab__icon {
+	width: 22px;
+	height: 22px;
+}
+
+@media (max-width: 767px) {
+	.mobile-call-fab {
+		display: flex;
+		bottom: var(--space-xl);
+		right: var(--space-xl);
+	}
+
+	.back-to-top {
+		bottom: calc(var(--space-xl) + 68px);
+	}
+}
+
+/* Contact page: the FAB would float over the phone field, and it's redundant
+   on a page whose whole purpose is already "get in touch". */
+.page-template-page-templatestemplate-contact-php .mobile-call-fab {
+	display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.mobile-call-fab {
+		transition: none;
 	}
 }
