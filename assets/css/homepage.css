@@ -1,7 +1,10 @@
 /**
  * Homepage template styles
  *
- * Hero, why choose us, CQC, services, info cards, partnerships, testimonial (content guide §2b).
+ * Hero (unchanged), then every section below it on the shared section system:
+ * CQC, why choose us, services, steps, differentiators, costs, reviews, team,
+ * info cards, partnerships, closing card. See the block comment at the start of
+ * the sections for the band sequence and the reasoning.
  * Uses design-system and components; flat specificity.
  *
  * @package CCS_WP_Theme
@@ -196,6 +199,9 @@
 	text-decoration: none;
 	border-bottom: 1px solid var(--color-secondary);
 	padding-bottom: 1px;
+	/* Inline top padding: grows the tap area past 24px (WCAG 2.5.8) without
+	   moving the text or its underline. Invisible polish. */
+	padding-top: 3px;
 }
 
 .home-hero__cqc:hover {
@@ -268,16 +274,18 @@
 	.home-hero__bg {
 		/* Bias the crop upward so faces sit above the content block. */
 		object-position: 58% 18%;
-		/* Barely touch the photo now — the scrim below and the missing proof
-		   line are doing the calming work, not a heavy filter. */
-		filter: brightness(0.9) saturate(0.95);
+		/* No filter on the photo itself: photos are cropped and resized,
+		   never recoloured (CLAUDE.md standing constraint). The 0.9 brightness
+		   that used to be here now lives in the scrim below, whose stops were
+		   raised by the same amount (1 - 0.9 x (1 - a)), so the hero reads as
+		   it did. */
 	}
 
 	/* Simple bottom-weighted fade instead of the radial+diagonal pair — with
 	   one less content block (see .home-hero__proof below) the text no longer
 	   reaches far enough up the section to need the radial's spread. */
 	.home-hero__scrim {
-		background: linear-gradient(to bottom, rgba(28, 18, 52, 0.18) 0%, rgba(28, 18, 52, 0.42) 58%, rgba(28, 18, 52, 0.62) 100%);
+		background: linear-gradient(to bottom, rgba(28, 18, 52, 0.26) 0%, rgba(28, 18, 52, 0.48) 58%, rgba(28, 18, 52, 0.66) 100%);
 	}
 
 	/*
@@ -335,800 +343,666 @@
 		margin-top: var(--space-sm);
 	}
 }
-/* -------------------------------------------------------------------------
-   WHY CHOOSE US — editorial two-column with a pull quote.
 
-   Was a centred heading over three stacked paragraphs: a wall of prose with no
-   entry point. Now the heading holds a narrow left column and the prose runs in
-   a measured column beside it, with the best line in the copy lifted out as a
-   display quote. Same words, structured so the eye has somewhere to land.
+/* =========================================================================
+   SECTIONS BELOW THE HERO — rebuilt Nov 2026
+
+   Rebuilt on one system after the page was judged, fairly, to be "nowhere
+   near" the ElderlyCare X template the client chose as the standard. The
+   individual sections were reasonable; the system underneath them was not:
+   ~40px mid-purple titles, 14px radii, hairline borders, no icon language, no
+   overlapping layers, every header left-aligned. Everything here uses the
+   shared vocabulary in components.css (.ccs-head, .ccs-title, .ccs-lede,
+   .ccs-badge, .ccs-actions) and the tokens in design-system.css ("Section
+   system"), so a change to the type scale or card elevation lands everywhere.
+
+   Grounds, top to bottom, so no two neighbours share one:
+     hero · tint (CQC) · white (why) · cream (services) · tint (steps) ·
+     deep (differentiators) · white (costs) · cream (reviews) · tint (team) ·
+     white (info) · cream (partners) · white (closing card) · cream footer
+
+   The hero above is untouched.
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   WHY CHOOSE US — collage beside the argument
    ------------------------------------------------------------------------- */
 
 .home-why-choose {
-	padding-block: var(--section-space-y);
+	padding-block: var(--section-pad);
 	background-color: var(--color-background);
 }
 
 .home-why-choose__inner {
 	display: grid;
-	grid-template-columns: 1fr;
-	gap: var(--space-lg);
+	gap: var(--space-2xl);
 }
 
-@media (min-width: 900px) {
+@media (min-width: 960px) {
 	.home-why-choose__inner {
-		/* Narrow heading rail against a wider text column — the asymmetry is the
-		   point; two equal columns would read as another generic split. */
-		grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-		column-gap: var(--space-2xl);
+		grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+		gap: clamp(3rem, 1.5rem + 5vw, 6.5rem);
 		align-items: start;
 	}
 
-	/* Heading stays with the reader while the prose scrolls past it. */
-	.home-why-choose__heading-group {
+	/* The copy column is the taller of the two; the collage stays in view
+	   beside it while it scrolls, instead of floating mid-height in white
+	   space. */
+	.why-collage {
 		position: sticky;
-		top: calc(var(--ccs-header-height) + var(--space-lg));
+		top: calc(var(--ccs-header-height, 5rem) + var(--space-lg));
 	}
 }
 
-.home-why-choose__heading {
-	margin: 0 0 var(--space-sm);
-	font-family: var(--font-family-heading);
-	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-medium);
-	line-height: var(--leading-tight);
-	color: var(--color-primary-dark);
-	text-wrap: balance;
+/* Three photographs as one composition: a tall portrait on the left, set down
+   from the top edge, and two squares stacked flush top and bottom on the
+   right. Fixed proportions (absolute placement inside an aspect-ratio box)
+   rather than a grid, so the tall photo is always a generous portrait and
+   never collapses into a sliver when the copy beside it runs long. */
+.why-collage {
+	position: relative;
+	width: 100%;
+	aspect-ratio: 1 / 1.02;
+}
+
+.why-collage__photo {
+	position: absolute;
+	overflow: hidden;
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-band-tint);
+	box-shadow: var(--shadow-float);
+}
+
+.why-collage__photo img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.why-collage--3 .why-collage__photo--1 {
+	top: 9%;
+	left: 0;
+	width: 57%;
+	height: 82%;
+}
+
+.why-collage--3 .why-collage__photo--1 img {
+	object-position: 63% 45%;
+}
+
+.why-collage--3 .why-collage__photo--2 {
+	top: 0;
+	right: 0;
+	width: 39%;
+	height: 45%;
+}
+
+.why-collage--3 .why-collage__photo--2 img {
+	object-position: 50% 20%;
+}
+
+.why-collage--3 .why-collage__photo--3 {
+	right: 0;
+	bottom: 0;
+	width: 39%;
+	height: 45%;
+}
+
+.why-collage--2 {
+	aspect-ratio: 1 / 0.9;
+}
+
+.why-collage--2 .why-collage__photo--1 {
+	top: 0;
+	left: 0;
+	width: 57%;
+	height: 88%;
+}
+
+.why-collage--2 .why-collage__photo--2 {
+	right: 0;
+	bottom: 0;
+	width: 39%;
+	height: 70%;
 }
 
 .home-why-choose__subheading {
-	margin: 0;
+	margin: var(--space-md) 0 0;
 	font-family: var(--font-family-heading);
-	font-size: var(--text-md);
+	font-size: var(--text-lg);
 	font-style: italic;
-	line-height: var(--leading-snug);
+	line-height: 1.45;
 	color: var(--color-accent);
 	text-wrap: pretty;
 }
 
-/* Proof rail under the section heading. Deliberately quiet: small text, a mint
-   tick, no card and no border, so it reads as a footnote to the heading rather
-   than competing with the pull quote in the column beside it. The mint is a
-   20px icon, not text, so the contrast floor that rules mint out for labels
-   does not apply — and it is paired with text in the body colour, so the
-   meaning never depends on the colour being perceived. */
-.home-why-choose__proof {
-	margin: var(--space-lg) 0 0;
-	padding: 0;
-	list-style: none;
-	display: grid;
-	gap: var(--space-sm);
-}
-
-.home-why-choose__proof-item {
-	display: grid;
-	grid-template-columns: 20px 1fr;
-	align-items: start;
-	gap: var(--space-xs);
-	font-size: var(--text-sm);
-	line-height: var(--leading-snug);
-	color: var(--color-text);
-}
-
-.home-why-choose__proof-icon {
-	margin-top: 0.1em;
-	color: var(--color-secondary-dark);
-	flex: none;
-}
-
-.home-why-choose__body > p {
-	max-width: 62ch;
-	margin: 0 0 var(--space-md);
+.home-why-choose__text {
+	max-width: 60ch;
+	margin: var(--space-md) 0 0;
 	font-size: var(--text-md);
-	line-height: var(--leading-relaxed);
-	color: var(--color-text);
+	line-height: 1.7;
+	color: var(--color-ink-soft);
 	text-wrap: pretty;
 }
 
-/* Pull quote: serif, large, set apart by size and air rather than a rule down
-   the side. A coloured border here was one of several decorative lines this
-   page had accumulated — services, info cards and the costs list each drew
-   their own — and stacked up across one scroll they read as a tic rather than
-   a system. Scale and generous margin do the same job of marking this out as
-   distinct, without adding a stroke that has no other job on the page. */
+/* The best line on the site, set as a quote panel: tint ground, a mint bar,
+   serif. A panel rather than bare display type so it reads as a quotation and
+   not as a second heading competing with the H2. */
 .home-why-choose__pull {
-	margin: var(--space-xl) 0;
+	margin: var(--space-lg) 0 0;
+	padding: var(--space-md) var(--space-lg);
+	border-left: 3px solid var(--color-secondary-dark);
+	border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+	background-color: var(--color-band-tint);
 }
 
 .home-why-choose__pull p {
-	margin: 0 0 var(--space-xs);
+	margin: 0 0 0.4rem;
 	font-family: var(--font-family-heading);
-	font-size: var(--text-xl);
+	font-size: clamp(1.1875rem, 1.05rem + 0.5vw, 1.4375rem);
 	font-weight: var(--font-weight-medium);
-	line-height: var(--leading-snug);
-	letter-spacing: -0.01em;
-	color: var(--color-primary-dark);
+	line-height: 1.4;
+	color: var(--color-ink);
 	text-wrap: pretty;
 }
 
 .home-why-choose__pull-cite {
 	display: block;
-	font-family: var(--font-family-body);
-	font-size: var(--text-base);
+	font-size: var(--text-sm);
 	font-style: normal;
-	line-height: var(--leading-relaxed);
-	color: var(--color-text-light);
+	color: var(--color-ink-soft);
 }
 
-.home-why-choose__link {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.35em;
-	min-height: 48px;
-	font-weight: var(--font-weight-semibold);
-	color: var(--color-primary);
-	text-decoration: underline;
-	text-underline-offset: 0.2em;
-	transition: color var(--duration-fast) var(--ease-out);
-}
-
-.home-why-choose__link:hover {
-	color: var(--color-primary-dark);
-}
-
-.home-why-choose__link:focus-visible {
-	outline: var(--focus-ring);
-	outline-offset: var(--focus-ring-offset);
+.home-why-choose__content .ccs-actions {
+	margin-top: var(--space-xl);
 }
 
 /* -------------------------------------------------------------------------
-   CQC SECTION — trust band. Copy left, live CQC rating widget right.
+   SERVICES — photo, overlapping panel, badge across the seam
    ------------------------------------------------------------------------- */
 
-/* Soft plum tint, not the same cream as the services band four screens below.
-   Two identical grounds this close together were reading as one merged block
-   — see --color-band-tint's rationale in design-system.css — and this is the
-   section where the distinct tone earns its keep: pale brand-purple under a
-   trust claim about the regulator, not a decorative flourish. */
-.home-cqc {
-	padding-block: var(--section-space-y);
-	background-color: var(--color-band-tint);
+.home-services {
+	padding-block: var(--section-pad);
+	background-color: var(--color-band-cream);
 }
 
-.home-cqc__inner {
+.home-services__grid {
 	display: grid;
-	gap: var(--space-lg);
-	align-items: center;
+	gap: var(--space-xl);
+	margin: 0;
+	padding: 0;
+	list-style: none;
 }
 
-@media (min-width: 900px) {
-	.home-cqc__inner {
-		grid-template-columns: minmax(0, 1fr) auto;
-		gap: var(--space-2xl);
+@media (min-width: 860px) {
+	.home-services__grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--space-lg);
 	}
 }
 
-.home-cqc__heading {
-	margin: 0 0 var(--space-sm);
+.home-services__cta {
+	margin-top: var(--section-head-gap);
+	text-align: center;
+}
+
+/* Left on phones with the section heads above it (see .ccs-head--center in
+   components.css): three centred lines of display type read as a poster. */
+@media (max-width: 599px) {
+	.home-services__cta {
+		text-align: left;
+	}
+
+	.home-services__cta-text {
+		margin-inline: 0;
+	}
+}
+
+.home-services__cta-text {
+	max-width: 30ch;
+	margin: 0 auto var(--space-lg);
 	font-family: var(--font-family-heading);
-	font-size: var(--text-2xl);
+	font-size: clamp(1.375rem, 1.1rem + 1vw, 1.875rem);
 	font-weight: var(--font-weight-medium);
-	line-height: var(--leading-tight);
-	color: var(--color-primary-dark);
+	line-height: 1.3;
+	color: var(--color-ink);
 	text-wrap: balance;
 }
 
-.home-cqc__subheading {
-	max-width: 52ch;
-	margin: 0 0 var(--space-md);
-	font-size: var(--text-md);
-	line-height: var(--leading-relaxed);
-	color: var(--color-text);
-	text-wrap: pretty;
-}
+/* -------------------------------------------------------------------------
+   HOW CARE STARTS — three steps
+   ------------------------------------------------------------------------- */
 
-.home-cqc__link-wrap {
-	margin: 0;
-}
-
-.home-cqc__badge {
-	display: flex;
-	justify-content: flex-start;
-}
-
-@media (min-width: 900px) {
-	.home-cqc__badge {
-		justify-content: flex-end;
-	}
-}
-
-.home-cqc__badge-img {
-	width: auto;
-	max-height: 8rem;
-}
-
-/* Standalone call-to-action, not a link inside a sentence, so WCAG 2.2 §2.5.8's
-   24px target minimum applies with no inline exception to fall back on. It sat
-   at 18px. inline-flex plus vertical padding clears the minimum without moving
-   the text, since the paragraph wrapper carries no margin of its own. */
-.home-cqc__link {
-	display: inline-flex;
-	align-items: center;
-	min-height: 24px;
-	padding-block: 4px;
-	font-weight: var(--font-weight-semibold);
-	color: var(--color-primary);
-	text-decoration: none;
-	cursor: pointer;
-}
-
-.home-cqc__link:hover {
-	text-decoration: underline;
-}
-
-.home-cqc__link:focus-visible {
-	outline: var(--focus-ring);
-	outline-offset: var(--focus-ring-offset);
-}
-
-@media (min-width: 768px) {
-	.home-cqc__heading {
-		font-size: var(--text-3xl);
-	}
-}
 
 /* -------------------------------------------------------------------------
-   DIFFERENTIATORS — dark editorial band.
-
-   This is the page's rhythm break. Every section above and below it is dark
-   text on cream or white, so the homepage read as one continuous stack no
-   matter how the individual blocks were styled. Inverting this one section
-   does more for that problem than any amount of card restyling, and it puts
-   the weight on the claims that actually differentiate CCS.
-
-   Numerals hang in their own column rather than sitting above the text as
-   small badges, so the eye can run down them. The mint rule that used to cap
-   each item is gone — on the dark ground the numeral itself is the marker.
+   WHAT WE DO DIFFERENTLY — four commitments on the dark band
    ------------------------------------------------------------------------- */
 
 .home-differentiators {
-	padding-block: var(--section-space-y);
-	background-color: var(--color-primary-dark);
+	padding-block: var(--section-pad);
+	background-color: var(--color-band-deep);
 	color: #fff;
 }
 
-.home-differentiators__heading {
-	max-width: 20ch;
-	margin: 0 0 var(--space-sm);
-	font-family: var(--font-family-heading);
-	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-medium);
-	line-height: var(--leading-tight);
-	color: #fff;
-	text-wrap: balance;
-}
-
-.home-differentiators__intro {
-	max-width: 52ch;
-	margin: 0 0 var(--space-2xl);
-	font-size: var(--text-md);
-	line-height: var(--leading-relaxed);
-	color: rgba(255, 255, 255, 0.78);
-	text-wrap: pretty;
-}
-
-.home-differentiators__grid {
+.home-diff-grid {
 	display: grid;
 	gap: var(--space-xl);
+	max-width: 70rem;
+	margin: 0 auto;
+	padding: 0;
+	list-style: none;
 }
 
-@media (min-width: 768px) {
-	.home-differentiators__grid {
-		grid-template-columns: repeat(2, 1fr);
-		column-gap: var(--space-2xl);
-		row-gap: var(--space-2xl);
+@media (min-width: 760px) {
+	.home-diff-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--space-2xl) clamp(2.5rem, 1rem + 4vw, 5rem);
 	}
 }
 
-/* Numeral column + text column. The numeral sits in a fixed 3rem track so the
-   text edges align down the section regardless of single or double digits.
-
-   Every child is placed explicitly. The item has three children and the grid has
-   two columns, so auto-placement dropped the description into column 1 on a new
-   row — a 3rem-wide track, which set the body copy one word per line running
-   vertically down the page. Title and description both belong in column 2; the
-   numeral spans both rows beside them. */
-.home-differentiators .home-diff-item {
-	display: grid;
-	grid-template-columns: 3rem 1fr;
-	column-gap: var(--space-sm);
-	align-items: start;
-	padding-top: 0;
-	border-top: 0;
+/* Four points of one argument, not four things to click: a hairline above
+   each and the type carry the grouping. They were four translucent panels on
+   the plum (CCS/CLAUDE.md rule 1); the depth now comes from type and the
+   band itself (rule 6). */
+.diff-card {
+	padding-top: var(--space-lg);
+	border-top: 1px solid var(--color-hairline-on-dark);
 }
 
-.home-differentiators .home-diff-item__title,
-.home-differentiators .home-diff-item__desc {
-	grid-column: 2;
-}
-
-.home-differentiators .home-diff-item__number {
-	grid-column: 1;
-	grid-row: 1 / span 2;
-	margin: 0;
-	font-family: var(--font-family-heading);
-	font-size: var(--text-3xl);
-	font-weight: var(--font-weight-medium);
-	line-height: 0.9;
-	/* Mint earns its place here: on the dark ground it is a quiet accent rather
-	   than the colour-for-its-own-sake it was in the nav. */
+.diff-card__num {
+	display: inline-block;
+	margin-bottom: var(--space-md);
+	padding: 0.3rem 0.8rem;
+	border-radius: 999px;
+	background-color: rgba(168, 221, 212, 0.14);
 	color: var(--color-secondary);
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-bold);
+	letter-spacing: 0.08em;
 	font-variant-numeric: tabular-nums;
 }
 
-.home-differentiators .home-diff-item__title {
-	margin: 0 0 var(--space-xs);
+.diff-card__title {
+	margin: 0 0 0.625rem;
 	font-family: var(--font-family-heading);
-	font-size: var(--text-lg);
+	font-size: clamp(1.375rem, 1.2rem + 0.6vw, 1.625rem);
 	font-weight: var(--font-weight-medium);
-	line-height: var(--leading-snug);
+	line-height: 1.3;
 	color: #fff;
 	text-wrap: balance;
 }
 
-.home-differentiators .home-diff-item__desc {
+.diff-card__text {
 	margin: 0;
 	font-size: var(--text-base);
-	line-height: var(--leading-relaxed);
-	/* Not pure white: a full-strength body copy on a dark ground vibrates. */
+	line-height: 1.7;
 	color: rgba(255, 255, 255, 0.82);
 	text-wrap: pretty;
 }
 
 /* -------------------------------------------------------------------------
-   SERVICES OVERVIEW
+   WHAT CARE COSTS — argument left, the whole price in one card right
    ------------------------------------------------------------------------- */
 
-.home-services {
-	padding-block: var(--section-space-y);
-	background-color: var(--color-background-grey);
+.home-costs {
+	padding-block: var(--section-pad);
+	background-color: var(--color-background);
 }
 
-
-/* font-weight-medium, not bold. The theme's default heading weight
-   (.ds-root :where(h2) in design-system.css) is already medium — Lora reads as
-   confident rather than heavy at that weight, and bold pushes a serif this size
-   towards looking clumsy rather than considered. This rule explicitly
-   redeclared bold, at the same specificity as that default, so it silently won
-   and put a bold Lora heading back on the one section whose default should
-   have prevented it. */
-.home-services__heading {
-	margin: 0 0 var(--space-md);
-	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-medium);
-	line-height: var(--leading-tight);
-	color: var(--color-primary-dark);
+.home-costs__inner {
+	display: grid;
+	gap: var(--space-2xl);
+	align-items: center;
 }
 
-.home-services__intro {
-	margin: 0 0 var(--space-2xl);
-	max-width: 42em;
-	font-size: var(--text-base);
-	line-height: var(--leading-normal);
-	color: var(--color-text);
-}
-
-@media (min-width: 768px) {
-	.home-services__heading {
-		font-size: var(--text-3xl);
+@media (min-width: 960px) {
+	.home-costs__inner {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		gap: clamp(3rem, 1.5rem + 5vw, 6.5rem);
 	}
 }
 
-/* Editorial photo cards, not bordered boxes.
+.home-costs__funding {
+	max-width: 52ch;
+	margin: var(--space-md) 0 0;
+	font-size: var(--text-base);
+	line-height: 1.7;
+	color: var(--color-ink-soft);
+}
 
-   These were three white rectangles with a 1px border, a shadow and an arrow
-   link that repeated the card's own title — the pattern that made the section
-   read as a template. The photograph now does the work the border was doing:
-   it defines the card, gives the section the imagery it badly lacked, and lets
-   the type sit on the page rather than inside a container.
+.home-costs__intro .ccs-actions {
+	margin-top: var(--space-xl);
+}
 
-   Cards are <li> in a <ul>, and the whole card is clickable via a stretched
-   ::after on the title link. That gives one large target instead of a small
-   text link, satisfying the 48px minimum strategy.md asks for without a
-   separate hit area. */
-.home-services__grid {
+.price-card {
+	padding: clamp(1.75rem, 1rem + 3vw, 3rem);
+	border: 1px solid var(--color-hairline);
+	border-radius: var(--radius-3xl);
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-float);
+}
+
+.price-card__from {
+	display: flex;
+	align-items: baseline;
+	gap: 0.6rem;
+	margin: 0;
+}
+
+.price-card__from-label {
+	font-family: var(--font-family-heading);
+	font-size: var(--text-lg);
+	font-style: italic;
+	color: var(--color-accent);
+}
+
+/* The number families arrive looking for: the largest type in the section. */
+.price-card__rate {
+	font-family: var(--font-family-heading);
+	font-size: clamp(3.25rem, 2.4rem + 3.5vw, 4.75rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1;
+	letter-spacing: -0.03em;
+	color: var(--color-ink);
+}
+
+.price-card__basis {
+	margin: 0.875rem 0 0;
+	font-size: var(--text-md);
+	font-weight: var(--font-weight-semibold);
+	line-height: 1.45;
+	color: var(--color-ink);
+}
+
+.price-card__effective {
+	margin: 0.25rem 0 0;
+	font-size: var(--text-sm);
+	color: var(--color-ink-soft);
+}
+
+/* A plain note under the rate, not a tinted panel: it sat as a box inside the
+   price card (CCS/CLAUDE.md rule 1). Ink rather than ink-soft so it still
+   reads as the important qualifier it is. */
+.price-card__caveat {
+	margin: var(--space-sm) 0 0;
+	font-size: var(--text-sm);
+	line-height: 1.6;
+	color: var(--color-ink);
+}
+
+.price-card__extras-heading {
+	margin: var(--space-lg) 0 var(--space-md);
+	padding-top: var(--space-lg);
+	border-top: 1px solid var(--color-hairline);
+	font-family: var(--font-family-heading);
+	font-size: var(--text-lg);
+	font-weight: var(--font-weight-medium);
+	color: var(--color-ink);
+}
+
+.price-card__list {
 	display: grid;
-	gap: var(--space-xl);
-	margin: 0 0 var(--space-2xl);
+	gap: 0.75rem;
+	margin: 0;
 	padding: 0;
 	list-style: none;
 }
 
-@media (min-width: 768px) {
-	.home-services__grid {
-		grid-template-columns: repeat(3, 1fr);
+.price-card__item {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.75rem;
+	font-size: var(--text-base);
+	line-height: 1.55;
+	color: var(--color-ink);
+}
+
+.price-card__tick {
+	display: grid;
+	flex: none;
+	place-items: center;
+	width: 1.5rem;
+	height: 1.5rem;
+	margin-top: 0.05rem;
+	border-radius: 50%;
+	background-color: var(--color-secondary-light);
+	color: var(--color-primary-dark);
+}
+
+.price-card__tick .ccs-icon {
+	width: 0.875rem;
+	height: 0.875rem;
+	stroke-width: 2.6;
+}
+
+/* -------------------------------------------------------------------------
+   REVIEWS
+   ------------------------------------------------------------------------- */
+
+.home-reviews {
+	padding-block: var(--section-pad);
+	background-color: var(--color-band-cream);
+}
+
+.home-reviews__list {
+	display: grid;
+	gap: var(--space-md);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+@media (min-width: 960px) {
+	.home-reviews__list {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
 		gap: var(--space-lg);
 	}
 }
 
-@media (min-width: 1100px) {
-	.home-services__grid {
-		gap: var(--space-xl);
-	}
+.home-reviews__item {
+	display: flex;
 }
 
-.home-service-col {
-	position: relative;
+.review-card {
 	display: flex;
 	flex-direction: column;
-}
-
-.home-service-col__media {
-	position: relative;
-	margin-bottom: var(--space-md);
-	overflow: hidden;
-	border-radius: var(--radius-lg);
-	/* Consistent shape regardless of source ratio — the packaged service photos
-	   are 550x471 and 2000x900, which would otherwise give three different card
-	   heights and wreck the row. */
-	aspect-ratio: 4 / 3;
-	background-color: var(--color-background-warm);
-}
-
-.home-service-col__img {
 	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	object-position: 50% 45%;
-	display: block;
-	transition: transform var(--duration-slow, 400ms) var(--ease-out);
-}
-
-/* Slow, small push-in on hover. Anything more energetic than this reads as
-   marketing rather than care, which is the wrong register for the audience. */
-.home-service-col:hover .home-service-col__img {
-	transform: scale(1.04);
-}
-
-/* Display serif here, deliberately reversing the old rule that reserved it for
-   section headings. With the photograph carrying the visual weight, a bold sans
-   title fought it; the serif sits with the image instead of shouting over it,
-   and it is the typeface the brand already owns. */
-.home-service-col__title {
-	margin: 0 0 var(--space-xs);
-	font-family: var(--font-family-heading);
-	font-size: var(--text-xl);
-	font-weight: var(--font-weight-medium);
-	line-height: var(--leading-snug);
-	letter-spacing: -0.01em;
-	color: var(--color-primary-dark);
-	text-wrap: balance;
-}
-
-.home-service-col__link {
-	color: inherit;
-	text-decoration: none;
-}
-
-/* Stretches the link over the entire card. */
-.home-service-col__link::after {
-	content: "";
-	position: absolute;
-	inset: 0;
-	z-index: 1;
-	border-radius: var(--radius-lg);
-}
-
-.home-service-col__link:focus-visible::after {
-	outline: var(--focus-ring);
-	outline-offset: 4px;
-}
-
-.home-service-col__intro {
-	margin: 0 0 var(--space-md);
-	font-size: var(--text-base);
-	line-height: var(--leading-relaxed);
-	color: var(--color-text);
-	text-wrap: pretty;
-}
-
-/* Affordance only — aria-hidden, since the title link already names the
-   destination. Pushed to the bottom so cards of differing text length still
-   align their cues along one line. */
-.home-service-col__cue {
-	margin-top: auto;
-	font-size: var(--text-sm);
-	font-weight: var(--font-weight-semibold);
-	color: var(--color-primary);
-}
-
-.home-service-col__arrow {
-	display: inline-block;
-	transition: transform var(--duration-fast) var(--ease-out);
-}
-
-.home-service-col:hover .home-service-col__arrow {
-	transform: translateX(0.25rem);
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.home-service-col__img,
-	.home-service-col__arrow {
-		transition: none;
-	}
-
-	.home-service-col:hover .home-service-col__img {
-		transform: none;
-	}
-}
-
-/* Bottom CTA box – gradient */
-/* Closing line for the services block. Was a purple gradient card with centred
-   white text and a white pill inside it — a component from the old kit, sitting
-   in a section that no longer has any boxes in it. It is now a serif statement
-   and the button, aligned left with everything else. Separation from the card
-   grid above comes from margin alone, not a rule — a border here would be one
-   more of the several decorative hairlines this page had collected (services,
-   the pull quote, info cards, the costs list), and removing all of them reads
-   as more considered than any one of them did alone. */
-.home-services__cta-box {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	gap: var(--space-md);
-	margin-top: var(--space-xl);
-	background: none;
-	border-radius: 0;
-	text-align: left;
-	color: inherit;
-}
-
-@media (min-width: 768px) {
-	/* Statement and action share a line once there is room, so the section ends
-	   on one horizontal beat rather than a stacked block. */
-	.home-services__cta-box {
-		flex-direction: row;
-		align-items: center;
-		justify-content: space-between;
-		gap: var(--space-xl);
-	}
-}
-
-.home-services__cta-text {
-	max-width: 34ch;
 	margin: 0;
-	font-family: var(--font-family-heading);
-	font-size: var(--text-xl);
-	font-weight: var(--font-weight-medium);
-	line-height: var(--leading-snug);
-	letter-spacing: -0.01em;
-	color: var(--color-primary-dark);
-	text-wrap: balance;
+	padding: clamp(1.75rem, 1.2rem + 1.6vw, 2.25rem);
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-float);
 }
 
-.home-services__cta-btn {
-	flex-shrink: 0;
-	min-height: 48px;
-}
-
-/* -------------------------------------------------------------------------
-   INFO CARDS (Our Care Approach, FAQs, Careers)
-
-   De-boxed to match the service cards. These were bordered .card containers
-   with a shadow, which is the pattern that made the page read as assembled
-   from a kit. They are now three editorial columns separated by a hairline
-   rule, with the eyebrow label doing the categorising the border used to.
-   ------------------------------------------------------------------------- */
-
-.home-info-cards {
-	padding-block: var(--section-space-y);
-	background-color: var(--color-background-warm);
-}
-
-.home-info-cards__grid {
-	display: grid;
-	grid-template-columns: 1fr;
-	gap: var(--space-xl);
-}
-
-/* Columns are separated by width alone, not a rule between them. A border-left
-   divider was here originally; pulled in favour of a wider gap once it became
-   clear this page had accumulated a decorative hairline in nearly every
-   section — the pull quote, the services close, this grid, the costs list.
-   Four different rules doing the same small job read as a tic rather than a
-   system, and the eyebrow label above each title already marks where one
-   column ends and the next begins. */
-@media (min-width: 768px) {
-	.home-info-cards__grid {
-		grid-template-columns: repeat(3, 1fr);
-		gap: var(--space-2xl);
-	}
-}
-
-.home-info-card {
-	position: relative;
+.review-card__top {
 	display: flex;
-	flex-direction: column;
-	background: none;
-	border: 0;
-	border-radius: 0;
-	box-shadow: none;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: var(--space-md);
 }
 
-.home-info-card__body {
+/* Purple, not gold: the stars carry the rating, so they need 3:1 against the
+   card as a graphic (WCAG 1.4.11). The usual gold is ~2.3:1 on white. */
+.review-card__rating {
 	display: flex;
-	flex-direction: column;
-	flex: 1 1 auto;
-	padding: 0;
-}
-
-/* Icon sits above the eyebrow at the same optical weight as the title, giving
-   each column a fixed point the eye can find. Primary purple rather than mint:
-   this is a 30px stroked mark on cream, and mint at that stroke width all but
-   disappears against the background. */
-.home-info-card__icon {
-	margin: 0 0 var(--space-sm);
+	gap: 0.2rem;
 	color: var(--color-primary);
 }
 
-/* Eyebrow — small, spaced caps. Carries the category so the title doesn't
-   have to repeat it. */
-.home-info-card__subheading {
-	margin: 0 0 var(--space-2xs);
-	font-size: var(--text-xs, 0.75rem);
+.review-card__star {
+	display: block;
+}
+
+.review-card__mark {
+	width: 2.25rem;
+	height: auto;
+	color: var(--color-secondary);
+}
+
+.review-card__quote {
+	flex: 1 1 auto;
+	margin: 0 0 var(--space-lg);
+	padding: 0;
+	border: 0;
+}
+
+.review-card__quote p {
+	margin: 0;
+	font-size: var(--text-md);
+	line-height: 1.7;
+	color: var(--color-ink);
+}
+
+.review-card__meta {
+	display: flex;
+	align-items: center;
+	gap: 0.875rem;
+	padding-top: var(--space-md);
+	border-top: 1px solid var(--color-hairline);
+}
+
+.review-card__avatar {
+	display: grid;
+	flex: none;
+	place-items: center;
+	width: 3rem;
+	height: 3rem;
+	border-radius: 50%;
+	background-color: var(--color-badge);
+	color: var(--color-primary);
+	font-family: var(--font-family-heading);
+	font-size: 1rem;
 	font-weight: var(--font-weight-semibold);
-	letter-spacing: 0.09em;
-	text-transform: uppercase;
+	letter-spacing: 0.02em;
+}
+
+.review-card__avatar .ccs-icon {
+	width: 1.25rem;
+	height: 1.25rem;
+}
+
+.review-card__who {
+	display: flex;
+	flex-direction: column;
+	gap: 0.1rem;
+	min-width: 0;
+}
+
+.review-card__author {
+	font-size: var(--text-base);
+	font-weight: var(--font-weight-bold);
+	color: var(--color-ink);
+}
+
+.review-card__relationship {
+	font-size: var(--text-sm);
+	color: var(--color-ink-soft);
+}
+
+.review-card__source {
+	font-size: var(--text-xs);
 	color: var(--color-accent);
 }
 
-.home-info-card__title {
-	margin: 0 0 var(--space-xs);
-	font-family: var(--font-family-heading);
-	font-size: var(--text-lg);
-	font-weight: var(--font-weight-medium);
-	line-height: var(--leading-snug);
-	color: var(--color-primary-dark);
-	text-wrap: balance;
-}
-
-.home-info-card__text {
-	margin: 0 0 var(--space-md);
-	font-size: var(--text-base);
-	line-height: var(--leading-relaxed);
-	color: var(--color-text);
-	text-wrap: pretty;
-}
-
-/* Stretched over the whole column, so the target is the column rather than a
-   short line of text — 48px minimum per strategy.md. */
-.home-info-card__link {
+/* Padded to a 26px-tall target. At the text's own 15px it passed WCAG 2.2's
+   spacing exception (nothing else to hit nearby), but this audience includes
+   a lot of older and less steady hands, so the target gets the height anyway. */
+.review-card__source a {
 	display: inline-flex;
 	align-items: center;
-	gap: 0.35em;
-	margin-top: auto;
-	min-height: 48px;
-	font-weight: var(--font-weight-semibold);
-	color: var(--color-primary);
-	text-decoration: none;
-}
-
-.home-info-card__link::after {
-	content: "";
-	position: absolute;
-	inset: 0;
-}
-
-.home-info-card__link:hover {
+	min-height: 44px;
+	margin-block: -8px;
+	color: inherit;
 	text-decoration: underline;
 	text-underline-offset: 0.2em;
 }
 
-.home-info-card__link:focus-visible::after {
-	outline: var(--focus-ring);
-	outline-offset: 4px;
+.review-card__source a:hover,
+.review-card__source a:focus-visible {
+	color: var(--color-primary);
 }
 
 /* -------------------------------------------------------------------------
-   PARTNERSHIPS
+   WHERE TO GO NEXT — three link cards
    ------------------------------------------------------------------------- */
 
-/* Compact tier — a logo strip carries
-   far less visual weight than a card grid, so it does not need the same air
-   around it. */
-/* White, not grey. --color-background-grey resolves to --color-background-warm,
-   the same cream .home-info-cards directly above already uses, so the last two
-   sections shared one ground and merged into a single undifferentiated block —
-   the one place the page's otherwise consistent band alternation broke. The
-   sequence now closes purple → cream → white → cream → white → dark. */
-.home-partnerships {
-	padding-block: var(--section-space-y-compact);
+.home-info-cards {
+	padding-block: var(--section-pad-sm);
 	background-color: var(--color-background);
 }
 
-/* Weight and alignment both corrected here, same causes as .home-services__heading
-   above: an explicit font-weight-bold that overrode the medium default, and a
-   centred heading/subheading pair left over from before this page settled into
-   one left-aligned editorial rhythm. Nothing else on the page centres a section
-   heading any more, so this was the one section still visibly out of step. */
-.home-partnerships__heading {
-	margin: 0 0 var(--space-sm);
-	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-medium);
-	line-height: var(--leading-tight);
-	color: var(--color-primary-dark);
-}
-
-.home-partnerships__subheading {
-	max-width: 60ch;
-	margin: 0 0 var(--space-xl);
-	font-size: var(--text-base);
-	line-height: var(--leading-normal);
-	color: var(--color-text);
-}
-
-/* Tiled grid, not a loose flex-wrap of bare logos. Twelve marks at wildly
-   different intrinsic weights — CV Minder's solid blue wordmark beside
-   MidKent's thin grey line art — read as thrown together when they share
-   nothing but a common height; a fixed-height card gives every logo the same
-   footprint regardless of its own density, which is what turns "a row of
-   images" into "an accreditation wall". Twelve items divides evenly into 4
-   columns with no orphan row, so the grid replaces the old proportional-basis
-   flex hack entirely — see git history for why that existed. */
-.home-partnerships__list {
+.home-info-cards__grid {
 	display: grid;
-	grid-template-columns: repeat(2, 1fr);
 	gap: var(--space-md);
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	font-size: var(--text-sm);
-	color: var(--color-text);
+}
+
+@media (min-width: 860px) {
+	.home-info-cards__grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--space-lg);
+	}
+}
+
+/* -------------------------------------------------------------------------
+   WHO WE WORK WITH — accreditation wall
+   ------------------------------------------------------------------------- */
+
+.home-partnerships {
+	padding-block: var(--section-pad-sm);
+	background-color: var(--color-band-cream);
+}
+
+/* Twelve logos at wildly different intrinsic weights share one tile size, so
+   CV Minder's heavy wordmark and MidKent's thin line art get the same
+   footprint. Twelve divides evenly into 2, 3 and 4 columns: no orphan row. */
+.home-partnerships__list {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--space-sm);
+	margin: 0;
+	padding: 0;
+	list-style: none;
 }
 
 @media (min-width: 600px) {
 	.home-partnerships__list {
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--space-md);
 	}
 }
 
 @media (min-width: 900px) {
 	.home-partnerships__list {
-		grid-template-columns: repeat(4, 1fr);
+		grid-template-columns: repeat(4, minmax(0, 1fr));
 		gap: var(--space-lg);
 	}
 }
 
+/* min-width: 0 overrides the grid default of auto, which sizes a track to its
+   content's intrinsic width before max-width applies; without it CV Minder's
+   wordmark pushed a 2-column phone row 14px past the viewport. */
 .home-partnerships__item {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	/* min-width: 0 overrides the grid default of auto, which sizes a track to
-	   its content's intrinsic width before max-width is allowed to apply. Left
-	   at the default, a 2-column mobile row let CV Minder's wide wordmark push
-	   its own column past the container edge — a 14px horizontal overflow on a
-	   375px viewport, invisible in a screenshot cropped to viewport width but
-	   present in scrollWidth. */
 	min-width: 0;
 	min-height: 6.5rem;
 	padding: var(--space-sm);
-	background-color: var(--color-band-cream);
-	border: 1px solid var(--color-hairline);
-	border-radius: var(--radius-lg);
-	transition:
-		box-shadow var(--duration-normal) var(--ease-out),
-		border-color var(--duration-normal) var(--ease-out);
+	border-radius: var(--radius-xl);
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-card);
+	transition: box-shadow var(--duration-normal) var(--ease-out);
 }
 
 .home-partnerships__item:hover,
 .home-partnerships__item:focus-within {
-	box-shadow: var(--shadow-card);
-	border-color: var(--color-hairline-strong);
+	box-shadow: var(--shadow-float-hover);
 }
 
-/* Fills the tile rather than hugging the image's own rendered box, so the tap
-   target is the whole 104px card (well past the 44px floor) and not just the
-   ~40px-tall logo inside it. */
 .home-partnerships__link {
 	display: flex;
 	align-items: center;
@@ -1144,558 +1018,37 @@
 	border-radius: var(--radius-sm);
 }
 
+/* No filter: the NHS and CQC identity rules prohibit recolouring their marks,
+   and a real accreditation in its real colours is the stronger signal. */
+.home-partnerships__logo {
+	display: block;
+	width: auto;
+	max-width: 100%;
+	height: 40px;
+	object-fit: contain;
+}
+
+@media (min-width: 768px) {
+	.home-partnerships__logo {
+		height: 44px;
+	}
+}
+
+/* -------------------------------------------------------------------------
+   CLOSING CARD
+   ------------------------------------------------------------------------- */
+
+.home-closing-cta {
+	padding-block: var(--section-pad);
+	background-color: var(--color-background);
+}
+
+/* -------------------------------------------------------------------------
+   Reduced motion
+   ------------------------------------------------------------------------- */
+
 @media (prefers-reduced-motion: reduce) {
 	.home-partnerships__item {
 		transition: none;
-	}
-}
-
-.home-partnerships__logo {
-	display: block;
-	height: 40px;
-	width: auto;
-	max-width: 100%;
-	object-fit: contain;
-	/* No filter. These marks are shown as their owners publish them.
-
-	   Two earlier attempts are worth recording so neither gets retried. The
-	   first, `grayscale(1) opacity(0.85)`, removed hue but not ink: mean
-	   luminance of the opaque pixels across these files runs from 17 (MidKent
-	   College) to 171 (National Care Association), a tenfold spread that
-	   desaturation leaves completely intact, so the row read as a few heavy
-	   marks among several that nearly vanished. The second, `brightness(0)` to
-	   flatten everything to one silhouette weight, broke nhs.png and
-	   cv-minder.png — both are knockout marks (light lettering punched out of a
-	   filled shape) and flattening replaced each logo with a solid block.
-
-	   Full colour is the right answer for a third reason that outranks both:
-	   the NHS identity guidelines, and the CQC's, prohibit recolouring their
-	   marks — greyscaling them was a licence breach as well as a design
-	   compromise. Showing an NHS or CQC association in its real colours is also
-	   simply a stronger trust signal on a care site than muting it, and third-
-	   party validation is the most valuable thing in this section.
-
-	   Evenness now comes from the things that do not distort a brand: one row
-	   height, a shared max-width, and generous gaps. Different logos still look
-	   different, which is what a genuine accreditation row looks like. */
-	transition: transform var(--duration-normal) var(--ease-out);
-}
-
-.home-partnerships__logo:hover,
-.home-partnerships__logo:focus-visible {
-	transform: scale(1.04);
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.home-partnerships__logo {
-		transition: none;
-	}
-
-	.home-partnerships__logo:hover,
-	.home-partnerships__logo:focus-visible {
-		transform: none;
-	}
-}
-
-@media (min-width: 768px) {
-	.home-partnerships__logo {
-		height: 48px;
-		max-width: 200px;
-	}
-}
-
-@media (min-width: 768px) {
-	.home-partnerships__heading {
-		font-size: var(--text-3xl);
-	}
-}
-
-/* -------------------------------------------------------------------------
-   TESTIMONIAL
-   ------------------------------------------------------------------------- */
-
-/* Full section tier, not compact. The band previously ran at
-   --section-space-y-compact on the reasoning that a single pull quote was "the
-   lightest section on the page" — but that was describing the symptom. Social
-   proof is one of the two decisive trust mechanisms in this sector and every
-   benchmarked competitor gives it more room, not less. */
-.home-reviews {
-	padding-block: var(--section-space-y);
-	background-color: var(--color-background);
-}
-
-
-.home-reviews__heading {
-	max-width: 22ch;
-	margin: 0 0 var(--space-sm);
-	font-family: var(--font-family-heading);
-	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-medium);
-	line-height: var(--leading-tight);
-	color: var(--color-primary-dark);
-	text-wrap: balance;
-}
-
-.home-reviews__intro {
-	max-width: 58ch;
-	margin: 0 0 var(--space-xl);
-	font-size: var(--text-base);
-	line-height: var(--leading-relaxed);
-	color: var(--color-text);
-}
-
-.home-reviews__list {
-	display: grid;
-	grid-template-columns: 1fr;
-	gap: var(--space-lg);
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-
-@media (min-width: 700px) {
-	.home-reviews__list {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
-}
-
-@media (min-width: 1000px) {
-	.home-reviews__list {
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-	}
-}
-
-/* Cards sit on a tinted panel rather than a white card with a shadow: the
-   section ground is already white, and the reference set's craft notes are
-   clear that flat-with-tints reads calmer and more trustworthy in this sector
-   than a glossy z-axis. */
-/* Warm shadow + hairline, not a flat tint. Reviews are the sector's second
-   decisive trust mechanism (see reference/inspo-teardowns.md's cross-set
-   notes), and a flat cream block gave them the same visual weight as a plain
-   text section — nothing marked them out as evidence rather than commentary.
-   The lift is the .ccs-surface anatomy, not a bespoke shadow: one card
-   language for the whole page. */
-.home-review {
-	display: flex;
-	flex-direction: column;
-	height: 100%;
-	margin: 0;
-	padding: var(--space-lg);
-	background-color: var(--color-background);
-	border: 1px solid var(--color-hairline);
-	border-radius: var(--card-radius, 0.5rem);
-	box-shadow: var(--shadow-card);
-}
-
-.home-review__rating {
-	display: flex;
-	gap: 0.15rem;
-	margin-bottom: var(--space-sm);
-	color: var(--color-primary);
-}
-
-.home-review__star {
-	display: block;
-	flex-shrink: 0;
-}
-
-.home-review__quote {
-	margin: 0 0 var(--space-md);
-	padding: 0;
-	border: none;
-	flex: 1 1 auto;
-}
-
-.home-review__quote p {
-	margin: 0;
-	font-size: var(--text-base);
-	line-height: var(--leading-relaxed);
-	color: var(--color-text);
-}
-
-/* Not italic. The old single quote was set in italic across a full-width
-   measure, which is tiring to read at length and made a real review look like
-   decorative copy. Roman text in a tinted card already reads as quoted. */
-.home-review__meta {
-	display: flex;
-	flex-direction: column;
-	gap: 0.1rem;
-	padding-top: var(--space-sm);
-	border-top: 1px solid var(--color-border);
-}
-
-.home-review__author {
-	font-size: var(--text-base);
-	font-weight: var(--font-weight-semibold);
-	color: var(--color-primary-dark);
-}
-
-.home-review__relationship {
-	font-size: var(--text-sm);
-	color: var(--color-text);
-}
-
-.home-review__source {
-	font-size: var(--text-xs);
-	color: var(--color-accent);
-}
-
-.home-review__source a {
-	color: inherit;
-	text-decoration: underline;
-	text-underline-offset: 0.2em;
-}
-
-.home-review__source a:hover,
-.home-review__source a:focus-visible {
-	color: var(--color-primary);
-}
-
-.home-reviews__more {
-	margin: var(--space-lg) 0 0;
-	font-size: var(--text-base);
-}
-
-.home-reviews__more a {
-	color: var(--color-primary);
-	font-weight: var(--font-weight-semibold);
-	text-decoration: underline;
-	text-underline-offset: 0.2em;
-}
-
-.home-reviews__more a:hover,
-.home-reviews__more a:focus-visible {
-	color: var(--color-primary-dark);
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.home-hero__stats-card,
-	.home-service-col {
-		transition: none;
-	}
-}
-
-/* -------------------------------------------------------------------------
-   COSTS TEASER
-
-   Two columns on desktop: the rate as a single large figure, and the list of
-   extras beside it. The figure is deliberately the loudest thing in the
-   section — it is the number families are scanning for, and burying it in
-   prose would defeat the point of publishing it at all.
-
-   The extras list is not small print. It sits at full body size next to the
-   rate, because the section's whole claim is that nothing is hidden; setting
-   the caveats in grey 12px would contradict that in the styling itself.
-   ------------------------------------------------------------------------- */
-
-.home-costs {
-	padding-block: var(--section-space-y);
-	background-color: var(--color-background-warm);
-}
-
-.home-costs__inner {
-	display: grid;
-	grid-template-columns: 1fr;
-	gap: var(--space-xl);
-}
-
-@media (min-width: 900px) {
-	.home-costs__inner {
-		grid-template-columns: 1fr 1fr;
-		align-items: start;
-		column-gap: var(--space-2xl);
-	}
-
-	/* Intro spans both columns so the heading isn't squeezed above the figure. */
-	.home-costs__intro {
-		grid-column: 1 / -1;
-	}
-}
-
-.home-costs__heading {
-	max-width: 18ch;
-	margin: 0 0 var(--space-sm);
-	font-family: var(--font-family-heading);
-	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-medium);
-	line-height: var(--leading-tight);
-	color: var(--color-primary-dark);
-	text-wrap: balance;
-}
-
-.home-costs__lede {
-	max-width: 56ch;
-	margin: 0;
-	font-size: var(--text-md);
-	line-height: var(--leading-relaxed);
-	color: var(--color-text);
-	text-wrap: pretty;
-}
-
-/* The rate sits directly on the section, not inside a card. It was a white
-   rounded panel with a mint top-rule — the same boxed treatment removed from
-   the services and info cards, and the one thing on the page still using it.
-   At this size the figure needs no container to be found. */
-.home-costs__figure {
-	padding: 0;
-	background: none;
-	border: 0;
-	border-radius: 0;
-}
-
-.home-costs__from {
-	display: flex;
-	align-items: baseline;
-	gap: var(--space-xs);
-	margin: 0 0 var(--space-xs);
-}
-
-.home-costs__from-label {
-	font-family: var(--font-family-heading);
-	font-size: var(--text-lg);
-	font-style: italic;
-	color: var(--color-accent);
-}
-
-/* Deliberately large. This is the number families arrive looking for and it is
-   the only one on the page, so it can carry the section on its own. */
-.home-costs__from-rate {
-	font-family: var(--font-family-heading);
-	font-size: clamp(3rem, 2rem + 6vw, 5rem);
-	font-weight: var(--font-weight-normal);
-	line-height: 0.95;
-	letter-spacing: -0.03em;
-	color: var(--color-primary-dark);
-	font-variant-numeric: tabular-nums;
-}
-
-.home-costs__basis {
-	max-width: 34ch;
-	margin: 0 0 var(--space-2xs);
-	font-size: var(--text-md);
-	line-height: var(--leading-snug);
-	color: var(--color-text);
-}
-
-.home-costs__effective {
-	margin: 0;
-	padding-top: var(--space-xs);
-	font-size: var(--text-sm);
-	font-weight: var(--font-weight-medium);
-	color: var(--color-text-light);
-}
-
-/* Deliberately full body size and full-strength text colour, not styled down
-   as a footnote. This line is what stops the headline rate reading as a flat
-   price, so it needs the same weight as the figure it qualifies — small print
-   would undercut the exact thing it exists to say. */
-.home-costs__caveat {
-	max-width: 34ch;
-	margin: 0;
-	padding-top: var(--space-sm);
-	font-size: var(--text-base);
-	line-height: var(--leading-relaxed);
-	color: var(--color-text);
-}
-
-.home-costs__extras-heading {
-	margin: 0 0 var(--space-sm);
-	font-family: var(--font-family-body);
-	font-size: var(--text-lg);
-	font-weight: var(--font-weight-bold);
-	line-height: var(--leading-snug);
-	color: var(--color-primary-dark);
-}
-
-.home-costs__list {
-	margin: 0 0 var(--space-md);
-	padding: 0;
-	list-style: none;
-}
-
-/* Hairline-separated rows rather than bulleted dots. These are the charges the
-   "no hidden fees" promise depends on, so they are set as a plain, readable
-   list at full body size — small print would contradict the claim. */
-/* Rows are set apart by spacing, not a hairline between each — the last of
-   several decorative rules this page had collected (the pull quote, the
-   services close, the info-card columns), all doing the same small job of
-   separating things that generous margin already separates on its own. */
-.home-costs__list-item {
-	margin-bottom: var(--space-sm);
-	font-size: var(--text-base);
-	line-height: var(--leading-relaxed);
-	color: var(--color-text);
-	text-wrap: pretty;
-}
-
-.home-costs__list-item:last-child {
-	margin-bottom: 0;
-}
-
-.home-costs__funding {
-	margin: 0 0 var(--space-md);
-	font-size: var(--text-base);
-	line-height: var(--leading-relaxed);
-	color: var(--color-text-light);
-	text-wrap: pretty;
-}
-
-/* 48px minimum touch target per strategy.md's older-user guidance (arthritis
-   and tremor make small targets painful), rather than the 44px used elsewhere
-   in the theme. */
-.home-costs__link {
-	display: inline-flex;
-	align-items: center;
-	min-height: 48px;
-	font-size: var(--text-base);
-	font-weight: var(--font-weight-semibold);
-	color: var(--color-primary);
-	text-decoration: underline;
-	text-underline-offset: 0.2em;
-	transition: color var(--duration-fast) var(--ease-out);
-}
-
-.home-costs__link:hover {
-	color: var(--color-primary-dark);
-}
-
-.home-costs__link:focus-visible {
-	outline: var(--focus-ring);
-	outline-offset: var(--focus-ring-offset);
-}
-
-/* Base state for the CQC fallback badge: hidden until the widget script's
-   onerror handler adds .is-visible (template-parts/home/cqc-section.php).
-   Previously this was an inline style="display:none" on the element itself,
-   flipped to "block" by the handler — which meant the suppression rule below
-   could only ever win with !important, since nothing outranks an inline style
-   short of that. A toggled class puts both rules on equal footing, and normal
-   specificity decides the rest. */
-#cqc-widget-fallback {
-	display: none;
-}
-
-#cqc-widget-fallback.is-visible {
-	display: block;
-}
-
-/* The desktop front-page suppression that used to live here was removed on
-   2026-08-23.
-
-   Its reasoning was sound in isolation — when the widget script is blocked, the
-   fallback repeats artwork the hero already painted a screen earlier — but the
-   cost was worse than the duplication it prevented. .home-cqc__inner is a two
-   column grid, so hiding the only thing in column two collapsed it to 0×0 and
-   left the section visibly half empty, with the copy stranded in a narrow left
-   column. Measured in that state: a 462px section with roughly half its width
-   blank.
-
-   That state is not an edge case. It is what every visitor running an ad
-   blocker sees, plus anyone hitting a strict CSP or a slow cqc.org.uk — and it
-   applies to the one section on the page whose entire subject is the CQC
-   rating, which is the strongest third-party trust signal the business holds.
-   Showing the official badge inside the section about the rating is not
-   redundancy; it is the section's subject.
-
-   Note this only ever fires when the widget has already failed: .is-visible is
-   added by the script's own onerror handler, so the badge and the live widget
-   are mutually exclusive and can never both paint. */
-
-/* -------------------------------------------------------------------------
-   Closing CTA band (template-parts/home/closing-cta.php)
-   -------------------------------------------------------------------------
-   The page's full stop. Same --color-primary-dark ground as the
-   differentiators band rather than a third dark tone: the reference set's
-   craft notes are explicit that band tints should be tonal steps of ONE hue,
-   which is what keeps a banded page coherent instead of stripy.
-
-   The mint button is the page's saturation peak at this point, which is the
-   intent — in every reference that reads premium, the CTA is the most
-   saturated element in its viewport and nothing competes with it. */
-
-/* Deepest step in the band scale, not a repeat of the differentiators band a
-   few screens up. Two identical dark plum sections on one page read as a
-   glitch ("did I already see this?") rather than as two distinct beats — see
-   --color-band-deepest in design-system.css. The page now closes on its most
-   saturated moment, exactly the "tonal inversion used as narrative
-   punctuation" the plum NDIS reference is credited with in
-   reference/inspo-teardowns.md. */
-.home-closing-cta {
-	padding-block: var(--section-space-y);
-	background-color: var(--color-band-deepest);
-	color: #fff;
-}
-
-.home-closing-cta__inner {
-	display: grid;
-	gap: var(--space-lg);
-	align-items: center;
-}
-
-/* Two columns from 900px: the ask on the left, the action on the right, so the
-   button sits on its own rather than trailing a paragraph. Single column below
-   that, action last — the reading order is already the right order. */
-@media (min-width: 900px) {
-	.home-closing-cta__inner {
-		grid-template-columns: minmax(0, 1.35fr) auto;
-		gap: var(--space-2xl);
-	}
-}
-
-.home-closing-cta__heading {
-	max-width: 20ch;
-	margin: 0 0 var(--space-sm);
-	font-family: var(--font-family-heading);
-	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-medium);
-	line-height: var(--leading-tight);
-	color: #fff;
-	text-wrap: balance;
-}
-
-/* 0.78 alpha on white matches .home-differentiators__intro exactly, so the two
-   dark bands read as the same material. Measures 11.3:1 on this ground —
-   comfortably past AA even though it looks soft. */
-.home-closing-cta__text {
-	max-width: 58ch;
-	margin: 0;
-	font-size: var(--text-md);
-	line-height: var(--leading-relaxed);
-	color: rgba(255, 255, 255, 0.78);
-}
-
-.home-closing-cta__actions {
-	display: flex;
-	flex-direction: column;
-	align-items: stretch;
-	gap: var(--space-sm);
-}
-
-@media (min-width: 600px) {
-	.home-closing-cta__actions {
-		flex-direction: row;
-		align-items: center;
-	}
-}
-
-@media (min-width: 900px) {
-	.home-closing-cta__actions {
-		justify-content: flex-end;
-	}
-}
-
-/* Full-width tap target on mobile; intrinsic width once there is room beside
-   the copy. Shared by both buttons so the filled primary and the ghost
-   secondary sit at identical height and width — same anatomy, different fill,
-   per .btn-ghost-on-dark's rationale in components.css. */
-.home-closing-cta__btn {
-	width: 100%;
-	justify-content: center;
-	white-space: nowrap;
-}
-
-@media (min-width: 600px) {
-	.home-closing-cta__btn {
-		width: auto;
 	}
 }

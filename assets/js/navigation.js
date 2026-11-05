@@ -52,6 +52,42 @@
 		var value = locked ? 'hidden' : '';
 		document.documentElement.style.overflow = value;
 		document.body.style.overflow = value;
+		/*
+		 * Keep the scrollbar's space while locked. Where scrollbars take up room
+		 * (a desktop browser below 1024px wide), overflow:hidden removed the bar
+		 * and the whole page, header included, jumped sideways by its width.
+		 */
+		document.documentElement.style.scrollbarGutter = locked ? 'stable' : '';
+	}
+
+	/*
+	 * The panel animates in from opacity 0 (header.css), which needs it to be
+	 * rendered for a frame before .is-open lands: coming straight out of
+	 * display:none ([hidden]) there is no start state and it just appears. On
+	 * close, [hidden] goes back on only after the fade, or the fade never shows.
+	 */
+	var hideTimer = null;
+
+	function panelDuration() {
+		var d = parseFloat(window.getComputedStyle(nav).transitionDuration) || 0;
+		return d * 1000;
+	}
+
+	function showPanel() {
+		window.clearTimeout(hideTimer);
+		nav.removeAttribute('hidden');
+		void nav.offsetWidth; // Commit the closed state so the transition has somewhere to start.
+		nav.classList.add(NAV_OPEN_CLASS_NAV);
+	}
+
+	function hidePanel() {
+		nav.classList.remove(NAV_OPEN_CLASS_NAV);
+		window.clearTimeout(hideTimer);
+		hideTimer = window.setTimeout(function() {
+			if (!nav.classList.contains(NAV_OPEN_CLASS_NAV)) {
+				nav.setAttribute('hidden', '');
+			}
+		}, panelDuration());
 	}
 
 	function setMenuOpen(open) {
@@ -60,11 +96,10 @@
 		toggle.setAttribute('aria-label', open ? closeLabel : openLabel);
 		if (isCtaStyle) {
 			if (open) {
-				nav.removeAttribute('hidden');
+				showPanel();
 			} else {
-				nav.setAttribute('hidden', '');
+				hidePanel();
 			}
-			nav.classList.toggle(NAV_OPEN_CLASS_NAV, open);
 			document.body.classList.toggle('ccs-mobile-nav-open', open);
 			setScrollLock(open);
 		} else {
@@ -94,8 +129,16 @@
 			closeMenu();
 			toggle.focus();
 		} else {
-			/* Close any expanded submenu on mobile */
-			var expanded = menu ? menu.querySelector('.menu-item.' + SUBMENU_EXPANDED_CLASS) : null;
+			/*
+			 * Close any expanded submenu on mobile. This read `menu`, a variable
+			 * that was never declared (the list is `menus`), so Escape threw a
+			 * ReferenceError whenever the panel was closed.
+			 */
+			var expanded = null;
+			menus.some(function(list) {
+				expanded = list.querySelector('.menu-item.' + SUBMENU_EXPANDED_CLASS);
+				return !!expanded;
+			});
 			if (expanded && isMobile()) {
 				var btn = expanded.querySelector('.nav-sub-toggle');
 				if (btn) {

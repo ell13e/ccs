@@ -2,6 +2,13 @@
 /**
  * Template Name: CQC and Our Care
  *
+ * Photo hero, the page's own copy in a split intro, then the same CQC band as
+ * the homepage (template-parts/home/cqc-section.php: live widget, fallback
+ * badge, report link), then the CTA band. The band's CSS lives in
+ * sections.css so it renders here too; it used to sit in homepage.css, which
+ * left this page with an unstyled, full-width fallback badge stacked over the
+ * live widget.
+ *
  * @package CCS_WP_Theme
  */
 
@@ -18,16 +25,29 @@ get_header();
 		the_post();
 		?>
 		<?php get_template_part( 'template-parts/page-header' ); ?>
-		<article id="post-<?php the_ID(); ?>" <?php post_class( 'page-content' ); ?>>
-			<div class="container container--lg">
-				<?php if ( get_the_content() ) : ?>
-					<div class="page-body entry-content">
-						<?php the_content(); ?>
+
+		<?php if ( trim( get_the_content() ) !== '' ) : ?>
+			<section class="ccs-section cqc-intro" aria-labelledby="cqc-intro-heading">
+				<div class="container container--lg">
+					<div class="ccs-split">
+						<header class="ccs-head">
+							<h2 id="cqc-intro-heading" class="ccs-title">
+								<?php
+								esc_html_e( 'Care you can check for yourself', 'ccs-wp-theme' );
+								?>
+							</h2>
+						</header>
+						<article id="post-<?php the_ID(); ?>" <?php post_class( 'page-content' ); ?>>
+							<div class="page-body page-body--flush entry-content">
+								<?php the_content(); ?>
+							</div>
+						</article>
 					</div>
-				<?php endif; ?>
-			</div>
-			<?php get_template_part( 'template-parts/home/cqc-section' ); ?>
-		</article>
+				</div>
+			</section>
+		<?php endif; ?>
+
+		<?php get_template_part( 'template-parts/home/cqc-section' ); ?>
 		<?php
 	endwhile;
 	?>

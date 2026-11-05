@@ -2,9 +2,12 @@
 /**
  * Template Name: Services Hub
  *
- * Services landing page: page header, page content, then a card grid built from
- * the `service` CPT. Previously this page rendered through the default template,
- * so the services themselves appeared only as a plain bulleted list of links.
+ * Services landing page. The service cards come first, straight under the
+ * hero, because choosing a service is why people land here: the page's own
+ * lead paragraph sits over them as the section lede. The rest of the editor
+ * copy (who we support, how we staff it, areas, costs) follows as a split
+ * section, then the shared CTA band. Same .svc-card as the homepage and the
+ * related-services row on each service page.
  *
  * @package CCS_WP_Theme
  */
@@ -15,75 +18,84 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
-$ccs_services = get_posts(
-	array(
-		'post_type'      => 'service',
-		'post_status'    => 'publish',
-		'posts_per_page' => 12,
-		'orderby'        => 'menu_order title',
-		'order'          => 'ASC',
-	)
-);
+$ccs_services = ccs_ordered_services();
 ?>
 
 <main id="main" class="site-main site-main--services" role="main">
 	<?php
 	while ( have_posts() ) :
 		the_post();
+
+		$ccs_content = ccs_content_sections( apply_filters( 'the_content', get_the_content() ) );
+		$ccs_intro   = $ccs_content['intro'];
 		?>
 		<?php get_template_part( 'template-parts/page-header' ); ?>
-		<article id="post-<?php the_ID(); ?>" <?php post_class( 'page-content' ); ?>>
-			<?php if ( trim( get_the_content() ) !== '' ) : ?>
+
+		<?php if ( ! empty( $ccs_services ) ) : ?>
+			<section class="ccs-section services-hub" aria-labelledby="services-hub-heading">
 				<div class="container container--lg">
-					<div class="page-body entry-content">
-						<?php the_content(); ?>
+					<?php
+					/*
+					 * Split head, not centred: the lede is the page's own four-line
+					 * intro, and centred text that long is hard to read (CCS/CLAUDE.md
+					 * rule 10). Title left, intro right, both left-aligned.
+					 */
+					?>
+					<header class="ccs-head ccs-head--split">
+						<h2 id="services-hub-heading" class="ccs-title">
+							<?php
+							/* translators: %s: the emphasised words, drawn with a brush underline. */
+							printf( esc_html__( 'Care at home, %s', 'ccs-wp-theme' ), ccs_accent( __( 'one team', 'ccs-wp-theme' ) ) );
+							?>
+						</h2>
+						<?php if ( trim( wp_strip_all_tags( $ccs_intro ) ) !== '' ) : ?>
+							<div class="ccs-lede ccs-lede--prose"><?php echo $ccs_intro; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content output, printed as the_content() would. ?></div>
+						<?php endif; ?>
+					</header>
+
+					<?php get_template_part( 'template-parts/service-cards', null, array( 'services' => $ccs_services ) ); ?>
+				</div>
+			</section>
+		<?php endif; ?>
+
+		<?php if ( ! empty( $ccs_content['sections'] ) || empty( $ccs_services ) ) : ?>
+			<section class="ccs-section ccs-section--tint services-how" aria-labelledby="services-how-heading">
+				<div class="container container--lg">
+					<div class="ccs-split">
+						<header class="ccs-head">
+							<h2 id="services-how-heading" class="ccs-title">
+								<?php
+								esc_html_e( 'Whichever service, the same promise', 'ccs-wp-theme' );
+								?>
+							</h2>
+						</header>
+						<article id="post-<?php the_ID(); ?>" <?php post_class( 'page-content' ); ?>>
+							<div class="page-body page-body--flush entry-content">
+								<?php if ( empty( $ccs_services ) ) : ?>
+									<?php echo $ccs_intro; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content output, printed as the_content() would. ?>
+								<?php endif; ?>
+								<?php if ( ! empty( $ccs_content['sections'] ) ) : ?>
+									<?php
+									/*
+									 * The editor's h2s sit under this section's own h2, so they
+									 * print as h3: one outline, no two headings at the same level
+									 * claiming the same rank.
+									 */
+									foreach ( $ccs_content['sections'] as $ccs_section ) :
+										?>
+										<h3><?php echo esc_html( $ccs_section['heading'] ); ?></h3>
+										<?php echo $ccs_section['body']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content output, printed as the_content() would. ?>
+									<?php endforeach; ?>
+								<?php endif; ?>
+							</div>
+						</article>
 					</div>
 				</div>
-			<?php endif; ?>
-		</article>
+			</section>
+		<?php endif; ?>
 		<?php
 	endwhile;
 	?>
-
-	<?php if ( ! empty( $ccs_services ) ) : ?>
-		<section class="services-grid-section" aria-labelledby="services-grid-heading">
-			<div class="container container--lg">
-				<h2 id="services-grid-heading" class="services-grid-section__heading">
-					<?php esc_html_e( 'The care we provide', 'ccs-wp-theme' ); ?>
-				</h2>
-				<ul class="services-grid" role="list">
-					<?php foreach ( $ccs_services as $ccs_service ) : ?>
-						<li class="service-card">
-							<?php if ( has_post_thumbnail( $ccs_service ) ) : ?>
-								<a class="service-card__media" href="<?php echo esc_url( get_permalink( $ccs_service ) ); ?>" tabindex="-1" aria-hidden="true">
-									<?php echo get_the_post_thumbnail( $ccs_service, 'medium_large', array( 'class' => 'service-card__img', 'loading' => 'lazy' ) ); ?>
-								</a>
-							<?php endif; ?>
-							<div class="service-card__body">
-								<h3 class="service-card__title">
-									<a href="<?php echo esc_url( get_permalink( $ccs_service ) ); ?>">
-										<?php echo esc_html( get_the_title( $ccs_service ) ); ?>
-									</a>
-								</h3>
-								<p class="service-card__excerpt">
-									<?php
-									$ccs_excerpt = has_excerpt( $ccs_service )
-										? get_the_excerpt( $ccs_service )
-										: wp_trim_words( get_post_field( 'post_content', $ccs_service ), 28 );
-									echo esc_html( $ccs_excerpt );
-									?>
-								</p>
-								<span class="service-card__link" aria-hidden="true">
-									<?php esc_html_e( 'Read more', 'ccs-wp-theme' ); ?>
-									<span>&rarr;</span>
-								</span>
-							</div>
-						</li>
-					<?php endforeach; ?>
-				</ul>
-			</div>
-		</section>
-	<?php endif; ?>
 
 	<?php get_template_part( 'template-parts/cta-band' ); ?>
 </main>

@@ -16,7 +16,7 @@ if ( ! $use_cvm ) {
 	?>
 	<div class="cvm-fallback container container--lg">
 		<p><?php esc_html_e( 'View our current vacancies or contact us to find out about opportunities.', 'ccs-wp-theme' ); ?></p>
-		<p><a href="<?php echo esc_url( get_permalink( get_page_by_path( 'contact-us' ) ) ?: home_url( '/contact-us/' ) ); ?>" class="button button--primary"><?php esc_html_e( 'Contact us', 'ccs-wp-theme' ); ?></a></p>
+		<p><a href="<?php echo esc_url( get_permalink( get_page_by_path( 'contact-us' ) ) ?: home_url( '/contact-us/' ) ); ?>" class="btn btn-primary"><?php esc_html_e( 'Contact us', 'ccs-wp-theme' ); ?></a></p>
 	</div>
 	<?php
 	return;

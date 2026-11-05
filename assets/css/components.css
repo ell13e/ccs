@@ -368,7 +368,10 @@ a.card {
 .breadcrumb__link {
 	display: inline-flex;
 	align-items: center;
-	min-height: 24px;
+	/* A 44px hit area (CCS/CLAUDE.md rule 14), pulled back with negative
+	   margins so the breadcrumb row keeps its visual height. */
+	min-height: 44px;
+	margin-block: -10px;
 	color: var(--color-primary);
 	text-decoration: none;
 	cursor: pointer;
@@ -407,30 +410,57 @@ a.card {
    Inner pages used to open with a bare <h1> on white and no visual anchor.
    ------------------------------------------------------------------------- */
 
+/* Plain variant (no featured image): the plum tint band, the section system's
+   type scale, and the brand's infinity loop as one faint mark on the right.
+   It used to be a cream strip with a grey rule and a 44px purple title: next
+   to the photo variant on the page beside it, it read as unfinished, so the
+   site had two unrelated headers. Same title scale and spacing as the photo
+   variant now; only the ground differs. */
 .page-hero {
-	padding-block: var(--space-2xl) var(--space-xl);
-	background-color: var(--color-background-warm);
-	border-bottom: 1px solid var(--color-border);
+	position: relative;
+	isolation: isolate;
+	overflow: hidden;
+	padding-block: clamp(3rem, 2rem + 4vw, 5.5rem) clamp(2.5rem, 1.8rem + 3vw, 4.5rem);
+	background-color: var(--color-band-tint);
+}
+
+.page-hero:not(.page-hero--photo)::after {
+	content: "";
+	position: absolute;
+	z-index: -1;
+	top: 50%;
+	right: -5rem;
+	width: min(34rem, 55vw);
+	aspect-ratio: 2 / 1;
+	translate: 0 -50%;
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'%3E%3Cpath d='M200 100C200 52 150 16 98 16 48 16 12 52 12 100s36 84 86 84c52 0 102-36 102-84Zm0 0c0-48 50-84 102-84 50 0 86 36 86 84s-36 84-86 84c-52 0-102-36-102-84Z' fill='none' stroke='%23564298' stroke-opacity='.08' stroke-width='12' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / contain;
+	pointer-events: none;
+}
+
+@media (max-width: 899px) {
+	.page-hero:not(.page-hero--photo)::after {
+		display: none;
+	}
 }
 
 .page-hero__title {
-	max-width: 20ch;
+	max-width: 18ch;
 	margin: var(--space-sm) 0 0;
 	font-family: var(--font-family-heading);
-	font-size: var(--text-3xl);
+	font-size: clamp(2.25rem, 1.5rem + 3.2vw, 3.75rem);
 	font-weight: var(--font-weight-medium);
-	line-height: var(--leading-tight);
-	letter-spacing: -0.015em;
-	color: var(--color-primary-dark);
+	line-height: 1.08;
+	letter-spacing: -0.025em;
+	color: var(--color-ink);
 	text-wrap: balance;
 }
 
 .page-hero__intro {
 	max-width: 56ch;
 	margin: var(--space-md) 0 0;
-	font-size: var(--text-md);
-	line-height: var(--leading-relaxed);
-	color: var(--color-text-light);
+	font-size: var(--lede-size);
+	line-height: 1.65;
+	color: var(--color-ink-soft);
 	text-wrap: pretty;
 }
 
@@ -517,7 +547,9 @@ a.card {
 	border-radius: 0;
 	object-fit: cover;
 	object-position: 50% 30%;
-	filter: brightness(0.82) saturate(0.95);
+	/* No brightness or saturation filter: photos are cropped and resized only,
+	   never recoloured (CLAUDE.md standing constraint). The scrim below does
+	   the legibility work, a touch stronger to cover what the filter did. */
 	display: block;
 }
 
@@ -525,7 +557,49 @@ a.card {
 	position: absolute;
 	inset: 0;
 	z-index: 1;
-	background: linear-gradient(to bottom, rgba(28, 18, 52, 0.15) 0%, rgba(28, 18, 52, 0.4) 60%, rgba(28, 18, 52, 0.62) 100%);
+	background: linear-gradient(to bottom, rgba(28, 18, 52, 0.3) 0%, rgba(28, 18, 52, 0.5) 60%, rgba(28, 18, 52, 0.7) 100%);
+}
+
+/* Inset variant (page-header.php, single-service.php): a photo too small to
+   fill a full-bleed banner sharply, so it sits framed beside the text on the
+   tint band, never wider than its file can render cleanly on a 2x screen
+   (--ccs-photo-max, set from the attachment's width). Rule 15. */
+.page-hero--inset::after {
+	display: none;
+}
+
+.page-hero--inset .page-hero__media {
+	margin-top: var(--space-xl);
+}
+
+.page-hero--inset .page-hero__img {
+	display: block;
+	width: 100%;
+	max-width: min(100%, var(--ccs-photo-max, 24rem));
+	height: auto;
+	/* One frame shape for every inset photo, whatever the source's shape
+	   (portrait phone shots, wide strips): cropped, never stretched. */
+	aspect-ratio: 4 / 3;
+	object-fit: cover;
+	border-radius: var(--radius-2xl);
+	box-shadow: var(--shadow-float);
+}
+
+@media (min-width: 900px) {
+	.page-hero--inset .page-hero__inner {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		column-gap: clamp(2.5rem, 1rem + 4vw, 5rem);
+		align-items: center;
+	}
+
+	.page-hero--inset .page-hero__media {
+		margin-top: 0;
+	}
+
+	.page-hero--inset .page-hero__img {
+		width: min(24rem, var(--ccs-photo-max, 24rem));
+	}
 }
 
 /* Wider viewports get a diagonal component as well as the bottom fade, the same
@@ -574,42 +648,167 @@ a.card {
    templates that use .page-body, every one of which is a single column inside a
    container with nothing beside it. */
 .page-body {
-	max-width: var(--measure);
+	max-width: 46rem;
 	margin-inline: auto;
-	padding-block: var(--space-2xl);
-	font-size: var(--text-md);
-	line-height: var(--leading-relaxed);
-	color: var(--color-text);
+	padding-block: clamp(3rem, 2rem + 4vw, 5.5rem);
+	font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.125rem);
+	line-height: 1.75;
+	color: var(--color-ink-soft);
 }
 
 .page-body > * + * {
-	margin-top: var(--space-md);
+	margin-top: 1.25em;
+}
+
+/* The opening paragraph is the page's lede: a step up in size and full ink, the
+   same move the section system makes under every heading. */
+.page-body > p:first-child {
+	font-size: var(--lede-size);
+	color: var(--color-ink);
 }
 
 .page-body h2 {
-	max-width: 22ch;
-	margin-top: var(--space-2xl);
-	font-size: var(--text-2xl);
+	max-width: 24ch;
+	margin-top: 2.4em;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.375rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.15;
+	letter-spacing: -0.02em;
+	color: var(--color-ink);
 	text-wrap: balance;
 }
 
 .page-body h3 {
-	margin-top: var(--space-xl);
-	font-size: var(--text-lg);
+	margin-top: 2em;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.3;
+	color: var(--color-ink);
 }
 
-.page-body ul,
+.page-body h2 + *,
+.page-body h3 + * {
+	margin-top: 0.6em;
+}
+
+.page-body strong {
+	color: var(--color-ink);
+}
+
+/* Bullets are the price card's tick badge, so a list in the editor reads as
+   the same "here is what you get" device the homepage uses. Ordered lists keep
+   their numbers, coloured to match. */
+.page-body ul {
+	padding: 0;
+	list-style: none;
+}
+
+.page-body ul > li {
+	position: relative;
+	padding-left: 2.1rem;
+}
+
+.page-body ul > li::before {
+	content: "";
+	position: absolute;
+	top: 0.28em;
+	left: 0;
+	width: 1.35rem;
+	height: 1.35rem;
+	border-radius: 50%;
+	background: var(--color-secondary-light) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233F2F70' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.2 4.2L19 7'/%3E%3C/svg%3E") center / 0.8rem no-repeat;
+}
+
 .page-body ol {
-	padding-left: 1.25em;
+	padding-left: 1.4em;
+}
+
+.page-body ol > li::marker {
+	font-weight: var(--font-weight-bold);
+	color: var(--color-primary);
 }
 
 .page-body li + li {
-	margin-top: var(--space-xs);
+	margin-top: 0.5em;
 }
 
 .page-body a:not(.btn) {
 	color: var(--color-primary);
-	text-underline-offset: 3px;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.2em;
+}
+
+.page-body a:not(.btn):hover {
+	color: var(--color-primary-dark);
+}
+
+.page-body blockquote {
+	margin: 2em 0;
+	padding: 1.25rem 1.5rem;
+	border-left: 3px solid var(--color-secondary-dark);
+	border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+	background-color: var(--color-band-tint);
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.1875rem, 1.05rem + 0.5vw, 1.375rem);
+	line-height: 1.45;
+	color: var(--color-ink);
+}
+
+.page-body blockquote p {
+	margin: 0;
+}
+
+.page-body hr {
+	margin-block: 2.5em;
+	border: 0;
+	border-top: 1px solid var(--color-hairline);
+}
+
+.page-body img {
+	height: auto;
+	border-radius: var(--radius-2xl);
+}
+
+/* Getting Started is a journey told in numbered stages ("1. The first
+   conversation" ...). On a wide screen it gets a timeline rail: one hairline
+   down the left with a mint node at every stage heading, so ten sections read
+   as one route rather than a wall of text. The numbers stay in the headings,
+   so nothing depends on the decoration. */
+@media (min-width: 768px) {
+	.site-main--getting-started .page-body {
+		position: relative;
+		padding-left: 3.25rem;
+	}
+
+	.site-main--getting-started .page-body::before {
+		content: "";
+		position: absolute;
+		top: clamp(3rem, 2rem + 4vw, 5.5rem);
+		bottom: clamp(3rem, 2rem + 4vw, 5.5rem);
+		left: 0.7rem;
+		width: 2px;
+		border-radius: 2px;
+		background-color: var(--color-hairline-strong);
+	}
+
+	.site-main--getting-started .page-body h2 {
+		position: relative;
+	}
+
+	.site-main--getting-started .page-body h2::before {
+		content: "";
+		position: absolute;
+		top: 0.3em;
+		left: calc(0.7rem + 1px - 0.7rem - 3.25rem);
+		width: 1.4rem;
+		height: 1.4rem;
+		border: 4px solid var(--color-background);
+		border-radius: 50%;
+		background-color: var(--color-secondary-dark);
+		box-shadow: 0 0 0 1px var(--color-hairline-strong);
+	}
 }
 
 /* -------------------------------------------------------------------------
@@ -617,305 +816,7 @@ a.card {
    ------------------------------------------------------------------------- */
 
 .cta-band {
-	padding-block: var(--space-2xl);
-	background-color: var(--color-primary-dark);
-	color: #fff;
-}
-
-.cta-band__inner {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	justify-content: space-between;
-	gap: var(--space-lg);
-}
-
-.cta-band__heading {
-	margin: 0;
-	font-family: var(--font-family-heading);
-	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-medium);
-	line-height: var(--leading-tight);
-	color: #fff;
-}
-
-.cta-band__text {
-	max-width: 46ch;
-	margin: var(--space-xs) 0 0;
-	font-size: var(--text-base);
-	line-height: var(--leading-relaxed);
-	color: rgba(255, 255, 255, 0.85);
-	text-wrap: pretty;
-}
-
-.cta-band__actions {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: var(--space-sm) var(--space-md);
-}
-
-.cta-band__call {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	min-height: 3rem;
-	padding: var(--space-sm) var(--space-lg);
-	font-size: var(--text-sm);
-	font-weight: var(--font-weight-semibold);
-	color: #fff;
-	text-decoration: none;
-	border: 1.5px solid rgba(255, 255, 255, 0.7);
-	border-radius: var(--btn-radius);
-	transition:
-		background-color var(--duration-fast) var(--ease-out),
-		border-color var(--duration-fast) var(--ease-out);
-}
-
-.cta-band__call:hover {
-	background: rgba(255, 255, 255, 0.14);
-	border-color: #fff;
-	color: #fff;
-}
-
-.cta-band__call:focus-visible {
-	outline: 2px solid #fff;
-	outline-offset: 2px;
-}
-
-@media (max-width: 640px) {
-	.cta-band__actions {
-		width: 100%;
-		flex-direction: column;
-		align-items: stretch;
-	}
-
-	.cta-band__actions .btn,
-	.cta-band__call {
-		width: 100%;
-	}
-}
-
-/* -------------------------------------------------------------------------
-   SERVICE CARD GRID — reusable card list (services hub, location pages)
-   ------------------------------------------------------------------------- */
-
-.services-grid-section {
-	padding-block: var(--space-2xl) var(--space-3xl);
-	background-color: var(--color-background-warm);
-}
-
-.services-grid-section__heading {
-	max-width: 20ch;
-	margin: 0 0 var(--space-xl);
-	font-family: var(--font-family-heading);
-	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-medium);
-	line-height: var(--leading-tight);
-	color: var(--color-primary-dark);
-	text-wrap: balance;
-}
-
-.services-grid {
-	display: grid;
-	grid-template-columns: 1fr;
-	gap: var(--space-lg);
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-
-@media (min-width: 640px) {
-	.services-grid {
-		grid-template-columns: repeat(2, 1fr);
-	}
-}
-
-@media (min-width: 1024px) {
-	.services-grid {
-		grid-template-columns: repeat(3, 1fr);
-	}
-}
-
-.service-card {
-	display: flex;
-	flex-direction: column;
-	background: var(--color-background);
-	border: 1px solid var(--color-border);
-	border-radius: var(--card-radius);
-	overflow: hidden;
-	transition:
-		transform var(--duration-normal) var(--ease-out),
-		box-shadow var(--duration-normal) var(--ease-out);
-}
-
-.service-card:hover {
-	transform: translateY(-3px);
-	box-shadow: var(--shadow-elevated);
-}
-
-.service-card:focus-within {
-	outline: var(--focus-ring);
-	outline-offset: var(--focus-ring-offset);
-}
-
-.service-card__media {
-	display: block;
-	aspect-ratio: 3 / 2;
-	overflow: hidden;
-	background: var(--color-secondary-light);
-}
-
-.service-card__img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-}
-
-.service-card__body {
-	display: flex;
-	flex-direction: column;
-	flex: 1;
-	padding: var(--space-lg);
-}
-
-.service-card__title {
-	margin: 0 0 var(--space-xs);
-	font-family: var(--font-family-body);
-	font-size: var(--text-lg);
-	font-weight: var(--font-weight-bold);
-	line-height: var(--leading-snug);
-	text-wrap: balance;
-}
-
-.service-card__title a {
-	color: var(--color-primary-dark);
-	text-decoration: none;
-}
-
-/* Stretched link: the whole card is clickable, but only the title is a real
-   link, so screen readers and the tab order still get one clear target. */
-.service-card__title a::after {
-	content: "";
-	position: absolute;
-	inset: 0;
-}
-
-.service-card {
-	position: relative;
-}
-
-.service-card__title a:hover {
-	color: var(--color-primary);
-}
-
-.service-card__excerpt {
-	margin: 0 0 var(--space-md);
-	font-size: var(--text-base);
-	line-height: var(--leading-relaxed);
-	color: var(--color-text);
-	text-wrap: pretty;
-}
-
-.service-card__link {
-	margin-top: auto;
-	font-size: var(--text-sm);
-	font-weight: var(--font-weight-semibold);
-	color: var(--color-primary);
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.service-card,
-	.service-card:hover {
-		transform: none;
-		transition: none;
-	}
-}
-
-/* -------------------------------------------------------------------------
-   TEAM GRID — "Who You'll Meet"
-   ------------------------------------------------------------------------- */
-
-.team-section {
-	padding-block: var(--space-2xl) var(--space-3xl);
-	background-color: var(--color-background-warm);
-}
-
-.team-section__heading {
-	margin: 0 0 var(--space-xl);
-	font-family: var(--font-family-heading);
-	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-medium);
-	line-height: var(--leading-tight);
-	color: var(--color-primary-dark);
-}
-
-.team-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-	gap: var(--space-lg);
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-
-.team-card {
-	display: flex;
-	flex-direction: column;
-	background: var(--color-background);
-	border: 1px solid var(--color-border);
-	border-radius: var(--card-radius);
-	overflow: hidden;
-}
-
-.team-card__media {
-	position: relative;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	aspect-ratio: 1 / 1;
-	background: var(--color-secondary-light);
-	overflow: hidden;
-}
-
-.team-card__img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	/* Faces usually sit in the upper half of a portrait crop. */
-	object-position: 50% 25%;
-}
-
-/* Initials tile: never leave an empty image slot on this page — a blank box
-   reads as anonymity, which is the exact thing this page exists to counter. */
-.team-card__initials {
-	font-family: var(--font-family-heading);
-	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-medium);
-	color: var(--color-primary-dark);
-	opacity: 0.55;
-	letter-spacing: 0.02em;
-}
-
-.team-card__body {
-	padding: var(--space-md);
-}
-
-.team-card__name {
-	margin: 0 0 0.15rem;
-	font-family: var(--font-family-body);
-	font-size: var(--text-md);
-	font-weight: var(--font-weight-bold);
-	line-height: var(--leading-snug);
-	color: var(--color-primary-dark);
-}
-
-.team-card__role {
-	margin: 0;
-	font-size: var(--text-sm);
-	line-height: var(--leading-snug);
-	color: var(--color-text-light);
-	text-wrap: pretty;
+	padding-block: clamp(3rem, 2rem + 4vw, 6rem);
 }
 
 /* -------------------------------------------------------------------------
@@ -1132,6 +1033,12 @@ a.card {
 }
 
 .page-hero__eyebrow a {
+	/* A 44px hit area (CCS/CLAUDE.md rule 14); negative margins keep the
+	   label's place above the title. */
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
+	margin-block: -12px;
 	color: var(--color-accent);
 	text-decoration: none;
 }
@@ -1271,112 +1178,14 @@ a.card {
 	}
 }
 
-/* Careers hub: "Here's what you can expect" card grid. */
-.careers-expect {
-	padding: var(--space-3xl) 0;
-	text-align: center;
-}
-
-.careers-expect__heading {
-	margin: 0 0 var(--space-xl);
-}
-
-.careers-expect__grid {
-	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	gap: var(--space-lg);
-	text-align: left;
-}
-
-@media (max-width: 900px) {
-	.careers-expect__grid {
-		grid-template-columns: repeat(2, 1fr);
-	}
-}
-
-@media (max-width: 560px) {
-	.careers-expect__grid {
-		grid-template-columns: 1fr;
-	}
-}
-
-.careers-expect__title {
-	/* Explicit size instead of the inherited h3 (--text-2xl serif) — that size
-	   is tuned for wider single/two-column cards, not a four-up grid, and
-	   overflowed single long words like "Communication" against the card's
-	   `overflow: hidden`. */
-	font-family: var(--font-family-body);
-	font-size: var(--text-lg);
-	font-weight: var(--font-weight-bold);
-	margin: 0 0 var(--space-xs);
-}
-
-.careers-expect__body {
-	color: var(--color-text-light);
-	margin: 0;
-	font-size: var(--text-sm);
-}
-
-/* About page: "Our Story Starts Here" video section. */
-.about-story {
-	padding: var(--space-3xl) 0;
-	border-top: 1px solid var(--color-border);
-}
-
-.about-story .container {
-	text-align: center;
-}
-
-/* -------------------------------------------------------------------------
-   SECTION EYEBROW LABELS
-   -------------------------------------------------------------------------
-   The small uppercase label that sits above a section heading. One rule, three
-   section names, because three byte-identical copies were what let this bug
-   survive: the homepage copy was corrected to --color-accent when that token
-   was darkened (see design-system.css §Utility, 2026-08-23) and these two were
-   not, so the same label was legible on the homepage and invisible on About and
-   Careers.
-
-   --color-secondary (mint #a8ddd4) measures 1.5:1 on white — against a 4.5:1
-   AA minimum for text at this size. Mint stays a *background* and a text colour
-   on dark grounds only (the hero promise line, the differentiator numerals, the
-   closing-CTA phone hover all use it correctly over dark purple). On a light
-   ground the accent lavender is the correct token, and it is the one the
-   homepage already uses, so this brings About and Careers into line with the
-   homepage rather than inventing a fourth treatment. */
-.about-story__eyebrow,
-.careers-expect__eyebrow {
-	display: block;
-	margin-bottom: var(--space-xs);
-	font-size: var(--text-xs);
-	font-weight: var(--font-weight-semibold);
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
-	color: var(--color-accent);
-}
-
-.about-story__heading {
-	margin: 0 0 var(--space-md);
-}
-
-.about-story__intro {
-	color: var(--color-text-light);
-	max-width: 46rem;
-	margin: 0 auto var(--space-xl);
-}
-
-.about-story .video-embed {
-	text-align: left;
-}
-
 /* Click-to-load video embed: 16:9 poster + play button until clicked. */
 .video-embed {
 	position: relative;
 	aspect-ratio: 16 / 9;
-	border-radius: var(--radius-lg);
+	border-radius: var(--radius-2xl);
 	overflow: hidden;
-	background: var(--color-text, #211c30);
-	box-shadow: var(--shadow-md, 0 8px 24px rgba(33, 28, 48, 0.18));
+	background: var(--color-band-deepest);
+	box-shadow: var(--shadow-float);
 }
 
 .video-embed__trigger {
@@ -1784,4 +1593,703 @@ a.card {
 .btn-ghost-on-dark:focus-visible {
 	outline: 2px solid var(--color-secondary);
 	outline-offset: var(--focus-ring-offset);
+}
+
+/* -------------------------------------------------------------------------
+   ACCENT WORD — one hand-drawn brush underline per heading
+
+   The mark the ElderlyCare X template puts under a single phrase in each
+   section title ("your loved ones", "of services"), and the thing that most
+   makes its headings read as written by a person rather than set by a template.
+   reference/copy/homepage.md already assigned an "Accent word" to each homepage
+   H2; nothing implemented it until now.
+
+   One smooth, slightly rising stroke under the word, drawn on its own layer
+   (::after) rather than as a background on the text. The earlier version was a
+   two-hump S-curve painted into the span's background with padding under it;
+   at heading sizes it read as a random squiggle rather than a deliberate mark.
+   This is a single bezier sweep, bolder, sitting just below the baseline.
+
+   white-space: nowrap keeps the accented word or phrase on one line, so the
+   stroke is always one unbroken sweep instead of being cut where a phrase
+   wraps. Accent phrases are short ("one team", a town name), which is what
+   makes nowrap safe here.
+
+   The stroke scales with the box (preserveAspectRatio none, no
+   non-scaling-stroke), so its weight is a fixed share of the type size: the
+   same visual weight on a 52px title and a 32px one.
+
+   Decorative only: it conveys nothing the word does not, so it needs no
+   contrast ratio and no text alternative, and as generated content with no
+   text it adds nothing to the accessibility tree. The heading's own colour is
+   untouched.
+
+   Mint (--color-secondary-dark #85C4B8) on light grounds, light mint
+   (--color-secondary #a8ddd4) on the dark bands, where the darker mint would
+   sink into the plum.
+   ------------------------------------------------------------------------- */
+
+.ccs-accent {
+	position: relative;
+	white-space: nowrap;
+}
+
+.ccs-accent::after {
+	--deco-height: 0.3125em;
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: calc(var(--deco-height) * -0.625);
+	height: var(--deco-height);
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'%3E%3Cpath d='M 3 7 C 60 4, 140 8, 197 5' stroke='%2385C4B8' stroke-width='6' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	pointer-events: none;
+}
+
+.home-differentiators .ccs-accent::after,
+.cta-card .ccs-accent::after,
+.ccs-on-dark .ccs-accent::after {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'%3E%3Cpath d='M 3 7 C 60 4, 140 8, 197 5' stroke='%23a8ddd4' stroke-width='6' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
+}
+
+/* -------------------------------------------------------------------------
+   TEXT LINK WITH ARROW — the one link treatment for "see more" destinations
+
+   Every section that hands off to another page ended with its own slightly
+   different link: .home-why-choose__link, .home-cqc__link, .home-costs__link,
+   .home-info-card__link, .home-reviews__more a. Same job, five rules. This is the
+   shared version for the new sections, and the arrow nudges on hover the way
+   the service cards' does.
+   ------------------------------------------------------------------------- */
+
+.ccs-link-arrow {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.45em;
+	min-height: 48px;
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-primary);
+	text-decoration: none;
+}
+
+.ccs-link-arrow__label {
+	text-decoration: underline;
+	text-decoration-color: var(--color-hairline-strong);
+	text-underline-offset: 0.25em;
+	text-decoration-thickness: 1px;
+	transition: text-decoration-color var(--duration-fast) var(--ease-out);
+}
+
+.ccs-link-arrow:hover .ccs-link-arrow__label,
+.ccs-link-arrow:focus-visible .ccs-link-arrow__label {
+	text-decoration-color: currentColor;
+}
+
+.ccs-link-arrow:hover {
+	color: var(--color-primary-dark);
+}
+
+.ccs-link-arrow:focus-visible {
+	outline: var(--focus-ring);
+	outline-offset: var(--focus-ring-offset);
+	border-radius: var(--radius-sm);
+}
+
+.ccs-link-arrow__arrow {
+	display: inline-block;
+	transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.ccs-link-arrow:hover .ccs-link-arrow__arrow {
+	transform: translateX(0.25rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ccs-link-arrow__arrow {
+		transition: none;
+	}
+
+	.ccs-link-arrow:hover .ccs-link-arrow__arrow {
+		transform: none;
+	}
+}
+
+/* -------------------------------------------------------------------------
+   TEAM TILE — portrait with a name card lapping over its lower edge
+
+   The ElderlyCare X team cards, and Harmony Care's, do the same thing: a tall
+   rounded portrait and a small white card that overlaps its bottom edge to
+   carry the name and role. The overlap is what makes it read as a person being
+   introduced rather than a database row with a thumbnail — the name sits in
+   front of them, like a name badge, instead of in a caption below.
+
+   One component for the homepage strip and the Team page, so the people are
+   presented identically wherever they appear.
+
+   Photographs are cropped, never adjusted: object-fit only, no filter.
+   ------------------------------------------------------------------------- */
+
+.team-tile {
+	margin: 0;
+}
+
+.team-tile__photo {
+	aspect-ratio: 4 / 5;
+	overflow: hidden;
+	border-radius: var(--radius-xl);
+	background-color: var(--color-band-cream);
+}
+
+.team-tile__photo img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	/* Faces sit in the upper half of these headshots; anchoring there keeps
+	   the head clear of the name card that overlaps the bottom edge. */
+	object-position: 50% 28%;
+}
+
+/* Initials when a headshot is missing: never an empty image slot on the
+   team page, where a blank box reads as anonymity, the exact thing the page
+   exists to counter. Decorative (aria-hidden); the name is in the caption. */
+.team-tile__initials {
+	display: grid;
+	place-items: center;
+	height: 100%;
+	padding-bottom: 2rem;
+	font-family: var(--font-family-heading);
+	font-size: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+	font-weight: var(--font-weight-medium);
+	letter-spacing: 0.02em;
+	color: var(--color-primary);
+	background-color: var(--color-badge);
+}
+
+.team-tile__tag {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 0.125rem;
+	margin: -2.25rem 0.75rem 0;
+	padding: 0.875rem 1rem;
+	background-color: var(--color-background);
+	border: 1px solid var(--color-hairline);
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-card);
+}
+
+.team-tile__name {
+	font-family: var(--font-family-heading);
+	font-size: var(--text-md);
+	font-weight: var(--font-weight-medium);
+	line-height: var(--leading-snug);
+	color: var(--color-primary-dark);
+}
+
+.team-tile__role {
+	font-size: var(--text-sm);
+	line-height: var(--leading-snug);
+	color: var(--color-text-light);
+}
+
+/* =========================================================================
+   SECTION SYSTEM (homepage rebuild, Nov 2026)
+
+   One header, one title, one lede, one badge, one button row, used by every
+   section below the hero, so the page is built from a vocabulary rather than
+   from eleven separately-styled blocks. Tokens live in design-system.css
+   ("Section system").
+   ========================================================================= */
+
+/* ---- Section header ----------------------------------------------------
+   Centred above grids (services, steps, reviews, team, partners), where the
+   symmetry of the grid below wants a centred anchor; left-aligned beside
+   narrative (why choose us, costs, CQC). That split is the ElderlyCare X
+   template's own rule, and the reason its long pages never read as a document.
+   ------------------------------------------------------------------------- */
+
+.ccs-head {
+	max-width: 46rem;
+	margin-bottom: var(--section-head-gap);
+}
+
+.ccs-head--center {
+	margin-inline: auto;
+	text-align: center;
+}
+
+/* Centred eyebrow: a rule each side, or the single leading rule throws the
+   label visibly off-centre. */
+.ccs-head--center .ccs-eyebrow {
+	justify-content: center;
+}
+
+.ccs-head--center .ccs-eyebrow::after {
+	content: "";
+	flex: none;
+	width: 1.75rem;
+	height: 2px;
+	border-radius: 2px;
+	background-color: var(--color-secondary-dark);
+}
+
+.ccs-head--center .ccs-eyebrow--on-dark::after {
+	background-color: rgba(168, 221, 212, 0.55);
+}
+
+.ccs-title {
+	margin: 0;
+	font-family: var(--font-family-heading);
+	font-size: var(--title-size);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.12;
+	letter-spacing: -0.02em;
+	color: var(--color-ink);
+	text-wrap: balance;
+}
+
+.ccs-title--on-dark {
+	color: #fff;
+}
+
+.ccs-lede {
+	max-width: 56ch;
+	margin: var(--space-md) 0 0;
+	font-size: var(--lede-size);
+	line-height: 1.65;
+	color: var(--color-ink-soft);
+	text-wrap: pretty;
+}
+
+.ccs-head--center .ccs-lede {
+	margin-inline: auto;
+}
+
+.ccs-lede--on-dark {
+	color: rgba(255, 255, 255, 0.8);
+}
+
+/* Centred heads go left on phones. A lede that is one or two lines at desktop
+   wraps to four to six at 375px, and centred text that long is hard to read
+   (CCS/CLAUDE.md rule 10). Short centred titles would survive, but a head
+   that switches alignment halfway through reads worse than one that
+   doesn't. */
+@media (max-width: 599px) {
+	.ccs-head--center {
+		margin-inline: 0;
+		text-align: left;
+	}
+
+	.ccs-head--center .ccs-eyebrow {
+		justify-content: flex-start;
+	}
+
+	.ccs-head--center .ccs-eyebrow::after {
+		display: none;
+	}
+
+	.ccs-head--center .ccs-lede {
+		margin-inline: 0;
+	}
+}
+
+/* ---- Icon badge ---------------------------------------------------------
+   The round tinted badge every feature, service and contact option sits in.
+   Lavender ground, brand-purple glyph (6.4:1, so the glyph is legible as a
+   graphic in its own right, not only as decoration). */
+
+.ccs-icon {
+	display: block;
+	width: 1.5rem;
+	height: 1.5rem;
+	flex: none;
+}
+
+.ccs-badge {
+	display: inline-grid;
+	place-items: center;
+	flex: none;
+	width: 3.5rem;
+	height: 3.5rem;
+	border-radius: 50%;
+	background-color: var(--color-badge);
+	color: var(--color-primary);
+}
+
+.ccs-badge--sm {
+	width: 2.75rem;
+	height: 2.75rem;
+}
+
+.ccs-badge--sm .ccs-icon {
+	width: 1.25rem;
+	height: 1.25rem;
+}
+
+/* A white ring lets a badge sit across the edge of a photo or card and still
+   read as one shape, which is the overlap the service cards use. */
+.ccs-badge--ring {
+	box-shadow: 0 0 0 5px var(--color-background);
+}
+
+/* ---- Button row ---------------------------------------------------------
+   Primary and secondary side by side at desktop, full-width and stacked on a
+   phone: the ElderlyCare X mobile pattern, and the right one for a thumb. */
+
+.ccs-actions {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-sm);
+}
+
+.ccs-actions .btn {
+	width: 100%;
+}
+
+@media (min-width: 600px) {
+	.ccs-actions {
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
+	}
+
+	.ccs-actions .btn {
+		width: auto;
+	}
+}
+
+.ccs-actions--center {
+	justify-content: center;
+}
+
+.ccs-section-foot {
+	margin-top: var(--section-head-gap);
+}
+
+/* Quiet secondary for light grounds: white, hairline, ink text. Ranked below
+   the filled primary by weight alone, same size and radius. */
+.btn-quiet {
+	background-color: var(--color-background);
+	border-color: var(--color-hairline-strong);
+	color: var(--color-ink);
+	box-shadow: var(--shadow-card);
+}
+
+.btn-quiet:hover {
+	border-color: var(--color-primary);
+	color: var(--color-primary);
+}
+
+.btn-quiet:active {
+	transform: scale(0.98);
+}
+
+/* Section buttons are the large size throughout: 52px, which is also the
+   comfortable target size reference/strategy.md asks for given the audience. */
+.ccs-actions .btn,
+.ccs-section-foot .btn {
+	min-height: 3.25rem;
+	padding-inline: var(--space-lg);
+	font-size: var(--text-base);
+	font-weight: var(--font-weight-bold);
+}
+
+/* =========================================================================
+   SHARED INNER-PAGE PRIMITIVES (Nov 2026)
+   ========================================================================= */
+
+/* page-body typography inside a column: same headings, tick lists and quote
+   panels, without the page-level measure, centring and padding. */
+.page-body--flush {
+	max-width: none;
+	margin-inline: 0;
+	padding-block: 0;
+}
+
+/* Beside a section head the first heading lines up with the eyebrow, not
+   2em below it. */
+.page-body--flush > :first-child {
+	margin-top: 0;
+}
+
+/* ---- Form field: visible label above a fully bordered input ------------
+   The GOV.UK pattern rather than floating labels, placeholder-as-label or
+   bottom-border-only inputs (docs/BUILD-STANDARD.md §3): a label that never
+   disappears, and a 1px #8C8A99 border at 3.4:1 against white so the field is
+   findable as a control (WCAG 1.4.11). Errors are styled only after the person
+   has interacted (:user-invalid), never on an untouched form. */
+.ccs-field {
+	display: grid;
+	gap: 0.4rem;
+}
+
+.ccs-field__label {
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-ink);
+}
+
+.ccs-field__optional {
+	font-weight: var(--font-weight-normal);
+	color: var(--color-ink-soft);
+}
+
+.ccs-field__input {
+	width: 100%;
+	min-height: 3rem;
+	padding: 0.7rem 0.9rem;
+	border: 1px solid #8C8A99;
+	border-radius: var(--radius-md);
+	background-color: var(--color-background);
+	font: inherit;
+	font-size: var(--text-base);
+	color: var(--color-ink);
+	transition: border-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.ccs-field__input:hover {
+	border-color: var(--color-ink-soft);
+}
+
+.ccs-field__input:focus-visible {
+	outline: none;
+	border-color: var(--color-primary);
+	box-shadow: 0 0 0 3px rgba(86, 66, 152, 0.25);
+}
+
+.ccs-field__input:user-invalid,
+.ccs-field__input[aria-invalid="true"] {
+	border-color: #A83A3A;
+}
+
+/* Inline error under its field (assets/js/form-handler.js): says what to do,
+   in the error red that passes 4.5:1 on white, with an icon-free text cue so
+   colour isn't the only signal (rules 20 and 22). */
+.ccs-field__error {
+	margin: 0;
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-semibold);
+	line-height: 1.45;
+	color: #A83A3A;
+}
+
+/* Radio choices: each option a full-width 44px row you can tap anywhere on,
+   the native control kept (and tinted) so it behaves exactly as expected. */
+.ccs-choices {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	min-width: 0;
+}
+
+.ccs-choices > .ccs-field__label {
+	padding: 0;
+	margin-bottom: 0.4rem;
+}
+
+.ccs-choice {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	min-height: 2.75rem;
+	padding: 0.5rem 0.9rem;
+	border: 1px solid #8C8A99;
+	border-radius: var(--radius-md);
+	font-size: var(--text-base);
+	color: var(--color-ink);
+	cursor: pointer;
+	transition: border-color var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out);
+}
+
+.ccs-choice + .ccs-choice {
+	margin-top: 0.5rem;
+}
+
+.ccs-choice:hover {
+	border-color: var(--color-ink-soft);
+}
+
+.ccs-choice:has(input:checked) {
+	border-color: var(--color-primary);
+	background-color: var(--color-band-tint);
+}
+
+.ccs-choice input {
+	flex: none;
+	width: 1.25rem;
+	height: 1.25rem;
+	margin: 0;
+	accent-color: var(--color-primary);
+}
+
+.ccs-choice:has(input:focus-visible) {
+	outline: var(--focus-ring);
+	outline-offset: 2px;
+}
+
+/* The native select arrow differs per OS and sits tight to the border; one
+   drawn chevron (ink-soft, 6.9:1) matches the rest of the field set. */
+.ccs-field__select {
+	appearance: none;
+	padding-right: 2.75rem;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2357536B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 0.9rem center;
+	background-size: 1.1rem;
+	cursor: pointer;
+}
+
+.ccs-field__textarea {
+	min-height: 8.5rem;
+	line-height: 1.55;
+	resize: vertical;
+}
+
+.ccs-field__input::placeholder {
+	color: #75728A;
+	opacity: 1;
+}
+
+/* ---- Form feedback (toggled by assets/js/form-handler.js) --------------- */
+.ccs-honeypot {
+	position: absolute;
+	left: -9999px;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+.ccs-form-message {
+	padding: 0.75rem 1rem;
+	border-radius: var(--radius-md);
+	font-size: var(--text-sm);
+	line-height: 1.5;
+}
+
+.ccs-form-message--success {
+	background-color: var(--color-secondary-light);
+	color: var(--color-primary-dark);
+}
+
+/* #A83A3A, not --color-urgent (#C64B4B): the latter is 4.26:1 on this pink,
+   under the 4.5:1 small text needs. An error nobody can read is the worst
+   place to miss the bar. */
+.ccs-form-message--error {
+	background-color: #fef2f2;
+	color: #A83A3A;
+}
+
+.ccs-form--loading [type="submit"] {
+	opacity: 0.7;
+	pointer-events: none;
+}
+
+/* ---- FAQ: native <details>, exclusive by shared name -------------------- */
+.ccs-faq {
+	display: grid;
+	gap: var(--space-sm);
+}
+
+.ccs-faq__item {
+	border: 1px solid var(--color-hairline);
+	border-radius: var(--radius-lg);
+	background-color: var(--color-background);
+	transition: box-shadow var(--duration-normal) var(--ease-out), border-color var(--duration-normal) var(--ease-out);
+}
+
+.ccs-faq__item[open] {
+	border-color: var(--color-hairline-strong);
+	box-shadow: var(--shadow-card);
+}
+
+.ccs-faq__q {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: var(--space-md);
+	min-height: 3.5rem;
+	padding: 1rem 3.75rem 1rem 1.25rem;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.35;
+	color: var(--color-ink);
+	cursor: pointer;
+	list-style: none;
+}
+
+.ccs-faq__q::-webkit-details-marker {
+	display: none;
+}
+
+/* Plus that turns into a minus: two bars, the vertical one collapsing. */
+.ccs-faq__q::before,
+.ccs-faq__q::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	right: 1.4rem;
+	width: 0.9rem;
+	height: 2px;
+	border-radius: 2px;
+	background-color: var(--color-primary);
+	transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.ccs-faq__q::after {
+	transform: rotate(90deg);
+}
+
+.ccs-faq__item[open] > .ccs-faq__q::after {
+	transform: rotate(0deg);
+}
+
+.ccs-faq__q:focus-visible {
+	outline: var(--focus-ring);
+	outline-offset: 2px;
+	border-radius: var(--radius-lg);
+}
+
+.ccs-faq__a {
+	padding: 0 1.25rem 1.25rem;
+	font-size: var(--text-base);
+	line-height: 1.7;
+	color: var(--color-ink-soft);
+}
+
+.ccs-faq__a > :first-child {
+	margin-top: 0;
+}
+
+.ccs-faq__a > :last-child {
+	margin-bottom: 0;
+}
+
+/* Smooth open/close where supported; elsewhere the answer simply appears. */
+@supports (interpolate-size: allow-keywords) {
+	.ccs-faq {
+		interpolate-size: allow-keywords;
+	}
+
+	.ccs-faq__item::details-content {
+		height: 0;
+		overflow: clip;
+		transition: height var(--duration-slow) var(--ease-out), content-visibility var(--duration-slow) allow-discrete;
+	}
+
+	.ccs-faq__item[open]::details-content {
+		height: auto;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ccs-faq__q::before,
+	.ccs-faq__q::after,
+	.ccs-faq__item,
+	.ccs-faq__item::details-content {
+		transition: none;
+	}
 }

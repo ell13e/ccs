@@ -67,13 +67,6 @@ class CCS_FAQ_Block {
 		}
 
 		wp_register_script(
-			'ccs-faq-accordion',
-			THEME_URL . '/assets/js/faq-accordion.js',
-			array(),
-			THEME_VERSION
-		);
-
-		wp_register_script(
 			'ccs-faq-block-editor',
 			THEME_URL . '/assets/js/blocks/faq-block.js',
 			array(
@@ -88,13 +81,6 @@ class CCS_FAQ_Block {
 
 		wp_register_style(
 			'ccs-faq-block-editor',
-			THEME_URL . '/assets/css/blocks/faq.css',
-			array(),
-			THEME_VERSION
-		);
-
-		wp_register_style(
-			'ccs-faq-block',
 			THEME_URL . '/assets/css/blocks/faq.css',
 			array(),
 			THEME_VERSION
@@ -124,8 +110,14 @@ class CCS_FAQ_Block {
 				'render_callback' => array( $this, 'render' ),
 				'editor_script'   => 'ccs-faq-block-editor',
 				'editor_style'    => 'ccs-faq-block-editor',
-				'script'          => 'ccs-faq-accordion',
-				'style'           => 'ccs-faq-block',
+				/*
+				 * No front-end script or stylesheet. The block renders the same
+				 * native <details> accordion as the FAQs page and service pages
+				 * (.ccs-faq in components.css, loaded site-wide), so it no longer
+				 * needs faq-accordion.js to open, close, or keep one item open:
+				 * the shared name attribute does that in the browser. blocks/faq.css
+				 * still styles the editor's edit rows.
+				 */
 			)
 		);
 	}
@@ -185,31 +177,32 @@ class CCS_FAQ_Block {
 			$out .= '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>';
 		}
 
-		$out .= '<div class="wp-block-ccs-faq ccs-faq" role="region" aria-label="' . esc_attr__( 'Frequently asked questions', 'ccs-wp-theme' ) . '">';
-		$out .= '<div class="ccs-faq__list">';
+		/*
+		 * Native <details>, exclusive by a name shared within this block (a
+		 * second FAQ block on the same page keeps its own open item). Keyboard,
+		 * focus and expanded state come from the browser rather than script.
+		 */
+		static $instance = 0;
+		++$instance;
+		$group = 'ccs-faq-' . get_the_ID() . '-' . $instance;
 
-		foreach ( $faqs as $index => $item ) {
-			$question  = isset( $item['question'] ) ? trim( (string) $item['question'] ) : '';
-			$answer    = isset( $item['answer'] ) ? trim( (string) $item['answer'] ) : '';
-			$id        = 'ccs-faq-' . get_the_ID() . '-' . $index;
-			$id_answer = $id . '-answer';
+		$out .= '<div class="wp-block-ccs-faq ccs-faq">';
 
-			$out .= '<div class="ccs-faq__item">';
-			$out .= '<h3 class="ccs-faq__question-wrap">';
-			$out .= '<button type="button" class="ccs-faq__question" id="' . esc_attr( $id ) . '" aria-expanded="false" aria-controls="' . esc_attr( $id_answer ) . '" data-ccs-faq-toggle>';
-			$out .= '<span class="ccs-faq__question-text">' . ( $question !== '' ? wp_kses_post( $question ) : '&nbsp;' ) . '</span>';
-			$out .= '<span class="ccs-faq__icon" aria-hidden="true"></span>';
-			$out .= '</button>';
-			$out .= '</h3>';
-			$out .= '<div id="' . esc_attr( $id_answer ) . '" class="ccs-faq__answer" role="region" aria-labelledby="' . esc_attr( $id ) . '" aria-hidden="true" hidden>';
-			$out .= '<div class="ccs-faq__answer-inner">';
-			$out .= $answer !== '' ? wp_kses_post( wpautop( $answer ) ) : '&nbsp;';
-			$out .= '</div>';
-			$out .= '</div>';
-			$out .= '</div>';
+		foreach ( $faqs as $item ) {
+			$question = isset( $item['question'] ) ? trim( (string) $item['question'] ) : '';
+			$answer   = isset( $item['answer'] ) ? trim( (string) $item['answer'] ) : '';
+
+			if ( '' === $question ) {
+				continue;
+			}
+
+			$out .= '<details class="ccs-faq__item" name="' . esc_attr( $group ) . '">';
+			$out .= '<summary class="ccs-faq__q">' . wp_kses_post( $question ) . '</summary>';
+			$out .= '<div class="ccs-faq__a">' . ( '' !== $answer ? wp_kses_post( wpautop( $answer ) ) : '' ) . '</div>';
+			$out .= '</details>';
 		}
 
-		$out .= '</div></div>';
+		$out .= '</div>';
 
 		return $out;
 	}

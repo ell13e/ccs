@@ -15,12 +15,13 @@
  * footer." It is also described there as tonal inversion used as narrative
  * punctuation — the page audibly ends.
  *
- * Runs on --color-band-deepest, one step darker than the differentiators
- * band above rather than a repeat of it — two identical dark plum sections
- * read as a glitch, not as two intentional beats. Both are tonal steps of the
- * same brand hue (see design-system.css §"Bands"), which is what stops a
- * banded page reading as stripy while still letting the final band be the
- * darkest, most saturated moment on the page.
+ * Shape: an inset card, not a full-bleed stripe. The ElderlyCare X template ends
+ * its pages on a rounded brand-colour card holding a photograph beside the ask,
+ * and that is the form here: the deepest plum (--color-band-deepest, one step
+ * darker than the differentiators band so the two are never a literal repeat),
+ * a real photograph of hands held, and the ranked pair of actions the hero
+ * uses. A flat full-width stripe of colour said "end of page"; a card with a
+ * person in it says "here is who you will be talking to".
  *
  * Careers pages get their own CTA elsewhere and must not be offered a
  * client-facing "book a consultation" — see ccs_is_careers_context().
@@ -36,45 +37,58 @@ $ccs_cta_contact = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us
 $ccs_cta_phone   = function_exists( 'ccs_get_contact_info' ) ? ccs_get_contact_info() : array( 'phone' => '', 'phone_link' => '' );
 ?>
 
+<?php
+$ccs_cta_photo_rel = 'site-photos/caregiver-supporting-patient-1.webp';
+$ccs_cta_photo     = file_exists( get_template_directory() . '/assets/images/' . $ccs_cta_photo_rel );
+?>
+
 <section class="home-closing-cta" aria-labelledby="home-closing-cta-heading">
 	<div class="container container--lg">
-		<div class="home-closing-cta__inner">
+		<div class="cta-card<?php echo $ccs_cta_photo ? ' cta-card--photo' : ''; ?>">
 
-			<div class="home-closing-cta__body">
-				<p class="ccs-eyebrow ccs-eyebrow--on-dark"><?php esc_html_e( 'Get in touch', 'ccs-wp-theme' ); ?></p>
-				<h2 id="home-closing-cta-heading" class="home-closing-cta__heading">
-					<?php esc_html_e( 'Not sure where to start?', 'ccs-wp-theme' ); ?>
+			<div class="cta-card__body">
+				<h2 id="home-closing-cta-heading" class="ccs-title ccs-title--on-dark">
+					<?php
+					esc_html_e( 'Not sure where to start?', 'ccs-wp-theme' );
+					?>
 				</h2>
-				<p class="home-closing-cta__text">
+				<p class="ccs-lede ccs-lede--on-dark">
 					<?php esc_html_e( 'Most people who call us are not ready to arrange anything yet — they just want to talk it through with someone who knows how this works. That conversation is free, and there is nothing to sign at the end of it.', 'ccs-wp-theme' ); ?>
 				</p>
-			</div>
-
-			<div class="home-closing-cta__actions">
-				<a href="<?php echo esc_url( $ccs_cta_contact ); ?>" class="btn btn-accent home-closing-cta__btn">
-					<?php esc_html_e( 'Book a free consultation', 'ccs-wp-theme' ); ?>
-				</a>
 
 				<?php
 				/*
-				 * Ranked dual CTA, not a filled button beside a small underlined
-				 * text link. reference/inspo-teardowns.md names this pattern
-				 * explicitly as the set's cleanest action grammar: "same size, same
-				 * radius, different visual weight" — Premier's filled/outline pair.
-				 * The hero already draws exactly this shape (.home-hero__cta +
-				 * .home-hero__call); the page's closing ask was the one place that
-				 * downgraded the second action to plain text instead of matching it.
+				 * Ranked dual CTA, the same anatomy as the hero's pair: filled mint
+				 * primary, outlined ghost secondary, same height and radius.
 				 */
 				?>
-				<?php if ( ! empty( $ccs_cta_phone['phone'] ) ) : ?>
-					<a href="<?php echo esc_url( $ccs_cta_phone['phone_link'] ); ?>" class="btn btn-ghost-on-dark home-closing-cta__btn">
-						<?php
-						/* translators: %s: office phone number */
-						printf( esc_html__( 'Call %s', 'ccs-wp-theme' ), esc_html( $ccs_cta_phone['phone'] ) );
-						?>
+				<div class="ccs-actions cta-card__actions">
+					<a href="<?php echo esc_url( $ccs_cta_contact ); ?>" class="btn btn-accent">
+						<?php esc_html_e( 'Book a free consultation', 'ccs-wp-theme' ); ?>
 					</a>
-				<?php endif; ?>
+					<?php if ( ! empty( $ccs_cta_phone['phone'] ) ) : ?>
+						<a href="<?php echo esc_url( $ccs_cta_phone['phone_link'] ); ?>" class="btn btn-ghost-on-dark">
+							<?php
+							/* translators: %s: office phone number */
+							printf( esc_html__( 'Call %s', 'ccs-wp-theme' ), esc_html( $ccs_cta_phone['phone'] ) );
+							?>
+						</a>
+					<?php endif; ?>
+				</div>
 			</div>
+
+			<?php if ( $ccs_cta_photo ) : ?>
+				<div class="cta-card__media" aria-hidden="true">
+					<img
+						src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/' . $ccs_cta_photo_rel ); ?>"
+						alt=""
+						width="1350"
+						height="900"
+						loading="lazy"
+						decoding="async"
+					>
+				</div>
+			<?php endif; ?>
 
 		</div>
 	</div>

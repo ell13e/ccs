@@ -1,443 +1,171 @@
 /**
- * Single service page styles
+ * Single service page (single-service.php)
  *
- * Hero, two-column layout, features, pricing, FAQs, sidebar, bottom CTA.
- * Uses design-system tokens; flat specificity.
+ * Rebuilt Nov 2026 on the shared section system, with the Sunnyaid service-
+ * detail page as the structural reference and CCS's own colours. Only what is
+ * specific to this page lives here: shared pieces (page hero, page-body
+ * typography, form fields, FAQ, steps, service cards, closing card) come from
+ * components.css and sections.css.
  *
  * @package CCS_WP_Theme
- * @since 1.0.0
  */
 
-/* -------------------------------------------------------------------------
-   HERO
+/* ---- Hero actions ------------------------------------------------------- */
 
-   Was a full, independent hero implementation — its own header background,
-   breadcrumb classes, title, photo layout, all duplicating what
-   assets/css/components.css's .page-hero / .page-hero--photo already does for
-   every other inner page. single-service.php now renders those shared classes
-   directly, so the only service-specific thing left here is the one element
-   .page-hero has no equivalent for: the phone number CTA that sits under the
-   title on a service page.
-   ------------------------------------------------------------------------- */
-
-.service-hero__cta {
-	text-decoration: none;
+.service-hero__actions {
+	margin-top: var(--space-lg);
 }
 
-/* White-outline treatment for the photo variant, matching .home-hero__call
-   (assets/css/homepage.css) — same problem, same answer: a solid brand-purple
-   button reads fine on the light .page-hero background but disappears against
-   a dark full-bleed photo, so the photo state needs an outline button instead
-   of a filled one. */
-.page-hero--photo .service-hero__cta {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	background: transparent;
-	border: 1.5px solid rgba(255, 255, 255, 0.7);
-	color: #fff;
-}
-
-.page-hero--photo .service-hero__cta:hover {
-	background: rgba(255, 255, 255, 0.14);
-	border-color: #fff;
-	color: #fff;
-}
-
-.page-hero--photo .service-hero__cta:focus-visible {
-	outline: 2px solid #fff;
-	outline-offset: 2px;
-}
-
-/* -------------------------------------------------------------------------
-   MAIN BODY – two-column (content + sidebar)
-   ------------------------------------------------------------------------- */
+/* ---- Content beside the call-back card ---------------------------------- */
 
 .service-body {
-	padding-block: var(--space-2xl);
+	padding-block: var(--section-pad);
 	background-color: var(--color-background);
 }
 
 .service-body__inner {
 	display: grid;
-	gap: var(--space-xl);
+	gap: var(--space-2xl);
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1000px) {
 	.service-body__inner {
-		grid-template-columns: 1fr 320px;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 23rem);
+		gap: clamp(3rem, 2rem + 3vw, 5.5rem);
 		align-items: start;
-		gap: var(--space-2xl);
 	}
 }
 
-.service-body__main {
-	min-width: 0;
+/* The content column's first heading sits flush with the top of the card
+   beside it rather than 2.4em down. */
+.service-content > h2:first-child {
+	margin-top: 0;
 }
 
-/* Main content (editor) */
-.service-content {
-	margin-bottom: var(--space-xl);
+.service-features,
+.service-pricing,
+.service-faqs {
+	margin-top: var(--space-2xl);
 }
 
-.service-content p {
-	margin: 0 0 var(--space-md);
+.service-features__heading,
+.service-pricing__heading,
+.service-faqs__heading {
+	margin: 0 0 var(--space-lg);
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.375rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.15;
+	letter-spacing: -0.02em;
+	color: var(--color-ink);
 }
 
-.service-content p:last-child {
-	margin-bottom: 0;
-}
-
-.service-content ul,
-.service-content ol {
-	margin: 0 0 var(--space-md);
-	padding-inline-start: var(--space-lg);
-}
-
-/* Features section */
-.service-features {
-	margin-bottom: var(--space-xl);
-}
-
-.service-features__heading {
-	margin: 0 0 var(--space-md);
-	font-size: var(--text-xl);
-	font-weight: var(--font-weight-semibold);
-	line-height: var(--leading-tight);
-	color: var(--color-primary-dark);
-}
-
-.service-features__list {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-
-.service-features__item {
-	position: relative;
-	padding-inline-start: var(--space-lg);
-	margin-bottom: var(--space-sm);
-	font-size: var(--text-base);
-	line-height: var(--leading-normal);
-	color: var(--color-text);
-}
-
-.service-features__item::before {
-	content: "";
-	position: absolute;
-	left: 0;
-	top: 0.5em;
-	width: 0.5rem;
-	height: 0.5rem;
-	background-color: var(--color-secondary);
-	border-radius: 50%;
-}
-
-/* Pricing box */
-.service-pricing {
-	margin-bottom: var(--space-xl);
-}
-
-.service-pricing__heading {
-	margin: 0 0 var(--space-sm);
-	font-size: var(--text-xl);
-	font-weight: var(--font-weight-semibold);
-	line-height: var(--leading-tight);
-	color: var(--color-primary-dark);
+.service-features .why-proof {
+	margin-top: 0;
 }
 
 .service-pricing__box {
-	padding: var(--space-lg);
-	background-color: var(--color-background-grey);
-	border: 1px solid var(--color-border);
-	border-radius: var(--card-radius, 0.5rem);
+	padding: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-band-tint);
 }
 
 .service-pricing__range {
-	margin: 0 0 var(--space-xs);
-	font-size: var(--text-lg);
-	font-weight: var(--font-weight-semibold);
-	color: var(--color-primary-dark);
+	margin: 0;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+	color: var(--color-ink);
 }
 
-.service-pricing__hours {
-	margin: 0 0 var(--space-sm);
-	font-size: var(--text-sm);
-	color: var(--color-text-light);
-}
-
-/* Full body size, not styled as a footnote — same reasoning as
-   .home-costs__caveat in homepage.css. This is what stops the "From £X"
-   figure above it reading as a flat price, so it needs equal visual weight. */
-.service-pricing__caveat {
-	margin: 0 0 var(--space-sm);
-	font-size: var(--text-base);
-	line-height: var(--leading-relaxed);
-	color: var(--color-text);
-}
-
+.service-pricing__hours,
+.service-pricing__caveat,
 .service-pricing__funding {
-	margin: 0;
+	margin: var(--space-sm) 0 0;
 	font-size: var(--text-sm);
-	line-height: var(--leading-normal);
-	color: var(--color-text);
+	line-height: 1.6;
+	color: var(--color-ink-soft);
 }
 
-/* FAQs section */
-.service-faqs {
-	margin-bottom: var(--space-xl);
-}
+/* ---- Call-back card ----------------------------------------------------- */
 
-.service-faqs__heading {
-	margin: 0 0 var(--space-md);
-	font-size: var(--text-xl);
-	font-weight: var(--font-weight-semibold);
-	line-height: var(--leading-tight);
-	color: var(--color-primary-dark);
-}
-
-.service-faqs__list {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-
-.service-faqs__item {
-	margin-bottom: var(--space-md);
-	padding-bottom: var(--space-md);
-	border-bottom: 1px solid var(--color-border);
-}
-
-.service-faqs__item:last-child {
-	margin-bottom: 0;
-	padding-bottom: 0;
-	border-bottom: none;
-}
-
-.service-faqs__q {
-	margin: 0 0 var(--space-xs);
-	font-size: var(--text-md);
-	font-weight: var(--font-weight-semibold);
-	color: var(--color-text);
-}
-
-.service-faqs__a {
-	margin: 0;
-	font-size: var(--text-base);
-	line-height: var(--leading-relaxed);
-	color: var(--color-text-light);
-}
-
-/* -------------------------------------------------------------------------
-   SIDEBAR – sticky contact box, related services
-   ------------------------------------------------------------------------- */
-
-.service-sidebar {
-	min-width: 0;
-}
-
-@media (min-width: 1024px) {
+@media (min-width: 1000px) {
 	.service-sidebar__sticky {
 		position: sticky;
-		top: calc(var(--space-lg) + 80px); /* below header */
+		top: calc(var(--ccs-header-height, 5rem) + var(--space-lg));
 	}
 }
 
-.service-sidebar__contact {
-	padding: var(--space-lg);
-	background-color: var(--color-background-grey);
-	border: 1px solid var(--color-border);
-	border-radius: var(--card-radius, 0.5rem);
-	box-shadow: 0 1px 3px rgba(46, 46, 46, 0.08);
-	margin-bottom: var(--space-lg);
+.service-sidebar__card {
+	padding: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
+	border: 1px solid var(--color-hairline);
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-float);
 }
 
-.service-sidebar__contact-heading {
-	margin: 0 0 var(--space-sm);
-	font-size: var(--text-lg);
-	font-weight: var(--font-weight-semibold);
-	line-height: var(--leading-tight);
-	color: var(--color-primary-dark);
+.service-sidebar__heading {
+	margin: 0 0 var(--space-md);
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.375rem, 1.2rem + 0.6vw, 1.625rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.25;
+	color: var(--color-ink);
 }
 
 .service-sidebar__phone {
-	display: block;
-	margin-bottom: var(--space-xs);
-	font-size: var(--text-xl);
+	display: inline-flex;
+	align-items: center;
+	gap: 0.75rem;
+	min-height: 48px;
+	font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
 	font-weight: var(--font-weight-bold);
-	color: var(--color-primary);
+	color: var(--color-ink);
 	text-decoration: none;
 }
 
 .service-sidebar__phone:hover {
-	text-decoration: underline;
+	color: var(--color-primary);
 }
 
 .service-sidebar__phone:focus-visible {
 	outline: var(--focus-ring);
 	outline-offset: var(--focus-ring-offset);
+	border-radius: var(--radius-sm);
 }
 
 .service-sidebar__hours {
-	margin: 0 0 var(--space-md);
+	margin: 0.25rem 0 var(--space-lg);
 	font-size: var(--text-sm);
-	color: var(--color-text-light);
+	color: var(--color-ink-soft);
 }
 
 .service-sidebar__form {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-sm);
-}
-
-.service-sidebar__input {
-	width: 100%;
-	min-height: 2.75rem;
-	padding: var(--space-xs) var(--space-sm);
-	font-family: var(--font-family);
-	font-size: var(--text-base);
-	border: 1px solid var(--color-border);
-	border-radius: var(--btn-radius, 0.375rem);
-	background-color: var(--color-background);
-	color: var(--color-text);
-}
-
-.service-sidebar__input:focus {
-	outline: var(--focus-ring);
-	outline-offset: var(--focus-ring-offset);
-	border-color: var(--color-primary);
-}
-
-.service-sidebar__input::placeholder {
-	color: var(--color-text-light);
-}
-
-.ccs-honeypot {
-	position: absolute;
-	left: -9999px;
-	width: 1px;
-	height: 1px;
-	overflow: hidden;
+	display: grid;
+	gap: var(--space-md);
 }
 
 .service-sidebar__submit {
 	width: 100%;
-	margin-top: var(--space-xs);
+	min-height: 3.25rem;
+	font-weight: var(--font-weight-bold);
 }
 
-.ccs-form-message {
-	font-size: var(--text-sm);
-	padding: var(--space-xs);
-	border-radius: var(--btn-radius, 0.375rem);
+/* ---- Other services ----------------------------------------------------- */
+
+.service-related {
+	padding-block: var(--section-pad-sm);
+	background-color: var(--color-band-cream);
 }
 
-.ccs-form-message--success {
-	background-color: var(--color-secondary-light);
-	color: var(--color-primary-dark);
+/* The hub tile sits among white service cards on cream, so it takes their
+   white ground and float shadow rather than its usual cream. */
+.service-related .info-card {
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-float);
 }
 
-.ccs-form-message--error {
-	background-color: #fef2f2;
-	color: var(--color-urgent);
-}
-
-.ccs-form--loading .service-sidebar__submit {
-	opacity: 0.7;
-	pointer-events: none;
-}
-
-/* Related services */
-.service-sidebar__related-heading {
-	margin: 0 0 var(--space-sm);
-	font-size: var(--text-md);
-	font-weight: var(--font-weight-semibold);
-	line-height: var(--leading-tight);
-	color: var(--color-text);
-}
-
-.service-sidebar__related-list {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-
-.service-sidebar__related-list li {
-	margin-bottom: var(--space-xs);
-}
-
-.service-sidebar__related-list a {
-	color: var(--color-primary);
-	text-decoration: none;
-	font-size: var(--text-sm);
-}
-
-.service-sidebar__related-list a:hover {
-	text-decoration: underline;
-}
-
-/* -------------------------------------------------------------------------
-   BOTTOM CTA – full-width, urgency variant
-   ------------------------------------------------------------------------- */
-
-.service-cta {
-	padding-block: var(--space-2xl);
-	text-align: center;
-}
-
-.service-cta--default {
-	background-color: var(--color-background-grey);
-}
-
-.service-cta--urgent {
-	background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-	color: #fff;
-}
-
-.service-cta--urgent .service-cta__heading,
-.service-cta--urgent .service-cta__text {
-	color: #fff;
-}
-
-.service-cta--urgent .service-cta__text {
-	opacity: 0.95;
-}
-
-.service-cta__inner {
-	max-width: var(--bp-md);
-}
-
-/* font-weight-medium — same fix as the equivalent headings in homepage.css.
-   An explicit bold here overrode the theme's medium default for Lora headings
-   at the same specificity. */
-.service-cta__heading {
-	margin: 0 0 var(--space-sm);
-	font-size: var(--text-2xl);
-	font-weight: var(--font-weight-medium);
-	line-height: var(--leading-tight);
-	color: var(--color-primary-dark);
-}
-
-.service-cta__text {
-	margin: 0 0 var(--space-lg);
-	font-size: var(--text-md);
-	line-height: var(--leading-normal);
-	color: var(--color-text);
-}
-
-.service-cta__actions {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	gap: var(--space-sm);
-}
-
-.service-cta__actions .btn {
-	text-decoration: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.service-sidebar__sticky {
-		position: relative;
-		top: 0;
-	}
+/* Its badge goes back to lavender: the white badge it uses on a cream card
+   disappears on this white one. */
+.service-related .info-card .ccs-badge {
+	background-color: var(--color-badge);
 }

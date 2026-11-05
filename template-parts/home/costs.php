@@ -86,23 +86,45 @@ if ( $ccs_costs_page instanceof WP_Post ) {
 
 <section class="home-costs" aria-labelledby="home-costs-heading">
 	<div class="home-costs__inner container container--lg">
+
 		<div class="home-costs__intro">
 			<p class="ccs-eyebrow"><?php esc_html_e( 'No hidden fees', 'ccs-wp-theme' ); ?></p>
-			<h2 id="home-costs-heading" class="home-costs__heading">
-				<?php esc_html_e( 'What care costs', 'ccs-wp-theme' ); ?>
+			<h2 id="home-costs-heading" class="ccs-title">
+				<?php
+				esc_html_e( 'What care costs', 'ccs-wp-theme' );
+				?>
 			</h2>
-			<p class="home-costs__lede">
+			<p class="ccs-lede">
 				<?php esc_html_e( 'Most providers make you ask. Here are our rates, and every extra that could appear on your invoice — so nothing on it is a surprise.', 'ccs-wp-theme' ); ?>
 			</p>
+			<p class="home-costs__funding">
+				<?php esc_html_e( 'Care can be funded privately, through local authority support, or through NHS health funding. We’ll talk you through which applies to you.', 'ccs-wp-theme' ); ?>
+			</p>
+			<?php if ( $ccs_costs_url ) : ?>
+				<div class="ccs-actions">
+					<a href="<?php echo esc_url( $ccs_costs_url ); ?>" class="btn btn-quiet">
+						<?php echo esc_html( $ccs_costs_text ); ?>
+					</a>
+				</div>
+			<?php endif; ?>
 		</div>
 
-		<div class="home-costs__figure">
-			<p class="home-costs__from">
-				<span class="home-costs__from-label"><?php esc_html_e( 'From', 'ccs-wp-theme' ); ?></span>
-				<span class="home-costs__from-rate"><?php echo esc_html( $ccs_costs['from_rate'] ); ?></span>
+		<?php
+		/*
+		 * The rate and the extras in one card, the way a pricing page sets a
+		 * plan: headline figure, what it covers, then everything else that can
+		 * be charged, ticked off underneath. Split across two loose columns, the
+		 * extras read as a separate footnote; inside the card with the rate they
+		 * read as part of the price, which is the claim this section makes.
+		 */
+		?>
+		<div class="price-card" data-ccs-exception="rule 1: a rate card people compare and screenshot, a distinct object">
+			<p class="price-card__from">
+				<span class="price-card__from-label"><?php esc_html_e( 'From', 'ccs-wp-theme' ); ?></span>
+				<span class="price-card__rate"><?php echo esc_html( $ccs_costs['from_rate'] ); ?></span>
 			</p>
-			<p class="home-costs__basis"><?php echo esc_html( $ccs_costs['rate_basis'] ); ?></p>
-			<p class="home-costs__effective"><?php echo esc_html( $ccs_costs['effective_from'] ); ?></p>
+			<p class="price-card__basis"><?php echo esc_html( $ccs_costs['rate_basis'] ); ?></p>
+			<p class="price-card__effective"><?php echo esc_html( $ccs_costs['effective_from'] ); ?></p>
 			<?php
 			/*
 			 * Explicit, every time a figure is shown. £36.38 is the entry rate for
@@ -120,28 +142,22 @@ if ( $ccs_costs_page instanceof WP_Post ) {
 			 * variables rather than copied.
 			 */
 			?>
-			<p class="home-costs__caveat">
+			<p class="price-card__caveat">
 				<?php esc_html_e( 'Your actual cost depends on the type of care you need and when it happens — this is our lowest rate, not a flat price.', 'ccs-wp-theme' ); ?>
 			</p>
-		</div>
 
-		<div class="home-costs__extras">
-			<h3 class="home-costs__extras-heading">
-				<?php esc_html_e( 'What else you might be charged', 'ccs-wp-theme' ); ?>
-			</h3>
-			<ul class="home-costs__list">
-				<?php foreach ( $ccs_costs['extras'] as $ccs_extra ) : ?>
-					<li class="home-costs__list-item"><?php echo esc_html( $ccs_extra ); ?></li>
-				<?php endforeach; ?>
-			</ul>
-			<p class="home-costs__funding">
-				<?php esc_html_e( 'Care can be funded privately, through local authority support, or through NHS health funding. We’ll talk you through which applies to you.', 'ccs-wp-theme' ); ?>
-			</p>
-			<?php if ( $ccs_costs_url ) : ?>
-				<a href="<?php echo esc_url( $ccs_costs_url ); ?>" class="home-costs__link">
-					<?php echo esc_html( $ccs_costs_text ); ?> <span aria-hidden="true">&rarr;</span>
-				</a>
+			<?php if ( ! empty( $ccs_costs['extras'] ) ) : ?>
+				<h3 class="price-card__extras-heading"><?php esc_html_e( 'What else you might be charged', 'ccs-wp-theme' ); ?></h3>
+				<ul class="price-card__list" role="list">
+					<?php foreach ( $ccs_costs['extras'] as $ccs_extra ) : ?>
+						<li class="price-card__item">
+							<span class="price-card__tick"><?php echo ccs_icon( 'check' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
+							<span><?php echo esc_html( $ccs_extra ); ?></span>
+						</li>
+					<?php endforeach; ?>
+				</ul>
 			<?php endif; ?>
 		</div>
+
 	</div>
 </section>

@@ -1,10 +1,13 @@
 <?php
 /**
- * Reusable pre-footer CTA band.
+ * Reusable pre-footer CTA: the homepage's closing card, on every inner page.
  *
  * Inner pages previously ended by running straight into the footer with no
- * next step. Copy follows the "Ready when you are" block in
- * reference/copy/homepage.md.
+ * next step, and then on a full-width purple stripe that no longer matched the
+ * homepage. They now end on the same .cta-card (assets/css/sections.css): the
+ * deepest plum, the ranked button pair, and on care pages the same photograph,
+ * so every page closes the same way. Copy follows the "Ready when you are"
+ * block in reference/copy/homepage.md.
  *
  * Suppressed on the Contact page, where the form itself is the action.
  *
@@ -39,30 +42,55 @@ if ( $ccs_is_careers ) {
 	$ccs_cta_text    = __( 'Start with a conversation, not a commitment. Free, no obligation, no pressure.', 'ccs-wp-theme' );
 	$ccs_cta_label   = __( 'Book a free consultation', 'ccs-wp-theme' );
 }
+
+/*
+ * Care pages repeat the homepage card's photograph (hands held). Careers pages
+ * go without: a job seeker should not be shown the image used to reassure a
+ * family.
+ */
+$ccs_cta_photo_rel = 'site-photos/caregiver-supporting-patient-1.webp';
+$ccs_cta_photo     = ! $ccs_is_careers && file_exists( get_template_directory() . '/assets/images/' . $ccs_cta_photo_rel );
 ?>
 
 <section class="cta-band" aria-labelledby="cta-band-heading">
-	<div class="cta-band__inner container container--lg">
-		<div class="cta-band__copy">
-			<h2 id="cta-band-heading" class="cta-band__heading">
-				<?php echo esc_html( $ccs_cta_heading ); ?>
-			</h2>
-			<p class="cta-band__text">
-				<?php echo esc_html( $ccs_cta_text ); ?>
-			</p>
-		</div>
-		<div class="cta-band__actions">
-			<a href="<?php echo esc_url( $ccs_cta_url ); ?>" class="btn btn-accent btn-lg">
-				<?php echo esc_html( $ccs_cta_label ); ?>
-			</a>
-			<?php if ( ! empty( $ccs_cta_contact['phone'] ) ) : ?>
-				<a href="<?php echo esc_url( $ccs_cta_contact['phone_link'] ); ?>" class="cta-band__call">
-					<?php
-					/* translators: %s: office phone number */
-					printf( esc_html__( 'Call %s', 'ccs-wp-theme' ), esc_html( $ccs_cta_contact['phone'] ) );
-					?>
-				</a>
+	<div class="container container--lg">
+		<div class="cta-card<?php echo $ccs_cta_photo ? ' cta-card--photo' : ''; ?>">
+
+			<div class="cta-card__body">
+				<h2 id="cta-band-heading" class="ccs-title ccs-title--on-dark">
+					<?php echo esc_html( $ccs_cta_heading ); ?>
+				</h2>
+				<p class="ccs-lede ccs-lede--on-dark">
+					<?php echo esc_html( $ccs_cta_text ); ?>
+				</p>
+				<div class="ccs-actions cta-card__actions">
+					<a href="<?php echo esc_url( $ccs_cta_url ); ?>" class="btn btn-accent">
+						<?php echo esc_html( $ccs_cta_label ); ?>
+					</a>
+					<?php if ( ! empty( $ccs_cta_contact['phone'] ) ) : ?>
+						<a href="<?php echo esc_url( $ccs_cta_contact['phone_link'] ); ?>" class="btn btn-ghost-on-dark">
+							<?php
+							/* translators: %s: office phone number */
+							printf( esc_html__( 'Call %s', 'ccs-wp-theme' ), esc_html( $ccs_cta_contact['phone'] ) );
+							?>
+						</a>
+					<?php endif; ?>
+				</div>
+			</div>
+
+			<?php if ( $ccs_cta_photo ) : ?>
+				<div class="cta-card__media" aria-hidden="true">
+					<img
+						src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/' . $ccs_cta_photo_rel ); ?>"
+						alt=""
+						width="1350"
+						height="900"
+						loading="lazy"
+						decoding="async"
+					>
+				</div>
 			<?php endif; ?>
+
 		</div>
 	</div>
 </section>

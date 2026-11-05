@@ -61,10 +61,18 @@ class CCS_Critical_CSS {
 	 * Hook into wp_head and style_loader_tag.
 	 */
 	public function __construct() {
+		/*
+		 * Tokens, components and the header load normally (render-blocking), not
+		 * deferred. The inlined critical CSS carries no header layout, so while
+		 * these three were deferred the first paint on every page showed the nav
+		 * as a stacked list with every dropdown open, which then snapped into a
+		 * row and faded the dropdowns shut once header.css arrived. About 32KB
+		 * gzipped together; the header is above the fold on every page, so there
+		 * is nothing to gain by painting it before its styles exist. Cascade
+		 * order is set by <link> order either way, so the settled page is
+		 * unchanged.
+		 */
 		$this->deferred_handles = apply_filters( 'ccs_deferred_style_handles', array(
-			'ccs-design-system',
-			'ccs-components',
-			'ccs-header',
 			'ccs-responsive',
 			'ccs-theme-style',
 			'ccs-homepage',

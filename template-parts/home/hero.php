@@ -123,9 +123,9 @@ $hero_has_fallback = file_exists( get_template_directory() . '/assets/images/sit
 					printf( wp_kses_post( __( '<strong>%d+ years</strong> caring for Kent families', 'ccs-wp-theme' ) ), absint( $hero_years ) );
 					?>
 				</span>
-				<span class="home-hero__proof-sep" aria-hidden="true"></span>
+				<span class="home-hero__proof-sep" aria-hidden="true" data-ccs-exception="rule 3: a typographic separator between proof points, not a status"></span>
 				<a class="home-hero__cqc" href="<?php echo esc_url( $hero_cqc_url ); ?>" target="_blank" rel="noopener noreferrer">
-					<?php esc_html_e( 'CQC rated Good', 'ccs-wp-theme' ); ?>
+					<?php esc_html_e( 'CQC rated Good', 'ccs-wp-theme' ); ?><span class="screen-reader-text"> <?php esc_html_e( '(opens in a new window)', 'ccs-wp-theme' ); ?></span>
 				</a>
 			</p>
 

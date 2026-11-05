@@ -22,13 +22,9 @@ get_header();
 		?>
 		<?php get_template_part( 'template-parts/page-header' ); ?>
 		<article id="post-<?php the_ID(); ?>" <?php post_class( 'page-content' ); ?>>
-			<div class="container container--lg">
-				<?php if ( get_the_content() ) : ?>
-					<div class="page-body entry-content care-guides-intro">
-						<?php the_content(); ?>
-					</div>
-				<?php endif; ?>
-			</div>
+			<?php if ( trim( get_the_content() ) !== '' ) : ?>
+				<?php get_template_part( 'template-parts/article-body' ); ?>
+			<?php endif; ?>
 
 			<?php
 			$resources = get_posts(

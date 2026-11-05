@@ -78,47 +78,96 @@ if ( empty( $ccs_reviews ) ) {
 }
 ?>
 
-<section class="home-reviews" aria-labelledby="home-reviews-heading">
-	<div class="home-reviews__inner container container--lg">
+<?php
+/*
+ * Initials for the avatar disc. ElderlyCare X and Harmony both put a face beside
+ * each testimonial; there are no reviewer photographs here and inventing one
+ * would be dishonest, so the disc carries the reviewer's initials as published
+ * ("T E", "Martin A"). Where the attribution is a description rather than a
+ * name ("Family member"), the disc shows a heart instead of fake initials.
+ */
+$ccs_review_initials = static function ( $name ) {
+	$parts = preg_split( '/\s+/', trim( (string) $name ) );
+	if ( count( $parts ) > 2 || ! preg_match( '/^[A-Z]/u', (string) $name ) || preg_match( '/member|family|relative/i', (string) $name ) ) {
+		return '';
+	}
+	$out = '';
+	foreach ( $parts as $part ) {
+		$out .= mb_substr( $part, 0, 1 );
+	}
+	return mb_strtoupper( $out );
+};
+?>
 
-		<p class="ccs-eyebrow"><?php esc_html_e( 'In their words', 'ccs-wp-theme' ); ?></p>
-		<h2 id="home-reviews-heading" class="home-reviews__heading">
-			<?php esc_html_e( 'What families say about us', 'ccs-wp-theme' ); ?>
-		</h2>
-		<p class="home-reviews__intro">
-			<?php esc_html_e( 'Published reviews, not selected quotes — each one is dated and you can read it in full at the source.', 'ccs-wp-theme' ); ?>
-		</p>
+<section class="home-reviews" aria-labelledby="home-reviews-heading">
+	<div class="container container--lg">
+
+		<header class="ccs-head ccs-head--center">
+			<h2 id="home-reviews-heading" class="ccs-title">
+				<?php
+				esc_html_e( 'What families say about us', 'ccs-wp-theme' );
+				?>
+			</h2>
+			<p class="ccs-lede">
+				<?php esc_html_e( 'Published reviews, not selected quotes — each one is dated and you can read it in full at the source.', 'ccs-wp-theme' ); ?>
+			</p>
+		</header>
 
 		<ul class="home-reviews__list" role="list">
 			<?php foreach ( $ccs_reviews as $ccs_review ) : ?>
+				<?php $ccs_initials = $ccs_review_initials( $ccs_review['author'] ); ?>
 				<li class="home-reviews__item">
-					<figure class="home-review">
+					<figure class="review-card" data-ccs-exception="rule 1: each review is a separate attributed voice">
 
-						<?php
-						/*
-						 * Five filled stars, drawn once and referenced, with a
-						 * single text alternative on the group. Repeating "star"
-						 * five times per card is noise for a screen reader.
-						 */
-						?>
-						<div class="home-review__rating" role="img" aria-label="<?php esc_attr_e( 'Rated 5 out of 5', 'ccs-wp-theme' ); ?>">
-							<?php for ( $i = 0; $i < 5; $i++ ) : ?>
-								<svg class="home-review__star" width="16" height="16" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-									<path d="M10 1.6l2.47 5.28 5.53.72-4.07 3.94 1.03 5.86L10 14.6l-4.96 2.8 1.03-5.86L2 7.6l5.53-.72L10 1.6z" fill="currentColor"/>
-								</svg>
-							<?php endfor; ?>
+						<div class="review-card__top">
+							<?php
+							/*
+							 * Five filled stars, drawn once each, with a single
+							 * text alternative on the group. Repeating "star" five
+							 * times per card is noise for a screen reader.
+							 */
+							?>
+							<div class="review-card__rating" role="img" aria-label="<?php esc_attr_e( 'Rated 5 out of 5', 'ccs-wp-theme' ); ?>">
+								<?php for ( $i = 0; $i < 5; $i++ ) : ?>
+									<svg class="review-card__star" width="18" height="18" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+										<path d="M10 1.6l2.47 5.28 5.53.72-4.07 3.94 1.03 5.86L10 14.6l-4.96 2.8 1.03-5.86L2 7.6l5.53-.72L10 1.6z" fill="currentColor"/>
+									</svg>
+								<?php endfor; ?>
+							</div>
+							<svg class="review-card__mark" viewBox="0 0 32 24" width="32" height="24" aria-hidden="true" focusable="false">
+								<path fill="currentColor" d="M0 24V13.4C0 5.5 4.2 1 11.8 0l1.3 3.7C8.8 5 6.9 7.4 6.7 11H13v13H0Zm18.8 0V13.4C18.8 5.5 23 1 30.6 0l1.3 3.7c-4.3 1.3-6.2 3.7-6.4 7.3h6.3v13H18.8Z"/>
+							</svg>
 						</div>
 
-						<blockquote class="home-review__quote">
+						<blockquote class="review-card__quote">
 							<p><?php echo esc_html( $ccs_review['quote'] ); ?></p>
 						</blockquote>
 
-						<figcaption class="home-review__meta">
-							<span class="home-review__author"><?php echo esc_html( $ccs_review['author'] ); ?></span>
-							<span class="home-review__relationship"><?php echo esc_html( $ccs_review['relationship'] ); ?></span>
-							<span class="home-review__source">
-								<?php if ( ! empty( $ccs_review['url'] ) ) : ?>
-									<a href="<?php echo esc_url( $ccs_review['url'] ); ?>" target="_blank" rel="noopener noreferrer">
+						<figcaption class="review-card__meta">
+							<span class="review-card__avatar" aria-hidden="true">
+								<?php if ( $ccs_initials ) : ?>
+									<?php echo esc_html( $ccs_initials ); ?>
+								<?php else : ?>
+									<?php echo ccs_icon( 'heart' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?>
+								<?php endif; ?>
+							</span>
+							<span class="review-card__who">
+								<span class="review-card__author"><?php echo esc_html( $ccs_review['author'] ); ?></span>
+								<span class="review-card__relationship"><?php echo esc_html( $ccs_review['relationship'] ); ?></span>
+								<span class="review-card__source">
+									<?php if ( ! empty( $ccs_review['url'] ) ) : ?>
+										<a href="<?php echo esc_url( $ccs_review['url'] ); ?>" target="_blank" rel="noopener noreferrer">
+											<?php
+											printf(
+												/* translators: 1: review source name, 2: month and year the review was published. */
+												esc_html__( '%1$s, %2$s', 'ccs-wp-theme' ),
+												esc_html( $ccs_review['source'] ),
+												esc_html( $ccs_review['date'] )
+											);
+											?>
+											<span class="screen-reader-text"><?php esc_html_e( '(opens in a new window)', 'ccs-wp-theme' ); ?></span>
+										</a>
+									<?php else : ?>
 										<?php
 										printf(
 											/* translators: 1: review source name, 2: month and year the review was published. */
@@ -127,17 +176,8 @@ if ( empty( $ccs_reviews ) ) {
 											esc_html( $ccs_review['date'] )
 										);
 										?>
-									</a>
-								<?php else : ?>
-									<?php
-									printf(
-										/* translators: 1: review source name, 2: month and year the review was published. */
-										esc_html__( '%1$s, %2$s', 'ccs-wp-theme' ),
-										esc_html( $ccs_review['source'] ),
-										esc_html( $ccs_review['date'] )
-									);
-									?>
-								<?php endif; ?>
+									<?php endif; ?>
+								</span>
 							</span>
 						</figcaption>
 
@@ -146,13 +186,12 @@ if ( empty( $ccs_reviews ) ) {
 			<?php endforeach; ?>
 		</ul>
 
-		<p class="home-reviews__more">
-			<a href="<?php echo esc_url( $ccs_reviews_url ); ?>" target="_blank" rel="noopener noreferrer">
+		<div class="ccs-section-foot ccs-actions ccs-actions--center">
+			<a class="btn btn-quiet" href="<?php echo esc_url( $ccs_reviews_url ); ?>" target="_blank" rel="noopener noreferrer">
 				<?php esc_html_e( 'Read every review on homecare.co.uk', 'ccs-wp-theme' ); ?>
-				<span aria-hidden="true">&nbsp;&rarr;</span>
-				<span class="visually-hidden"><?php esc_html_e( '(opens in a new window)', 'ccs-wp-theme' ); ?></span>
+				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new window)', 'ccs-wp-theme' ); ?></span>
 			</a>
-		</p>
+		</div>
 
 	</div>
 </section>

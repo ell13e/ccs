@@ -75,13 +75,16 @@ $partners = array(
 
 <section class="home-partnerships" aria-labelledby="home-partnerships-heading">
 	<div class="home-partnerships__inner container container--lg">
-		<p class="ccs-eyebrow"><?php esc_html_e( 'Trusted by', 'ccs-wp-theme' ); ?></p>
-		<h2 id="home-partnerships-heading" class="home-partnerships__heading">
-			<?php esc_html_e( 'Who we work with', 'ccs-wp-theme' ); ?>
-		</h2>
-		<p class="home-partnerships__subheading">
-			<?php esc_html_e( 'The organisations that regulate us, train our carers and set the standards we work to — alongside the sister services we run ourselves. Several of them you can check us against directly.', 'ccs-wp-theme' ); ?>
-		</p>
+		<header class="ccs-head ccs-head--split">
+			<h2 id="home-partnerships-heading" class="ccs-title">
+				<?php
+				esc_html_e( 'Who we work with', 'ccs-wp-theme' );
+				?>
+			</h2>
+			<p class="ccs-lede">
+				<?php esc_html_e( 'The organisations that regulate us, train our carers and set the standards we work to — alongside the sister services we run ourselves. Several of them you can check us against directly.', 'ccs-wp-theme' ); ?>
+			</p>
+		</header>
 		<ul class="home-partnerships__list">
 			<?php foreach ( $partners as $partner ) : ?>
 				<?php $logo_path = get_template_directory() . '/assets/images/partners/' . $partner['logo']; ?>

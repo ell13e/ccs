@@ -81,6 +81,9 @@ if ( is_singular() ) {
 	$items[] = array( 'label' => sprintf( __( 'Search results for: %s', 'ccs-wp-theme' ), get_search_query() ), 'url' => '' );
 } elseif ( is_404() ) {
 	$items[] = array( 'label' => __( 'Page not found', 'ccs-wp-theme' ), 'url' => '' );
+} elseif ( is_post_type_archive( 'location' ) ) {
+	// Same label the location singles use for this crumb, not "Archives: Locations".
+	$items[] = array( 'label' => __( 'Areas we cover', 'ccs-wp-theme' ), 'url' => '' );
 } elseif ( is_archive() ) {
 	$items[] = array( 'label' => wp_strip_all_tags( get_the_archive_title() ), 'url' => '' );
 }

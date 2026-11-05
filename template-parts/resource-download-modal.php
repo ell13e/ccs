@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$privacy_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'privacy' ) : '';
+$privacy_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'privacy-policy' ) : '';
 if ( ! $privacy_url ) {
 	$privacy_page = get_page_by_path( 'privacy-policy' );
 	$privacy_url  = $privacy_page ? get_permalink( $privacy_page ) : home_url( '/privacy-policy/' );

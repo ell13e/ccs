@@ -217,7 +217,7 @@ if ( ! empty( $ccs_fab_contact['phone'] ) ) :
 <?php endif; ?>
 
 <button type="button" id="back-to-top" class="back-to-top" aria-label="<?php esc_attr_e( 'Back to top', 'ccs-wp-theme' ); ?>" aria-hidden="true" title="<?php esc_attr_e( 'Back to top', 'ccs-wp-theme' ); ?>">
-	<span aria-hidden="true"><?php esc_html_e( 'Back to top', 'ccs-wp-theme' ); ?></span>
+	<svg class="back-to-top__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 19V5"/><path d="m5.5 11.5 6.5-6.5 6.5 6.5"/></svg>
 </button>
 
 <script>
