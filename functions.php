@@ -44,6 +44,8 @@ require_once THEME_DIR . '/inc/theme-setup.php';
  */
 require_once THEME_DIR . '/inc/header-footer-helpers.php';
 require_once THEME_DIR . '/inc/team.php';
+require_once THEME_DIR . '/inc/icons.php';
+require_once THEME_DIR . '/inc/content-sections.php';
 
 /**
  * News display helpers (reading time, primary category, related posts).

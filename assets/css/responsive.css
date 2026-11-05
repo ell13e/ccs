@@ -84,17 +84,6 @@ iframe {
 	}
 
 	/* Contact form submit and primary actions */
-	.contact-form__submit,
-	.contact-form__input,
-	.contact-form__select,
-	.contact-form__textarea {
-		min-height: var(--touch-target-min);
-	}
-
-	.contact-form__textarea {
-		min-height: 8rem;
-	}
-
 	/* Focus ring only on keyboard focus (not mouse click) */
 	a:focus-visible,
 	button:focus-visible {
@@ -132,8 +121,7 @@ iframe {
 }
 
 /* Optional wrapper for custom/legacy tables */
-.service-content .table-scroll-wrapper,
-.contact-form-col .table-scroll-wrapper {
+.service-content .table-scroll-wrapper {
 	max-width: 100%;
 }
 
@@ -183,23 +171,6 @@ iframe {
 	gap: var(--space-lg);
 }
 
-.contact-cards__grid {
-	display: grid;
-	grid-template-columns: 1fr;
-	gap: var(--space-lg);
-}
-
-/* -------------------------------------------------------------------------
-   TABLET: 768px – 1023px
-   (home-services__grid, home-scenarios__grid use 3 col from homepage.css)
-   ------------------------------------------------------------------------- */
-
-@media (min-width: 768px) and (max-width: 1023px) {
-	.contact-cards__grid {
-		grid-template-columns: repeat(2, 1fr);
-	}
-}
-
 /* -------------------------------------------------------------------------
    DESKTOP: 1024px+
    ------------------------------------------------------------------------- */
@@ -218,10 +189,6 @@ iframe {
 	.home-differentiators__grid {
 		grid-template-columns: repeat(2, 1fr);
 		gap: var(--space-xl);
-	}
-
-	.contact-cards__grid {
-		grid-template-columns: repeat(3, 1fr);
 	}
 }
 
@@ -243,7 +210,6 @@ iframe {
 		font-size: var(--text-2xl);
 	}
 
-	.contact-form-col__title,
 	.home-services__heading,
 	.home-scenarios__heading,
 	.home-differentiators__heading {
@@ -336,16 +302,6 @@ iframe {
 	.container {
 		padding-inline: var(--space-sm);
 	}
-}
-
-/* -------------------------------------------------------------------------
-   CONTACT LAYOUT – single column on mobile
-   ------------------------------------------------------------------------- */
-
-.contact-layout__inner {
-	display: grid;
-	grid-template-columns: 1fr;
-	gap: var(--space-2xl);
 }
 
 /* -------------------------------------------------------------------------

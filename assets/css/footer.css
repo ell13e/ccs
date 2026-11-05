@@ -10,9 +10,10 @@
 
 .site-footer-modern {
 	background: var(--color-background-warm);
-	padding: var(--space-2xl) 0 0;
+	padding: clamp(3.5rem, 2.5rem + 3vw, 5.5rem) 0 0;
 	border-top: 1px solid var(--color-hairline);
 }
+
 
 .footer-modern-container {
 	max-width: 80rem; /* 1280px */
@@ -304,34 +305,38 @@
    Back to top
    ============================================ */
 
+/* A quiet circle with an arrow, not a purple pill reading "Back to top". The
+   pill was the heaviest floating object on the page: on a phone it sat on top
+   of body copy and buttons, stacked over the call button, so the one action
+   that matters most on mobile (calling) shared its corner with a louder one
+   that matters least. White, hairline, soft shadow: it reads as a control
+   without competing with the call button's solid purple. The accessible name
+   comes from the button's aria-label, unchanged. */
 .back-to-top {
 	position: fixed;
 	bottom: var(--space-lg);
 	right: var(--space-lg);
 	z-index: var(--z-overlay);
-	min-width: 48px;
-	min-height: 48px;
-	padding: var(--space-sm) var(--space-sm);
-	/* Pill, not 50%. A percentage radius resolves against each axis separately,
-	   so on a 101x45 button carrying the words "Back to top" it produced a
-	   stretched ellipse rather than a rounded end. 999px caps at a true
-	   semicircle on the short axis whatever the label length. */
-	border-radius: 999px;
-	background-color: var(--color-primary);
-	color: var(--color-background);
-	border: none;
-	cursor: pointer;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	box-shadow: var(--shadow-elevated);
+	width: 48px;
+	height: 48px;
+	padding: 0;
+	border: 1px solid var(--color-hairline);
+	border-radius: 50%;
+	background-color: var(--color-background);
+	color: var(--color-primary);
+	box-shadow: var(--shadow-float);
+	cursor: pointer;
 	opacity: 0;
 	visibility: hidden;
 	transform: translateY(1rem);
-	transition: opacity var(--duration-slow) var(--ease-out), visibility var(--duration-slow) var(--ease-out), transform var(--duration-slow) var(--ease-out), background-color var(--duration-normal) var(--ease-out);
-	font-size: var(--text-sm);
-	font-weight: var(--font-weight-medium);
-	line-height: var(--leading-snug);
+	transition: opacity var(--duration-slow) var(--ease-out), visibility var(--duration-slow) var(--ease-out), transform var(--duration-slow) var(--ease-out), background-color var(--duration-normal) var(--ease-out), color var(--duration-normal) var(--ease-out);
+}
+
+.back-to-top__icon {
+	display: block;
 }
 
 .back-to-top.visible {
@@ -346,25 +351,16 @@
 }
 
 .back-to-top:hover {
-	background-color: var(--color-primary-light);
-	transform: translateY(0);
-	box-shadow: var(--shadow-prominent);
+	background-color: var(--color-primary);
+	border-color: var(--color-primary);
+	color: #fff;
 }
 
 .back-to-top:active {
 	transform: translateY(0) scale(0.98);
 }
 
-@media (max-width: 640px) {
-	.back-to-top {
-		bottom: var(--space-xl);
-		right: var(--space-xl);
-		min-width: 44px;
-		min-height: 44px;
-		font-size: var(--text-xs);
-		padding: var(--space-sm) var(--space-md);
-	}
-}
+
 
 @media (prefers-reduced-motion: reduce) {
 	.back-to-top {
@@ -421,8 +417,12 @@
 		right: var(--space-xl);
 	}
 
+	/* Centred above the 56px call button: 44px wide, so inset 6px more. */
 	.back-to-top {
-		bottom: calc(var(--space-xl) + 68px);
+		width: 44px;
+		height: 44px;
+		bottom: calc(var(--space-xl) + 56px + 0.75rem);
+		right: calc(var(--space-xl) + 6px);
 	}
 }
 
@@ -435,5 +435,32 @@
 @media (prefers-reduced-motion: reduce) {
 	.mobile-call-fab {
 		transition: none;
+	}
+}
+
+/* One composed band at desktop: the brand and contact block in the first
+   column, the three link columns beside it, the copyright bar across the
+   bottom. The brand block used to sit alone on its own row above the links,
+   which left the right two-thirds of that row empty: the "unresolved" footer
+   the UI review flagged. Grid on the existing container, so no markup
+   changes and the mobile stack is untouched. Kept at the end of the file:
+   it overrides the base .footer-modern-top rule, which must come first. */
+@media (min-width: 1024px) {
+	.footer-modern-container {
+		display: grid;
+		grid-template-columns: minmax(0, 1.1fr) minmax(0, 2.4fr);
+		column-gap: clamp(3rem, 2rem + 4vw, 6rem);
+		align-items: start;
+	}
+
+	.footer-modern-top {
+		margin-bottom: var(--space-2xl);
+		padding-bottom: 0;
+		border-bottom: 0;
+	}
+
+	.footer-modern-social,
+	.footer-modern-bottom {
+		grid-column: 1 / -1;
 	}
 }

@@ -56,7 +56,7 @@
 	--font-family: var(--font-family-body);
 
 	/* Fluid type scale — clamp(min, preferred, max), scales smoothly with viewport instead of jumping at breakpoints */
-	--text-xs: clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);    /* ~12–13px */
+	--text-xs: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);    /* ~13–14px: nothing on this site is set smaller than 13px (CCS/CLAUDE.md rule 17) */
 	--text-sm: clamp(0.8125rem, 0.78rem + 0.2vw, 0.875rem);    /* ~13–14px */
 	--text-base: clamp(0.9375rem, 0.9rem + 0.25vw, 1rem);      /* ~15–16px */
 	--text-md: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);         /* ~16–18px */
@@ -212,6 +212,43 @@
 	--color-hairline: rgba(63, 47, 112, 0.16);
 	--color-hairline-strong: rgba(63, 47, 112, 0.24);
 	--color-hairline-on-dark: rgba(255, 255, 255, 0.16);
+
+	/* ----- Section system (homepage rebuild, Nov 2026) ----------------------
+	   Measured against the ElderlyCare X template the client chose as the
+	   standard: its section titles run ~48-56px in near-black ink with the brand
+	   colour held back for accents, its cards use one large radius and a wide,
+	   soft shadow instead of borders, and its sections breathe at ~140px. Ours
+	   were ~40px mid-purple titles, 14px radii, hairline borders and ~112px of
+	   air, which is the gap between "template" and "brochure".
+
+	   --color-ink is a near-black plum (a tonal step of the brand hue, not a new
+	   colour) for headings on light grounds: 14.6:1 on white. Purple stays the
+	   brand voice, but as the accent (eyebrows, links, buttons, the brush
+	   underline) rather than the colour of every title, which is what lets the
+	   accents read as accents. --color-ink-soft is body copy: 6.5:1 on the tint,
+	   the lowest of the four grounds. */
+	--color-ink: #2B2347;
+	--color-ink-soft: #57536B;
+	--color-badge: #E9E4F5;
+
+	--radius-2xl: 24px;
+	--radius-3xl: 32px;
+
+	/* One elevation for every floating card: a contact shadow so the edge
+	   reads, and a wide, low-opacity throw so the lift is felt rather than
+	   seen. Plum-tinted like --shadow-card. */
+	--shadow-float: 0 1px 2px rgba(43, 35, 71, 0.04), 0 14px 44px -14px rgba(43, 35, 71, 0.16);
+	--shadow-float-hover: 0 2px 4px rgba(43, 35, 71, 0.05), 0 24px 56px -18px rgba(43, 35, 71, 0.24);
+
+	--section-pad: clamp(4.5rem, 2.6rem + 6.5vw, 9rem);
+	/* Medium tier for supporting sections (partners, "where to go next",
+	   related services, the steps that continue the services story). One
+	   padding on every section read as machine-made; the generous tier is kept
+	   for the sections that carry the argument (rule 9, CLAUDE.md). */
+	--section-pad-sm: clamp(3.5rem, 2.4rem + 3.6vw, 6rem);
+	--section-head-gap: clamp(2.5rem, 1.6rem + 3vw, 4rem);
+	--title-size: clamp(2rem, 1.3rem + 2.9vw, 3.25rem);
+	--lede-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
 
 	/* ----- Z-index scale ----- */
 	--z-dropdown: 10;

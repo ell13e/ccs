@@ -88,6 +88,17 @@ function ccs_page_url( $slug ) {
 	 */
 	$page = get_page_by_path( $slug );
 
+	/*
+	 * get_page_by_path() ignores post status, so it happily returned drafts,
+	 * and a draft's permalink (/?page_id=N) is a 404 for every visitor. That is
+	 * how the footer's Privacy Policy link pointed at WordPress's unpublished
+	 * placeholder. Only a published page is a valid link target; anything else
+	 * falls through to the published-only lookup below.
+	 */
+	if ( $page instanceof WP_Post && 'publish' !== $page->post_status ) {
+		$page = null;
+	}
+
 	if ( ! $page instanceof WP_Post ) {
 		$found = get_posts(
 			array(
@@ -225,4 +236,30 @@ function ccs_footer_help_fallback_menu() {
 		echo '<li><a href="' . esc_url( $url ) . '" class="footer-modern-link">' . esc_html( $item['title'] ) . '</a></li>';
 	}
 	echo '</ul>';
+}
+
+/**
+ * Wrap one word (or short phrase) of a section heading in the accent mark.
+ *
+ * reference/copy/homepage.md specifies an "Accent word" for each homepage H2
+ * ("starts", "families", ...), and the inspiration set it was written against
+ * (the plum NDIS and Aims concepts, the ElderlyCare X template) all lift one word per
+ * heading. The mark is a hand-drawn brush underline in the brand mint, drawn in
+ * CSS (.ccs-accent in components.css), so the heading stays in one typeface,
+ * one colour and one weight: only the word that matters gets the stroke.
+ *
+ * Returns markup, already escaped, so it is safe to pass straight to printf()
+ * as a %s placeholder inside an esc_html__() heading:
+ *
+ *     printf( esc_html__( 'How care %s', 'ccs-wp-theme' ), ccs_accent( __( 'starts', 'ccs-wp-theme' ) ) );
+ *
+ * Keeping the placeholder inside the translatable string, rather than splitting
+ * the heading into three fragments, means a translator can move the emphasis to
+ * wherever the word falls in their language.
+ *
+ * @param string $word The word or phrase to emphasise (unescaped).
+ * @return string Escaped <span> markup.
+ */
+function ccs_accent( $word ) {
+	return '<span class="ccs-accent">' . esc_html( $word ) . '</span>';
 }

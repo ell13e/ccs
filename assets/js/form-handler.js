@@ -34,6 +34,7 @@
 			if (type === 'error' && firstInvalidField && container.id) {
 				firstInvalidField.setAttribute('aria-describedby', container.id);
 			}
+			container.hidden = message === '';
 		} else {
 			window.alert(message);
 		}
@@ -60,37 +61,78 @@
 	/**
 	 * Validate enquiry form (name, email, phone required).
 	 * @param {HTMLFormElement} form
-	 * @returns {{ valid: boolean, message: string }}
+	 * @returns {Array<{field: HTMLElement, message: string}>} Every problem found; empty when valid.
 	 */
 	function validateEnquiryForm(form) {
 		var name = form.querySelector('[name="enquiry_name"]');
 		var email = form.querySelector('[name="enquiry_email"]');
 		var phone = form.querySelector('[name="enquiry_phone"]');
-		var nameVal = name ? name.value.trim() : '';
-		var emailVal = email ? email.value.trim() : '';
-		var phoneVal = phone ? phone.value.trim() : '';
-		if (!nameVal) return { valid: false, message: 'Please enter your name.', field: name };
-		if (!phoneVal) return { valid: false, message: 'Please enter your phone number.', field: phone };
-		if (!emailVal) return { valid: false, message: 'Please enter your email address.', field: email };
-		if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
-			return { valid: false, message: 'Please enter a valid email address.', field: email };
+		var errors = [];
+		if (name && !name.value.trim()) errors.push({ field: name, message: 'Please enter your name.' });
+		if (phone && !phone.value.trim()) errors.push({ field: phone, message: 'Please enter a phone number so we can call you back.' });
+		if (email) {
+			var emailVal = email.value.trim();
+			if (!emailVal) {
+				errors.push({ field: email, message: 'Please enter your email address.' });
+			} else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+				errors.push({ field: email, message: 'This email address looks incomplete. Check it has an @ and an ending like .co.uk.' });
+			}
 		}
-		return { valid: true, message: '' };
+		return errors;
 	}
 
 	/**
 	 * Validate callback form (name, phone required).
 	 * @param {HTMLFormElement} form
-	 * @returns {{ valid: boolean, message: string }}
+	 * @returns {Array<{field: HTMLElement, message: string}>} Every problem found; empty when valid.
 	 */
 	function validateCallbackForm(form) {
 		var name = form.querySelector('[name="name"]');
 		var phone = form.querySelector('[name="phone"]');
-		var nameVal = name ? name.value.trim() : '';
-		var phoneVal = phone ? phone.value.trim() : '';
-		if (!nameVal) return { valid: false, message: 'Please enter your name.', field: name };
-		if (!phoneVal) return { valid: false, message: 'Please enter your phone number.', field: phone };
-		return { valid: true, message: '' };
+		var errors = [];
+		if (name && !name.value.trim()) errors.push({ field: name, message: 'Please enter your name.' });
+		if (phone && !phone.value.trim()) errors.push({ field: phone, message: 'Please enter a phone number so we can call you back.' });
+		return errors;
+	}
+
+	/*
+	 * Inline errors: each message sits directly under its field and says what
+	 * to do, the field is marked aria-invalid, and the message is joined to the
+	 * field's aria-describedby. It used to be one message at the foot of the
+	 * form about the first problem only, far from the field it meant
+	 * (CCS/CLAUDE.md rule 20). The summary at the foot stays, for screen
+	 * readers and anyone who scrolled past.
+	 */
+	function fieldErrorId(field) {
+		return (field.id || field.name) + '-error';
+	}
+
+	function clearFieldError(field) {
+		var id = fieldErrorId(field);
+		var el = document.getElementById(id);
+		if (el) el.parentNode.removeChild(el);
+		field.removeAttribute('aria-invalid');
+		var described = (field.getAttribute('aria-describedby') || '').split(/\s+/).filter(function(x) { return x && x !== id; });
+		if (described.length) {
+			field.setAttribute('aria-describedby', described.join(' '));
+		} else {
+			field.removeAttribute('aria-describedby');
+		}
+	}
+
+	function showFieldError(field, message) {
+		clearFieldError(field);
+		var id = fieldErrorId(field);
+		var el = document.createElement('p');
+		el.id = id;
+		el.className = 'ccs-field__error';
+		el.textContent = message;
+		var wrap = field.closest('.ccs-field') || field.parentNode;
+		wrap.appendChild(el);
+		field.setAttribute('aria-invalid', 'true');
+		var described = (field.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean);
+		described.push(id);
+		field.setAttribute('aria-describedby', described.join(' '));
 	}
 
 	/**
@@ -146,15 +188,23 @@
 
 		form.addEventListener('submit', function(e) {
 			e.preventDefault();
-			var validation = action === 'submit_enquiry' ? validateEnquiryForm(form) : validateCallbackForm(form);
-			if (!validation.valid) {
-				showMessage(form, validation.message, 'error', validation.field || null);
-				if (validation.field) {
-					validation.field.focus();
-				}
+			Array.prototype.forEach.call(form.querySelectorAll('[aria-invalid="true"]'), clearFieldError);
+			var errors = action === 'submit_enquiry' ? validateEnquiryForm(form) : validateCallbackForm(form);
+			if (errors.length) {
+				errors.forEach(function(err) { showFieldError(err.field, err.message); });
+				showMessage(form, errors.length === 1 ? errors[0].message : 'Please check the ' + errors.length + ' fields marked above.', 'error');
+				errors[0].field.focus();
 				return;
 			}
+			showMessage(form, '', 'success');
 			submitForm(form, action);
+		});
+
+		// A field's error goes as soon as the person fixes it, not on the next submit.
+		form.addEventListener('input', function(e) {
+			if (e.target.getAttribute && e.target.getAttribute('aria-invalid') === 'true' && e.target.value.trim()) {
+				clearFieldError(e.target);
+			}
 		});
 	}
 

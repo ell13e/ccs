@@ -44,58 +44,51 @@ $cards = array(
 );
 
 /*
- * Three flat text columns on a cream band gave the eye nothing to land on, and
- * this section sits between the review cards and the logo wall — the two most
- * visually active blocks on the page — so it read as a gap rather than a
- * choice. An icon per column is the lightest fix that keeps the editorial
- * treatment the rest of this page settled on: no card, no border, no shadow,
- * just a mark that makes each column findable at a glance.
- *
- * Inline SVG rather than an icon font or image files: three small paths cost
- * nothing, need no extra request, and inherit currentColor so they stay in the
- * palette automatically. All decorative — every card's heading already says
- * what it is — so they carry aria-hidden and never need alt text.
+ * Icons come from the shared set (inc/icons.php) so these three match every
+ * other badge on the page; they replaced a one-off map of three paths that
+ * lived only in this file.
  */
 $card_icons = array(
-	// Two figures side by side: the care team built around one person.
-	'approach' => '<circle cx="9" cy="8.5" r="3.2"/><circle cx="17.5" cy="10" r="2.4"/><path d="M3.5 20.5c0-3.2 2.5-5.5 5.5-5.5s5.5 2.3 5.5 5.5"/><path d="M16 15.2c2.6.2 4.5 2.3 4.5 5.3"/>',
-	// Speech bubble with a question mark.
-	'faqs'     => '<path d="M20.5 12.2c0 4-3.8 7.2-8.5 7.2a10 10 0 0 1-2.7-.36L4.5 20.5l1.2-3.5A6.7 6.7 0 0 1 3.5 12.2c0-4 3.8-7.2 8.5-7.2s8.5 3.2 8.5 7.2Z"/><path d="M10.1 10.1a2 2 0 1 1 2.6 1.9c-.5.2-.8.6-.8 1.1v.4"/><path d="M12 15.6h.01"/>',
-	// Badge and lanyard: a carer joining the team.
-	'careers'  => '<path d="M9 4.5h6v3H9z"/><rect x="4" y="7.5" width="16" height="12" rx="2"/><path d="M8.5 12.5h7"/><path d="M8.5 15.5h4"/>',
+	'approach' => 'people',
+	'faqs'     => 'question',
+	'careers'  => 'badge',
 );
 ?>
 
 <section class="home-info-cards" aria-labelledby="home-info-cards-heading">
-	<div class="home-info-cards__inner container container--lg">
-		<h2 id="home-info-cards-heading" class="visually-hidden">
-			<?php esc_html_e( 'Find out more', 'ccs-wp-theme' ); ?>
-		</h2>
-		<div class="home-info-cards__grid">
+	<div class="container container--lg">
+
+		<?php
+		/*
+		 * Visible heading. It was visually hidden, which left three card
+		 * labels with nothing introducing them, between two of the page's most
+		 * designed sections, so the band read as a gap. A short, plain heading
+		 * fixes that without new claims.
+		 */
+		?>
+		<header class="ccs-head ccs-head--center">
+			<h2 id="home-info-cards-heading" class="ccs-title">
+				<?php
+				esc_html_e( 'Where to go next', 'ccs-wp-theme' );
+				?>
+			</h2>
+		</header>
+
+		<ul class="home-info-cards__grid" role="list">
 			<?php foreach ( $cards as $card ) : ?>
-				<article class="home-info-card card">
-					<div class="home-info-card__body card-body">
-						<?php if ( ! empty( $card['icon'] ) && isset( $card_icons[ $card['icon'] ] ) ) : ?>
-							<svg class="home-info-card__icon" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-								<?php echo $card_icons[ $card['icon'] ]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static SVG path data defined above, not user input. ?>
-							</svg>
-						<?php endif; ?>
-						<p class="home-info-card__subheading">
-							<?php echo esc_html( $card['subheading'] ); ?>
-						</p>
-						<h3 class="home-info-card__title">
-							<?php echo esc_html( $card['title'] ); ?>
-						</h3>
-						<p class="home-info-card__text">
-							<?php echo esc_html( $card['body'] ); ?>
-						</p>
-						<a href="<?php echo esc_url( $card['cta_url'] ); ?>" class="home-info-card__link">
-							<?php echo esc_html( $card['cta_text'] ); ?>
-							<span aria-hidden="true">&rarr;</span>
-						</a>
-					</div>
-				</article>
+				<li class="info-card">
+					<span class="ccs-badge"><?php echo ccs_icon( $card_icons[ $card['icon'] ] ?? 'heart' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
+					<p class="info-card__label"><?php echo esc_html( $card['subheading'] ); ?></p>
+					<h3 class="info-card__title">
+						<a class="info-card__link" href="<?php echo esc_url( $card['cta_url'] ); ?>"><?php echo esc_html( $card['title'] ); ?></a>
+					</h3>
+					<p class="info-card__text"><?php echo esc_html( $card['body'] ); ?></p>
+					<span class="info-card__cue" aria-hidden="true">
+						<?php echo esc_html( $card['cta_text'] ); ?> <span class="info-card__arrow">&rarr;</span>
+					</span>
+				</li>
 			<?php endforeach; ?>
-		</div>
+		</ul>
+
 	</div>
 </section>

@@ -181,7 +181,14 @@ $ccs_emergency       = $ccs_emergency_on && ( $ccs_emergency_text || $ccs_phone 
 						<?php echo esc_html( $ccs_contact['phone'] ); ?>
 					</a>
 				<?php endif; ?>
-				<a href="<?php echo esc_url( $ccs_switch_url ); ?>" class="header-actions__switch btn btn-accent"><?php esc_html_e( 'Switch to us', 'ccs-wp-theme' ); ?></a>
+				<?php
+				/*
+				 * Quiet, not a second filled pill: the phone is this header's one
+				 * primary action, and two filled buttons side by side made them
+				 * compete on every page (CCS/CLAUDE.md rule 8).
+				 */
+				?>
+				<a href="<?php echo esc_url( $ccs_switch_url ); ?>" class="header-actions__switch btn btn-quiet"><?php esc_html_e( 'Switch to us', 'ccs-wp-theme' ); ?></a>
 			</div>
 		</div>
 
@@ -225,7 +232,7 @@ $ccs_emergency       = $ccs_emergency_on && ( $ccs_emergency_text || $ccs_phone 
 			?>
 			<div class="mobile-menu__actions">
 				<a href="<?php echo esc_url( $ccs_cta_url ); ?>" class="mobile-menu__cta btn btn-primary"><?php esc_html_e( 'Book a free consultation', 'ccs-wp-theme' ); ?></a>
-				<a href="<?php echo esc_url( $ccs_switch_url ); ?>" class="mobile-menu__switch btn btn-accent"><?php esc_html_e( 'Switch to us', 'ccs-wp-theme' ); ?></a>
+				<a href="<?php echo esc_url( $ccs_switch_url ); ?>" class="mobile-menu__switch btn btn-quiet"><?php esc_html_e( 'Switch to us', 'ccs-wp-theme' ); ?></a>
 			</div>
 		</div>
 	</div>

@@ -33,8 +33,9 @@ $cqc_has_badge = file_exists( $cqc_badge );
 		<div class="home-cqc__content">
 			<?php
 			/*
-			 * Eyebrow, in the shared .ccs-eyebrow component every section on this
-			 * page now opens with. Not decoration: this band's whole job is to say
+			 * Eyebrow: one of only two on the homepage (the other is costs' "No
+			 * hidden fees"), kept because it says something the heading cannot.
+			 * Not decoration: this band's whole job is to say
 			 * that the rating comes from outside the company, and the heading alone
 			 * ("Rated Good by the CQC") does not distinguish a regulator's finding
 			 * from a self-description. The label does that before the heading is
@@ -42,8 +43,11 @@ $cqc_has_badge = file_exists( $cqc_badge );
 			 */
 			?>
 			<p class="ccs-eyebrow"><?php esc_html_e( 'Independently regulated', 'ccs-wp-theme' ); ?></p>
-			<h2 id="home-cqc-heading" class="home-cqc__heading">
-				<?php esc_html_e( 'Rated Good by the CQC', 'ccs-wp-theme' ); ?>
+			<h2 id="home-cqc-heading" class="ccs-title">
+				<?php
+				/* translators: %s: the emphasised word, drawn with a brush underline. */
+				printf( esc_html__( 'Rated %s by the CQC', 'ccs-wp-theme' ), ccs_accent( __( 'Good', 'ccs-wp-theme' ) ) );
+				?>
 			</h2>
 			<?php
 			/*
@@ -69,7 +73,7 @@ $cqc_has_badge = file_exists( $cqc_badge );
 			 * so explicitly here is the single strongest sentence available.
 			 */
 			?>
-			<p class="home-cqc__subheading">
+			<p class="ccs-lede">
 				<?php
 				printf(
 					/* translators: %s: linked phrase citing the Homecare Association analysis. */
@@ -83,22 +87,30 @@ $cqc_has_badge = file_exists( $cqc_badge );
 				);
 				?>
 			</p>
+			<div class="ccs-actions home-cqc__actions">
+				<?php /* Quiet, not filled: reading the report is a secondary action; booking is the page's primary one (CCS/CLAUDE.md rule 8). */ ?>
+				<a href="<?php echo esc_url( $cqc_url ); ?>" class="btn btn-quiet" target="_blank" rel="noopener noreferrer">
+					<?php esc_html_e( 'Read our full CQC report', 'ccs-wp-theme' ); ?>
+					<span class="screen-reader-text"><?php esc_html_e( '(opens in a new window)', 'ccs-wp-theme' ); ?></span>
+				</a>
+			</div>
 		</div>
 
 		<?php
 		/*
-		 * The badge now sits in a card with the report link inside it, rather
-		 * than floating loose in the right-hand column with the link stranded
-		 * back under the paragraph on the left.
+		 * The badge sits in a card rather than floating loose in the right-hand
+		 * column. It is a ~165px box; against a 1280px container that left
+		 * roughly a third of this band visibly empty between the prose and the
+		 * artwork, which is what made the site's most important trust section
+		 * read as the least designed one. The card gives it enough presence to
+		 * balance the prose.
 		 *
-		 * Two problems, one fix. The badge is a ~165px box; against a 1280px
-		 * container that left roughly a third of this band visibly empty
-		 * between the prose and the artwork, which is what made the site's most
-		 * important trust section read as the least designed one. And the proof
-		 * (the badge) and the way to check it (the link) were in different
-		 * columns, so neither carried the other. As one bounded unit the card
-		 * has enough width to balance the prose, and "here is the rating, here
-		 * is the report" reads as a single claim.
+		 * The badge (live widget or fallback) links to the report itself, but a
+		 * logo is not an obvious link to everyone, so the report also has an
+		 * explicit button under the copy (.home-cqc__actions). That button was
+		 * lost in an earlier edit while this comment still described it; it is
+		 * restored there, as a button rather than a text link, because "check
+		 * the regulator's verdict yourself" is this band's whole call to action.
 		 */
 		?>
 		<div class="home-cqc__badge ccs-surface ccs-surface--pad">

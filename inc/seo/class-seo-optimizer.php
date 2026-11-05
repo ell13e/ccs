@@ -43,6 +43,9 @@ class CCS_SEO_Optimizer {
 		add_action( 'wp_head', array( $this, 'output_open_graph' ), 2 );
 		add_action( 'wp_head', array( $this, 'output_twitter_card' ), 3 );
 		add_action( 'wp_head', array( $this, 'output_canonical' ), 4 );
+		// Core prints its own rel=canonical on singular pages; with ours that was
+		// two canonical tags on every page and post. Ours covers every case.
+		remove_action( 'wp_head', 'rel_canonical' );
 		// Structured data: output only from CCS_Structured_Data (class-structured-data.php) to avoid duplicate JSON-LD.
 
 		add_filter( 'wp_sitemaps_post_types', array( $this, 'filter_sitemap_post_types' ), 10, 1 );
@@ -580,15 +583,41 @@ class CCS_SEO_Optimizer {
 			}
 		}
 
+		/*
+		 * No canonical (and so no og:url) for a 404 or a search: a missing page
+		 * has no canonical address, and search results shouldn't name one. The
+		 * fallback below used to echo the request back, so /missing-page/ declared
+		 * itself canonical.
+		 */
+		if ( is_404() || is_search() ) {
+			return '';
+		}
+
 		// Paged archive: canonical is the current page URL (page 2, 3, etc.).
-		if ( is_archive() || is_search() ) {
+		if ( is_archive() ) {
 			$paged = (int) get_query_var( 'paged', 0 );
 			if ( $paged > 1 ) {
 				return get_pagenum_link( $paged );
 			}
 		}
 
-		return home_url( add_query_arg( array() ) );
+		if ( is_category() || is_tag() || is_tax() ) {
+			$term = get_queried_object();
+			if ( $term instanceof WP_Term ) {
+				$link = get_term_link( $term );
+				if ( ! is_wp_error( $link ) ) {
+					return $link;
+				}
+			}
+		}
+
+		/*
+		 * Path only. add_query_arg( array() ) kept the whole query string, so a
+		 * campaign link (?utm_source=…) or any other parameter became its own
+		 * "canonical" page instead of pointing back at the real one.
+		 */
+		$path = (string) wp_parse_url( add_query_arg( array() ), PHP_URL_PATH );
+		return home_url( $path );
 	}
 
 	// -------------------------------------------------------------------------

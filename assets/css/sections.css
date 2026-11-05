@@ -1,0 +1,1092 @@
+/**
+ * Shared section components
+ *
+ * Built for the homepage rebuild (Nov 2026) and moved here, out of
+ * homepage.css, so the inner pages can use the same cards, steps and closing
+ * card instead of drawing their own versions. homepage.css only loads on the
+ * homepage; this file loads everywhere, after components.css.
+ *
+ * Primitives (.ccs-head, .ccs-title, .ccs-badge, .ccs-actions, .team-tile) stay
+ * in components.css. Section layout (padding, grounds, grids for one specific
+ * section) stays with the page that owns it.
+ *
+ * Hover-only motion is inside @media (hover: hover): on touch screens a :hover
+ * state is applied on tap and then sticks, so a card would stay lifted after
+ * the visitor had moved on. Keyboard focus keeps its own visible state.
+ *
+ * @package CCS_WP_Theme
+ */
+
+/* -------------------------------------------------------------------------
+   PROOF CHIPS — icon badge + short claim, two-up
+   ------------------------------------------------------------------------- */
+
+.why-proof {
+	display: grid;
+	gap: var(--space-sm) var(--space-lg);
+	margin: var(--space-xl) 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+@media (min-width: 520px) {
+	.why-proof {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.why-proof__item {
+	display: flex;
+	align-items: center;
+	gap: 0.875rem;
+}
+
+.why-proof__text {
+	font-size: var(--text-base);
+	font-weight: var(--font-weight-semibold);
+	line-height: 1.35;
+	color: var(--color-ink);
+}
+
+/* -------------------------------------------------------------------------
+   CQC: independently regulated (homepage band, and the CQC and Our Care
+   page, which includes the same template part)
+   ------------------------------------------------------------------------- */
+
+.home-cqc {
+	padding-block: var(--section-pad);
+	background-color: var(--color-band-tint);
+}
+
+.home-cqc__inner {
+	display: grid;
+	gap: var(--space-xl);
+	align-items: center;
+}
+
+@media (min-width: 900px) {
+	.home-cqc__inner {
+		grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+		gap: clamp(3rem, 1.5rem + 5vw, 7rem);
+	}
+}
+
+.home-cqc__source {
+	color: var(--color-primary);
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+.home-cqc__source:hover {
+	color: var(--color-primary-dark);
+}
+
+.home-cqc__actions {
+	margin-top: var(--space-xl);
+}
+
+/* The official artwork in a large, quiet card: enough presence to balance the
+   copy, nothing competing with the badge itself. Overrides the generic
+   .ccs-surface padding/radius the element also carries. */
+.home-cqc__badge {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 15rem;
+	padding: clamp(2rem, 1.2rem + 3vw, 3.5rem);
+	border: 0;
+	border-radius: var(--radius-3xl);
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-float);
+}
+
+.home-cqc__badge-img {
+	display: block;
+	width: min(15rem, 100%);
+	height: auto;
+}
+
+/* Fallback badge: hidden until the widget script's onerror handler adds
+   .is-visible (template-parts/home/cqc-section.php). A toggled class rather
+   than an inline style, so ordinary specificity decides visibility. The badge
+   and the live widget are mutually exclusive: the class is only ever added
+   once the widget has already failed. */
+#cqc-widget-fallback {
+	display: none;
+}
+
+#cqc-widget-fallback.is-visible {
+	display: block;
+}
+
+/* The live widget draws its own 1px frame, which inside this card made a box
+   in a box in a band. Only that outer frame goes; the regulator's logo,
+   rating panel and wording are untouched. !important because the widget ships
+   a "cleanslate" reset that marks its own declarations important. */
+.home-cqc__badge .cqc-widget.cleanslate {
+	border-color: transparent !important;
+}
+
+/* The live widget's own logo link renders 16px tall; give it a 24px target
+   (WCAG 2.5.8) without restyling the regulator's artwork. */
+.home-cqc__badge .cqc-widget-header a {
+	display: inline-flex;
+	align-items: center;
+	min-height: 24px;
+}
+
+/* -------------------------------------------------------------------------
+   SERVICE CARD — photo, overlapping panel, badge across the seam
+   ------------------------------------------------------------------------- */
+
+/* Generic grid for the cards outside the homepage (services hub, area pages,
+   related services). The homepage keeps its own .home-services__grid. */
+.svc-grid {
+	display: grid;
+	gap: var(--space-xl);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+@media (min-width: 860px) {
+	.svc-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--space-lg);
+	}
+}
+
+/* Isolated so the photo can sit on a negative layer beneath the panel without
+   the panel itself being positioned: if the panel were positioned it would
+   become the containing block for the stretched link, and only the panel,
+   not the photo, would be clickable. */
+.svc-card {
+	position: relative;
+	isolation: isolate;
+	display: flex;
+	flex-direction: column;
+	transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.svc-card__media {
+	position: relative;
+	z-index: -1;
+	aspect-ratio: 4 / 3;
+	overflow: hidden;
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-band-tint);
+}
+
+.svc-card__media img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: 50% 45%;
+	transition: transform 600ms var(--ease-out);
+}
+
+.svc-card__body {
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	margin: -4.5rem 1.25rem 0 0;
+	padding: 0 1.75rem 1.75rem;
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-float);
+	transition: box-shadow var(--duration-normal) var(--ease-out);
+}
+
+/* Badge across the panel's top edge: half over the photo, half over the
+   panel, with a white ring so it reads as one shape. Pulled up by half its
+   height rather than positioned (see .svc-card). */
+.svc-card__badge {
+	margin: -1.75rem 0 var(--space-md);
+}
+
+.svc-card__title {
+	margin: 0 0 0.5rem;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.375rem, 1.2rem + 0.5vw, 1.625rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.25;
+	letter-spacing: -0.01em;
+	color: var(--color-ink);
+}
+
+.svc-card__link {
+	color: inherit;
+	text-decoration: none;
+}
+
+.svc-card__link::after {
+	content: "";
+	position: absolute;
+	z-index: 2;
+	inset: 0;
+	border-radius: var(--radius-2xl);
+}
+
+.svc-card__link:focus-visible {
+	outline: none;
+}
+
+.svc-card__link:focus-visible::after {
+	outline: var(--focus-ring);
+	outline-offset: 4px;
+}
+
+.svc-card__text {
+	margin: 0;
+	font-size: var(--text-base);
+	line-height: 1.7;
+	color: var(--color-ink-soft);
+	text-wrap: pretty;
+}
+
+.svc-card__cue {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	margin-top: auto;
+	padding-top: var(--space-md);
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-bold);
+	color: var(--color-primary);
+}
+
+.svc-card__arrow {
+	display: inline-block;
+	transition: transform var(--duration-fast) var(--ease-out);
+}
+
+
+.svc-card:hover .svc-card__body,
+.svc-card:focus-within .svc-card__body {
+	box-shadow: var(--shadow-float-hover);
+}
+
+@media (hover: hover) {
+	.svc-card:hover {
+		transform: translateY(-4px);
+	}
+	.svc-card:hover .svc-card__media img {
+		transform: scale(1.04);
+	}
+	.svc-card:hover .svc-card__arrow {
+		transform: translateX(0.25rem);
+	}
+}
+
+/* -------------------------------------------------------------------------
+   STEPS — numbered sequence with a drawn connector
+   ------------------------------------------------------------------------- */
+
+/* The section wrapper travels with the steps (template-parts/home/steps.php),
+   which the service pages reuse after the homepage. */
+.home-steps {
+	padding-block: var(--section-pad-sm);
+	background-color: var(--color-band-tint);
+}
+
+.ccs-steps {
+	--step-gap: var(--space-xl);
+	--step-pad: 0px; /* a length, not a bare 0: it is added to rem values inside calc() */
+	display: grid;
+	gap: var(--step-gap);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+@media (min-width: 800px) {
+	.ccs-steps {
+		--step-gap: clamp(2rem, 1rem + 3vw, 4rem);
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+/* Unboxed: a step is part of one sequence, not a separate thing you can act
+   on, so it sits on the band and the drawn rule does the grouping. Each step
+   used to be its own floating white card (CCS/CLAUDE.md rule 1). */
+.ccs-step {
+	position: relative;
+	padding: var(--step-pad);
+}
+
+.ccs-step__num {
+	display: grid;
+	place-items: center;
+	width: 3.5rem;
+	height: 3.5rem;
+	margin-bottom: var(--space-lg);
+	border-radius: 50%;
+	/* White on the tint band: the lilac badge colour all but vanished there
+	   once the step lost its white card. */
+	background-color: var(--color-background);
+	box-shadow: 0 0 0 1px var(--color-hairline);
+	color: var(--color-primary);
+	font-family: var(--font-family-heading);
+	font-size: 1.375rem;
+	font-weight: var(--font-weight-medium);
+	line-height: 1;
+}
+
+.ccs-step__title {
+	margin: 0 0 0.5rem;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.375rem, 1.2rem + 0.5vw, 1.5rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.25;
+	color: var(--color-ink);
+}
+
+.ccs-step__text {
+	margin: 0;
+	font-size: var(--text-base);
+	line-height: 1.65;
+	color: var(--color-ink-soft);
+	text-wrap: pretty;
+}
+
+/* Stepper rule joining the badges: a sequence, so it is drawn as one. From
+   this badge's right edge to the next badge's left edge, at badge centre.
+   Painted above the next card (z-index) or its white ground would hide the
+   half of the line that lies inside it. */
+@media (min-width: 800px) {
+	.ccs-step:not(:last-child)::before {
+		content: "";
+		position: absolute;
+		z-index: 1;
+		top: calc(var(--step-pad) + 1.75rem - 1px);
+		left: calc(var(--step-pad) + 3.5rem + 0.75rem);
+		width: calc(100% + var(--step-gap) - 5rem);
+		height: 2px;
+		border-radius: 2px;
+		background-color: var(--color-secondary-dark);
+	}
+}
+
+/* Phone: badge beside the text, joined by a vertical rule. Stacked, each card
+   spent a 56px badge and a line of air on a dozen words. */
+@media (max-width: 799px) {
+	.ccs-steps {
+		--step-pad: 0px; /* a length, not a bare 0: it is added to rem values inside calc() */
+	}
+
+	.ccs-step {
+		display: grid;
+		grid-template-columns: 3.5rem minmax(0, 1fr);
+		column-gap: var(--space-md);
+		align-items: start;
+	}
+
+	.ccs-step__num {
+		grid-row: 1 / span 2;
+		margin: 0;
+	}
+
+	.ccs-step__title,
+	.ccs-step__text {
+		grid-column: 2;
+	}
+
+	.ccs-step__title {
+		margin-top: 0.75rem;
+	}
+
+	.ccs-step:not(:last-child)::before {
+		content: "";
+		position: absolute;
+		z-index: 1;
+		top: calc(var(--step-pad) + 3.5rem + 0.5rem);
+		left: calc(var(--step-pad) + 1.75rem - 1px);
+		width: 2px;
+		height: calc(100% + var(--step-gap) - 4.5rem);
+		border-radius: 2px;
+		background-color: var(--color-secondary-dark);
+	}
+}
+
+/* -------------------------------------------------------------------------
+   LINK CARD — badge, label, title, text, cue; whole card clickable
+   ------------------------------------------------------------------------- */
+
+.info-grid {
+	display: grid;
+	gap: var(--space-md);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+@media (min-width: 860px) {
+	.info-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--space-lg);
+	}
+}
+
+.info-card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	padding: clamp(1.75rem, 1.2rem + 1.6vw, 2.5rem);
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-band-cream);
+	transition:
+		transform var(--duration-normal) var(--ease-out),
+		box-shadow var(--duration-normal) var(--ease-out),
+		background-color var(--duration-normal) var(--ease-out);
+}
+
+.info-card .ccs-badge {
+	margin-bottom: var(--space-lg);
+	background-color: var(--color-background);
+}
+
+.info-card__label {
+	margin: 0 0 0.375rem;
+	font-size: var(--text-xs);
+	font-weight: var(--font-weight-bold);
+	letter-spacing: 0.11em;
+	text-transform: uppercase;
+	color: var(--color-accent);
+}
+
+.info-card__title {
+	margin: 0 0 0.625rem;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.375rem, 1.2rem + 0.5vw, 1.5rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.25;
+	color: var(--color-ink);
+}
+
+.info-card__link {
+	color: inherit;
+	text-decoration: none;
+}
+
+.info-card__link::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: var(--radius-2xl);
+}
+
+.info-card__link:focus-visible {
+	outline: none;
+}
+
+.info-card__link:focus-visible::after {
+	outline: var(--focus-ring);
+	outline-offset: 4px;
+}
+
+.info-card__text {
+	margin: 0 0 var(--space-lg);
+	font-size: var(--text-base);
+	line-height: 1.7;
+	color: var(--color-ink-soft);
+	text-wrap: pretty;
+}
+
+.info-card__cue {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	margin-top: auto;
+	font-weight: var(--font-weight-bold);
+	color: var(--color-primary);
+}
+
+.info-card__arrow {
+	display: inline-block;
+	transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.info-card:focus-within {
+	transform: translateY(-3px);
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-float-hover);
+}
+
+@media (hover: hover) {
+	.info-card:hover {
+		transform: translateY(-3px);
+		background-color: var(--color-background);
+		box-shadow: var(--shadow-float-hover);
+	}
+
+	.info-card:hover .info-card__arrow {
+		transform: translateX(0.25rem);
+	}
+}
+
+/* -------------------------------------------------------------------------
+   CLOSING CARD — deepest plum, optional photo, ranked button pair
+   ------------------------------------------------------------------------- */
+
+.cta-card {
+	display: grid;
+	overflow: hidden;
+	border-radius: var(--radius-3xl);
+	background-color: var(--color-band-deepest);
+	color: #fff;
+}
+
+.cta-card__body {
+	padding: clamp(2rem, 1.2rem + 4vw, 4.5rem);
+}
+
+.cta-card .ccs-title {
+	margin-top: 0;
+}
+
+.cta-card .ccs-lede {
+	max-width: 48ch;
+}
+
+.cta-card__actions {
+	margin-top: var(--space-xl);
+}
+
+.cta-card__media {
+	position: relative;
+	order: -1;
+	aspect-ratio: 16 / 9;
+}
+
+.cta-card__media img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+@media (min-width: 900px) {
+	.cta-card--photo {
+		grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+	}
+
+	.cta-card__body {
+		align-self: center;
+	}
+
+	.cta-card__media {
+		order: 0;
+		aspect-ratio: auto;
+		min-height: 100%;
+	}
+}
+
+/* -------------------------------------------------------------------------
+   SECTION BANDS AND SPLIT INTRO (inner pages)
+
+   Inner templates are built from the same bands as the homepage: one padding
+   rhythm (--section-pad) and three grounds, so a page alternates white, tint
+   and cream instead of running as one long white document.
+
+   .ccs-split puts a section head on the left and editor prose on the right,
+   the ElderlyCare X "about" pattern. Below 900px it stacks.
+   ------------------------------------------------------------------------- */
+
+.ccs-section {
+	padding-block: var(--section-pad);
+}
+
+/* A lede that holds editor HTML (paragraphs, links) rather than one line of
+   template copy: the page's own intro shown in a section head. */
+.ccs-lede--prose > * {
+	margin: 0;
+}
+
+.ccs-lede--prose > * + * {
+	margin-top: var(--space-sm);
+}
+
+.ccs-lede--prose a {
+	color: var(--color-primary);
+	font-weight: var(--font-weight-semibold);
+	text-underline-offset: 0.2em;
+}
+
+.ccs-section--sm {
+	padding-block: var(--section-pad-sm);
+}
+
+.ccs-section--tint {
+	background-color: var(--color-band-tint);
+}
+
+.ccs-section--cream {
+	background-color: var(--color-band-cream);
+}
+
+/* Section head with a long lede: title left, lede right, both left-aligned,
+   above a full-width grid. For when a centred head would mean centring a
+   paragraph of several lines. Stacks below 900px. */
+@media (min-width: 900px) {
+	.ccs-head--split {
+		display: grid;
+		grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+		column-gap: clamp(2.5rem, 1rem + 4vw, 5rem);
+		align-items: end;
+		max-width: none;
+	}
+
+	.ccs-head--split > .ccs-lede {
+		max-width: 52ch;
+		margin-top: 0;
+	}
+}
+
+.ccs-split {
+	display: grid;
+	gap: var(--section-head-gap);
+}
+
+.ccs-split > .ccs-head {
+	margin-bottom: 0;
+}
+
+@media (min-width: 900px) {
+	.ccs-split {
+		grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+		column-gap: clamp(3rem, 1rem + 5vw, 7rem);
+		align-items: start;
+	}
+
+	.ccs-split > .ccs-head {
+		position: sticky;
+		top: calc(var(--ccs-header-height, 5rem) + var(--space-xl));
+	}
+}
+
+/* Two white sections meeting (a strip above the CTA band) would otherwise
+   stack two full section paddings into one empty gap. */
+.ccs-section--flush-bottom {
+	padding-bottom: 0;
+}
+
+/* The same for the older templates whose last block is white and runs
+   straight into the white CTA band (blog index, archives, 404). */
+.post-list-section:has(+ .cta-band),
+.error-404:has(+ .cta-band) {
+	padding-bottom: 0;
+}
+
+/* ---- Strip: one-line prompt card (badge, sentence, one button) ---------- */
+
+.ccs-strip {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr);
+	gap: var(--space-md) var(--space-lg);
+	align-items: center;
+	padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+	border: 1px solid var(--color-hairline);
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-band-cream);
+}
+
+.ccs-strip__title {
+	margin: 0;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.375rem, 1.2rem + 0.7vw, 1.75rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.2;
+	color: var(--color-ink);
+}
+
+.ccs-strip__lede {
+	margin: 0.35rem 0 0;
+	line-height: 1.6;
+	color: var(--color-ink-soft);
+}
+
+.ccs-strip__action {
+	grid-column: 1 / -1;
+	min-height: 3.25rem;
+	padding-inline: var(--space-lg);
+	font-weight: var(--font-weight-bold);
+}
+
+@media (min-width: 760px) {
+	.ccs-strip {
+		grid-template-columns: auto minmax(0, 1fr) auto;
+	}
+
+	.ccs-strip__action {
+		grid-column: auto;
+	}
+}
+
+/* -------------------------------------------------------------------------
+   FAQ PAGE (page-templates/template-faqs.php). The accordion itself is
+   .ccs-faq in components.css.
+   ------------------------------------------------------------------------- */
+
+.faq-ask__text a {
+	color: var(--color-primary);
+	font-weight: var(--font-weight-semibold);
+	text-underline-offset: 0.2em;
+}
+
+.faq-ask {
+	display: flex;
+	gap: var(--space-md);
+	align-items: flex-start;
+	margin-top: var(--space-xl);
+	padding: var(--space-lg);
+	border: 1px solid var(--color-hairline);
+	border-radius: var(--radius-xl);
+	background-color: var(--color-band-cream);
+}
+
+.faq-ask__title {
+	margin: 0;
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-ink);
+}
+
+.faq-ask__text {
+	margin: 0.25rem 0 0;
+	line-height: 1.6;
+	color: var(--color-ink-soft);
+}
+
+
+
+/* -------------------------------------------------------------------------
+   ABOUT PAGE: story video beside its section head
+   ------------------------------------------------------------------------- */
+
+/* The poster has its title lettered into the left half, so a centred play
+   button sat on top of the words. Bottom right, over the speaker instead. */
+.about-story .video-embed__play {
+	top: auto;
+	left: auto;
+	right: clamp(1rem, 0.5rem + 2vw, 1.75rem);
+	bottom: clamp(1rem, 0.5rem + 2vw, 1.75rem);
+	transform: none;
+}
+
+@media (max-width: 599px) {
+	.about-story .video-embed__play {
+		width: 3.25rem;
+		height: 3.25rem;
+	}
+
+	.about-story .video-embed__play::after {
+		border-width: 9px 0 9px 15px;
+	}
+}
+
+.about-story .video-embed__trigger:hover .video-embed__play,
+.about-story .video-embed__trigger:focus-visible .video-embed__play {
+	transform: scale(1.08);
+}
+
+@media (min-width: 900px) {
+	.about-story .ccs-split {
+		align-items: center;
+	}
+
+	.about-story .ccs-split > .ccs-head {
+		position: static;
+	}
+}
+
+/* -------------------------------------------------------------------------
+   FEATURE CARD: badge, short title, a few lines. Not a link (that is
+   .info-card). Careers "what to expect", and anywhere a set of plain points
+   needs more presence than a bulleted list.
+   ------------------------------------------------------------------------- */
+
+.feature-grid {
+	display: grid;
+	gap: var(--space-md);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+@media (min-width: 640px) {
+	.feature-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--space-lg);
+	}
+}
+
+@media (min-width: 1100px) {
+	.feature-grid--4 {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
+
+.feature-card {
+	min-width: 0;
+	padding: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
+	border: 1px solid var(--color-hairline);
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-card);
+}
+
+.feature-card .ccs-badge {
+	margin-bottom: var(--space-lg);
+}
+
+.feature-card__title {
+	margin: 0;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.25rem, 1.15rem + 0.4vw, 1.4rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.25;
+	color: var(--color-ink);
+}
+
+.feature-card__text {
+	margin: var(--space-xs) 0 0;
+	font-size: var(--text-base);
+	line-height: 1.65;
+	color: var(--color-ink-soft);
+}
+
+/* Plain variant: the same icon, title and text grouped by spacing alone, for
+   points that are not separate or clickable things. The badge goes white so it
+   still reads on the tint band. */
+.feature-grid--plain {
+	gap: var(--space-xl) var(--space-xl);
+}
+
+.feature-grid--plain .feature-card {
+	padding: 0;
+	border: 0;
+	background: none;
+	box-shadow: none;
+}
+
+.feature-grid--plain .ccs-badge {
+	margin-bottom: var(--space-md);
+	background-color: var(--color-background);
+}
+
+/* -------------------------------------------------------------------------
+   LONG-FORM PAGES: "On this page" rail (template-parts/article-body.php)
+   ------------------------------------------------------------------------- */
+
+/* Anchored headings land clear of the sticky header. */
+.page-body h2[id] {
+	scroll-margin-top: calc(var(--ccs-header-height, 5rem) + var(--space-lg));
+}
+
+.article-layout {
+	display: grid;
+	gap: var(--space-xl);
+	padding-block: clamp(3rem, 2rem + 4vw, 5.5rem);
+}
+
+.article-layout__body {
+	min-width: 0;
+	max-width: 46rem;
+}
+
+@media (min-width: 1000px) {
+	.article-layout {
+		grid-template-columns: minmax(0, 15rem) minmax(0, 46rem);
+		column-gap: clamp(3rem, 1rem + 5vw, 6rem);
+		justify-content: center;
+		align-items: start;
+	}
+
+	.article-toc {
+		position: sticky;
+		top: calc(var(--ccs-header-height, 5rem) + var(--space-lg));
+		max-height: calc(100vh - var(--ccs-header-height, 5rem) - 3rem);
+		overflow-y: auto;
+	}
+}
+
+.article-toc {
+	padding: var(--space-lg);
+	border-radius: var(--radius-xl);
+	background-color: var(--color-band-tint);
+}
+
+@media (min-width: 1000px) {
+	.article-toc {
+		padding: 0 0 0 var(--space-md);
+		border-left: 2px solid var(--color-hairline);
+		border-radius: 0;
+		background: none;
+	}
+}
+
+.article-toc__title {
+	margin: 0 0 var(--space-sm);
+	font-size: var(--text-xs);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--color-accent);
+}
+
+.article-toc__list {
+	display: grid;
+	gap: 0.15rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.article-toc__link {
+	display: flex;
+	align-items: center;
+	min-height: 2.75rem;
+	padding-block: 0.4rem;
+	font-size: var(--text-sm);
+	line-height: 1.4;
+	color: var(--color-ink-soft);
+	text-decoration: none;
+}
+
+.article-toc__link:hover {
+	color: var(--color-primary);
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+.article-toc__link:focus-visible {
+	outline: var(--focus-ring);
+	outline-offset: 2px;
+	border-radius: var(--radius-sm);
+}
+
+/* -------------------------------------------------------------------------
+   SEARCH RESULTS (search.php): a reading list, not cards
+   ------------------------------------------------------------------------- */
+
+.search-hero__form {
+	max-width: 36rem;
+	margin-top: var(--space-lg);
+}
+
+.search-list {
+	max-width: 46rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.search-hit {
+	padding-block: var(--space-lg);
+	border-top: 1px solid var(--color-hairline);
+}
+
+.search-hit:last-child {
+	border-bottom: 1px solid var(--color-hairline);
+}
+
+.search-hit__type {
+	margin: 0;
+	font-size: var(--text-xs);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--color-accent);
+}
+
+.search-hit__title {
+	margin: 0.15rem 0 0;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.25rem, 1.15rem + 0.4vw, 1.5rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.25;
+}
+
+.search-hit__title a {
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
+	color: var(--color-ink);
+	text-decoration: underline;
+	text-decoration-color: var(--color-hairline-strong);
+	text-underline-offset: 0.2em;
+	transition: color var(--duration-fast) var(--ease-out), text-decoration-color var(--duration-fast) var(--ease-out);
+}
+
+.search-hit__title a:hover {
+	color: var(--color-primary);
+	text-decoration-color: currentColor;
+}
+
+.search-hit__excerpt {
+	margin: 0.15rem 0 0;
+	line-height: 1.65;
+	color: var(--color-ink-soft);
+}
+
+/* -------------------------------------------------------------------------
+   TEAM GRID (homepage "Meet the people", Who you'll meet page)
+   Tile anatomy is .team-tile in components.css.
+   ------------------------------------------------------------------------- */
+
+.home-team {
+	padding-block: var(--section-pad-sm);
+	background-color: var(--color-band-tint);
+}
+
+.ccs-team-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--space-lg) var(--space-sm);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+@media (min-width: 900px) {
+	.ccs-team-grid {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		column-gap: var(--space-lg);
+	}
+}
+
+@media (max-width: 599px) {
+	.ccs-team-grid .team-tile__tag {
+		margin-inline: 0.5rem;
+		padding: 0.75rem;
+	}
+
+	.ccs-team-grid .team-tile__name {
+		font-size: var(--text-base);
+	}
+}
+
+/* -------------------------------------------------------------------------
+   Reduced motion
+   ------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+	.svc-card,
+	.svc-card__media img,
+	.svc-card__body,
+	.svc-card__arrow,
+	.info-card,
+	.info-card__arrow {
+		transition: none;
+	}
+
+	.svc-card:hover,
+	.info-card:hover,
+	.info-card:focus-within,
+	.svc-card:hover .svc-card__media img,
+	.svc-card:hover .svc-card__arrow,
+	.info-card:hover .info-card__arrow {
+		transform: none;
+	}
+}

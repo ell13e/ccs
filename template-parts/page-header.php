@@ -33,9 +33,17 @@ $ccs_ph_intro   = is_string( $ccs_ph_intro ) ? trim( $ccs_ph_intro ) : '';
 $ccs_ph_has_photo = function_exists( 'ccs_page_uses_photo_hero' )
 	? ccs_page_uses_photo_hero( $ccs_ph_id )
 	: has_post_thumbnail( $ccs_ph_id );
+/*
+ * Inset variant: the page has a photo, but one too small to fill a banner
+ * sharply. Same tint hero as a photo-less page, with the photo framed beside
+ * the text (see ccs_hero_photo_fills_banner()). Policy pages never get one.
+ */
+$ccs_ph_inset = ! $ccs_ph_has_photo
+	&& has_post_thumbnail( $ccs_ph_id )
+	&& ! in_array( get_post_field( 'post_name', $ccs_ph_id ), array( 'privacy-policy', 'terms-and-conditions', 'accessibility-statement', 'cookies' ), true );
 ?>
 
-<header class="page-hero<?php echo $ccs_ph_has_photo ? ' page-hero--photo' : ''; ?>">
+<header class="page-hero<?php echo $ccs_ph_has_photo ? ' page-hero--photo' : ( $ccs_ph_inset ? ' page-hero--inset' : '' ); ?>">
 	<?php if ( $ccs_ph_has_photo ) : ?>
 		<div class="page-hero__scrim" aria-hidden="true"></div>
 	<?php endif; ?>
@@ -47,6 +55,22 @@ $ccs_ph_has_photo = function_exists( 'ccs_page_uses_photo_hero' )
 				<p class="page-hero__intro"><?php echo esc_html( $ccs_ph_intro ); ?></p>
 			<?php endif; ?>
 		</div>
+		<?php if ( $ccs_ph_inset ) : ?>
+			<div class="page-hero__media" style="<?php echo esc_attr( '--ccs-photo-max:' . ccs_hero_photo_max_width( $ccs_ph_id ) . 'px' ); ?>">
+				<?php
+				echo get_the_post_thumbnail(
+					$ccs_ph_id,
+					'full',
+					array(
+						'class'         => 'page-hero__img',
+						'loading'       => 'eager',
+						'fetchpriority' => 'high',
+						'sizes'         => '(min-width: 900px) 24rem, 92vw',
+					)
+				);
+				?>
+			</div>
+		<?php endif; ?>
 		<?php if ( $ccs_ph_has_photo ) : ?>
 			<div class="page-hero__media">
 				<?php

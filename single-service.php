@@ -1,6 +1,7 @@
 <?php
 /**
- * Single service template: hero, two-column content + sidebar, bottom CTA.
+ * Single service template: photo hero, content beside a sticky call-back card,
+ * the three steps, other services as photo cards, shared closing card.
  * Uses service meta: short_description, features, pricing, faqs, service_urgent.
  *
  * @package CCS_WP_Theme
@@ -24,7 +25,6 @@ while ( have_posts() ) :
 	$price_to   = get_post_meta( $post_id, 'service_price_to', true );
 	$typical    = get_post_meta( $post_id, 'service_typical_hours', true );
 	$funding    = get_post_meta( $post_id, 'service_funding_options', true );
-	$is_urgent  = (string) get_post_meta( $post_id, 'service_urgent', true ) === '1';
 
 	$ccs_phone     = get_theme_mod( 'ccs_phone', '01234 567890' );
 	$ccs_phone_tel  = $ccs_phone ? preg_replace( '/\s+/', '', $ccs_phone ) : '';
@@ -42,7 +42,7 @@ while ( have_posts() ) :
 		$related  = get_posts( array(
 			'post_type'      => 'service',
 			'post__not_in'   => array( $post_id ),
-			'posts_per_page' => 5,
+			'posts_per_page' => 3,
 			'tax_query'      => array(
 				array(
 					'taxonomy' => 'service_category',
@@ -58,7 +58,7 @@ while ( have_posts() ) :
 		$related = get_posts( array(
 			'post_type'      => 'service',
 			'post__not_in'   => array( $post_id ),
-			'posts_per_page' => 5,
+			'posts_per_page' => 3,
 			'orderby'        => 'menu_order title',
 			'order'          => 'ASC',
 		) );
@@ -69,44 +69,90 @@ while ( have_posts() ) :
 
 	<?php
 	/*
-	 * Routed through the shared .page-hero / .page-hero--photo system
-	 * (template-parts/page-header.php, assets/css/components.css) instead of the
-	 * bespoke .service-hero this used to render. Full-bleed photo behind a
-	 * transparent header is now how every other page in the site opens; this
-	 * was the one template still drawing its own separate version of the same
-	 * idea, in its own stylesheet, styled before that pattern existed.
+	 * Layout follows the service-detail page of the Sunnyaid template the client
+	 * chose as the structural reference (colours stay CCS's own): photo hero,
+	 * content beside a sticky contact card, the three steps, other services as
+	 * photo cards, then the shared closing card. Before this, the page was a
+	 * column of editor text beside a placeholder-only form and ended on its own
+	 * bespoke CTA band.
 	 *
-	 * 'full', not 'large', and sizes="100vw" for the same reason page-header.php
-	 * uses them: 'large' caps at 1024px behind a full-bleed banner, and without
-	 * an explicit sizes the browser assumes the image is capped at 1024px too
-	 * and ignores larger candidates in its own srcset.
+	 * Hero intro: the service's short description when one is set, otherwise
+	 * its excerpt (which the homepage service cards already use, so the two
+	 * places describe the service in the same words). None of the services
+	 * currently has a short description, which left this hero with a title and
+	 * nothing under it.
+	 *
+	 * 'full' plus sizes="100vw" for the hero image, as in page-header.php: a
+	 * full-bleed banner must not be capped at the 1024px 'large' size.
 	 */
-	$ccs_service_has_photo = has_post_thumbnail( $post_id );
+	/*
+	 * Full-bleed only when the photo can fill a banner sharply; otherwise the
+	 * inset variant frames it beside the text (ccs_hero_photo_fills_banner(),
+	 * inc/theme-setup.php). The body class uses the same test, so the header
+	 * only goes white-on-photo when there is a full-bleed photo under it.
+	 */
+	$ccs_service_has_photo = function_exists( 'ccs_hero_photo_fills_banner' ) ? ccs_hero_photo_fills_banner( $post_id ) : has_post_thumbnail( $post_id );
+	$ccs_service_inset     = ! $ccs_service_has_photo && has_post_thumbnail( $post_id );
+	$ccs_service_intro     = $short_desc ? $short_desc : ( has_excerpt( $post_id ) ? get_the_excerpt( $post_id ) : '' );
+	$ccs_contact_url       = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' ) : home_url( '/contact-us/' );
+	$ccs_services_hub_url  = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'home-care-services-kent' ) : home_url( '/home-care-services-kent/' );
 	?>
-	<header class="page-hero<?php echo $ccs_service_has_photo ? ' page-hero--photo' : ''; ?>">
+	<header class="page-hero<?php echo $ccs_service_has_photo ? ' page-hero--photo' : ( $ccs_service_inset ? ' page-hero--inset' : '' ); ?>">
 		<?php if ( $ccs_service_has_photo ) : ?>
 			<div class="page-hero__scrim" aria-hidden="true"></div>
 		<?php endif; ?>
 		<div class="page-hero__inner container container--lg">
 			<div class="page-hero__text">
+				<?php get_template_part( 'template-parts/breadcrumb' ); ?>
+				<h1 class="page-hero__title"><?php the_title(); ?></h1>
+				<?php if ( $ccs_service_intro ) : ?>
+					<p class="page-hero__intro"><?php echo esc_html( $ccs_service_intro ); ?></p>
+				<?php endif; ?>
 				<?php
 				/*
-				 * Shared partial, so these match every other page. The old inline
-				 * version linked its middle crumb to get_post_type_archive_link(),
-				 * which now returns false — the service archive is disabled.
+				 * The homepage hero's ranked pair: filled mint primary, outlined
+				 * ghost call. It replaces a lone phone-number pill, which made a
+				 * phone call the only action on a page whose visitors are mostly
+				 * still deciding.
 				 */
-				get_template_part( 'template-parts/breadcrumb' );
 				?>
-				<h1 class="page-hero__title"><?php the_title(); ?></h1>
-				<?php if ( $short_desc ) : ?>
-					<p class="page-hero__intro"><?php echo esc_html( $short_desc ); ?></p>
-				<?php endif; ?>
-				<?php if ( $ccs_phone_tel ) : ?>
-					<a href="<?php echo esc_url( 'tel:' . $ccs_phone_tel ); ?>" class="btn btn-phone btn-lg service-hero__cta">
-						<?php echo esc_html( $ccs_phone ); ?>
+				<div class="ccs-actions service-hero__actions">
+					<?php
+					/*
+					 * Mint and the white ghost belong on the dark photo; on the light
+					 * tint band they are plum and quiet. The ghost button used to stay
+					 * white here, invisible on a pale ground (rule 8).
+					 */
+					?>
+					<a href="<?php echo esc_url( $ccs_contact_url ); ?>" class="btn <?php echo $ccs_service_has_photo ? 'btn-accent' : 'btn-primary'; ?>">
+						<?php esc_html_e( 'Book a free consultation', 'ccs-wp-theme' ); ?>
 					</a>
-				<?php endif; ?>
+					<?php if ( $ccs_phone_tel ) : ?>
+						<a href="<?php echo esc_url( 'tel:' . $ccs_phone_tel ); ?>" class="btn <?php echo $ccs_service_has_photo ? 'btn-ghost-on-dark' : 'btn-quiet'; ?>">
+							<?php
+							/* translators: %s: office phone number */
+							printf( esc_html__( 'Call %s', 'ccs-wp-theme' ), esc_html( $ccs_phone ) );
+							?>
+						</a>
+					<?php endif; ?>
+				</div>
 			</div>
+			<?php if ( $ccs_service_inset ) : ?>
+				<div class="page-hero__media" style="<?php echo esc_attr( '--ccs-photo-max:' . ccs_hero_photo_max_width( $post_id ) . 'px' ); ?>">
+					<?php
+					echo get_the_post_thumbnail(
+						$post_id,
+						'full',
+						array(
+							'class'         => 'page-hero__img',
+							'loading'       => 'eager',
+							'fetchpriority' => 'high',
+							'sizes'         => '(min-width: 900px) 24rem, 92vw',
+						)
+					);
+					?>
+				</div>
+			<?php endif; ?>
 			<?php if ( $ccs_service_has_photo ) : ?>
 				<div class="page-hero__media">
 					<?php
@@ -126,12 +172,18 @@ while ( have_posts() ) :
 		</div>
 	</header>
 
-	<!-- Main content: two-column -->
 	<div class="service-body">
 		<div class="service-body__inner container container--lg">
 			<div class="service-body__main">
 				<?php if ( get_the_content() ) : ?>
-					<div class="service-content entry-content">
+					<?php
+					/*
+					 * page-body typography (components.css) without its page-level
+					 * width and padding: the same headings, tick-badge lists and
+					 * quote panels as every other content page, inside a column.
+					 */
+					?>
+					<div class="service-content page-body page-body--flush entry-content">
 						<?php the_content(); ?>
 					</div>
 				<?php endif; ?>
@@ -139,15 +191,16 @@ while ( have_posts() ) :
 				<?php if ( ! empty( $features ) ) : ?>
 					<section class="service-features" aria-labelledby="service-features-heading">
 						<h2 id="service-features-heading" class="service-features__heading"><?php esc_html_e( 'What’s included', 'ccs-wp-theme' ); ?></h2>
-						<ul class="service-features__list">
+						<ul class="why-proof" role="list">
 							<?php foreach ( $features as $row ) :
 								$text = isset( $row['feature_text'] ) ? $row['feature_text'] : '';
 								if ( $text === '' ) {
 									continue;
 								}
 							?>
-								<li class="service-features__item">
-									<?php echo esc_html( $text ); ?>
+								<li class="why-proof__item">
+									<span class="ccs-badge ccs-badge--sm"><?php echo ccs_icon( 'check' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
+									<span class="why-proof__text"><?php echo esc_html( $text ); ?></span>
 								</li>
 							<?php endforeach; ?>
 						</ul>
@@ -181,22 +234,15 @@ while ( have_posts() ) :
 							<?php if ( $typical ) : ?>
 								<p class="service-pricing__hours"><?php echo esc_html( $typical ); ?></p>
 							<?php endif; ?>
-							<?php if ( $has_price ) : ?>
-								<?php
-								/*
-								 * Same caveat as the homepage costs section
-								 * (template-parts/home/costs.php), and for the same reason: a
-								 * "From £X" figure with nothing else beside it reads as a flat
-								 * rate. This template currently has no service posts with a
-								 * price set, so this has never rendered yet — but the moment
-								 * one is, the figure needs this next to it, not added later
-								 * once it's already live without it.
-								 */
-								?>
-								<p class="service-pricing__caveat">
-									<?php esc_html_e( 'Your actual cost depends on the type of care you need and when it happens — this is our lowest rate, not a flat price.', 'ccs-wp-theme' ); ?>
-								</p>
-							<?php endif; ?>
+							<?php
+							/*
+							 * Same caveat as the homepage price card, for the same reason:
+							 * a lone "From £X" reads as a flat rate.
+							 */
+							?>
+							<p class="service-pricing__caveat">
+								<?php esc_html_e( 'Your actual cost depends on the type of care you need and when it happens — this is our lowest rate, not a flat price.', 'ccs-wp-theme' ); ?>
+							</p>
 							<?php if ( $funding ) : ?>
 								<div class="service-pricing__funding"><?php echo wp_kses_post( nl2br( esc_html( $funding ) ) ); ?></div>
 							<?php endif; ?>
@@ -207,7 +253,14 @@ while ( have_posts() ) :
 				<?php if ( ! empty( $faqs ) ) : ?>
 					<section class="service-faqs" aria-labelledby="service-faqs-heading">
 						<h2 id="service-faqs-heading" class="service-faqs__heading"><?php esc_html_e( 'Frequently asked questions', 'ccs-wp-theme' ); ?></h2>
-						<dl class="service-faqs__list">
+						<?php
+						/*
+						 * Native <details>: keyboard and screen-reader behaviour for
+						 * free, and the shared name makes them exclusive (one open at
+						 * a time) without a script. See docs/BUILD-STANDARD.md §3.
+						 */
+						?>
+						<div class="ccs-faq">
 							<?php foreach ( $faqs as $faq ) :
 								$q = isset( $faq['question'] ) ? trim( $faq['question'] ) : '';
 								$a = isset( $faq['answer'] ) ? $faq['answer'] : '';
@@ -215,86 +268,151 @@ while ( have_posts() ) :
 									continue;
 								}
 							?>
-								<div class="service-faqs__item">
-									<dt class="service-faqs__q"><?php echo esc_html( $q ); ?></dt>
-									<dd class="service-faqs__a"><?php echo wp_kses_post( nl2br( esc_html( $a ) ) ); ?></dd>
-								</div>
+								<details class="ccs-faq__item" name="service-faq">
+									<summary class="ccs-faq__q"><?php echo esc_html( $q ); ?></summary>
+									<div class="ccs-faq__a"><?php echo wp_kses_post( wpautop( esc_html( $a ) ) ); ?></div>
+								</details>
 							<?php endforeach; ?>
-						</dl>
+						</div>
 					</section>
 				<?php endif; ?>
 			</div>
 
-			<aside class="service-sidebar">
+			<aside class="service-sidebar" aria-labelledby="service-sidebar-heading">
 				<div class="service-sidebar__sticky">
-					<div class="service-sidebar__contact">
-						<h2 class="service-sidebar__contact-heading"><?php esc_html_e( 'Get in touch', 'ccs-wp-theme' ); ?></h2>
+					<div class="service-sidebar__card">
+						<p class="ccs-eyebrow"><?php esc_html_e( 'Free, no obligation', 'ccs-wp-theme' ); ?></p>
+						<h2 id="service-sidebar-heading" class="service-sidebar__heading"><?php esc_html_e( 'Ask us to call you back', 'ccs-wp-theme' ); ?></h2>
 						<?php if ( $ccs_phone_tel ) : ?>
-							<a href="<?php echo esc_url( 'tel:' . $ccs_phone_tel ); ?>" class="service-sidebar__phone"><?php echo esc_html( $ccs_phone ); ?></a>
+							<a href="<?php echo esc_url( 'tel:' . $ccs_phone_tel ); ?>" class="service-sidebar__phone">
+								<span class="ccs-badge ccs-badge--sm"><?php echo ccs_icon( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
+								<span><?php echo esc_html( $ccs_phone ); ?></span>
+							</a>
 						<?php endif; ?>
 						<?php if ( $ccs_office_hrs ) : ?>
 							<p class="service-sidebar__hours"><?php echo esc_html( $ccs_office_hrs ); ?></p>
 						<?php endif; ?>
 
-						<form class="service-sidebar__form ccs-form" data-ccs-action="request_callback" method="post" action="" aria-describedby="callback-form-message">
-							<label for="service-cb-name" class="screen-reader-text"><?php esc_html_e( 'Your name', 'ccs-wp-theme' ); ?></label>
-							<input type="text" id="service-cb-name" name="name" required aria-required="true" placeholder="<?php esc_attr_e( 'Your name', 'ccs-wp-theme' ); ?>" class="service-sidebar__input">
-							<label for="service-cb-phone" class="screen-reader-text"><?php esc_html_e( 'Phone number', 'ccs-wp-theme' ); ?></label>
-							<input type="tel" id="service-cb-phone" name="phone" required aria-required="true" placeholder="<?php esc_attr_e( 'Phone number', 'ccs-wp-theme' ); ?>" class="service-sidebar__input">
-							<label for="service-cb-time" class="screen-reader-text"><?php esc_html_e( 'Preferred callback time (optional)', 'ccs-wp-theme' ); ?></label>
-							<input type="text" id="service-cb-time" name="preferred_time" placeholder="<?php esc_attr_e( 'Preferred callback time', 'ccs-wp-theme' ); ?>" class="service-sidebar__input" autocomplete="off">
+						<?php
+						/*
+						 * Visible labels above every field, not placeholders. The
+						 * labels used to be screen-reader-only, so sighted visitors
+						 * saw prompts that vanished as soon as they began typing, and
+						 * "optional" appeared only in the hidden label. autocomplete
+						 * on name and phone meets WCAG 2.1 1.3.5 (Identify Input
+						 * Purpose), which this form failed, and lets the browser fill
+						 * them in for people who find typing hard.
+						 */
+						?>
+						<form class="service-sidebar__form ccs-form" data-ccs-action="request_callback" method="post" action="" novalidate aria-describedby="callback-form-message">
+							<div class="ccs-field">
+								<label for="service-cb-name" class="ccs-field__label"><?php esc_html_e( 'Your name', 'ccs-wp-theme' ); ?></label>
+								<input type="text" id="service-cb-name" name="name" required aria-required="true" autocomplete="name" class="ccs-field__input">
+							</div>
+							<div class="ccs-field">
+								<label for="service-cb-phone" class="ccs-field__label"><?php esc_html_e( 'Phone number', 'ccs-wp-theme' ); ?></label>
+								<input type="tel" id="service-cb-phone" name="phone" required aria-required="true" autocomplete="tel" class="ccs-field__input">
+							</div>
+							<div class="ccs-field">
+								<label for="service-cb-time" class="ccs-field__label">
+									<?php esc_html_e( 'Best time to call', 'ccs-wp-theme' ); ?>
+									<span class="ccs-field__optional"><?php esc_html_e( '(optional)', 'ccs-wp-theme' ); ?></span>
+								</label>
+								<input type="text" id="service-cb-time" name="preferred_time" class="ccs-field__input" autocomplete="off">
+							</div>
 							<input type="text" name="_company" value="" tabindex="-1" autocomplete="off" aria-hidden="true" class="ccs-honeypot">
 							<button type="submit" class="btn btn-primary service-sidebar__submit"><?php esc_html_e( 'Request a call back', 'ccs-wp-theme' ); ?></button>
 							<div id="callback-form-message" data-ccs-form-message class="ccs-form-message" role="alert" aria-live="polite" hidden></div>
 						</form>
 					</div>
-
-					<?php if ( ! empty( $related ) ) : ?>
-						<div class="service-sidebar__related">
-							<h3 class="service-sidebar__related-heading"><?php esc_html_e( 'Related services', 'ccs-wp-theme' ); ?></h3>
-							<ul class="service-sidebar__related-list">
-								<?php foreach ( $related as $rel ) : ?>
-									<li><a href="<?php echo esc_url( get_permalink( $rel ) ); ?>"><?php echo esc_html( get_the_title( $rel ) ); ?></a></li>
-								<?php endforeach; ?>
-							</ul>
-						</div>
-					<?php endif; ?>
 				</div>
 			</aside>
 		</div>
 	</div>
 
-	<!-- Bottom CTA: full-width, urgency-based -->
-	<section class="service-cta service-cta--<?php echo $is_urgent ? 'urgent' : 'default'; ?>" aria-labelledby="service-cta-heading">
-		<div class="service-cta__inner container container--md">
-			<h2 id="service-cta-heading" class="service-cta__heading">
+	<?php get_template_part( 'template-parts/home/steps' ); ?>
+
+	<?php if ( ! empty( $related ) ) : ?>
+		<section class="service-related" aria-labelledby="service-related-heading">
+			<div class="container container--lg">
+				<header class="ccs-head ccs-head--center">
+					<h2 id="service-related-heading" class="ccs-title">
+						<?php
+						/* translators: %s: the emphasised word, drawn with a brush underline. */
+						printf( esc_html__( 'Other ways we can %s', 'ccs-wp-theme' ), ccs_accent( __( 'help', 'ccs-wp-theme' ) ) );
+						?>
+					</h2>
+				</header>
 				<?php
-				if ( $is_urgent ) {
-					esc_html_e( 'Prefer to call?', 'ccs-wp-theme' );
-				} else {
-					esc_html_e( 'Ready to find out more?', 'ccs-wp-theme' );
-				}
+				/*
+				 * Other services as the homepage's photo cards. Featured images go
+				 * through wp_get_attachment_image(), so they arrive with a srcset
+				 * and sizes the browser can choose from (docs/BUILD-STANDARD.md §2).
+				 * With fewer than three related services, the last slot is a link
+				 * to the services hub instead of a hole in the grid.
+				 */
+				$ccs_related_shown = array_slice( $related, 0, 3 );
+				$ccs_rel_icons     = array(
+					'domiciliary-care' => 'home',
+					'respite-care'     => 'cup',
+					'complex-care'     => 'pulse',
+				);
 				?>
-			</h2>
-			<p class="service-cta__text">
-				<?php
-				if ( $is_urgent ) {
-					esc_html_e( 'Call us directly to talk through what you need.', 'ccs-wp-theme' );
-				} else {
-					esc_html_e( 'Request a callback or call us to talk through your options.', 'ccs-wp-theme' );
-				}
-				?>
-			</p>
-			<div class="service-cta__actions">
-				<?php if ( $ccs_phone_tel ) : ?>
-					<a href="<?php echo esc_url( 'tel:' . $ccs_phone_tel ); ?>" class="btn <?php echo $is_urgent ? 'btn-phone' : 'btn-secondary'; ?> btn-lg"><?php echo esc_html( $ccs_phone ); ?></a>
-				<?php endif; ?>
-				<?php if ( ! $is_urgent ) : ?>
-					<a href="<?php echo esc_url( ( function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' ) : home_url( '/contact-us/' ) ) ); ?>" class="btn btn-primary btn-lg"><?php esc_html_e( 'Get in touch', 'ccs-wp-theme' ); ?></a>
-				<?php endif; ?>
+				<ul class="svc-grid" role="list">
+					<?php foreach ( $ccs_related_shown as $rel ) : ?>
+						<li class="svc-card">
+							<?php if ( has_post_thumbnail( $rel ) ) : ?>
+								<div class="svc-card__media">
+									<?php
+									echo wp_get_attachment_image(
+										get_post_thumbnail_id( $rel ),
+										'large',
+										false,
+										array(
+											'alt'     => '',
+											'loading' => 'lazy',
+											'sizes'   => '(min-width: 1280px) 400px, (min-width: 860px) 31vw, 92vw',
+										)
+									);
+									?>
+								</div>
+							<?php endif; ?>
+							<div class="svc-card__body">
+								<span class="ccs-badge ccs-badge--ring svc-card__badge"><?php echo ccs_icon( $ccs_rel_icons[ $rel->post_name ] ?? 'heart' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
+								<h3 class="svc-card__title">
+									<a href="<?php echo esc_url( get_permalink( $rel ) ); ?>" class="svc-card__link"><?php echo esc_html( get_the_title( $rel ) ); ?></a>
+								</h3>
+								<?php if ( has_excerpt( $rel ) ) : ?>
+									<p class="svc-card__text"><?php echo esc_html( get_the_excerpt( $rel ) ); ?></p>
+								<?php endif; ?>
+								<span class="svc-card__cue" aria-hidden="true"><?php esc_html_e( 'Read more', 'ccs-wp-theme' ); ?> <span class="svc-card__arrow">&rarr;</span></span>
+							</div>
+						</li>
+					<?php endforeach; ?>
+					<?php if ( count( $ccs_related_shown ) < 3 ) : ?>
+						<li class="info-card service-related__hub">
+							<span class="ccs-badge"><?php echo ccs_icon( 'heart' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
+							<p class="info-card__label"><?php esc_html_e( 'All services', 'ccs-wp-theme' ); ?></p>
+							<h3 class="info-card__title">
+								<a class="info-card__link" href="<?php echo esc_url( $ccs_services_hub_url ); ?>"><?php esc_html_e( 'Everything we offer at home', 'ccs-wp-theme' ); ?></a>
+							</h3>
+							<p class="info-card__text"><?php esc_html_e( 'See every kind of care we provide across Maidstone and Kent, and who each one is for.', 'ccs-wp-theme' ); ?></p>
+							<span class="info-card__cue" aria-hidden="true"><?php esc_html_e( 'See all services', 'ccs-wp-theme' ); ?> <span class="info-card__arrow">&rarr;</span></span>
+						</li>
+					<?php endif; ?>
+				</ul>
 			</div>
-		</div>
-	</section>
+		</section>
+	<?php endif; ?>
+
+	<?php
+	/*
+	 * The shared closing card, as on every other page. This replaces a bespoke
+	 * .service-cta band; its "urgent" variant offered a phone number only, and
+	 * the card already carries the call button beside the consultation link.
+	 */
+	get_template_part( 'template-parts/cta-band' );
+	?>
 
 </main>
 

@@ -21,6 +21,7 @@ class CCS_Theme_Activation {
 	const MENUS_OPTION        = 'ccs_theme_activation_menus';
 	const PAGE_IDS_OPTION     = 'ccs_theme_activation_page_ids';
 	const CAREERS_PAGE_OPTION = 'ccs_careers_page_ids';
+	const RUN_LOCK_OPTION     = 'ccs_theme_activation_lock'; // Provisioning mutex; see run_with_scope().
 
 	/** Scope steps for run_with_scope(). */
 	const SCOPES = array( 'general', 'pages', 'contact_page', 'services', 'locations', 'news', 'menus', 'reading', 'permalinks' );
@@ -270,7 +271,13 @@ class CCS_Theme_Activation {
 			),
 			'complex-care' => array(
 				'title'   => 'Complex Care',
-				'image'   => 'assets/images/site-photos/ccs-complex-care-wheelchair-1.webp',
+				/*
+				 * The 2000×900 complex care photo (already the homepage's fallback
+				 * for this service), not the 550px wheelchair one: this image fills
+				 * the service's full-width hero, and 550px across a 1440px banner was
+				 * blurred on every screen (rule 15). Swap back here if preferred.
+				 */
+				'image'   => 'assets/images/site-photos/ccs-complex-care-maidstone-24-7.webp',
 				'excerpt' => 'Complex care at home in Maidstone and across Kent, from epilepsy care to PEG and mobility support. A trained team working closely with your family and your healthcare team.',
 				'content' => "<p>Complex care at home requires specialist knowledge, clinical skills, and unwavering attention to detail. Continuity of Care Services provides complex care across Maidstone and Kent, and our trained team supports people with complex health needs alongside their families and healthcare professionals.</p>
 <h2>Conditions We Support:</h2>
@@ -456,6 +463,90 @@ class CCS_Theme_Activation {
 		if ( empty( $scope ) ) {
 			return;
 		}
+
+		/*
+		 * One run at a time. Every step below is idempotent, which makes a
+		 * second run safe, but not a concurrent one: after_switch_theme fires on
+		 * the first request(s) after activation, and when several PHP workers
+		 * take those requests at once each one runs this method in parallel.
+		 * Each clears the (still empty) menus and then adds its own items, so
+		 * the primary nav came out doubled, and on a six-worker WordPress
+		 * Playground boot tripled: eighteen items running off both edges of the
+		 * header. footer.php's dedupe of the area list was written around the
+		 * same fault rather than fixing it. The lock fixes it at source; a
+		 * worker that loses the race skips, because the winner is already doing
+		 * exactly this work.
+		 */
+		if ( ! $this->acquire_run_lock() ) {
+			return;
+		}
+
+		try {
+			$this->run_scope_steps( $scope );
+		} finally {
+			$this->release_run_lock();
+		}
+	}
+
+	/**
+	 * Take the provisioning lock: one atomic INSERT IGNORE of an options row.
+	 *
+	 * The same pattern WordPress core uses for its own update lock
+	 * (WP_Upgrader::create_lock(), which is not loaded on front-end requests,
+	 * where after_switch_theme usually fires). add_option() cannot be used: it
+	 * upserts, so two workers would both "succeed". A lock older than the
+	 * timeout is treated as abandoned by a crashed run and taken over, with an
+	 * UPDATE conditioned on the old value so only one worker can take it.
+	 *
+	 * @param int $timeout Seconds after which a held lock is considered stale.
+	 * @return bool True if this request now holds the lock.
+	 */
+	private function acquire_run_lock( $timeout = 300 ) {
+		global $wpdb;
+
+		$now      = (string) time();
+		$acquired = $wpdb->query(
+			$wpdb->prepare(
+				"INSERT IGNORE INTO `{$wpdb->options}` ( `option_name`, `option_value`, `autoload` ) VALUES ( %s, %s, 'no' )",
+				self::RUN_LOCK_OPTION,
+				$now
+			)
+		);
+		if ( $acquired ) {
+			return true;
+		}
+
+		$held_since = $wpdb->get_var(
+			$wpdb->prepare( "SELECT `option_value` FROM `{$wpdb->options}` WHERE `option_name` = %s", self::RUN_LOCK_OPTION )
+		);
+		if ( null === $held_since || (int) $held_since > time() - (int) $timeout ) {
+			return false;
+		}
+
+		return (bool) $wpdb->query(
+			$wpdb->prepare(
+				"UPDATE `{$wpdb->options}` SET `option_value` = %s WHERE `option_name` = %s AND `option_value` = %s",
+				$now,
+				self::RUN_LOCK_OPTION,
+				$held_since
+			)
+		);
+	}
+
+	/**
+	 * Release the provisioning lock.
+	 */
+	private function release_run_lock() {
+		global $wpdb;
+		$wpdb->delete( $wpdb->options, array( 'option_name' => self::RUN_LOCK_OPTION ) );
+	}
+
+	/**
+	 * The provisioning steps for a scope. Only ever called with the run lock held.
+	 *
+	 * @param array $scope Steps, already validated against self::SCOPES.
+	 */
+	private function run_scope_steps( array $scope ) {
 
 		// If we're only running menus (or reading/permalinks), load page IDs from options.
 		if ( in_array( 'menus', $scope, true ) && ! in_array( 'pages', $scope, true ) ) {
@@ -916,6 +1007,65 @@ class CCS_Theme_Activation {
 	}
 
 	/**
+	 * Replace WordPress's own untouched privacy-policy draft with the CCS policy.
+	 *
+	 * Every WordPress install creates a draft "Privacy Policy" page (ID 3, slug
+	 * privacy-policy, recorded in wp_page_for_privacy_policy) holding the core
+	 * template text. ensure_pages() reuses an existing page with a matching slug,
+	 * so it adopted that draft instead of creating the theme's own published
+	 * page, and refresh_seeded_content() deliberately never rewrites a page the
+	 * theme did not seed. The result on every fresh install: the footer's
+	 * Privacy Policy link pointed at /?page_id=3, a 404 for every visitor, on a
+	 * care provider's site where a published privacy notice is a UK GDPR
+	 * expectation rather than a nicety.
+	 *
+	 * Acts only when all three hold, which together mean "nobody has touched
+	 * this": it is the site's designated privacy page, it is still a draft, and
+	 * it has never been modified (core inserts it with post_modified_gmt equal
+	 * to post_date_gmt, and any edit through WordPress changes the former). A
+	 * policy someone has edited, published or unpublished is left exactly as it
+	 * is.
+	 *
+	 * @param WP_Post $page Existing page found for $slug.
+	 * @param string  $slug Seeded page slug.
+	 * @return WP_Post The page, re-read if it was updated.
+	 */
+	private function adopt_core_privacy_placeholder( $page, $slug ) {
+		if ( 'privacy-policy' !== $slug || 'draft' !== $page->post_status ) {
+			return $page;
+		}
+		if ( (int) get_option( 'wp_page_for_privacy_policy' ) !== (int) $page->ID ) {
+			return $page;
+		}
+		if ( $page->post_modified_gmt !== $page->post_date_gmt ) {
+			return $page;
+		}
+
+		$content = $this->get_default_page_content( $slug );
+		if ( '' === $content ) {
+			return $page;
+		}
+
+		$updated = wp_update_post(
+			array(
+				'ID'           => $page->ID,
+				'post_content' => $content,
+				'post_status'  => 'publish',
+			),
+			true
+		);
+		if ( is_wp_error( $updated ) ) {
+			return $page;
+		}
+
+		// Baseline is the theme's text, so later runs treat it as seeded content.
+		update_post_meta( $page->ID, self::SEEDED_HASH_META, md5( $content ) );
+
+		$fresh = get_post( $page->ID );
+		return $fresh instanceof WP_Post ? $fresh : $page;
+	}
+
+	/**
 	 * Create or get all pages; store IDs in $this->page_ids.
 	 */
 	private function ensure_pages() {
@@ -973,6 +1123,7 @@ class CCS_Theme_Activation {
 			);
 			$page = ! empty( $existing ) ? $existing[0] : null;
 			if ( $page ) {
+				$page = $this->adopt_core_privacy_placeholder( $page, $slug );
 				$this->page_ids[ $slug ] = (int) $page->ID;
 				$this->mark_as_demo( $page->ID, 'page' );
 				if ( ! empty( $def['template'] ) ) {
@@ -1706,10 +1857,18 @@ class CCS_Theme_Activation {
 
 	/**
 	 * Set permalink structure to /%postname%/ and flush rules.
+	 *
+	 * Through $wp_rewrite->set_permalink_structure(), not update_option(). The
+	 * option alone left the in-memory $wp_rewrite on the old (plain) structure,
+	 * so the flush straight after rebuilt rules with no post rule at all: every
+	 * blog post URL, and every unknown URL, parsed as the front page and
+	 * redirect_canonical() sent it to the homepage with a 301. Pages, terms
+	 * and the CPTs carry their own rules, which is why only posts broke.
 	 */
 	private function ensure_permalinks() {
+		global $wp_rewrite;
 		if ( get_option( 'permalink_structure' ) !== '/%postname%/' ) {
-			update_option( 'permalink_structure', '/%postname%/' );
+			$wp_rewrite->set_permalink_structure( '/%postname%/' );
 			flush_rewrite_rules();
 		}
 	}

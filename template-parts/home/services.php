@@ -130,32 +130,46 @@ foreach ( $services as $i => $svc ) {
 }
 ?>
 
+<?php
+/*
+ * One icon per service, by position in $service_slugs (domiciliary, respite,
+ * complex). Set in the shared badge (ccs_icon() + .ccs-badge) so these match
+ * every other icon on the page.
+ */
+$ccs_service_icons = array( 'home', 'cup', 'pulse' );
+?>
+
 <section class="home-services" aria-labelledby="home-services-heading">
-	<div class="home-services__inner container container--lg">
-		<p class="ccs-eyebrow">
-			<?php esc_html_e( 'How we can help', 'ccs-wp-theme' ); ?>
-		</p>
-		<h2 id="home-services-heading" class="home-services__heading">
-			<?php esc_html_e( 'Home care services in Maidstone and across Kent', 'ccs-wp-theme' ); ?>
-		</h2>
-		<p class="home-services__intro">
-			<?php
-			esc_html_e(
-				"Some people need a hand for an hour in the morning. Others need someone there through the night, or a team trained for more complex health needs. We’ll work out which it is with you, before anything is agreed.",
-				'ccs-wp-theme'
-			);
-			?>
-		</p>
-		<ul class="home-services__grid">
-			<?php foreach ( $services as $svc ) : ?>
-				<li class="home-service-col">
+	<div class="container container--lg">
+
+		<header class="ccs-head ccs-head--split">
+			<h2 id="home-services-heading" class="ccs-title">
+				<?php
+				esc_html_e( 'Home care services in Maidstone and across Kent', 'ccs-wp-theme' );
+				?>
+			</h2>
+			<p class="ccs-lede">
+				<?php esc_html_e( 'Some people need a hand for an hour in the morning. Others need someone there through the night, or a team trained for more complex health needs. We’ll work out which it is with you, before anything is agreed.', 'ccs-wp-theme' ); ?>
+			</p>
+		</header>
+
+		<?php
+		/*
+		 * Card anatomy, from the ElderlyCare X service cards: photograph on top, a
+		 * white panel lapping over its lower edge, and the service's badge sitting
+		 * across the seam. The overlap is what turns "photo with a caption" into a
+		 * designed object. The whole card is one link (stretched ::after on the
+		 * title link), so there is one large target and the title is read once.
+		 */
+		?>
+		<ul class="home-services__grid" role="list">
+			<?php foreach ( $services as $i => $svc ) : ?>
+				<li class="svc-card">
 					<?php if ( ! empty( $svc['image'] ) ) : ?>
-						<div class="home-service-col__media">
+						<div class="svc-card__media">
 							<img
 								src="<?php echo esc_url( $svc['image'] ); ?>"
 								alt=""
-								aria-hidden="true"
-								class="home-service-col__img"
 								<?php if ( ! empty( $svc['image_width'] ) && ! empty( $svc['image_height'] ) ) : ?>
 									width="<?php echo esc_attr( (string) $svc['image_width'] ); ?>"
 									height="<?php echo esc_attr( (string) $svc['image_height'] ); ?>"
@@ -165,34 +179,33 @@ foreach ( $services as $i => $svc ) {
 							>
 						</div>
 					<?php endif; ?>
-					<h3 class="home-service-col__title">
-						<?php
-						/*
-						 * The link wraps the title and is stretched across the whole card
-						 * by ::after (see homepage.css). Previously the card repeated its
-						 * own title as a separate "Domiciliary Care →" link underneath,
-						 * which gave a screen reader the same words twice and left a
-						 * small target when the entire card could be one.
-						 */
-						?>
-						<a href="<?php echo esc_url( $svc['link_url'] ); ?>" class="home-service-col__link">
-							<?php echo esc_html( $svc['title'] ); ?>
-						</a>
-					</h3>
-					<p class="home-service-col__intro"><?php echo esc_html( $svc['intro'] ); ?></p>
-					<span class="home-service-col__cue" aria-hidden="true">
-						<?php esc_html_e( 'Read more', 'ccs-wp-theme' ); ?> <span class="home-service-col__arrow">&rarr;</span>
-					</span>
+					<div class="svc-card__body">
+						<span class="ccs-badge ccs-badge--ring svc-card__badge"><?php echo ccs_icon( $ccs_service_icons[ $i ] ?? 'heart' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
+						<h3 class="svc-card__title">
+							<a href="<?php echo esc_url( $svc['link_url'] ); ?>" class="svc-card__link"><?php echo esc_html( $svc['title'] ); ?></a>
+						</h3>
+						<p class="svc-card__text"><?php echo esc_html( $svc['intro'] ); ?></p>
+						<span class="svc-card__cue" aria-hidden="true">
+							<?php esc_html_e( 'Read more', 'ccs-wp-theme' ); ?> <span class="svc-card__arrow">&rarr;</span>
+						</span>
+					</div>
 				</li>
 			<?php endforeach; ?>
 		</ul>
-		<div class="home-services__cta-box">
+
+		<div class="home-services__cta">
 			<p class="home-services__cta-text">
 				<?php esc_html_e( 'Tell us what’s happening and we’ll say honestly whether we can help.', 'ccs-wp-theme' ); ?>
 			</p>
-			<a href="<?php echo esc_url( $contact_url ); ?>" class="btn btn-primary btn-lg home-services__cta-btn">
-				<?php esc_html_e( 'Book a free consultation', 'ccs-wp-theme' ); ?>
-			</a>
+			<div class="ccs-actions ccs-actions--center">
+				<a href="<?php echo esc_url( $contact_url ); ?>" class="btn btn-primary">
+					<?php esc_html_e( 'Book a free consultation', 'ccs-wp-theme' ); ?>
+				</a>
+				<a href="<?php echo esc_url( $services_overview_url ); ?>" class="btn btn-quiet">
+					<?php esc_html_e( 'See all our services', 'ccs-wp-theme' ); ?>
+				</a>
+			</div>
 		</div>
+
 	</div>
 </section>

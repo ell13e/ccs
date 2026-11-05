@@ -29,19 +29,26 @@ $ccs_phone_tel = $ccs_phone ? preg_replace( '/\s+/', '', $ccs_phone ) : '';
 	 * Section order follows the family's decision path:
 	 * hero (who/what/where + CTA) -> CQC (regulatory proof, checked early)
 	 * -> why choose us (narrative) -> services (the offer)
-	 * -> differentiators (concrete proof) -> costs (the question families ask
-	 * first, and the one competitors refuse to answer) -> testimonial (social
-	 * proof) -> info cards (next steps) -> partnerships (supporting credibility)
-	 * -> closing CTA (the ask).
+	 * -> steps (what actually happens when you call: the question that stops
+	 * most first calls) -> differentiators (concrete proof) -> costs (the
+	 * question families ask first, and the one competitors refuse to answer)
+	 * -> testimonial (social proof) -> team (real names, real faces: the brand
+	 * promise shown, not just stated) -> info cards (next steps) -> partnerships
+	 * (supporting credibility) -> closing CTA (the ask).
+	 *
+	 * Grounds run white / tint / cream in a repeating cycle so no two neighbours
+	 * share one; see the "Bands" block in design-system.css.
 	 */
 	?>
 	<?php get_template_part( 'template-parts/home/hero' ); ?>
 	<?php get_template_part( 'template-parts/home/cqc-section' ); ?>
 	<?php get_template_part( 'template-parts/home/why-choose-us' ); ?>
 	<?php get_template_part( 'template-parts/home/services' ); ?>
+	<?php get_template_part( 'template-parts/home/steps' ); ?>
 	<?php get_template_part( 'template-parts/home/differentiators' ); ?>
 	<?php get_template_part( 'template-parts/home/costs' ); ?>
 	<?php get_template_part( 'template-parts/home/testimonial' ); ?>
+	<?php get_template_part( 'template-parts/home/team' ); ?>
 	<?php get_template_part( 'template-parts/home/info-cards' ); ?>
 	<?php get_template_part( 'template-parts/home/partnerships' ); ?>
 	<?php get_template_part( 'template-parts/home/closing-cta' ); ?>

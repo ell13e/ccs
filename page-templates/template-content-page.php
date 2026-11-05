@@ -24,11 +24,7 @@ $main_class = 'site-main site-main--content-page site-main--' . sanitize_html_cl
 		?>
 		<?php get_template_part( 'template-parts/page-header' ); ?>
 		<article id="post-<?php the_ID(); ?>" <?php post_class( 'page-content' ); ?>>
-			<div class="container container--lg">
-				<div class="page-body entry-content">
-					<?php the_content(); ?>
-				</div>
-			</div>
+			<?php get_template_part( 'template-parts/article-body' ); ?>
 		</article>
 		<?php
 	endwhile;

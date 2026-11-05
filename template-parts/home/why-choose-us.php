@@ -1,6 +1,23 @@
 <?php
 /**
- * Homepage Why Choose Us section (content guide §2b).
+ * Homepage "Why choose us": photo collage beside the argument.
+ *
+ * This was the one section on the page with no imagery at all: a heading rail
+ * and four paragraphs, in a sector where (reference/inspo-teardowns.md) "the
+ * warmest sites pair a calm UI with emotional photography". Both the ElderlyCare
+ * X template and Harmony Care answer the same "why us" question with a
+ * staggered collage of real moments beside the copy, and that is the layout
+ * here, using the business's own photographs: three different people, all
+ * mid-moment, none repeated from the service cards below. Cropped by the
+ * browser only; never filtered or tone-adjusted.
+ *
+ * The four proof points are claims the site already makes and can stand behind
+ * (the CQC rating, the years and coverage from the hero, the rest from this
+ * section's copy); they move from a footnote-sized tick list into the shared
+ * icon badge, which is how the ElderlyCare template sets its feature points.
+ *
+ * Copy is unchanged. The best line on the site ("how you like your tea") stays
+ * set as a display quote.
  *
  * @package CCS_WP_Theme
  */
@@ -10,72 +27,73 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $services_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'home-care-services-kent' ) : home_url( '/home-care-services-kent/' );
+$about_url    = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'about-home-care-maidstone' ) : home_url( '/about-home-care-maidstone/' );
+
+$why_proof = array(
+	array( 'icon' => 'shield', 'text' => __( 'Rated Good by the CQC', 'ccs-wp-theme' ) ),
+	array( 'icon' => 'clock', 'text' => __( '10+ years caring for Kent families', 'ccs-wp-theme' ) ),
+	array( 'icon' => 'people', 'text' => __( 'Adults and children supported', 'ccs-wp-theme' ) ),
+	array( 'icon' => 'moon', 'text' => __( 'Care day or night, across Kent', 'ccs-wp-theme' ) ),
+);
+
+/*
+ * Collage photographs, largest first. Paths are relative to assets/images/.
+ * A missing file is skipped, so the collage degrades to two photos, or none,
+ * rather than rendering an empty frame.
+ */
+$why_photos = array(
+	'site-photos-extra/client-summer-party-laineys-care-farm.webp',
+	'site-photos/client-easter-activity.webp',
+	'site-photos/WhatsApp-Image-2025-06-13-at-11.53.40.webp',
+);
+$why_photos = array_values(
+	array_filter(
+		$why_photos,
+		static function ( $rel ) {
+			return file_exists( get_template_directory() . '/assets/images/' . $rel );
+		}
+	)
+);
 ?>
 
 <section class="home-why-choose" aria-labelledby="home-why-heading">
 	<div class="home-why-choose__inner container container--lg">
-		<?php
-		/*
-		 * Heading and subheading are wrapped so the grid has exactly two children
-		 * — the rail and the prose. Left as three siblings they wrapped onto a
-		 * second row and the two-column layout collapsed.
-		 */
-		?>
-		<div class="home-why-choose__heading-group">
-			<p class="ccs-eyebrow"><?php esc_html_e( 'Why families choose us', 'ccs-wp-theme' ); ?></p>
-			<h2 id="home-why-heading" class="home-why-choose__heading">
-				<?php esc_html_e( 'Why Choose Us for Home Care in Maidstone?', 'ccs-wp-theme' ); ?>
+
+		<?php if ( count( $why_photos ) >= 2 ) : ?>
+			<div class="why-collage why-collage--<?php echo (int) count( $why_photos ); ?>" aria-hidden="true">
+				<?php foreach ( $why_photos as $why_i => $why_rel ) : ?>
+					<?php $why_size = wp_getimagesize( get_template_directory() . '/assets/images/' . $why_rel ); ?>
+					<div class="why-collage__photo why-collage__photo--<?php echo (int) $why_i + 1; ?>">
+						<img
+							src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/' . $why_rel ); ?>"
+							alt=""
+							<?php if ( is_array( $why_size ) ) : ?>
+								width="<?php echo (int) $why_size[0]; ?>"
+								height="<?php echo (int) $why_size[1]; ?>"
+							<?php endif; ?>
+							loading="lazy"
+							decoding="async"
+						>
+					</div>
+				<?php endforeach; ?>
+			</div>
+		<?php endif; ?>
+
+		<div class="home-why-choose__content">
+			<h2 id="home-why-heading" class="ccs-title">
+				<?php
+				esc_html_e( 'Why Choose Us for Home Care in Maidstone?', 'ccs-wp-theme' );
+				?>
 			</h2>
 			<p class="home-why-choose__subheading">
 				<?php esc_html_e( 'The difference is who turns up, and how often it’s the same person.', 'ccs-wp-theme' ); ?>
 			</p>
-			<?php
-			/*
-			 * Proof rail. On a wide screen this column held a heading and one
-			 * italic line against five paragraphs beside it, so most of the rail
-			 * was empty and the section read as a wall of prose with a label.
-			 *
-			 * Every point below is a claim the site already makes and can stand
-			 * behind — the CQC rating from the section above, the years and
-			 * coverage from the hero trust strip, the rest from this section's
-			 * own copy. Nothing here is a new statistic: an unverifiable number
-			 * on a care provider's homepage is worse than an empty column.
-			 */
-			$why_proof = array(
-				__( 'Rated Good by the CQC', 'ccs-wp-theme' ),
-				__( '10+ years caring for Kent families', 'ccs-wp-theme' ),
-				__( 'Adults and children supported', 'ccs-wp-theme' ),
-				__( 'Care day or night, across Kent', 'ccs-wp-theme' ),
-			);
-			?>
-			<ul class="home-why-choose__proof" role="list">
-				<?php foreach ( $why_proof as $why_point ) : ?>
-					<li class="home-why-choose__proof-item">
-						<svg class="home-why-choose__proof-icon" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false">
-							<circle cx="10" cy="10" r="10" fill="currentColor" opacity="0.14" />
-							<path d="M6 10.4l2.6 2.6L14.4 7.2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
-						</svg>
-						<span><?php echo esc_html( $why_point ); ?></span>
-					</li>
-				<?php endforeach; ?>
-			</ul>
-		</div>
-		<div class="home-why-choose__body">
-			<p>
+
+			<p class="home-why-choose__text">
 				<?php esc_html_e( 'We support adults and children across Maidstone and the rest of Kent, day or night. Our carers live locally, and the same small team comes back each visit.', 'ccs-wp-theme' ); ?>
-			</p>
-			<p>
 				<?php esc_html_e( 'We don’t rush, and we don’t rotate staff every other week.', 'ccs-wp-theme' ); ?>
 			</p>
-			<?php
-			/*
-			 * Set as a display quote rather than left inside the paragraph above.
-			 * This is the most distinctive sentence on the site — every competitor
-			 * writes "care that comes from the heart"; nobody else writes about how
-			 * you take your tea. Buried in the middle of a three-paragraph block it
-			 * was doing none of the work it is capable of.
-			 */
-			?>
+
 			<blockquote class="home-why-choose__pull">
 				<p>
 					<?php esc_html_e( 'We take the time to learn how you like your tea, what makes you laugh, and what puts you at ease on a harder day.', 'ccs-wp-theme' ); ?>
@@ -84,15 +102,29 @@ $services_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'home-care-ser
 					<?php esc_html_e( 'That’s the part a care plan can’t write down.', 'ccs-wp-theme' ); ?>
 				</cite>
 			</blockquote>
-			<p>
+
+			<p class="home-why-choose__text">
 				<?php esc_html_e( 'Good care doesn’t stop when the task list is finished. It shows in whether the person at the door already knows how the week has gone.', 'ccs-wp-theme' ); ?>
 			</p>
-			<p>
-				<a href="<?php echo esc_url( $services_url ); ?>" class="home-why-choose__link">
+
+			<ul class="why-proof" role="list">
+				<?php foreach ( $why_proof as $why_point ) : ?>
+					<li class="why-proof__item">
+						<span class="ccs-badge ccs-badge--sm"><?php echo ccs_icon( $why_point['icon'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
+						<span class="why-proof__text"><?php echo esc_html( $why_point['text'] ); ?></span>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+
+			<div class="ccs-actions">
+				<a href="<?php echo esc_url( $services_url ); ?>" class="btn btn-quiet">
 					<?php esc_html_e( 'Learn more about our services', 'ccs-wp-theme' ); ?>
-					<span aria-hidden="true">&rarr;</span>
 				</a>
-			</p>
+				<a href="<?php echo esc_url( $about_url ); ?>" class="btn btn-quiet">
+					<?php esc_html_e( 'Our care approach', 'ccs-wp-theme' ); ?>
+				</a>
+			</div>
 		</div>
+
 	</div>
 </section>

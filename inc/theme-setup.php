@@ -64,6 +64,57 @@ function ccs_body_class_ds_root( $classes ) {
 add_filter( 'body_class', 'ccs_body_class_ds_root', 10, 1 );
 
 /**
+ * Whether a post's featured image is big enough to fill a full-bleed hero.
+ *
+ * A full-bleed banner is about 1440px wide on a laptop. A 500–550px source
+ * stretched across it was blurred even on ordinary screens (CCS/CLAUDE.md rule
+ * 15), and the user's photo rule forbids upscaling. Below this width the hero
+ * uses the inset variant instead (text on the tint band, the photo framed at a
+ * size its own pixels can fill), so the page is never blurrier than its photo.
+ *
+ * @param int $post_id Post ID.
+ * @return bool
+ */
+function ccs_hero_photo_fills_banner( $post_id ) {
+	$thumb = get_post_thumbnail_id( $post_id );
+	if ( ! $thumb ) {
+		return false;
+	}
+	$meta   = wp_get_attachment_metadata( $thumb );
+	$width  = is_array( $meta ) && isset( $meta['width'] ) ? (int) $meta['width'] : 0;
+	$height = is_array( $meta ) && isset( $meta['height'] ) ? (int) $meta['height'] : 0;
+	/*
+	 * Height matters as much as width: the banner is about 612px tall, so a
+	 * wide but shallow strip (Care Guides' 1350×400) was blown up 1.5x to
+	 * cover it, blurred on every screen despite passing the width test.
+	 */
+	return $width >= (int) apply_filters( 'ccs_full_bleed_min_width', 1200 )
+		&& $height >= (int) apply_filters( 'ccs_full_bleed_min_height', 600 );
+}
+
+/**
+ * Pixel width at which an inset hero photo stops being sharp on a 2x screen:
+ * the file's own width divided by 1.4. Printed as a CSS custom property, so the
+ * frame never displays a photo larger than it can render cleanly.
+ *
+ * @param int $post_id Post ID.
+ * @return int
+ */
+function ccs_hero_photo_max_width( $post_id ) {
+	$meta   = wp_get_attachment_metadata( get_post_thumbnail_id( $post_id ) );
+	$width  = is_array( $meta ) && isset( $meta['width'] ) ? (int) $meta['width'] : 0;
+	$height = is_array( $meta ) && isset( $meta['height'] ) ? (int) $meta['height'] : 0;
+	if ( ! $width || ! $height ) {
+		return 0;
+	}
+	/*
+	 * The frame is 4:3 and crops to cover, so both dimensions limit it: at width
+	 * w the frame is 0.75w tall, and each needs 1.4 source pixels per CSS pixel.
+	 */
+	return (int) floor( min( $width / 1.4, $height / 1.05 ) );
+}
+
+/**
  * Whether a page opens with the full-bleed photo hero.
  *
  * Single source of truth, and it needs to be. Two separate places decide things
@@ -111,7 +162,7 @@ function ccs_page_uses_photo_hero( $post_id = null ) {
 		return false;
 	}
 
-	return has_post_thumbnail( $post_id );
+	return has_post_thumbnail( $post_id ) && ccs_hero_photo_fills_banner( $post_id );
 }
 
 /**
@@ -144,13 +195,35 @@ function ccs_body_class_photo_hero( $classes ) {
 	 */
 	if ( is_front_page()
 		|| ( is_page() && ccs_page_uses_photo_hero( get_queried_object_id() ) )
-		|| ( is_singular( 'service' ) && has_post_thumbnail( get_queried_object_id() ) )
+		|| ( is_singular( 'service' ) && ccs_hero_photo_fills_banner( get_queried_object_id() ) )
 	) {
 		$classes[] = 'has-photo-hero';
 	}
 	return $classes;
 }
 add_filter( 'body_class', 'ccs_body_class_photo_hero', 10, 1 );
+
+/**
+ * Repair rewrite rules generated before the permalink structure took effect.
+ *
+ * Sites activated before the ensure_permalinks() fix (inc/class-theme-activation.php)
+ * have /%postname%/ saved but rules still built for the install default
+ * (/%year%/%monthnum%/%day%/%postname%/), so a post URL and any unknown URL
+ * match nothing, parse as the front page, and 301 to the homepage.
+ *
+ * Rebuilds the rules once per permalink structure, after the CPTs have
+ * registered at default priority, and records it so it never runs again for
+ * that structure. A soft flush, so no .htaccess write.
+ */
+function ccs_repair_stale_rewrite_rules() {
+	$structure = (string) get_option( 'permalink_structure' );
+	if ( '' === $structure || get_option( 'ccs_rewrite_rules_for' ) === $structure ) {
+		return;
+	}
+	flush_rewrite_rules( false );
+	update_option( 'ccs_rewrite_rules_for', $structure, false );
+}
+add_action( 'init', 'ccs_repair_stale_rewrite_rules', 99 );
 
 /**
  * Use classic editor for pages (Visual/Code tabs).
@@ -248,6 +321,14 @@ function ccs_theme_scripts() {
 		array( 'ccs-design-system' ),
 		$version
 	);
+	// Shared section components (cards, steps, closing card): used by the
+	// homepage and the inner pages alike, so it loads everywhere.
+	wp_enqueue_style(
+		'ccs-sections',
+		$theme_uri . '/assets/css/sections.css',
+		array( 'ccs-design-system', 'ccs-components' ),
+		$version
+	);
 	wp_enqueue_style(
 		'ccs-header',
 		$theme_uri . '/assets/css/header.css',
@@ -278,7 +359,7 @@ function ccs_theme_scripts() {
 		wp_enqueue_style(
 			'ccs-homepage',
 			$theme_uri . '/assets/css/homepage.css',
-			array( 'ccs-design-system', 'ccs-components' ),
+			array( 'ccs-design-system', 'ccs-components', 'ccs-sections' ),
 			$version
 		);
 	}
@@ -292,11 +373,11 @@ function ccs_theme_scripts() {
 		);
 	}
 
-	if ( is_singular( 'location' ) ) {
+	if ( is_singular( 'location' ) || is_post_type_archive( 'location' ) ) {
 		wp_enqueue_style(
 			'ccs-location-page',
 			$theme_uri . '/assets/css/location-page.css',
-			array( 'ccs-design-system', 'ccs-components' ),
+			array( 'ccs-design-system', 'ccs-components', 'ccs-sections' ),
 			$version
 		);
 	}
@@ -556,3 +637,41 @@ function ccs_register_accessibility_checker() {
 	}
 }
 add_action( 'init', 'ccs_register_accessibility_checker', 25 );
+
+/**
+ * Version theme CSS/JS by file modification time, not THEME_VERSION.
+ *
+ * Every asset was enqueued with THEME_VERSION ('1.0.0'), which has never
+ * changed, so an edited stylesheet kept the same URL and browsers kept serving
+ * their cached copy. Combined with the page HTML's own cache lifetime
+ * (inc/performance/class-cache-control.php sends public, max-age=3600) that
+ * produced a mixed page after a deploy: new HTML painted with old CSS, or old
+ * HTML with new CSS, unstyled sections and all. It was seen exactly that way
+ * during the November 2026 homepage rebuild.
+ *
+ * With the file's mtime as ?ver, a changed file gets a new URL, so cached HTML
+ * keeps pointing at the CSS it was written for and fresh HTML gets fresh CSS:
+ * whichever page a visitor has, it is internally consistent. Applied in one
+ * place to every theme asset rather than at each of the enqueue calls above.
+ * Assets from plugins or core are left alone.
+ *
+ * @param string $src Asset URL as enqueued.
+ * @return string URL with ?ver set to the file's mtime when it is a theme file.
+ */
+function ccs_version_theme_asset_by_mtime( $src ) {
+	$theme_uri = get_template_directory_uri();
+	$clean     = strtok( (string) $src, '?' );
+
+	if ( ! is_string( $clean ) || strpos( $clean, $theme_uri ) !== 0 ) {
+		return $src;
+	}
+
+	$path = get_template_directory() . substr( $clean, strlen( $theme_uri ) );
+	if ( ! is_file( $path ) ) {
+		return $src;
+	}
+
+	return add_query_arg( 'ver', (string) filemtime( $path ), $src );
+}
+add_filter( 'style_loader_src', 'ccs_version_theme_asset_by_mtime', 20 );
+add_filter( 'script_loader_src', 'ccs_version_theme_asset_by_mtime', 20 );

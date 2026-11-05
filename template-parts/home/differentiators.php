@@ -52,22 +52,38 @@ $items = array(
 ?>
 
 <section class="home-differentiators" aria-labelledby="home-diff-heading">
-	<div class="home-differentiators__inner container container--lg">
-		<p class="ccs-eyebrow ccs-eyebrow--on-dark"><?php esc_html_e( 'What sets us apart', 'ccs-wp-theme' ); ?></p>
-		<h2 id="home-diff-heading" class="home-differentiators__heading">
-			<?php esc_html_e( 'What we do differently', 'ccs-wp-theme' ); ?>
-		</h2>
-		<p class="home-differentiators__intro">
-			<?php esc_html_e( 'Every provider says they care. These are the four things you can hold us to.', 'ccs-wp-theme' ); ?>
-		</p>
-		<div class="home-differentiators__grid">
+	<div class="container container--lg">
+
+		<header class="ccs-head ccs-head--center">
+			<h2 id="home-diff-heading" class="ccs-title ccs-title--on-dark">
+				<?php
+				/* translators: %s: the emphasised word, drawn with a brush underline. */
+				printf( esc_html__( 'What we do %s', 'ccs-wp-theme' ), ccs_accent( __( 'differently', 'ccs-wp-theme' ) ) );
+				?>
+			</h2>
+			<p class="ccs-lede ccs-lede--on-dark">
+				<?php esc_html_e( 'Every provider says they care. These are the four things you can hold us to.', 'ccs-wp-theme' ); ?>
+			</p>
+		</header>
+
+		<?php
+		/*
+		 * A 2x2 of panels on the dark band rather than four loose text blocks.
+		 * Loose, the heading sat alone in the top-left with half the band empty
+		 * beside it and the items read as a list; as panels (a lighter tone of
+		 * the same plum, no blur) they read as four commitments of equal
+		 * weight, which is what the intro promises.
+		 */
+		?>
+		<ol class="home-diff-grid" role="list">
 			<?php foreach ( $items as $i => $item ) : ?>
-				<article class="home-diff-item">
-					<span class="home-diff-item__number" aria-hidden="true"><?php echo (int) $i + 1; ?></span>
-					<h3 class="home-diff-item__title"><?php echo esc_html( $item['title'] ); ?></h3>
-					<p class="home-diff-item__desc"><?php echo esc_html( $item['desc'] ); ?></p>
-				</article>
+				<li class="diff-card">
+					<span class="diff-card__num" aria-hidden="true"><?php echo esc_html( str_pad( (string) ( (int) $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
+					<h3 class="diff-card__title"><?php echo esc_html( $item['title'] ); ?></h3>
+					<p class="diff-card__text"><?php echo esc_html( $item['desc'] ); ?></p>
+				</li>
 			<?php endforeach; ?>
-		</div>
+		</ol>
+
 	</div>
 </section>

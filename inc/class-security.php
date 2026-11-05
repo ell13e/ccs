@@ -68,13 +68,32 @@ class CCS_Security {
 	 * @return string
 	 */
 	private function get_content_security_policy() {
+		/*
+		 * Named third-party hosts, each for one embed the theme itself ships.
+		 * Without them default-src 'self' blocked every one in production, not
+		 * just in local preview: the Current Vacancies job portal rendered as an
+		 * empty grey box, the About story video could not play, and the live CQC
+		 * rating widget never loaded (its static fallback badge showed instead).
+		 *
+		 * - www.cqc.org.uk: rating widget script, its JSONP callback and its
+		 *   stylesheets (template-parts/home/cqc-section.php).
+		 * - cvminder.com: job portal iframe (template-parts/careers/cv-minder-embed.php).
+		 * - www.youtube-nocookie.com: click-to-load video (assets/js/video-embed.js).
+		 * - www.google.com: optional Maps embed set in the Customizer for the
+		 *   contact page (ccs_contact_map_embed).
+		 *
+		 * Analytics hosts (Google Tag Manager, Meta pixel) are deliberately not
+		 * listed; add them through the ccs_content_security_policy filter if those
+		 * integrations are switched on.
+		 */
 		$directives = array(
 			"default-src 'self'",
-			"script-src 'self' 'unsafe-inline'", // WP localize and inline scripts
-			"style-src 'self' 'unsafe-inline'",
+			"script-src 'self' 'unsafe-inline' https://www.cqc.org.uk", // WP localize and inline scripts; CQC widget.
+			"style-src 'self' 'unsafe-inline' https://www.cqc.org.uk",
 			"img-src 'self' data: https:",
 			"font-src 'self' data:",
 			"connect-src 'self'",
+			"frame-src 'self' https://cvminder.com https://www.youtube-nocookie.com https://www.google.com",
 			"frame-ancestors 'self'",
 			"base-uri 'self'",
 			"form-action 'self'",
