@@ -170,7 +170,8 @@ signed off by the client):
 ## Standing constraints
 
 - **The homepage hero keeps its current energy and tone.** Tiny polish only,
-  unless a change is agreed.
+  unless a change is agreed. (Nov 2026, agreed: larger headline, one action,
+  and the route strip below it. Same photo, scrim and copy.)
 - **Never invent claims, numbers, reviews or ratings.** CQC facts come from
   cqc.org.uk.
 - **New copy:** no em dashes, sentence case, and the main call-to-action label

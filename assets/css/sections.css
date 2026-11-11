@@ -1222,67 +1222,78 @@
 }
 
 /* =========================================================================
-   STEPS REDESIGNED (Nov 2026). The client called the unboxed version (small
-   badges on a hairline) "awful". Each step is now a white card with a plum
-   numeral, larger type, and a chevron between cards so the order still reads
-   as one sequence. Used on the homepage and on service pages.
+   STEPS AS ONE PANEL (Nov 2026). Two earlier versions were judged ugly:
+   badges on a hairline, then three floating cards with chevrons. Now one soft
+   lilac panel split into three by white rules, the same anatomy as the route
+   strip under the homepage hero, so the page uses one shape for "several
+   short things in a row". Used on the homepage and the switching page;
+   service pages share the template part.
    ========================================================================= */
-.ccs-steps {
-	--step-pad: clamp(1.75rem, 1.2rem + 1.4vw, 2.5rem);
-	--step-gap: var(--space-xl);
+.ccs-steps--panel {
+	--step-pad: clamp(1.5rem, 1rem + 1.6vw, 2.5rem);
+	gap: 0;
+	overflow: hidden;
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-band-tint);
+}
+
+.ccs-steps--panel .ccs-step {
+	padding: var(--step-pad);
+}
+
+.ccs-steps--panel .ccs-step + .ccs-step {
+	border-top: 2px solid var(--color-background);
 }
 
 @media (min-width: 800px) {
-	.ccs-steps {
-		--step-gap: clamp(2.25rem, 1.5rem + 2vw, 3.5rem);
+	.ccs-steps--panel .ccs-step + .ccs-step {
+		border-top: 0;
+		border-left: 2px solid var(--color-background);
 	}
 }
 
-.ccs-step {
-	border-radius: var(--radius-2xl);
-	background-color: var(--color-background);
-	box-shadow: var(--shadow-float);
-}
-
-/* The drawn rule joined the badges when the steps were unboxed; across cards
-   it would run through their edges. The chevron below replaces it. */
-.ccs-step:not(:last-child)::before {
+/* No connector rule or arrow: the panel itself groups the sequence. */
+.ccs-steps--panel .ccs-step::before,
+.ccs-steps--panel .ccs-step::after {
 	display: none;
 }
 
-.ccs-step:not(:last-child)::after {
-	content: "";
-	position: absolute;
-	z-index: 1;
-	left: 50%;
-	bottom: calc(var(--step-gap) / -2 - 0.25rem);
-	width: 0.875rem;
-	height: 0.875rem;
-	border-right: 2px solid var(--color-secondary-dark);
-	border-bottom: 2px solid var(--color-secondary-dark);
-	transform: translateX(-50%) rotate(45deg);
+.ccs-steps--panel .ccs-step__num {
+	width: 3rem;
+	height: 3rem;
+	margin-bottom: var(--space-md);
+	background-color: var(--color-primary);
+	box-shadow: none;
+	color: #fff;
+	font-size: 1.25rem;
 }
 
-@media (min-width: 800px) {
-	.ccs-step:not(:last-child)::after {
-		left: auto;
-		top: calc(var(--step-pad) + 1.75rem - 0.4375rem);
-		right: calc(var(--step-gap) / -2 - 0.25rem);
-		bottom: auto;
-		transform: rotate(-45deg);
-	}
+.ccs-steps--panel .ccs-step__title {
+	font-size: clamp(1.375rem, 1.2rem + 0.5vw, 1.5rem);
 }
 
-.ccs-step__num {
-	font-size: 1.5rem;
+/* On a tint band the panel takes white instead (service pages). */
+.ccs-section--tint .ccs-steps--panel,
+.home-services + .home-steps .ccs-steps--panel {
+	background-color: var(--color-band-tint);
 }
 
-.ccs-step__title {
-	font-size: clamp(1.5rem, 1.3rem + 0.6vw, 1.75rem);
+/* A quiet text link for secondary actions under a section (rule 8). */
+.ccs-text-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	min-height: 2.75rem;
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-primary);
+	text-decoration: underline;
+	text-decoration-color: color-mix(in srgb, var(--color-primary) 35%, transparent);
+	text-underline-offset: 0.2em;
 }
 
-.ccs-step__text {
-	font-size: var(--text-md);
+.ccs-text-link:hover {
+	color: var(--color-primary-dark);
+	text-decoration-color: currentColor;
 }
 
 /* =========================================================================
@@ -1369,4 +1380,306 @@
 .home-why-choose .why-proof__item .ccs-badge {
 	background-color: var(--color-primary);
 	color: #fff;
+}
+
+
+/* The widget is its own white card: our wrapper only clips its corners and
+   adds the shadow, so there is no frame around a frame. */
+.home-cqc__badge {
+	padding: 0;
+	overflow: hidden;
+	border-radius: var(--radius-xl);
+	background-color: #fff;
+}
+
+
+/* =========================================================================
+   SPLIT HEAD, RETIRED (Nov 2026). Title left and lede right left a ragged
+   empty corner and pulled the two apart; the client flagged it on the
+   homepage services, the services hub and the partner wall. Every
+   .ccs-head--split now renders as a centred head over its grid, the
+   site's one pattern for a heading above cards. Ledes balance onto two lines.
+   ========================================================================= */
+.ccs-head--split {
+	display: block;
+	max-width: 60rem;
+	margin-inline: auto;
+	text-align: center;
+}
+
+.ccs-head--split .ccs-title {
+	max-width: none;
+	text-wrap: balance;
+}
+
+.ccs-head--split .ccs-lede,
+.ccs-head--split .ccs-lede p {
+	max-width: none;
+	margin-inline: auto;
+	text-wrap: balance;
+}
+
+.ccs-head--split .ccs-lede {
+	margin-top: var(--space-md);
+}
+
+/* Phones: left-aligned, as every centred head on this site. */
+@media (max-width: 599px) {
+	.ccs-head--split {
+		text-align: left;
+	}
+}
+
+
+/* =========================================================================
+   CQC BAND, ONE COLUMN (Nov 2026; the client found the two-column version
+   ugly). Heading and one line, centred, with the regulator's own tile
+   directly beneath. No frame of ours around it: the tile is already a card.
+   ========================================================================= */
+.home-cqc .home-cqc__inner {
+	display: block;
+	text-align: center;
+}
+
+.home-cqc .home-cqc__content {
+	max-width: 62rem;
+	margin-inline: auto;
+}
+
+.home-cqc .home-cqc__content .ccs-eyebrow {
+	justify-content: center;
+}
+
+.home-cqc .home-cqc__content .ccs-lede {
+	max-width: none;
+	margin-inline: auto;
+	text-wrap: balance;
+}
+
+.home-cqc .home-cqc__badge {
+	width: fit-content;
+	max-width: 100%;
+	margin: var(--space-xl) auto 0;
+	padding: 0;
+	border: 0;
+	border-radius: var(--radius-xl);
+	background: none;
+	box-shadow: var(--shadow-float);
+	text-align: left;
+}
+
+@media (max-width: 599px) {
+	.home-cqc .home-cqc__inner {
+		text-align: left;
+	}
+
+	.home-cqc .home-cqc__content .ccs-eyebrow {
+		justify-content: flex-start;
+	}
+
+	.home-cqc .home-cqc__badge {
+		margin-inline: 0;
+	}
+}
+
+/* =========================================================================
+   GETTING STARTED (page-templates/template-getting-started.php), rebuilt
+   Nov 2026. Steps as numbered rows on white: number and title in the left
+   column, the client's text at reading width on the right, a hairline
+   between rows. Reference sections in a "Good to know" accordion on tint.
+   ========================================================================= */
+.gs-intro {
+	max-width: 46rem;
+	margin-bottom: var(--space-2xl);
+}
+
+.gs-intro__lede p {
+	margin: 0;
+}
+
+.gs-intro__lede p + p {
+	margin-top: var(--space-sm);
+}
+
+.gs-step-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-top: 1px solid var(--color-hairline);
+}
+
+.gs-step {
+	display: grid;
+	gap: var(--space-sm) var(--space-2xl);
+	padding-block: clamp(1.75rem, 1.2rem + 1.6vw, 2.75rem);
+	border-bottom: 1px solid var(--color-hairline);
+}
+
+@media (min-width: 900px) {
+	.gs-step {
+		grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr);
+	}
+}
+
+.gs-step__head {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-md);
+}
+
+.gs-step__num {
+	flex: none;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+	line-height: 1;
+	color: var(--color-accent);
+	font-variant-numeric: tabular-nums;
+}
+
+.gs-step__title {
+	margin: 0;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.375rem, 1.2rem + 0.6vw, 1.75rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.25;
+	color: var(--color-ink);
+	text-wrap: balance;
+}
+
+.gs-step__body {
+	max-width: 42rem;
+	font-size: var(--text-md);
+	line-height: 1.7;
+	color: var(--color-ink-soft);
+}
+
+.gs-step__body > :first-child {
+	margin-top: 0;
+}
+
+.gs-step__body > :last-child {
+	margin-bottom: 0;
+}
+
+.gs-step__body p + p {
+	margin-top: var(--space-sm);
+}
+
+.gs-step__body a {
+	color: var(--color-primary);
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+
+/* Centred ledes: wide enough to stay on two lines (rule 10: centred text
+   over two lines is hard to read). */
+.ccs-head--split {
+	max-width: 68rem;
+}
+
+.home-cqc .home-cqc__content {
+	max-width: 68rem;
+}
+
+
+/* =========================================================================
+   CQC RATING, IN THE SITE'S OWN TYPE (Nov 2026). Three facts in a row under
+   the heading, split by hairlines: rating, date, report link. No card. The
+   dot is the regulator's own colour for the rating (rule 3: a labelled
+   state, not decoration).
+   ========================================================================= */
+.cqc-rating {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin: var(--space-2xl) 0 0;
+	padding: 0;
+}
+
+.cqc-rating__item {
+	padding: var(--space-sm) clamp(1.5rem, 1rem + 2vw, 3rem);
+	text-align: center;
+}
+
+.cqc-rating__item + .cqc-rating__item {
+	border-left: 1px solid var(--color-hairline);
+}
+
+.cqc-rating__label {
+	margin: 0 0 0.5rem;
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--color-ink-soft);
+}
+
+.cqc-rating__value {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.6rem;
+	margin: 0;
+	min-height: 3rem;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.1;
+	color: var(--color-ink);
+}
+
+.cqc-rating__value--date,
+.cqc-rating__value--link {
+	font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+}
+
+.cqc-rating__value--link a {
+	color: var(--color-primary);
+	text-decoration: underline;
+	text-decoration-color: color-mix(in srgb, var(--color-primary) 35%, transparent);
+	text-underline-offset: 0.2em;
+}
+
+.cqc-rating__value--link a:hover {
+	color: var(--color-primary-dark);
+	text-decoration-color: currentColor;
+}
+
+.cqc-rating__dot {
+	width: 0.7em;
+	height: 0.7em;
+	border-radius: 50%;
+	background-color: #3F8A1E; /* CQC "Good" green */
+}
+
+.cqc-rating--outstanding .cqc-rating__dot { background-color: #1D70B8; }
+.cqc-rating--requires-improvement .cqc-rating__dot { background-color: #E07A10; }
+.cqc-rating--inadequate .cqc-rating__dot { background-color: #C0281C; }
+
+@media (max-width: 599px) {
+	.cqc-rating {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.cqc-rating__item {
+		padding-inline: 0;
+		text-align: left;
+	}
+
+	.cqc-rating__item + .cqc-rating__item {
+		border-left: 0;
+		border-top: 1px solid var(--color-hairline);
+	}
+
+	.cqc-rating__value {
+		justify-content: flex-start;
+	}
+}
+
+.cqc-rating__value--link a {
+	display: inline-flex;
+	align-items: center;
+	min-height: 2.75rem;
 }

@@ -49,7 +49,7 @@ if ( $badge_custom === '' && ! file_exists( $badge_path ) ) {
 >
 	<img
 		src="<?php echo esc_url( $badge_src ); ?>"
-		alt="<?php esc_attr_e( 'Regulated by CQC — Care Quality Commission', 'ccs-wp-theme' ); ?>"
+		alt="<?php esc_attr_e( 'Regulated by the Care Quality Commission (CQC)', 'ccs-wp-theme' ); ?>"
 		width="135"
 		height="64"
 		loading="lazy"

@@ -99,6 +99,7 @@ function ccs_create_resource_downloads_table() {
 		last_name varchar(100) NOT NULL,
 		email varchar(255) NOT NULL,
 		phone varchar(50) DEFAULT NULL,
+		heard_about varchar(120) DEFAULT NULL,
 		date_of_birth date DEFAULT NULL,
 		consent tinyint(1) NOT NULL DEFAULT 1,
 		ip_address varchar(45) DEFAULT NULL,
@@ -119,6 +120,22 @@ function ccs_create_resource_downloads_table() {
 	dbDelta( $sql );
 }
 add_action( 'after_switch_theme', 'ccs_create_resource_downloads_table', 40 );
+
+/**
+ * Bring an existing downloads table up to date (the heard_about column was
+ * added Nov 2026). dbDelta only adds what is missing, so this is safe to run;
+ * the version option keeps it to once per change.
+ */
+function ccs_maybe_upgrade_resource_downloads_table() {
+	if ( '2' === get_option( 'ccs_resource_downloads_db_version' ) ) {
+		return;
+	}
+	ccs_create_resource_downloads_table();
+	update_option( 'ccs_resource_downloads_db_version', '2' );
+}
+add_action( 'admin_init', 'ccs_maybe_upgrade_resource_downloads_table' );
+add_action( 'wp_ajax_nopriv_ccs_request_resource_download', 'ccs_maybe_upgrade_resource_downloads_table', 1 );
+add_action( 'wp_ajax_ccs_request_resource_download', 'ccs_maybe_upgrade_resource_downloads_table', 1 );
 
 /**
  * Add metaboxes for resource file, email template, settings.

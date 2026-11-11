@@ -62,11 +62,6 @@ function ccs_team_members() {
 			'photo' => 'shayna-rae-fuller.jpg',
 		),
 		array(
-			'name'  => 'Danielle King',
-			'role'  => __( 'Field Care Supervisor', 'ccs-wp-theme' ),
-			'photo' => 'danielle-king.jpg',
-		),
-		array(
 			'name'  => 'Heidi Griffen',
 			'role'  => __( 'Field Care Supervisor', 'ccs-wp-theme' ),
 			'photo' => 'heidi-griffen.jpg',

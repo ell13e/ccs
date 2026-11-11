@@ -69,8 +69,9 @@ $ccs_emergency       = $ccs_emergency_on && ( $ccs_emergency_text || $ccs_phone 
 	// default pointed at a URL that doesn't exist (the page slug is contact-us).
 	$ccs_contact_default = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' ) : home_url( '/contact-us/' );
 	$ccs_cta_url = get_theme_mod( 'ccs_cta_url', $ccs_contact_default );
-	// "Switch to us" — dedicated CTA for families unhappy with their current provider (see BUILD-LOG.md 2026-08-19). Points at Contact until a dedicated page/form exists.
-	$ccs_switch_url = get_theme_mod( 'ccs_switch_to_us_url', $ccs_contact_default );
+	// "Switch to us": families unhappy with their current provider. Its own page
+	// since Nov 2026 (inc/switching.php); a Customizer URL still overrides.
+	$ccs_switch_url = function_exists( 'ccs_switch_url' ) ? ccs_switch_url() : get_theme_mod( 'ccs_switch_to_us_url', $ccs_contact_default );
 
 	// On careers pages, show careers menu if assigned; otherwise primary.
 	$ccs_careers_page_ids = (array) get_option( 'ccs_careers_page_ids', array() );
@@ -196,6 +197,14 @@ $ccs_emergency       = $ccs_emergency_on && ( $ccs_emergency_text || $ccs_phone 
 				if ( ! $ccs_is_careers_context ) :
 					?>
 					<a href="<?php echo esc_url( $ccs_switch_url ); ?>" class="header-actions__switch btn btn-quiet"><?php esc_html_e( 'Switch to us', 'ccs-wp-theme' ); ?></a>
+				<?php else : ?>
+					<?php
+					/*
+					 * The way back. The careers header swaps in the careers menu, which
+					 * left no route to the care side but the logo (client, Nov 2026).
+					 */
+					?>
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="header-actions__switch btn btn-quiet"><?php esc_html_e( 'Looking for care?', 'ccs-wp-theme' ); ?></a>
 				<?php endif; ?>
 			</div>
 		</div>
@@ -239,8 +248,17 @@ $ccs_emergency       = $ccs_emergency_on && ( $ccs_emergency_text || $ccs_phone 
 			 */
 			?>
 			<div class="mobile-menu__actions">
-				<a href="<?php echo esc_url( $ccs_cta_url ); ?>" class="mobile-menu__cta btn btn-primary"><?php esc_html_e( 'Book a free consultation', 'ccs-wp-theme' ); ?></a>
-				<a href="<?php echo esc_url( $ccs_switch_url ); ?>" class="mobile-menu__switch btn btn-quiet"><?php esc_html_e( 'Switch to us', 'ccs-wp-theme' ); ?></a>
+				<?php if ( $ccs_is_careers_context ) : ?>
+					<?php
+					// Careers: the job seeker's action, then the way back to the care site.
+					$ccs_vacancies_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'current-vacancies' ) : home_url( '/careers/current-vacancies/' );
+					?>
+					<a href="<?php echo esc_url( $ccs_vacancies_url ); ?>" class="mobile-menu__cta btn btn-primary"><?php esc_html_e( 'See current vacancies', 'ccs-wp-theme' ); ?></a>
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="mobile-menu__switch btn btn-quiet"><?php esc_html_e( 'Looking for care? Go to our care site', 'ccs-wp-theme' ); ?></a>
+				<?php else : ?>
+					<a href="<?php echo esc_url( $ccs_cta_url ); ?>" class="mobile-menu__cta btn btn-primary"><?php esc_html_e( 'Book a free consultation', 'ccs-wp-theme' ); ?></a>
+					<a href="<?php echo esc_url( $ccs_switch_url ); ?>" class="mobile-menu__switch btn btn-quiet"><?php esc_html_e( 'Switch to us', 'ccs-wp-theme' ); ?></a>
+				<?php endif; ?>
 			</div>
 		</div>
 	</div>

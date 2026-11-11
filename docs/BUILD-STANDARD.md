@@ -10,15 +10,28 @@ status column changes.
 
 | £30k standard | Status (Nov 2026) |
 |---|---|
-| Every template on one design system | Yes. All 20 page types audited 11 Nov 2026 at 1440 and 375: no flags (`run-audit.sh`), 33 internal links all 200. |
-| Client can edit every word without a developer | Mostly. 134 strings are in the Customizer: Homepage content and Page wording (134 in all; the template headings and short lines on inner pages), from one registry (`inc/home-content.php`, printed with `ccs_copy()`). Verified inside WordPress: both panels register, HTML is stripped on save, and an override renders. Still in PHP: the sourced CQC statistic sentence, partner names, form labels, and location-page lines that contain the town name. |
+| Every template on one design system | Yes. All 21 page types (switching page added) audited 11 Nov 2026 at 1440 and 375: no flags (`bin/qa.sh`), 34 internal links all 200. |
+| Client can edit every word without a developer | Mostly. 148 strings in the Customizer (Homepage content, Page wording) from one registry, `inc/home-content.php`; verified inside WordPress. Still in PHP: the sourced CQC statistic, partner names, form labels and answer lists, location lines containing the town name. |
 | Images sized per device (`srcset`), LCP image < ~200KB | Mostly. Theme-bundled photos now print `srcset` from width variants (`ccs_theme_image_srcset()`, `inc/theme-images.php`): the hero serves 43–221KB WebP instead of a 411KB JPEG, and homepage images at desktop fell from about 1.5MB to about 0.6MB. Still without variants: team portraits (512px, right-sized for 2x) and partner logos. |
 | Automated QA (links, a11y, visual regression) in CI | Partly. `bin/qa.sh` runs PHP syntax, the copy registry test, the design audit (20 page types at 1440 and 375) and the link check in one command; it passes locally. `.github/workflows/qa.yml` runs it on push and pull request but has not yet run on GitHub. No visual regression. |
 | Living design system doc | Stale. `design-system/MASTER.md` still describes the pre-Nov 2026 system; its font line is corrected, the section system is still undocumented there. |
 | Brand typefaces reach every visitor | Yes, since Nov 2026. Lora and Open Sans are self-hosted (`assets/fonts/*.woff2`, `@font-face` in `design-system.css`, two preloads). Before that the theme linked Google Fonts, which its own CSP blocked, so visitors saw Georgia and a system sans. |
 | Forms meet WCAG 2.1 AA | Markup yes: visible labels, optional fields marked, `autocomplete` on personal fields (contact and service call-back). Not yet tested with a screen reader. |
 | Conversion tracking | Events verified in the browser (11 Nov 2026): phone, email, main button and form success each fire once. Fixed: enquiries counted twice, failed validations counted as conversions, the mint Book button untracked, and the CSP blocking every tracking host (now allowed only when an ID is set). A cookie choice bar now asks before anything loads (on by default; tested: nothing loads before a choice, reject keeps it off, accept loads it). No ID is configured, so nothing has been confirmed inside GA4 itself. |
-| Professional photography | No: real phone photos. Needs a shoot. Never colour-correct the existing set (client rule). |
+| Professional photography | No: real phone photos. Needs a shoot. Never colour-correct the existing set (client rule). Shayna-Rae Fuller and Heidi Griffen now sit on the same white as the other headshots (background replaced on request, person untouched); their warmer phone lighting remains. |
+
+| Copy free of AI-writing habits | Theme copy yes (11 Nov 2026 audit: "X, not Y" contrasts, announcing honesty and em dashes removed from the 19 theme strings that had them). Client page text: rewrites drafted in `docs/COPY-REWRITES-FOR-APPROVAL.md`, not applied until approved. |
+
+### Definition-of-done pass, 11 Nov 2026 (§4)
+
+| # | Check | Result |
+|---|---|---|
+| 1 | Real viewports | Pass. 375 via the true-width harness (`mobile-shot.sh`), 1440 headless and in the pane. |
+| 2–6 | Overflow, one h1, heading order, contrast, targets, links | Pass. `bin/qa.sh`: 21 page types, both widths, no flags; 34 links all 200. |
+| 7 | Fresh boot | Not run. It needs a second Playground on a new database, and previews are kept to the one on 9401. Run before launch. |
+| 8 | Stale assets | Pass by design: asset URLs carry the file mtime. |
+| 9 | Hero unchanged unless agreed | Changed with the client's agreement (larger headline, one action, route strip). |
+| 10 | Side by side with ElderlyCare X | Done at 1440 and 375. Structure, rhythm and section anatomy match: contact strip over the hero, centred heads over card rows, one photo per section. The visible gap is photography (studio versus phone). |
 
 ## 2. CSS techniques to apply (from the CSS-Tricks guides, with our caveats)
 
@@ -119,6 +132,7 @@ Started.
 | Long-form page with a contents rail | `get_template_part( 'template-parts/article-body' )` (rail appears at 4+ h2s) | default page, policy pages, Care Guides |
 | Service cards | `get_template_part( 'template-parts/service-cards' )`, ordered by `ccs_ordered_services()` | services hub, location pages |
 | Plain points with an icon | `.feature-grid(--4)` > `.feature-card`; add `.feature-grid--plain` when the points aren't separate objects (no box) | Careers "what to expect" (plain), location local support (boxed) |
+| Ways in, over the hero | `.home-routes` in `template-parts/home/hero.php`: one white card with dividers, lapping over the photo's foot; three routes desktop, two on phones. | homepage |
 | The story video, large | `template-parts/home/story` (`.home-story`): centred head over one wide click-to-load video on white. Wording shared with the About page. | homepage |
 | A page hero | `template-parts/page-header` decides: full-bleed `.page-hero--photo` when the featured image is 1200px or wider (`ccs_hero_photo_fills_banner()`), `.page-hero--inset` (photo framed beside the text, capped at file width ÷ 1.4) when smaller, plain tint otherwise. The service hero uses the same test. | every inner template |
 | Section head with a long lede | `.ccs-head--split` (title left, lede right, left-aligned) instead of centring a multi-line paragraph | services hub |

@@ -56,41 +56,49 @@ $items = array(
 
 		<?php
 		/*
-		 * Redesigned Nov 2026 after the client called this band "awful": it was a
-		 * centred heading over four blocks of loose text on plum, which read as a
-		 * wall of copy. Now the argument sits on the left (heading, one line, the
-		 * page's main action) and the four commitments are panels on the right,
-		 * each led by an icon from the site's set: one tone lighter than the band,
-		 * so the depth comes from surface levels (CLAUDE.md rule 6), not effects.
+		 * Third version (Nov 2026). Panels on plum and loose text on plum were
+		 * both judged ugly: four long paragraphs at once is a wall, however it
+		 * is boxed. Now one quiet photograph beside the heading, and the four
+		 * commitments as an accordion: the titles read at a glance, each
+		 * explanation one tap away, the first open. Native <details name>, so
+		 * keyboard and screen readers work with no script.
 		 */
-		$ccs_diff_icons   = array( 'people', 'heart', 'pin', 'phone' );
-		$ccs_diff_contact = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' ) : home_url( '/contact-us/' );
+		$ccs_diff_photo = 'site-photos/WhatsApp-Image-2025-05-23-at-13.39.58-2.webp';
 		?>
-		<header class="home-diff__head">
-			<h2 id="home-diff-heading" class="ccs-title ccs-title--on-dark">
+		<?php if ( file_exists( get_template_directory() . '/assets/images/' . $ccs_diff_photo ) ) : ?>
+			<figure class="home-diff__photo" aria-hidden="true">
+				<img
+					src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/' . $ccs_diff_photo ); ?>"
+					alt=""
+					width="800"
+					height="1000"
+					<?php echo ccs_theme_image_srcset( $ccs_diff_photo, '(min-width: 960px) 440px, 92vw' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset(). ?>
+					loading="lazy"
+					decoding="async"
+				>
+			</figure>
+		<?php endif; ?>
+
+		<div class="home-diff__body">
+			<h2 id="home-diff-heading" class="ccs-title">
 				<?php
 				echo ccs_copy_accent( 'diff_title' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_copy_accent().
 				?>
 			</h2>
-			<p class="ccs-lede ccs-lede--on-dark">
-				<?php echo esc_html( ccs_copy( 'diff_lede' ) ); ?>
-			</p>
-			<div class="ccs-actions">
-				<a href="<?php echo esc_url( $ccs_diff_contact ); ?>" class="btn btn-accent">
-					<?php esc_html_e( 'Book a free consultation', 'ccs-wp-theme' ); ?>
-				</a>
-			</div>
-		</header>
+			<p class="ccs-lede"><?php echo esc_html( ccs_copy( 'diff_lede' ) ); ?></p>
 
-		<ul class="home-diff-grid" role="list">
-			<?php foreach ( $items as $i => $item ) : ?>
-				<li class="diff-card" data-ccs-exception="rule 1: four commitments as panels at the client's request (Nov 2026); as loose text the band read as a wall of copy">
-					<span class="diff-card__icon" aria-hidden="true"><?php echo ccs_icon( isset( $ccs_diff_icons[ $i ] ) ? $ccs_diff_icons[ $i ] : 'check' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
-					<h3 class="diff-card__title"><?php echo esc_html( $item['title'] ); ?></h3>
-					<p class="diff-card__text"><?php echo esc_html( $item['desc'] ); ?></p>
-				</li>
-			<?php endforeach; ?>
-		</ul>
+			<div class="diff-list">
+				<?php foreach ( $items as $i => $item ) : ?>
+					<details class="diff-item" name="differentiators"<?php echo 0 === $i ? ' open' : ''; ?>>
+						<summary class="diff-item__summary">
+							<span class="diff-item__num" aria-hidden="true"><?php echo esc_html( str_pad( (string) ( (int) $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
+							<span class="diff-item__title"><?php echo esc_html( $item['title'] ); ?></span>
+						</summary>
+						<p class="diff-item__text"><?php echo esc_html( $item['desc'] ); ?></p>
+					</details>
+				<?php endforeach; ?>
+			</div>
+		</div>
 
 	</div>
 </section>

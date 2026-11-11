@@ -81,9 +81,9 @@ $ccs_steps_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'getting-star
 		 * list already announces "1 of 3".
 		 */
 		?>
-		<ol class="ccs-steps" role="list">
+		<ol class="ccs-steps ccs-steps--panel" role="list" data-ccs-exception="rule 1: one soft panel holding the sequence, the same anatomy as the route strip under the hero">
 			<?php foreach ( $ccs_steps as $ccs_i => $ccs_step ) : ?>
-				<li class="ccs-step" data-ccs-exception="rule 1: each step is a card at the client's request (Nov 2026); unboxed, the sequence looked unfinished">
+				<li class="ccs-step">
 					<span class="ccs-step__num" aria-hidden="true"><?php echo (int) $ccs_i + 1; ?></span>
 					<h3 class="ccs-step__title"><?php echo esc_html( $ccs_step['title'] ); ?></h3>
 					<p class="ccs-step__text"><?php echo esc_html( $ccs_step['text'] ); ?></p>
@@ -92,8 +92,8 @@ $ccs_steps_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'getting-star
 		</ol>
 
 		<div class="ccs-section-foot ccs-actions ccs-actions--center">
-			<a class="btn btn-quiet" href="<?php echo esc_url( $ccs_steps_url ); ?>">
-				<?php echo esc_html( ccs_copy( 'steps_button' ) ); ?>
+			<a class="ccs-text-link" href="<?php echo esc_url( $ccs_steps_url ); ?>">
+				<?php echo esc_html( ccs_copy( 'steps_button' ) ); ?> <span aria-hidden="true">&rarr;</span>
 			</a>
 		</div>
 

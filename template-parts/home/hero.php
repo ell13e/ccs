@@ -55,25 +55,6 @@ $hero_has_fallback = file_exists( get_template_directory() . '/assets/images/sit
 
 	<div class="home-hero__scrim" aria-hidden="true"></div>
 
-	<?php if ( $hero_has_cqc_badge ) : ?>
-		<a
-			href="<?php echo esc_url( $hero_cqc_url ); ?>"
-			class="home-hero__cqc-badge"
-			target="_blank"
-			rel="noopener noreferrer"
-			aria-label="<?php esc_attr_e( 'CQC inspected and rated Good — read our full report (opens in a new window)', 'ccs-wp-theme' ); ?>"
-		>
-			<img
-				src="<?php echo esc_url( $hero_cqc_badge_src ); ?>"
-				alt=""
-				width="1184"
-				height="821"
-				<?php echo ccs_theme_image_srcset( 'cqc-badges/CQC inspected and rated good RGB.jpg', '130px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset(). ?>
-				loading="eager"
-				decoding="async"
-			>
-		</a>
-	<?php endif; ?>
 
 	<?php
 	/*
@@ -98,38 +79,118 @@ $hero_has_fallback = file_exists( get_template_directory() . '/assets/images/sit
 				<?php echo esc_html( ccs_copy( 'hero_promise' ) ); ?>
 			</p>
 
-			<p class="home-hero__support">
-				<?php echo esc_html( ccs_copy( 'hero_support' ) ); ?>
-				<span class="home-hero__support-extra"><?php echo esc_html( ccs_copy( 'hero_support_extra' ) ); ?></span>
-			</p>
-
+			<?php
+			/*
+			 * Cut back (Nov 2026; the client found the hero busy): heading, promise
+			 * and one action. The support paragraph said what the next sections
+			 * say, and the proof line repeated the CQC badge beside it.
+			 */
+			?>
 			<div class="home-hero__actions">
 				<a href="<?php echo esc_url( $hero_contact_url ); ?>" class="btn btn-accent home-hero__cta">
 					<?php esc_html_e( 'Book a free consultation', 'ccs-wp-theme' ); ?>
 				</a>
-				<?php if ( ! empty( $hero_contact['phone'] ) ) : ?>
-					<a href="<?php echo esc_url( $hero_contact['phone_link'] ); ?>" class="home-hero__call">
-						<?php
-						/* translators: %s: office phone number */
-						printf( esc_html__( 'Call %s', 'ccs-wp-theme' ), esc_html( $hero_contact['phone'] ) );
-						?>
-					</a>
-				<?php endif; ?>
 			</div>
 
-			<p class="home-hero__proof">
-				<span>
+			<?php
+			/*
+			 * The CQC rating set in the site's own type on the photo (client, Nov
+			 * 2026: "a nicely styled version of the CQC frame, not just in a card").
+			 * It replaced the regulator's badge image, which sat in a white box. The
+			 * rating and date come from Customize > CQC Information, as on the CQC
+			 * page, and link to the full report on cqc.org.uk. Bottom-right on the
+			 * content edge at desktop, under the button on phones.
+			 */
+			$hero_ratings   = array(
+				'outstanding'          => __( 'Outstanding', 'ccs-wp-theme' ),
+				'good'                 => __( 'Good', 'ccs-wp-theme' ),
+				'requires-improvement' => __( 'Requires improvement', 'ccs-wp-theme' ),
+				'inadequate'           => __( 'Inadequate', 'ccs-wp-theme' ),
+			);
+			$hero_rating    = (string) get_theme_mod( 'ccs_cqc_rating', '' );
+			$hero_rating    = isset( $hero_ratings[ $hero_rating ] ) ? $hero_rating : 'good';
+			$hero_rated_on  = (string) get_theme_mod( 'ccs_cqc_rating_date', '6 December 2023' );
+			?>
+			<a class="hero-rating hero-rating--<?php echo esc_attr( $hero_rating ); ?>" href="<?php echo esc_url( $hero_cqc_url ); ?>" target="_blank" rel="noopener noreferrer">
+				<span class="hero-rating__label"><?php esc_html_e( 'CQC overall rating', 'ccs-wp-theme' ); ?></span>
+				<span class="hero-rating__value"><span class="hero-rating__dot" aria-hidden="true"></span><?php echo esc_html( $hero_ratings[ $hero_rating ] ); ?></span>
+				<span class="hero-rating__meta">
 					<?php
-					/* translators: %d: years of care experience */
-					printf( wp_kses_post( __( '<strong>%d+ years</strong> caring for Kent families', 'ccs-wp-theme' ) ), absint( $hero_years ) );
+					if ( '' !== $hero_rated_on ) {
+						/* translators: %s: date the CQC rating was published. */
+						printf( esc_html__( 'Published %s', 'ccs-wp-theme' ), esc_html( $hero_rated_on ) );
+						echo ' &middot; ';
+					}
+					esc_html_e( 'Read the report', 'ccs-wp-theme' );
 					?>
+					<span aria-hidden="true">&rarr;</span>
 				</span>
-				<span class="home-hero__proof-sep" aria-hidden="true" data-ccs-exception="rule 3: a typographic separator between proof points, not a status"></span>
-				<a class="home-hero__cqc" href="<?php echo esc_url( $hero_cqc_url ); ?>" target="_blank" rel="noopener noreferrer">
-					<?php esc_html_e( 'CQC rated Good', 'ccs-wp-theme' ); ?><span class="screen-reader-text"> <?php esc_html_e( '(opens in a new window)', 'ccs-wp-theme' ); ?></span>
-				</a>
-			</p>
+				<span class="screen-reader-text"><?php esc_html_e( '(opens cqc.org.uk in a new window)', 'ccs-wp-theme' ); ?></span>
+			</a>
+
 
 		</div>
 	</div>
 </section>
+
+<?php
+/*
+ * The three ways in, as one card lapping over the foot of the hero. It
+ * answers the three questions people arrive with: can I talk to someone now,
+ * I already have care that is not working, where are you. The hero keeps one
+ * action, Book a free consultation (CLAUDE.md rule 8). The client asked for
+ * this strip back in this form after a two-route version (Nov 2026).
+ */
+$hero_switch_url  = function_exists( 'ccs_switch_url' ) ? ccs_switch_url() : home_url( '/contact-us/' );
+$hero_hours       = get_theme_mod( 'ccs_office_hours', 'Mon–Fri 9am–5pm' );
+$hero_address     = get_theme_mod( 'ccs_contact_address', "The Maidstone Studios, New Cut Road\nMaidstone, Kent ME14 5NZ" );
+$hero_address_one = $hero_address ? trim( preg_replace( '/\s*\n\s*/', ', ', $hero_address ) ) : '';
+$hero_directions  = $hero_address_one ? 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( $hero_address_one ) : '';
+?>
+<nav class="home-routes" aria-label="<?php esc_attr_e( 'Ways to get started', 'ccs-wp-theme' ); ?>">
+	<div class="container container--lg">
+		<ul class="home-routes__card" role="list">
+
+			<?php if ( ! empty( $hero_contact['phone'] ) ) : ?>
+				<li class="home-routes__item">
+					<span class="ccs-badge home-routes__badge" aria-hidden="true"><?php echo ccs_icon( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
+					<div class="home-routes__body">
+						<p class="home-routes__title"><?php esc_html_e( 'Talk to us today', 'ccs-wp-theme' ); ?></p>
+						<a class="home-routes__link home-routes__link--phone" href="<?php echo esc_url( $hero_contact['phone_link'] ); ?>">
+							<span class="screen-reader-text"><?php esc_html_e( 'Call', 'ccs-wp-theme' ); ?> </span><?php echo esc_html( $hero_contact['phone'] ); ?>
+						</a>
+						<?php if ( $hero_hours ) : ?>
+							<p class="home-routes__meta"><?php echo esc_html( $hero_hours ); ?></p>
+						<?php endif; ?>
+					</div>
+				</li>
+			<?php endif; ?>
+
+			<li class="home-routes__item home-routes__item--switch">
+				<span class="ccs-badge home-routes__badge" aria-hidden="true"><?php echo ccs_icon( 'switch' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
+				<div class="home-routes__body">
+					<p class="home-routes__title"><?php esc_html_e( 'Already have care?', 'ccs-wp-theme' ); ?></p>
+					<p class="home-routes__meta"><?php esc_html_e( 'Moving from another provider? We plan the handover with you.', 'ccs-wp-theme' ); ?></p>
+					<a class="home-routes__link" href="<?php echo esc_url( $hero_switch_url ); ?>"><?php esc_html_e( 'How switching works', 'ccs-wp-theme' ); ?> <span aria-hidden="true">&rarr;</span></a>
+				</div>
+			</li>
+
+			<?php if ( $hero_address ) : ?>
+				<li class="home-routes__item home-routes__item--office">
+					<span class="ccs-badge home-routes__badge" aria-hidden="true"><?php echo ccs_icon( 'pin' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
+					<div class="home-routes__body">
+						<p class="home-routes__title"><?php esc_html_e( 'Our Maidstone office', 'ccs-wp-theme' ); ?></p>
+						<address class="home-routes__meta"><?php echo nl2br( esc_html( $hero_address ) ); ?></address>
+						<?php if ( $hero_directions ) : ?>
+							<a class="home-routes__link" href="<?php echo esc_url( $hero_directions ); ?>" target="_blank" rel="noopener noreferrer">
+								<?php esc_html_e( 'Get directions', 'ccs-wp-theme' ); ?>
+								<span class="screen-reader-text"><?php esc_html_e( '(opens Google Maps in a new window)', 'ccs-wp-theme' ); ?></span>
+							</a>
+						<?php endif; ?>
+					</div>
+				</li>
+			<?php endif; ?>
+
+		</ul>
+	</div>
+</nav>

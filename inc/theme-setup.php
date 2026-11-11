@@ -389,7 +389,8 @@ function ccs_theme_scripts() {
 		);
 	}
 
-	if ( is_page_template( 'page-templates/template-contact.php' ) ) {
+	// The switching page reuses the contact form card and call card.
+	if ( is_page_template( 'page-templates/template-contact.php' ) || is_page_template( 'page-templates/template-switch.php' ) ) {
 		wp_enqueue_style(
 			'ccs-contact-page',
 			$theme_uri . '/assets/css/contact-page.css',

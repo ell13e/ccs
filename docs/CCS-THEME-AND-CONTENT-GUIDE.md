@@ -285,7 +285,6 @@ Yes, we’re experts in clinical care. But we’re also committed to ensuring ou
 | Nikki Mackay | Senior Clinical Manager (named on consultation form) |
 | Keelie Varney | Care Manager (named on consultation form) |
 | Shayna-Rae Fuller | Field Care Supervisor |
-| Danielle King | Field Care Supervisor |
 | Heidi Griffen | Field Care Supervisor |
 | Magdalena Zoledz | Recruitment Coordinator |
 

@@ -17,26 +17,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 $items = array(
 	array(
 		'icon'  => 'shield',
-		'title' => __( 'Real Support', 'ccs-wp-theme' ),
-		'body'  => __( "We don't just hand you a uniform and send you on your way. You'll get practical training, a team you can rely on, and a manager who means it when they ask how you're doing.", 'ccs-wp-theme' ),
+		'title' => __( 'Support from day one', 'ccs-wp-theme' ),
+		'body'  => __( "Practical training, a team you can rely on, and a manager who means it when they ask how you're doing.", 'ccs-wp-theme' ),
 	),
 	array(
 		'icon'  => 'clock',
-		'title' => __( 'Flexible Hours', 'ccs-wp-theme' ),
-		'body'  => __( "We understand the importance of balance. Whether you need school hours, overnight shifts or something steady and full-time, we'll build a rota that complements your life.", 'ccs-wp-theme' ),
+		'title' => __( 'Hours that fit your life', 'ccs-wp-theme' ),
+		'body'  => __( 'School hours, overnight shifts or steady full-time work. We build the rota around you.', 'ccs-wp-theme' ),
 	),
 	array(
 		'icon'  => 'people',
-		'title' => __( 'Communication', 'ccs-wp-theme' ),
-		'body'  => __( 'Your ideas, your instincts, and your voice, all matter here. We know that our best care comes from listening to the people who deliver it. If something\'s not right, we want to know.', 'ccs-wp-theme' ),
+		'title' => __( "You're listened to", 'ccs-wp-theme' ),
+		'body'  => __( "The people who deliver care often see problems first. If something's not right, we want to know.", 'ccs-wp-theme' ),
 	),
 	array(
 		'icon'  => 'badge',
-		'title' => __( 'Room to Grow', 'ccs-wp-theme' ),
-		'body'  => __( "With Continuity, progression opportunities don't stop at completing your Care Certificate. Want to do your NVQ? Try a new area? We're here to support you in taking the next step.", 'ccs-wp-theme' ),
+		'title' => __( 'Room to grow', 'ccs-wp-theme' ),
+		'body'  => __( "After the Care Certificate, we fund the next step, whether that's your Level 2 or 3 diploma or a new area of care.", 'ccs-wp-theme' ),
 	),
-);
-?>
+);?>
 <section class="ccs-section ccs-section--tint careers-expect" aria-labelledby="careers-expect-heading">
 	<div class="container container--lg">
 		<header class="ccs-head ccs-head--center">

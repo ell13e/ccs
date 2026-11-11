@@ -15,7 +15,8 @@ Blog index · Blog post · 404 · Search
 ## Homepage (`template-homepage.php`)
 Job: show that this is a trustworthy local provider and get a consultation booked.
 Primary action: Book a free consultation (hero); phone as the second option.
-1. Hero: unchanged without agreement (photo, promise line, CTAs, CQC badge).
+1. Hero: photo, larger headline, promise line, one action (Book), proof line, CQC badge. Reworked with the client's agreement, Nov 2026; further changes still need agreement.
+1b. Route strip (`.home-routes`): one white card lapping over the hero's foot: talk to us today (phone, hours), already have care (to the switching page), our office (hidden on phones).
 2. CQC band (tint): the eyebrow "Independently regulated" is one of only two on the page; the live widget in a card that fits it, shown a third larger.
 3. Why choose us (white): one photo beside copy, proof chips, one quiet button.
 4. Services (tint): split head, three `.svc-card`s, a short CTA line.
@@ -77,6 +78,17 @@ over the hero edge (call, email, visit; these are actionable, so they are cards)
 beside a dark "Prefer to talk?" call card and a plain "What happens next" list.
 No CTA band (this page is the CTA).
 Benchmark: form beside info cards; "Come and visit us"; FAQ.
+
+## Switching (`template-switch.php`, slug `switch-to-us`)
+Job: families unhappy with their current provider. The header's "Switch to us"
+button and the homepage route strip lead here. Primary: the switching form.
+1. Tint hero: "Switching your home care to us", intro, "Start my switch" (jumps to
+the form) and a quiet call button. 2. How switching works (white, `.ccs-steps`).
+3. Questions families ask before switching (tint, native `<details name>`).
+4. Form card beside the dark call card (contact-page anatomy): name, phone,
+email, current provider, when current care ends (radios), what is not working.
+Enquiries arrive tagged "Switching provider", with the answers at the top of
+the message. No CTA band. Wording in Customize > Page wording > Switching page.
 
 ## FAQs (`template-faqs.php`)
 Job: answer the worrying questions quickly. 1. Hero. 2. `.ccs-split`: sticky head with

@@ -320,6 +320,7 @@ while ( have_posts() ) :
 								</label>
 								<input type="text" id="service-cb-time" name="preferred_time" class="ccs-field__input" autocomplete="off">
 							</div>
+							<?php ccs_heard_about_field( 'service-cb-heard-about' ); ?>
 							<input type="text" name="_company" value="" tabindex="-1" autocomplete="off" aria-hidden="true" class="ccs-honeypot">
 							<button type="submit" class="btn btn-primary service-sidebar__submit"><?php esc_html_e( 'Request a call back', 'ccs-wp-theme' ); ?></button>
 							<div id="callback-form-message" data-ccs-form-message class="ccs-form-message" role="alert" aria-live="polite" hidden></div>

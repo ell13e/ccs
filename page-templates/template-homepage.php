@@ -50,14 +50,23 @@ $ccs_phone_tel = $ccs_phone ? preg_replace( '/\s+/', '', $ccs_phone ) : '';
 	 */
 	?>
 	<?php get_template_part( 'template-parts/home/hero' ); ?>
-	<?php get_template_part( 'template-parts/home/cqc-section' ); ?>
+	<?php
+	/*
+	 * Lighter pass (Nov 2026). The client found the CQC band, "What we do
+	 * differently", "How care starts" and "What care costs" ugly, and the costs
+	 * band overwhelming. The CQC band left the homepage: the rating is in the
+	 * hero (badge and "CQC rated Good", both linking to the report) and the live
+	 * widget now sits in the footer of every page. The other three were rebuilt
+	 * to show less at once. Grounds alternate white / tint from "Why choose us".
+	 */
+	?>
 	<?php get_template_part( 'template-parts/home/why-choose-us' ); ?>
 	<?php get_template_part( 'template-parts/home/services' ); ?>
+	<?php get_template_part( 'template-parts/home/steps' ); ?>
 	<?php get_template_part( 'template-parts/home/story' ); ?>
 	<?php get_template_part( 'template-parts/home/differentiators' ); ?>
-	<?php get_template_part( 'template-parts/home/steps' ); ?>
-	<?php get_template_part( 'template-parts/home/costs' ); ?>
 	<?php get_template_part( 'template-parts/home/testimonial' ); ?>
+	<?php get_template_part( 'template-parts/home/costs' ); ?>
 	<?php get_template_part( 'template-parts/home/team' ); ?>
 	<?php get_template_part( 'template-parts/home/closing-cta' ); ?>
 

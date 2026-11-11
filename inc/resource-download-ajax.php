@@ -86,6 +86,7 @@ function ccs_handle_request_resource_download() {
 	$phone       = isset( $_POST['phone'] ) ? sanitize_text_field( wp_unslash( $_POST['phone'] ) ) : '';
 	$dob         = isset( $_POST['date_of_birth'] ) ? sanitize_text_field( wp_unslash( $_POST['date_of_birth'] ) ) : '';
 	$consent     = isset( $_POST['consent'] ) && ( $_POST['consent'] === 'true' || $_POST['consent'] === '1' );
+	$heard_about = function_exists( 'ccs_heard_about_from_post' ) ? ccs_heard_about_from_post( 'heard_about' ) : '';
 
 	$errors = array();
 	if ( ! $resource_id ) {
@@ -99,6 +100,9 @@ function ccs_handle_request_resource_download() {
 	}
 	if ( $email === '' || ! is_email( $email ) ) {
 		$errors['email'] = __( 'Please enter a valid email address.', 'ccs-wp-theme' );
+	}
+	if ( '' === $heard_about ) {
+		$errors['heard_about'] = __( 'Please tell us how you heard about us.', 'ccs-wp-theme' );
 	}
 	if ( ! $consent ) {
 		$errors['consent'] = __( 'Consent is required.', 'ccs-wp-theme' );
@@ -138,6 +142,7 @@ function ccs_handle_request_resource_download() {
 			'last_name'         => $last_name,
 			'email'             => $email,
 			'phone'             => $phone,
+			'heard_about'       => $heard_about,
 			'date_of_birth'     => $dob !== '' ? $dob : null,
 			'consent'           => $consent ? 1 : 0,
 			'ip_address'        => $ip,
@@ -148,7 +153,7 @@ function ccs_handle_request_resource_download() {
 			'token_hash'        => $token_hash,
 			'token_expires_at'  => $expires_gmt,
 		),
-		array( '%d', '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%d', '%d', '%s', '%s' )
+		array( '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%d', '%d', '%s', '%s' )
 	);
 	$insert_id = $wpdb->insert_id;
 	if ( ! $insert_id ) {

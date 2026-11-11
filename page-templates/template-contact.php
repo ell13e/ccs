@@ -132,7 +132,7 @@ $ccs_next_steps = apply_filters(
 				<p class="ccs-eyebrow"><?php echo esc_html( ccs_copy( 'contact_form_eyebrow' ) ); ?></p>
 				<h2 id="contact-form-heading" class="contact-form-card__title"><?php echo esc_html( ccs_copy( 'contact_form_title' ) ); ?></h2>
 				<p id="contact-form-desc" class="contact-form-card__desc">
-					<?php esc_html_e( "A few details are enough to start. Let us know roughly how soon you'd like care to begin and we'll use it as a guide for when to get in touch.", 'ccs-wp-theme' ); ?>
+					<?php esc_html_e( 'Your name and a phone number are all we need. We will call you back to arrange a conversation or a visit.', 'ccs-wp-theme' ); ?>
 				</p>
 
 				<form id="contact-form" class="contact-form ccs-form" data-ccs-action="submit_enquiry" method="post" action="" novalidate aria-describedby="contact-form-desc contact-form-message">
@@ -148,70 +148,88 @@ $ccs_next_steps = apply_filters(
 						</div>
 
 						<div class="ccs-field">
-							<label for="contact-email" class="ccs-field__label"><?php esc_html_e( 'Email address', 'ccs-wp-theme' ); ?></label>
-							<input type="email" id="contact-email" name="enquiry_email" class="ccs-field__input" required aria-required="true" autocomplete="email" spellcheck="false">
-						</div>
-
-						<div class="ccs-field">
-							<label for="contact-location" class="ccs-field__label">
-								<?php esc_html_e( 'Town or area', 'ccs-wp-theme' ); ?>
+							<label for="contact-email" class="ccs-field__label">
+								<?php esc_html_e( 'Email address', 'ccs-wp-theme' ); ?>
 								<span class="ccs-field__optional"><?php esc_html_e( '(optional)', 'ccs-wp-theme' ); ?></span>
 							</label>
-							<input type="text" id="contact-location" name="enquiry_location" class="ccs-field__input" autocomplete="address-level2" placeholder="<?php esc_attr_e( 'e.g. Maidstone, Tonbridge', 'ccs-wp-theme' ); ?>">
+							<input type="email" id="contact-email" name="enquiry_email" class="ccs-field__input" autocomplete="email" spellcheck="false">
 						</div>
 
-						<div class="ccs-field">
-							<label for="contact-care-type" class="ccs-field__label">
-								<?php esc_html_e( 'Type of care', 'ccs-wp-theme' ); ?>
-								<span class="ccs-field__optional"><?php esc_html_e( '(optional)', 'ccs-wp-theme' ); ?></span>
-							</label>
-							<select id="contact-care-type" name="enquiry_care_type" class="ccs-field__input ccs-field__select">
-								<option value=""><?php esc_html_e( 'Choose one', 'ccs-wp-theme' ); ?></option>
-								<option value="complex-care"><?php esc_html_e( 'Complex care', 'ccs-wp-theme' ); ?></option>
-								<option value="personal-care"><?php esc_html_e( 'Personal care', 'ccs-wp-theme' ); ?></option>
-								<option value="companionship"><?php esc_html_e( 'Companionship', 'ccs-wp-theme' ); ?></option>
-								<option value="live-in"><?php esc_html_e( 'Live-in care', 'ccs-wp-theme' ); ?></option>
-								<option value="visiting"><?php esc_html_e( 'Visiting care', 'ccs-wp-theme' ); ?></option>
-								<option value="respite"><?php esc_html_e( 'Respite care', 'ccs-wp-theme' ); ?></option>
-								<option value="not-sure"><?php esc_html_e( 'Not sure yet', 'ccs-wp-theme' ); ?></option>
-							</select>
-						</div>
+						<?php ccs_heard_about_field( 'contact-heard-about' ); ?>
 
 						<?php
 						/*
-						 * Three choices shown as radios, not hidden in a dropdown: with two
-						 * to four options, seeing them all is quicker than opening a list
-						 * (CCS/CLAUDE.md rule 20). Same name and values as the old select,
-						 * so the handler and the stored enquiry are unchanged.
+						 * Everything optional sits behind one disclosure (Nov 2026: the
+						 * client found the full form tight and overwhelming). What is
+						 * needed to call someone back, a name and a number, is all that
+						 * shows; the rest is one tap away for those who want to add it.
 						 */
 						?>
-						<fieldset class="ccs-field ccs-choices">
-							<legend class="ccs-field__label">
-								<?php esc_html_e( 'How soon?', 'ccs-wp-theme' ); ?>
-								<span class="ccs-field__optional"><?php esc_html_e( '(optional)', 'ccs-wp-theme' ); ?></span>
-							</legend>
-							<?php
-							$ccs_urgency = array(
-								'urgent'    => __( 'As soon as possible', 'ccs-wp-theme' ),
-								'soon'      => __( 'Within the next few weeks', 'ccs-wp-theme' ),
-								'exploring' => __( 'Just exploring options', 'ccs-wp-theme' ),
-							);
-							foreach ( $ccs_urgency as $ccs_value => $ccs_label ) :
-								?>
-								<label class="ccs-choice">
-									<input type="radio" name="enquiry_urgency" value="<?php echo esc_attr( $ccs_value ); ?>">
-									<span><?php echo esc_html( $ccs_label ); ?></span>
+						<details class="ccs-more contact-form__full">
+							<summary class="ccs-more__summary"><?php esc_html_e( 'Tell us more (optional)', 'ccs-wp-theme' ); ?></summary>
+							<div class="ccs-more__fields">
+							<div class="ccs-field">
+								<label for="contact-location" class="ccs-field__label">
+									<?php esc_html_e( 'Town or area', 'ccs-wp-theme' ); ?>
+									<span class="ccs-field__optional"><?php esc_html_e( '(optional)', 'ccs-wp-theme' ); ?></span>
 								</label>
-							<?php endforeach; ?>
-						</fieldset>
+								<input type="text" id="contact-location" name="enquiry_location" class="ccs-field__input" autocomplete="address-level2" placeholder="<?php esc_attr_e( 'e.g. Maidstone, Tonbridge', 'ccs-wp-theme' ); ?>">
+							</div>
 
-						<div class="ccs-field contact-form__full">
-							<label for="contact-message" class="ccs-field__label">
-								<?php esc_html_e( 'Anything you would like us to know', 'ccs-wp-theme' ); ?>
-								<span class="ccs-field__optional"><?php esc_html_e( '(optional)', 'ccs-wp-theme' ); ?></span>
-							</label>
-							<textarea id="contact-message" name="enquiry_message" class="ccs-field__input ccs-field__textarea" rows="5" placeholder="<?php esc_attr_e( 'Tell us a bit about your situation and what you need.', 'ccs-wp-theme' ); ?>"></textarea>
-						</div>
+							<div class="ccs-field">
+								<label for="contact-care-type" class="ccs-field__label">
+									<?php esc_html_e( 'Type of care', 'ccs-wp-theme' ); ?>
+									<span class="ccs-field__optional"><?php esc_html_e( '(optional)', 'ccs-wp-theme' ); ?></span>
+								</label>
+								<select id="contact-care-type" name="enquiry_care_type" class="ccs-field__input ccs-field__select">
+									<option value=""><?php esc_html_e( 'Choose one', 'ccs-wp-theme' ); ?></option>
+									<option value="complex-care"><?php esc_html_e( 'Complex care', 'ccs-wp-theme' ); ?></option>
+									<option value="personal-care"><?php esc_html_e( 'Personal care', 'ccs-wp-theme' ); ?></option>
+									<option value="companionship"><?php esc_html_e( 'Companionship', 'ccs-wp-theme' ); ?></option>
+									<option value="live-in"><?php esc_html_e( 'Live-in care', 'ccs-wp-theme' ); ?></option>
+									<option value="visiting"><?php esc_html_e( 'Visiting care', 'ccs-wp-theme' ); ?></option>
+									<option value="respite"><?php esc_html_e( 'Respite care', 'ccs-wp-theme' ); ?></option>
+									<option value="not-sure"><?php esc_html_e( 'Not sure yet', 'ccs-wp-theme' ); ?></option>
+								</select>
+							</div>
+
+							<?php
+							/*
+							 * Three choices shown as radios, not hidden in a dropdown: with two
+							 * to four options, seeing them all is quicker than opening a list
+							 * (CCS/CLAUDE.md rule 20). Same name and values as the old select,
+							 * so the handler and the stored enquiry are unchanged.
+							 */
+							?>
+							<fieldset class="ccs-field ccs-choices">
+								<legend class="ccs-field__label">
+									<?php esc_html_e( 'How soon?', 'ccs-wp-theme' ); ?>
+									<span class="ccs-field__optional"><?php esc_html_e( '(optional)', 'ccs-wp-theme' ); ?></span>
+								</legend>
+								<?php
+								$ccs_urgency = array(
+									'urgent'    => __( 'As soon as possible', 'ccs-wp-theme' ),
+									'soon'      => __( 'Within the next few weeks', 'ccs-wp-theme' ),
+									'exploring' => __( 'Just exploring options', 'ccs-wp-theme' ),
+								);
+								foreach ( $ccs_urgency as $ccs_value => $ccs_label ) :
+									?>
+									<label class="ccs-choice">
+										<input type="radio" name="enquiry_urgency" value="<?php echo esc_attr( $ccs_value ); ?>">
+										<span><?php echo esc_html( $ccs_label ); ?></span>
+									</label>
+								<?php endforeach; ?>
+							</fieldset>
+
+							<div class="ccs-field contact-form__full">
+								<label for="contact-message" class="ccs-field__label">
+									<?php esc_html_e( 'Anything you would like us to know', 'ccs-wp-theme' ); ?>
+									<span class="ccs-field__optional"><?php esc_html_e( '(optional)', 'ccs-wp-theme' ); ?></span>
+								</label>
+								<textarea id="contact-message" name="enquiry_message" class="ccs-field__input ccs-field__textarea" rows="5" placeholder="<?php esc_attr_e( 'Tell us a bit about your situation and what you need.', 'ccs-wp-theme' ); ?>"></textarea>
+							</div>
+							</div>
+						</details>
 					</div>
 
 					<input type="text" name="_company" value="" tabindex="-1" autocomplete="off" aria-hidden="true" class="ccs-honeypot">

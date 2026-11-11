@@ -60,6 +60,19 @@ if ( ! $privacy_url ) {
 					<p id="resource-phone-error" class="resource-download-error" role="alert" aria-live="polite" style="display:none"></p>
 				</div>
 
+				<?php
+				ccs_heard_about_field(
+					'resource-heard-about',
+					'heard_about',
+					array(
+						'field_class' => 'resource-download-field resource-download-field-full',
+						'label_class' => 'resource-download-label',
+						'input_class' => 'resource-download-input',
+					)
+				);
+				?>
+				<p id="resource-heard-about-error" class="resource-download-error" role="alert" aria-live="polite" style="display:none"></p>
+
 				<div class="resource-download-field">
 					<label for="resource-dob" class="resource-download-label"><?php esc_html_e( 'Date of birth', 'ccs-wp-theme' ); ?> <span class="optional-indicator">(<?php esc_html_e( 'optional', 'ccs-wp-theme' ); ?>)</span></label>
 					<input type="date" id="resource-dob" name="date_of_birth" class="resource-download-input" aria-describedby="resource-dob-error" aria-invalid="false" max="<?php echo esc_attr( date( 'Y-m-d', strtotime( '-13 years' ) ) ); ?>">
