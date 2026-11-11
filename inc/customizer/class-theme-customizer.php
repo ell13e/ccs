@@ -70,6 +70,63 @@ class CCS_Theme_Customizer {
 		$this->register_cqc_section( $wp_customize );
 		$this->register_cvm_section( $wp_customize );
 		$this->register_emergency_section( $wp_customize );
+		$this->register_home_copy( $wp_customize );
+	}
+
+	/**
+	 * Homepage content panel: every heading, paragraph and button label on the
+	 * homepage, one section per band, in page order.
+	 *
+	 * Built from the registry in inc/home-content.php, so a string added there
+	 * appears here without touching this class. Defaults are left empty in the
+	 * control and shown as the placeholder: an empty field means "use the
+	 * launch wording", which is what ccs_copy() returns.
+	 *
+	 * @param WP_Customize_Manager $wp_customize Customizer manager.
+	 */
+	private function register_home_copy( $wp_customize ) {
+		if ( ! function_exists( 'ccs_copy_fields' ) ) {
+			return;
+		}
+
+		$wp_customize->add_panel( 'ccs_home_copy', array(
+			'title'       => __( 'Homepage content', 'ccs-wp-theme' ),
+			'description' => __( 'The words on the homepage, section by section from top to bottom. Leave a field empty to use the original wording, shown in grey.', 'ccs-wp-theme' ),
+			'priority'    => 29,
+		) );
+		$wp_customize->add_panel( 'ccs_page_copy', array(
+			'title'       => __( 'Page wording', 'ccs-wp-theme' ),
+			'description' => __( 'Headings and short lines on the other pages that are part of the design rather than the page text. Leave a field empty to use the original wording, shown in grey.', 'ccs-wp-theme' ),
+			'priority'    => 30,
+		) );
+
+		$priority = 10;
+		foreach ( ccs_copy_sections() as $section_id => $section ) {
+			$wp_customize->add_section( 'ccs_copy_' . $section_id, array(
+				'title'       => $section['title'],
+				'description' => $section['description'],
+				'panel'       => 'pages' === $section['panel'] ? 'ccs_page_copy' : 'ccs_home_copy',
+				'priority'    => $priority,
+			) );
+			$priority += 10;
+		}
+
+		foreach ( ccs_copy_fields() as $key => $field ) {
+			$is_long = 'textarea' === $field['type'];
+
+			$wp_customize->add_setting( 'ccs_copy_' . $key, array(
+				'type'              => 'theme_mod',
+				'capability'        => 'edit_theme_options',
+				'default'           => '',
+				'sanitize_callback' => $is_long ? 'sanitize_textarea_field' : 'sanitize_text_field',
+			) );
+			$wp_customize->add_control( 'ccs_copy_' . $key, array(
+				'label'       => $field['label'],
+				'section'     => 'ccs_copy_' . $field['section'],
+				'type'        => $is_long ? 'textarea' : 'text',
+				'input_attrs' => array( 'placeholder' => $field['default'] ),
+			) );
+		}
 	}
 
 	/**
@@ -184,7 +241,7 @@ class CCS_Theme_Customizer {
 		$wp_customize->add_setting( self::PHONE, array(
 			'type'              => 'theme_mod',
 			'capability'        => 'edit_theme_options',
-			'default'           => '01234 567890',
+			'default'           => '01622 809 881',
 			'sanitize_callback' => array( $this, 'sanitize_phone' ),
 			'transport'         => 'postMessage',
 		) );
@@ -355,13 +412,15 @@ class CCS_Theme_Customizer {
 		$wp_customize->add_setting( 'ccs_analytics_require_consent', array(
 			'type'              => 'theme_mod',
 			'capability'        => 'edit_theme_options',
-			'default'           => false,
+			// On by default: UK law needs consent before analytics cookies are set.
+			'default'           => true,
 			'sanitize_callback' => function( $value ) {
 				return ! empty( $value );
 			},
 		) );
 		$wp_customize->add_control( 'ccs_analytics_require_consent', array(
-			'label'       => __( 'Require cookie consent before loading tracking', 'ccs-wp-theme' ),
+			'label'       => __( 'Ask visitors before loading tracking', 'ccs-wp-theme' ),
+			'description' => __( 'Shows a cookie choice bar and loads tracking only after someone accepts. Leave this on unless you have legal advice that you do not need consent.', 'ccs-wp-theme' ),
 			'section'     => 'ccs_analytics',
 			'type'        => 'checkbox',
 		) );

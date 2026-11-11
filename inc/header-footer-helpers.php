@@ -27,7 +27,7 @@ add_filter( 'nav_menu_link_attributes', function ( $atts, $item, $args, $depth )
  * @return array{phone: string, phone_link: string}
  */
 function ccs_get_contact_info() {
-	$phone = get_theme_mod( 'ccs_phone', '01234 567890' );
+	$phone = get_theme_mod( 'ccs_phone', '01622 809 881' );
 	$raw   = preg_replace( '/\s+/', '', $phone );
 	$link  = $raw !== '' ? 'tel:' . $raw : '';
 

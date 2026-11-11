@@ -78,11 +78,11 @@ $partners = array(
 		<header class="ccs-head ccs-head--split">
 			<h2 id="home-partnerships-heading" class="ccs-title">
 				<?php
-				esc_html_e( 'Who we work with', 'ccs-wp-theme' );
+				echo esc_html( ccs_copy( 'partners_title' ) );
 				?>
 			</h2>
 			<p class="ccs-lede">
-				<?php esc_html_e( 'The organisations that regulate us, train our carers and set the standards we work to — alongside the sister services we run ourselves. Several of them you can check us against directly.', 'ccs-wp-theme' ); ?>
+				<?php echo esc_html( ccs_copy( 'partners_lede' ) ); ?>
 			</p>
 		</header>
 		<ul class="home-partnerships__list">

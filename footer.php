@@ -13,6 +13,24 @@
 			<div class="footer-modern-brand">
 				<?php if ( has_custom_logo() ) : ?>
 					<?php the_custom_logo(); ?>
+				<?php elseif ( file_exists( get_template_directory() . '/assets/images/brand/ccs-logo-long.png' ) ) : ?>
+					<?php
+					/*
+					 * The packaged lockup, the same fallback the header uses. The footer
+					 * used to drop to the site name in plain type here, so the page opened
+					 * with the logo and closed without it (CLAUDE.md rule 13, unity).
+					 */
+					?>
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="footer-modern-logo-link footer-modern-logo-link--img" rel="home">
+						<img
+							src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/brand/ccs-logo-long.png' ); ?>"
+							alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>"
+							width="1617"
+							height="276"
+							loading="lazy"
+							decoding="async"
+						>
+					</a>
 				<?php else : ?>
 					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="footer-modern-logo-link" rel="home"><?php bloginfo( 'name' ); ?></a>
 				<?php endif; ?>
@@ -33,7 +51,7 @@
 				 * inc/seo/class-structured-data.php, so the published address
 				 * and the marked-up address cannot disagree.
 				 */
-				$footer_phone   = get_theme_mod( 'ccs_phone', '01234 567890' );
+				$footer_phone   = get_theme_mod( 'ccs_phone', '01622 809 881' );
 				$footer_address = get_theme_mod( 'ccs_contact_address', "The Maidstone Studios, New Cut Road\nMaidstone, Kent ME14 5NZ" );
 				$footer_hours   = get_theme_mod( 'ccs_office_hours', 'Mon–Fri 9am–5pm' );
 				if ( $footer_phone || $footer_address || $footer_hours ) :
@@ -53,7 +71,7 @@
 						<?php endif; ?>
 					</div>
 				<?php endif; ?>
-				<?php get_template_part( 'template-parts/cqc-regulated-badge', null, array( 'variant' => 'purple' ) ); ?>
+				<?php get_template_part( 'template-parts/cqc-regulated-badge', null, array( 'variant' => 'white' ) ); ?>
 			</div>
 		</div>
 

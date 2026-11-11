@@ -38,23 +38,23 @@ $ccs_404_phone_tel = isset( $ccs_404_contact['phone_link'] ) ? $ccs_404_contact[
 $ccs_404_links = array(
 	array(
 		'slug'  => 'home-care-services-kent',
-		'label' => __( 'Our care services', 'ccs-wp-theme' ),
-		'desc'  => __( 'Domiciliary, respite and complex care at home.', 'ccs-wp-theme' ),
+		'label' => ccs_copy( 'e404_link_1_title' ),
+		'desc'  => ccs_copy( 'e404_link_1_text' ),
 	),
 	array(
 		'slug'  => 'contact-us',
-		'label' => __( 'Arrange a conversation', 'ccs-wp-theme' ),
-		'desc'  => __( 'Talk it through with someone local. No commitment.', 'ccs-wp-theme' ),
+		'label' => ccs_copy( 'e404_link_2_title' ),
+		'desc'  => ccs_copy( 'e404_link_2_text' ),
 	),
 	array(
 		'slug'  => 'getting-started',
-		'label' => __( 'Getting started', 'ccs-wp-theme' ),
-		'desc'  => __( 'What happens between first call and first visit.', 'ccs-wp-theme' ),
+		'label' => ccs_copy( 'e404_link_3_title' ),
+		'desc'  => ccs_copy( 'e404_link_3_text' ),
 	),
 	array(
 		'slug'  => 'resources/faqs',
-		'label' => __( 'Common questions', 'ccs-wp-theme' ),
-		'desc'  => __( 'Costs, timescales, and who your carers would be.', 'ccs-wp-theme' ),
+		'label' => ccs_copy( 'e404_link_4_title' ),
+		'desc'  => ccs_copy( 'e404_link_4_text' ),
 	),
 );
 ?>
@@ -64,10 +64,10 @@ $ccs_404_links = array(
 	<header class="page-hero">
 		<div class="page-hero__inner container container--lg">
 			<div class="page-hero__text">
-				<p class="page-hero__eyebrow"><?php esc_html_e( 'Page not found', 'ccs-wp-theme' ); ?></p>
-				<h1 class="page-hero__title"><?php esc_html_e( 'That page isn’t here any more', 'ccs-wp-theme' ); ?></h1>
+				<p class="page-hero__eyebrow"><?php echo esc_html( ccs_copy( 'e404_eyebrow' ) ); ?></p>
+				<h1 class="page-hero__title"><?php echo esc_html( ccs_copy( 'e404_title' ) ); ?></h1>
 				<p class="page-hero__intro">
-					<?php esc_html_e( 'The link may be out of date, or the address may have a typo in it. Nothing is wrong at your end — here’s where most people are heading.', 'ccs-wp-theme' ); ?>
+					<?php echo esc_html( ccs_copy( 'e404_text' ) ); ?>
 				</p>
 			</div>
 		</div>
@@ -78,7 +78,7 @@ $ccs_404_links = array(
 
 			<?php if ( $ccs_404_phone ) : ?>
 				<p class="error-404__phone-line">
-					<?php esc_html_e( 'If it’s easier to just ask someone, call', 'ccs-wp-theme' ); ?>
+					<?php echo esc_html( ccs_copy( 'e404_phone_line' ) ); ?>
 					<a href="<?php echo esc_url( $ccs_404_phone_tel ); ?>" class="error-404__phone"><?php echo esc_html( $ccs_404_phone ); ?></a>
 				</p>
 			<?php endif; ?>
@@ -100,7 +100,7 @@ $ccs_404_links = array(
 			</ul>
 
 			<div class="error-404__search">
-				<h2 class="error-404__search-heading"><?php esc_html_e( 'Or search the site', 'ccs-wp-theme' ); ?></h2>
+				<h2 class="error-404__search-heading"><?php echo esc_html( ccs_copy( 'e404_search_title' ) ); ?></h2>
 				<?php get_search_form(); ?>
 			</div>
 

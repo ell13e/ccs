@@ -82,9 +82,10 @@ class CCS_Security {
 		 * - www.google.com: optional Maps embed set in the Customizer for the
 		 *   contact page (ccs_contact_map_embed).
 		 *
-		 * Analytics hosts (Google Tag Manager, Meta pixel) are deliberately not
-		 * listed; add them through the ccs_content_security_policy filter if those
-		 * integrations are switched on.
+		 * Analytics hosts (Google Tag Manager, Meta pixel) are not listed here:
+		 * CCS_Analytics::allow_tracking_hosts() adds them through the
+		 * ccs_content_security_policy filter, and only for the integrations that
+		 * have an ID set in the Customizer.
 		 */
 		$directives = array(
 			"default-src 'self'",

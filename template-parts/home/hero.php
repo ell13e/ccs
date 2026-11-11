@@ -50,7 +50,7 @@ $hero_has_fallback = file_exists( get_template_directory() . '/assets/images/sit
 	<?php if ( $hero_image ) : ?>
 		<img class="home-hero__bg" src="<?php echo esc_url( $hero_image ); ?>" alt="" aria-hidden="true" fetchpriority="high" decoding="async">
 	<?php elseif ( $hero_has_fallback ) : ?>
-		<img class="home-hero__bg" src="<?php echo esc_url( $hero_img_base . $hero_default_file ); ?>" alt="" aria-hidden="true" width="2400" height="1600" fetchpriority="high" decoding="async">
+		<img class="home-hero__bg" src="<?php echo esc_url( $hero_img_base . $hero_default_file ); ?>" alt="" aria-hidden="true" width="2400" height="1600"<?php echo ccs_theme_image_srcset( 'site-photos/' . $hero_default_file, '100vw' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset(). ?> fetchpriority="high" decoding="async">
 	<?php endif; ?>
 
 	<div class="home-hero__scrim" aria-hidden="true"></div>
@@ -68,6 +68,7 @@ $hero_has_fallback = file_exists( get_template_directory() . '/assets/images/sit
 				alt=""
 				width="1184"
 				height="821"
+				<?php echo ccs_theme_image_srcset( 'cqc-badges/CQC inspected and rated good RGB.jpg', '130px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset(). ?>
 				loading="eager"
 				decoding="async"
 			>
@@ -90,16 +91,16 @@ $hero_has_fallback = file_exists( get_template_directory() . '/assets/images/sit
 		<div class="home-hero__panel">
 
 			<h1 id="home-hero-heading" class="home-hero__title">
-				<?php esc_html_e( 'Home care in Maidstone &amp; Kent', 'ccs-wp-theme' ); ?>
+				<?php echo esc_html( ccs_copy( 'hero_title' ) ); ?>
 			</h1>
 
 			<p class="home-hero__promise">
-				<?php esc_html_e( 'Your team. Your time. Your life.', 'ccs-wp-theme' ); ?>
+				<?php echo esc_html( ccs_copy( 'hero_promise' ) ); ?>
 			</p>
 
 			<p class="home-hero__support">
-				<?php esc_html_e( 'From everyday help at home to complex and specialist care, we match you with a small team of carers you’ll get to know.', 'ccs-wp-theme' ); ?>
-				<span class="home-hero__support-extra"><?php esc_html_e( 'You’ll see the same faces at every visit.', 'ccs-wp-theme' ); ?></span>
+				<?php echo esc_html( ccs_copy( 'hero_support' ) ); ?>
+				<span class="home-hero__support-extra"><?php echo esc_html( ccs_copy( 'hero_support_extra' ) ); ?></span>
 			</p>
 
 			<div class="home-hero__actions">

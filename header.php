@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$ccs_phone           = get_theme_mod( 'ccs_phone', '01234 567890' );
+$ccs_phone           = get_theme_mod( 'ccs_phone', '01622 809 881' );
 $ccs_office_hours    = get_theme_mod( 'ccs_office_hours', 'Mon–Fri 9am–5pm' );
 $ccs_cqc_url         = get_theme_mod( 'ccs_cqc_url', 'https://www.cqc.org.uk' );
 $ccs_cqc_img         = get_theme_mod( 'ccs_cqc_badge_url', '' );
@@ -188,7 +188,15 @@ $ccs_emergency       = $ccs_emergency_on && ( $ccs_emergency_text || $ccs_phone 
 				 * compete on every page (CCS/CLAUDE.md rule 8).
 				 */
 				?>
-				<a href="<?php echo esc_url( $ccs_switch_url ); ?>" class="header-actions__switch btn btn-quiet"><?php esc_html_e( 'Switch to us', 'ccs-wp-theme' ); ?></a>
+				<?php
+				/*
+				 * Not on careers pages: "Switch to us" is for families changing
+				 * provider, which means nothing to someone looking for a job there.
+				 */
+				if ( ! $ccs_is_careers_context ) :
+					?>
+					<a href="<?php echo esc_url( $ccs_switch_url ); ?>" class="header-actions__switch btn btn-quiet"><?php esc_html_e( 'Switch to us', 'ccs-wp-theme' ); ?></a>
+				<?php endif; ?>
 			</div>
 		</div>
 

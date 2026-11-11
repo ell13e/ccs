@@ -30,10 +30,10 @@ $services_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'home-care-ser
 $about_url    = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'about-home-care-maidstone' ) : home_url( '/about-home-care-maidstone/' );
 
 $why_proof = array(
-	array( 'icon' => 'shield', 'text' => __( 'Rated Good by the CQC', 'ccs-wp-theme' ) ),
-	array( 'icon' => 'clock', 'text' => __( '10+ years caring for Kent families', 'ccs-wp-theme' ) ),
-	array( 'icon' => 'people', 'text' => __( 'Adults and children supported', 'ccs-wp-theme' ) ),
-	array( 'icon' => 'moon', 'text' => __( 'Care day or night, across Kent', 'ccs-wp-theme' ) ),
+	array( 'icon' => 'shield', 'text' => ccs_copy( 'why_proof_1' ) ),
+	array( 'icon' => 'clock', 'text' => ccs_copy( 'why_proof_2' ) ),
+	array( 'icon' => 'people', 'text' => ccs_copy( 'why_proof_3' ) ),
+	array( 'icon' => 'moon', 'text' => ccs_copy( 'why_proof_4' ) ),
 );
 
 /*
@@ -59,52 +59,45 @@ $why_photos = array_values(
 <section class="home-why-choose" aria-labelledby="home-why-heading">
 	<div class="home-why-choose__inner container container--lg">
 
-		<?php if ( count( $why_photos ) >= 2 ) : ?>
-			<div class="why-collage why-collage--<?php echo (int) count( $why_photos ); ?>" aria-hidden="true">
-				<?php foreach ( $why_photos as $why_i => $why_rel ) : ?>
-					<?php $why_size = wp_getimagesize( get_template_directory() . '/assets/images/' . $why_rel ); ?>
-					<div class="why-collage__photo why-collage__photo--<?php echo (int) $why_i + 1; ?>">
-						<img
-							src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/' . $why_rel ); ?>"
-							alt=""
-							<?php if ( is_array( $why_size ) ) : ?>
-								width="<?php echo (int) $why_size[0]; ?>"
-								height="<?php echo (int) $why_size[1]; ?>"
-							<?php endif; ?>
-							loading="lazy"
-							decoding="async"
-						>
-					</div>
-				<?php endforeach; ?>
-			</div>
+		<?php if ( ! empty( $why_photos ) ) : ?>
+			<?php
+			/*
+			 * One photograph, not a collage (calm pass, Nov 2026). The three photos
+			 * differ in light, colour and setting, and together they were the
+			 * busiest thing on the page. The list above is kept as a fallback order:
+			 * the first file that exists is used.
+			 */
+			$why_rel  = $why_photos[0];
+			$why_size = wp_getimagesize( get_template_directory() . '/assets/images/' . $why_rel );
+			?>
+			<figure class="why-photo" aria-hidden="true">
+				<img
+					src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/' . $why_rel ); ?>"
+					alt=""
+					<?php if ( is_array( $why_size ) ) : ?>
+						width="<?php echo (int) $why_size[0]; ?>"
+						height="<?php echo (int) $why_size[1]; ?>"
+					<?php endif; ?>
+					<?php echo ccs_theme_image_srcset( $why_rel, '(min-width: 960px) 520px, 92vw' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset(). ?>
+					loading="lazy"
+					decoding="async"
+				>
+			</figure>
 		<?php endif; ?>
 
 		<div class="home-why-choose__content">
 			<h2 id="home-why-heading" class="ccs-title">
 				<?php
-				esc_html_e( 'Why Choose Us for Home Care in Maidstone?', 'ccs-wp-theme' );
+				echo esc_html( ccs_copy( 'why_title' ) );
 				?>
 			</h2>
 			<p class="home-why-choose__subheading">
-				<?php esc_html_e( 'The difference is who turns up, and how often it’s the same person.', 'ccs-wp-theme' ); ?>
+				<?php echo esc_html( ccs_copy( 'why_subheading' ) ); ?>
 			</p>
 
 			<p class="home-why-choose__text">
-				<?php esc_html_e( 'We support adults and children across Maidstone and the rest of Kent, day or night. Our carers live locally, and the same small team comes back each visit.', 'ccs-wp-theme' ); ?>
-				<?php esc_html_e( 'We don’t rush, and we don’t rotate staff every other week.', 'ccs-wp-theme' ); ?>
-			</p>
-
-			<blockquote class="home-why-choose__pull">
-				<p>
-					<?php esc_html_e( 'We take the time to learn how you like your tea, what makes you laugh, and what puts you at ease on a harder day.', 'ccs-wp-theme' ); ?>
-				</p>
-				<cite class="home-why-choose__pull-cite">
-					<?php esc_html_e( 'That’s the part a care plan can’t write down.', 'ccs-wp-theme' ); ?>
-				</cite>
-			</blockquote>
-
-			<p class="home-why-choose__text">
-				<?php esc_html_e( 'Good care doesn’t stop when the task list is finished. It shows in whether the person at the door already knows how the week has gone.', 'ccs-wp-theme' ); ?>
+				<?php echo esc_html( ccs_copy( 'why_text_1' ) ); ?>
+				<?php echo esc_html( ccs_copy( 'why_text_2' ) ); ?>
 			</p>
 
 			<ul class="why-proof" role="list">
@@ -118,10 +111,7 @@ $why_photos = array_values(
 
 			<div class="ccs-actions">
 				<a href="<?php echo esc_url( $services_url ); ?>" class="btn btn-quiet">
-					<?php esc_html_e( 'Learn more about our services', 'ccs-wp-theme' ); ?>
-				</a>
-				<a href="<?php echo esc_url( $about_url ); ?>" class="btn btn-quiet">
-					<?php esc_html_e( 'Our care approach', 'ccs-wp-theme' ); ?>
+					<?php echo esc_html( ccs_copy( 'why_button_services' ) ); ?>
 				</a>
 			</div>
 		</div>

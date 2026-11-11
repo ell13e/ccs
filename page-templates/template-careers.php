@@ -25,21 +25,21 @@ $ccs_careers_ids  = (array) get_option( 'ccs_careers_page_ids', array() );
 $ccs_careers_meta = array(
 	'current-vacancies'        => array(
 		'icon'  => 'badge',
-		'label' => __( 'Apply', 'ccs-wp-theme' ),
-		'text'  => __( 'The roles we are recruiting for now, and how to apply.', 'ccs-wp-theme' ),
-		'cue'   => __( 'See vacancies', 'ccs-wp-theme' ),
+		'label' => ccs_copy( 'careers_card_1_label' ),
+		'text'  => ccs_copy( 'careers_card_1_text' ),
+		'cue'   => ccs_copy( 'careers_card_1_link' ),
 	),
 	'working-for-us'           => array(
 		'icon'  => 'people',
-		'label' => __( 'Day to day', 'ccs-wp-theme' ),
-		'text'  => __( 'Pay, rotas and the support you can expect once you join.', 'ccs-wp-theme' ),
-		'cue'   => __( 'Read more', 'ccs-wp-theme' ),
+		'label' => ccs_copy( 'careers_card_2_label' ),
+		'text'  => ccs_copy( 'careers_card_2_text' ),
+		'cue'   => ccs_copy( 'careers_card_2_link' ),
 	),
 	'professional-development' => array(
 		'icon'  => 'shield',
-		'label' => __( 'Training', 'ccs-wp-theme' ),
-		'text'  => __( 'Funded, paid training, from the Care Certificate to specialist clinical skills.', 'ccs-wp-theme' ),
-		'cue'   => __( 'Read more', 'ccs-wp-theme' ),
+		'label' => ccs_copy( 'careers_card_3_label' ),
+		'text'  => ccs_copy( 'careers_card_3_text' ),
+		'cue'   => ccs_copy( 'careers_card_3_link' ),
 	),
 );
 
@@ -72,8 +72,7 @@ foreach ( $ccs_careers_meta as $ccs_slug => $ccs_meta ) {
 							if ( $ccs_lead ) {
 								echo esc_html( $ccs_lead['heading'] );
 							} else {
-								/* translators: %s: the emphasised word, drawn with a brush underline. */
-								printf( esc_html__( 'Care work, %s well', 'ccs-wp-theme' ), ccs_accent( __( 'done', 'ccs-wp-theme' ) ) );
+								echo ccs_copy_accent( 'careers_expect_title' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_copy_accent().
 							}
 							?>
 						</h2>
@@ -106,7 +105,7 @@ foreach ( $ccs_careers_meta as $ccs_slug => $ccs_meta ) {
 					<header class="ccs-head ccs-head--center">
 						<h2 id="careers-explore-heading" class="ccs-title">
 							<?php
-							esc_html_e( 'Find your way in', 'ccs-wp-theme' );
+							echo esc_html( ccs_copy( 'careers_ways_title' ) );
 							?>
 						</h2>
 					</header>

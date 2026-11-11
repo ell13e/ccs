@@ -65,7 +65,7 @@ Single source of truth for the **currently implemented** brand, UI style, typogr
 
 ## 2. Typography
 
-**Fonts:** Poppins (headings), Open Sans (body). Enqueue weights 400, 500, 600, 700 for both.
+**Fonts:** Lora (headings), Open Sans (body), self-hosted variable WOFF2 in `assets/fonts/` (`@font-face` in `design-system.css`). Not Google Fonts: the theme's CSP blocks it.
 
 ### 2.1 Scale, line-height, and letter-spacing
 
@@ -244,7 +244,7 @@ All durations collapse to `0ms` under `prefers-reduced-motion: reduce`.
 - **Design tokens and utilities:** `assets/css/design-system.css`
 - **This document:** `design-system/MASTER.md`
 
-Implement the revised tokens in `design-system.css` (colour roles, typography scale with line-height/letter-spacing, spacing scale including `space-2xs`, shadow system, radius, and component tokens). Enqueue Poppins and Open Sans (e.g. Google Fonts) with weights 400, 500, 600, 700.
+Implement the revised tokens in `design-system.css` (colour roles, typography scale with line-height/letter-spacing, spacing scale including `space-2xs`, shadow system, radius, and component tokens). Fonts are Lora and Open Sans, self-hosted (see Fonts above).
 
 ---
 

@@ -30,8 +30,7 @@ get_header();
 					<header class="ccs-head">
 						<h2 id="about-intro-heading" class="ccs-title">
 							<?php
-							/* translators: %s: the emphasised word, drawn with a brush underline. */
-							printf( esc_html__( 'Care that %s around your life', 'ccs-wp-theme' ), ccs_accent( __( 'fits', 'ccs-wp-theme' ) ) );
+							echo ccs_copy_accent( 'about_intro_title' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_copy_accent().
 							?>
 						</h2>
 					</header>
@@ -46,17 +45,17 @@ get_header();
 
 		<?php get_template_part( 'template-parts/home/team' ); ?>
 
-		<section class="ccs-section ccs-section--flush-bottom about-story" aria-labelledby="about-story-heading">
+		<section class="ccs-section about-story" aria-labelledby="about-story-heading">
 			<div class="container container--lg">
 				<div class="ccs-split">
 					<header class="ccs-head">
 						<h2 id="about-story-heading" class="ccs-title">
 							<?php
-							esc_html_e( 'Where it started', 'ccs-wp-theme' );
+							echo esc_html( ccs_copy( 'about_story_title' ) );
 							?>
 						</h2>
 						<p class="ccs-lede">
-							<?php esc_html_e( 'Our company director and registered manager, Victoria Walker, explains how Continuity of Care started here in Kent, and why the service is built on compassion, reliability and quality of life.', 'ccs-wp-theme' ); ?>
+							<?php echo esc_html( ccs_copy( 'about_story_text' ) ); ?>
 						</p>
 					</header>
 					<div class="about-story__media">
@@ -81,6 +80,11 @@ get_header();
 		</section>
 		<?php
 	endwhile;
+	?>
+
+	<?php
+	// Moved from the homepage (calm pass, Nov 2026): "who we work with" belongs with "who we are".
+	get_template_part( 'template-parts/home/partnerships' );
 	?>
 
 	<?php get_template_part( 'template-parts/cta-band' ); ?>

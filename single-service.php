@@ -26,7 +26,7 @@ while ( have_posts() ) :
 	$typical    = get_post_meta( $post_id, 'service_typical_hours', true );
 	$funding    = get_post_meta( $post_id, 'service_funding_options', true );
 
-	$ccs_phone     = get_theme_mod( 'ccs_phone', '01234 567890' );
+	$ccs_phone     = get_theme_mod( 'ccs_phone', '01622 809 881' );
 	$ccs_phone_tel  = $ccs_phone ? preg_replace( '/\s+/', '', $ccs_phone ) : '';
 	$ccs_office_hrs = get_theme_mod( 'ccs_office_hours', 'Mon–Fri 9am–5pm' );
 
@@ -190,7 +190,7 @@ while ( have_posts() ) :
 
 				<?php if ( ! empty( $features ) ) : ?>
 					<section class="service-features" aria-labelledby="service-features-heading">
-						<h2 id="service-features-heading" class="service-features__heading"><?php esc_html_e( 'What’s included', 'ccs-wp-theme' ); ?></h2>
+						<h2 id="service-features-heading" class="service-features__heading"><?php echo esc_html( ccs_copy( 'service_included_title' ) ); ?></h2>
 						<ul class="why-proof" role="list">
 							<?php foreach ( $features as $row ) :
 								$text = isset( $row['feature_text'] ) ? $row['feature_text'] : '';
@@ -209,7 +209,7 @@ while ( have_posts() ) :
 
 				<?php if ( $has_price ) : ?>
 					<aside class="service-pricing" aria-labelledby="service-pricing-heading">
-						<h2 id="service-pricing-heading" class="service-pricing__heading"><?php esc_html_e( 'Pricing', 'ccs-wp-theme' ); ?></h2>
+						<h2 id="service-pricing-heading" class="service-pricing__heading"><?php echo esc_html( ccs_copy( 'service_pricing_title' ) ); ?></h2>
 						<div class="service-pricing__box">
 							<?php if ( $price_from !== '' && (float) $price_from > 0 ) : ?>
 								<p class="service-pricing__range">
@@ -241,7 +241,7 @@ while ( have_posts() ) :
 							 */
 							?>
 							<p class="service-pricing__caveat">
-								<?php esc_html_e( 'Your actual cost depends on the type of care you need and when it happens — this is our lowest rate, not a flat price.', 'ccs-wp-theme' ); ?>
+								<?php echo esc_html( ccs_copy( 'service_pricing_note' ) ); ?>
 							</p>
 							<?php if ( $funding ) : ?>
 								<div class="service-pricing__funding"><?php echo wp_kses_post( nl2br( esc_html( $funding ) ) ); ?></div>
@@ -252,7 +252,7 @@ while ( have_posts() ) :
 
 				<?php if ( ! empty( $faqs ) ) : ?>
 					<section class="service-faqs" aria-labelledby="service-faqs-heading">
-						<h2 id="service-faqs-heading" class="service-faqs__heading"><?php esc_html_e( 'Frequently asked questions', 'ccs-wp-theme' ); ?></h2>
+						<h2 id="service-faqs-heading" class="service-faqs__heading"><?php echo esc_html( ccs_copy( 'service_faq_title' ) ); ?></h2>
 						<?php
 						/*
 						 * Native <details>: keyboard and screen-reader behaviour for
@@ -281,8 +281,8 @@ while ( have_posts() ) :
 			<aside class="service-sidebar" aria-labelledby="service-sidebar-heading">
 				<div class="service-sidebar__sticky">
 					<div class="service-sidebar__card">
-						<p class="ccs-eyebrow"><?php esc_html_e( 'Free, no obligation', 'ccs-wp-theme' ); ?></p>
-						<h2 id="service-sidebar-heading" class="service-sidebar__heading"><?php esc_html_e( 'Ask us to call you back', 'ccs-wp-theme' ); ?></h2>
+						<p class="ccs-eyebrow"><?php echo esc_html( ccs_copy( 'service_callback_eyebrow' ) ); ?></p>
+						<h2 id="service-sidebar-heading" class="service-sidebar__heading"><?php echo esc_html( ccs_copy( 'service_callback_title' ) ); ?></h2>
 						<?php if ( $ccs_phone_tel ) : ?>
 							<a href="<?php echo esc_url( 'tel:' . $ccs_phone_tel ); ?>" class="service-sidebar__phone">
 								<span class="ccs-badge ccs-badge--sm"><?php echo ccs_icon( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
@@ -338,8 +338,7 @@ while ( have_posts() ) :
 				<header class="ccs-head ccs-head--center">
 					<h2 id="service-related-heading" class="ccs-title">
 						<?php
-						/* translators: %s: the emphasised word, drawn with a brush underline. */
-						printf( esc_html__( 'Other ways we can %s', 'ccs-wp-theme' ), ccs_accent( __( 'help', 'ccs-wp-theme' ) ) );
+						echo ccs_copy_accent( 'service_related_title' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_copy_accent().
 						?>
 					</h2>
 				</header>
@@ -392,12 +391,12 @@ while ( have_posts() ) :
 					<?php if ( count( $ccs_related_shown ) < 3 ) : ?>
 						<li class="info-card service-related__hub">
 							<span class="ccs-badge"><?php echo ccs_icon( 'heart' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
-							<p class="info-card__label"><?php esc_html_e( 'All services', 'ccs-wp-theme' ); ?></p>
+							<p class="info-card__label"><?php echo esc_html( ccs_copy( 'service_hub_label' ) ); ?></p>
 							<h3 class="info-card__title">
-								<a class="info-card__link" href="<?php echo esc_url( $ccs_services_hub_url ); ?>"><?php esc_html_e( 'Everything we offer at home', 'ccs-wp-theme' ); ?></a>
+								<a class="info-card__link" href="<?php echo esc_url( $ccs_services_hub_url ); ?>"><?php echo esc_html( ccs_copy( 'service_hub_title' ) ); ?></a>
 							</h3>
-							<p class="info-card__text"><?php esc_html_e( 'See every kind of care we provide across Maidstone and Kent, and who each one is for.', 'ccs-wp-theme' ); ?></p>
-							<span class="info-card__cue" aria-hidden="true"><?php esc_html_e( 'See all services', 'ccs-wp-theme' ); ?> <span class="info-card__arrow">&rarr;</span></span>
+							<p class="info-card__text"><?php echo esc_html( ccs_copy( 'service_hub_text' ) ); ?></p>
+							<span class="info-card__cue" aria-hidden="true"><?php echo esc_html( ccs_copy( 'service_hub_link' ) ); ?> <span class="info-card__arrow">&rarr;</span></span>
 						</li>
 					<?php endif; ?>
 				</ul>

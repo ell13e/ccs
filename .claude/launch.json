@@ -8,9 +8,9 @@
         "@wp-playground/cli@latest",
         "server",
         "--auto-mount",
-        "--port=9400"
+        "--port=9401"
       ],
-      "port": 9400
+      "port": 9401
     }
   ]
 }

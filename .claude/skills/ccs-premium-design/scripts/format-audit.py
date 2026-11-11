@@ -29,6 +29,7 @@ LISTS = [
     ("glows", "glows"),
     ("primaryPerSection", "2+ primaries in one section"),
     ("filledSecondary", "secondary action in a filled button"),
+    ("repeatedPrimary", "same primary twice in the first screen"),
     ("staticBoxes", "boxed but nothing clickable"),
     ("distortedImages", "stretched images"),
     ("softImages", "soft images"),

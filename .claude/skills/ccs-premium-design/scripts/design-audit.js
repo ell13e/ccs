@@ -193,6 +193,18 @@
 			return visible(b) && !primaryLabel.test(text(b, 60));
 		}).map(function (b) { return '"' + text(b, 40) + '"'; });
 
+		// The same primary action twice in the first screen (e.g. a header Book
+		// button directly above the hero's Book button): sections differ, so
+		// primaryPerSection can't see it, but the reader sees both at once.
+		var firstScreen = win.innerHeight || 900, seen = {};
+		Array.prototype.forEach.call(doc.querySelectorAll('.btn-primary,.btn-accent'), function (b) {
+			if (!visible(b)) return;
+			var r = b.getBoundingClientRect();
+			if (r.top > firstScreen || r.bottom < 0) return;
+			var t = text(b, 60).toLowerCase(); if (t) seen[t] = (seen[t] || 0) + 1;
+		});
+		R.repeatedPrimary = Object.keys(seen).filter(function (t) { return seen[t] > 1; }).map(function (t) { return '"' + t + '" ×' + seen[t]; });
+
 		// ---- Rule 9: section spacing ----------------------------------------------------
 		var pads = {};
 		Array.prototype.forEach.call(main.querySelectorAll('section'), function (sec) {

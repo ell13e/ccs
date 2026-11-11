@@ -63,7 +63,7 @@ while ( have_posts() ) :
 		}
 	}
 
-	$ccs_phone     = get_theme_mod( 'ccs_phone', '01234 567890' );
+	$ccs_phone     = get_theme_mod( 'ccs_phone', '01622 809 881' );
 	$ccs_phone_tel = $ccs_phone ? preg_replace( '/\s+/', '', $ccs_phone ) : '';
 	$ccs_contact   = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' ) : home_url( '/contact-us/' );
 	/*

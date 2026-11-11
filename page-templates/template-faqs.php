@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
-$ccs_phone     = get_theme_mod( 'ccs_phone', '01234 567890' );
+$ccs_phone     = get_theme_mod( 'ccs_phone', '01622 809 881' );
 $ccs_phone_tel = $ccs_phone ? preg_replace( '/\s+/', '', $ccs_phone ) : '';
 $ccs_contact   = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' ) : home_url( '/contact-us/' );
 ?>
@@ -47,8 +47,7 @@ $ccs_contact   = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' 
 					<header class="ccs-head">
 						<h2 id="faq-heading" class="ccs-title">
 							<?php
-							/* translators: %s: the emphasised word, drawn with a brush underline. */
-							printf( esc_html__( 'Answers, %s', 'ccs-wp-theme' ), ccs_accent( __( 'plainly', 'ccs-wp-theme' ) ) );
+							echo ccs_copy_accent( 'faqs_title' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_copy_accent().
 							?>
 						</h2>
 						<?php if ( trim( wp_strip_all_tags( $ccs_intro ) ) !== '' ) : ?>
@@ -59,7 +58,7 @@ $ccs_contact   = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' 
 							<div class="faq-ask">
 								<span class="ccs-badge ccs-badge--sm"><?php echo ccs_icon( 'question' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
 								<div>
-									<p class="faq-ask__title"><?php esc_html_e( 'Question not here?', 'ccs-wp-theme' ); ?></p>
+									<p class="faq-ask__title"><?php echo esc_html( ccs_copy( 'faqs_box_title' ) ); ?></p>
 									<p class="faq-ask__text">
 										<?php
 										printf(

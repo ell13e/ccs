@@ -10,12 +10,12 @@
 # page. Chrome's --dump-dom hands that back; the harness is deleted on exit.
 # Works whether or not the browser pane is visible.
 #
-# Env: CCS_BASE (default http://127.0.0.1:9400), CHROME (default macOS Chrome).
+# Env: CCS_BASE (default http://127.0.0.1:9401), CHROME (default macOS Chrome).
 
 set -e
 SCRIPT_DIR=${0:A:h}
 THEME_DIR=${SCRIPT_DIR:h:h:h:h}
-BASE=${CCS_BASE:-http://127.0.0.1:9400}
+BASE=${CCS_BASE:-http://127.0.0.1:9401}
 CHROME=${CHROME:-"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"}
 WIDTH=1440
 JSON=0

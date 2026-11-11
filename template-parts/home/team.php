@@ -58,11 +58,11 @@ $ccs_team_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'who-youll-mee
 		<header class="ccs-head ccs-head--center">
 			<h2 id="home-team-heading" class="ccs-title">
 				<?php
-				esc_html_e( 'Meet the people behind your care', 'ccs-wp-theme' );
+				echo esc_html( ccs_copy( 'team_title' ) );
 				?>
 			</h2>
 			<p class="ccs-lede">
-				<?php esc_html_e( 'The managers and supervisors who run our service. You will know who they are before anyone comes through your door.', 'ccs-wp-theme' ); ?>
+				<?php echo esc_html( ccs_copy( 'team_lede' ) ); ?>
 			</p>
 		</header>
 
@@ -97,7 +97,7 @@ $ccs_team_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'who-youll-mee
 
 		<div class="ccs-section-foot ccs-actions ccs-actions--center">
 			<a class="btn btn-quiet" href="<?php echo esc_url( $ccs_team_url ); ?>">
-				<?php esc_html_e( 'Meet the whole team', 'ccs-wp-theme' ); ?>
+				<?php echo esc_html( ccs_copy( 'team_button' ) ); ?>
 			</a>
 		</div>
 

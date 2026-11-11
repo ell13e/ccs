@@ -948,93 +948,6 @@
 }
 
 /* -------------------------------------------------------------------------
-   WHO WE WORK WITH — accreditation wall
-   ------------------------------------------------------------------------- */
-
-.home-partnerships {
-	padding-block: var(--section-pad-sm);
-	background-color: var(--color-band-cream);
-}
-
-/* Twelve logos at wildly different intrinsic weights share one tile size, so
-   CV Minder's heavy wordmark and MidKent's thin line art get the same
-   footprint. Twelve divides evenly into 2, 3 and 4 columns: no orphan row. */
-.home-partnerships__list {
-	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: var(--space-sm);
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-
-@media (min-width: 600px) {
-	.home-partnerships__list {
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-		gap: var(--space-md);
-	}
-}
-
-@media (min-width: 900px) {
-	.home-partnerships__list {
-		grid-template-columns: repeat(4, minmax(0, 1fr));
-		gap: var(--space-lg);
-	}
-}
-
-/* min-width: 0 overrides the grid default of auto, which sizes a track to its
-   content's intrinsic width before max-width applies; without it CV Minder's
-   wordmark pushed a 2-column phone row 14px past the viewport. */
-.home-partnerships__item {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	min-width: 0;
-	min-height: 6.5rem;
-	padding: var(--space-sm);
-	border-radius: var(--radius-xl);
-	background-color: var(--color-background);
-	box-shadow: var(--shadow-card);
-	transition: box-shadow var(--duration-normal) var(--ease-out);
-}
-
-.home-partnerships__item:hover,
-.home-partnerships__item:focus-within {
-	box-shadow: var(--shadow-float-hover);
-}
-
-.home-partnerships__link {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 100%;
-	height: 100%;
-	min-width: 0;
-}
-
-.home-partnerships__link:focus-visible {
-	outline: var(--focus-ring);
-	outline-offset: 2px;
-	border-radius: var(--radius-sm);
-}
-
-/* No filter: the NHS and CQC identity rules prohibit recolouring their marks,
-   and a real accreditation in its real colours is the stronger signal. */
-.home-partnerships__logo {
-	display: block;
-	width: auto;
-	max-width: 100%;
-	height: 40px;
-	object-fit: contain;
-}
-
-@media (min-width: 768px) {
-	.home-partnerships__logo {
-		height: 44px;
-	}
-}
-
-/* -------------------------------------------------------------------------
    CLOSING CARD
    ------------------------------------------------------------------------- */
 
@@ -1051,4 +964,299 @@
 	.home-partnerships__item {
 		transition: none;
 	}
+}
+
+
+/* =========================================================================
+   NOV 2026 ADDITIONS: the story video. (A first attempt also put coloured blocks behind the photos;
+   the client found the page messier for it and they were removed.)
+   ========================================================================= */
+
+/* --- Story video: one wide frame, centred, on plain white --------------- */
+.home-story {
+	padding-block: var(--section-pad);
+	background-color: var(--color-background);
+}
+
+.home-story .ccs-head {
+	max-width: none;
+}
+
+.home-story .ccs-head .ccs-lede {
+	max-width: 54rem;
+}
+
+.home-story__media {
+	max-width: 62rem;
+	margin-inline: auto;
+}
+
+/* The poster has lettering across its centre; the button sits clear of it,
+   as on the About page. */
+.home-story .video-embed__play {
+	top: auto;
+	left: auto;
+	right: clamp(1rem, 0.5rem + 2vw, 2rem);
+	bottom: clamp(1rem, 0.5rem + 2vw, 2rem);
+	width: clamp(3.5rem, 2.5rem + 3vw, 5rem);
+	height: clamp(3.5rem, 2.5rem + 3vw, 5rem);
+	transform: none;
+}
+
+.home-story .video-embed__trigger:hover .video-embed__play,
+.home-story .video-embed__trigger:focus-visible .video-embed__play {
+	transform: scale(1.06);
+}
+
+/* =========================================================================
+   CALM PASS (Nov 2026): one system, applied strictly.
+   The client's verdict on the page was "messy and chaotic". The causes, in
+   order: warm cream and cool lilac bands alternating (two neutrals that fight);
+   thirteen sections in a dozen layouts; three photos of very different
+   character shown at once; and several card treatments. This block is the
+   single place the homepage's grounds are set, so the rhythm can be read in
+   one glance:
+
+     hero (photo) / tint / white / tint / white / DEEP / tint / white / tint /
+     white / tint / footer (ink)
+
+   Two grounds only: white and the lilac tint. Sections made of white cards
+   sit on tint; sections of text or a single image sit on white. One deep plum
+   band in the middle, and the footer. No cream on this site any more
+   (--color-band-cream now resolves to the tint, design-system.css).
+   ========================================================================= */
+.home-cqc,
+.home-services,
+.home-steps,
+.home-reviews,
+.home-closing-cta {
+	background-color: var(--color-band-tint);
+}
+
+.home-why-choose,
+.home-story,
+.home-costs,
+.home-team {
+	background-color: var(--color-background);
+}
+
+/* One generous padding for every homepage band. Two sizes in rotation read as
+   irregular rather than considered once the bands alternate this strictly. */
+.home-cqc,
+.home-services,
+.home-steps,
+.home-reviews,
+.home-why-choose,
+.home-story,
+.home-costs,
+.home-team,
+.home-differentiators {
+	padding-block: var(--section-pad);
+}
+
+/* Why choose us: one photograph in one frame. Three photos of different
+   light and colour in a collage were the busiest thing on the page. */
+.why-photo {
+	margin: 0;
+	overflow: hidden;
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-band-tint);
+	box-shadow: var(--shadow-float);
+	aspect-ratio: 4 / 5;
+}
+
+.why-photo img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: 63% 45%;
+}
+
+@media (min-width: 960px) {
+	.home-why-choose__inner {
+		grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+		align-items: center;
+	}
+}
+
+@media (max-width: 959px) {
+	.why-photo {
+		aspect-ratio: 4 / 3;
+	}
+}
+
+/* =========================================================================
+   THREE SECTIONS REDESIGNED (Nov 2026). The client singled out "How care
+   starts", "What we do differently" and "What care costs" as awful. Each was
+   thin: small marks, loose text, one heavy box. Each is now built from one
+   substantial object, in the system's own parts (white card on tint, tonal
+   panel on plum, the two-part feature panel). Steps are in sections.css.
+   ========================================================================= */
+
+/* --- What we do differently: argument left, four panels right ------------- */
+.home-diff {
+	display: grid;
+	gap: var(--space-2xl);
+}
+
+.home-diff__head .ccs-lede {
+	max-width: 30rem;
+}
+
+.home-diff__head .ccs-actions {
+	margin-top: var(--space-xl);
+}
+
+.home-diff-grid {
+	max-width: none;
+	margin: 0;
+	gap: var(--space-md);
+}
+
+@media (min-width: 620px) {
+	.home-diff-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--space-md);
+	}
+}
+
+@media (min-width: 1024px) {
+	.home-diff {
+		grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.5fr);
+		gap: clamp(3rem, 1rem + 5vw, 6rem);
+		align-items: center;
+	}
+}
+
+.diff-card {
+	padding: clamp(1.5rem, 1.1rem + 1.2vw, 2.25rem);
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	border-radius: var(--radius-2xl);
+	/* One surface level up from the band: a lighter tone of the same plum. */
+	background-color: rgba(255, 255, 255, 0.07);
+}
+
+.diff-card__icon {
+	display: grid;
+	place-items: center;
+	width: 3.25rem;
+	height: 3.25rem;
+	margin-bottom: var(--space-lg);
+	border-radius: 50%;
+	background-color: var(--color-secondary);
+	color: var(--color-primary-dark);
+}
+
+.diff-card__icon .ccs-icon {
+	width: 1.5rem;
+	height: 1.5rem;
+}
+
+.diff-card__title {
+	font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+}
+
+.diff-card__text {
+	color: rgba(255, 255, 255, 0.84);
+}
+
+/* --- What care costs: one wide two-part price panel ----------------------- */
+.home-costs .ccs-head {
+	margin-bottom: var(--space-2xl);
+}
+
+.price-card {
+	display: grid;
+	max-width: 66rem;
+	margin-inline: auto;
+	padding: 0;
+	overflow: hidden;
+	box-shadow: 0 2px 4px rgba(43, 35, 71, 0.05), 0 30px 70px -34px rgba(43, 35, 71, 0.45);
+}
+
+@media (min-width: 900px) {
+	.price-card {
+		grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+	}
+}
+
+.price-card__rate-panel,
+.price-card__detail {
+	padding: clamp(1.75rem, 1rem + 3vw, 3.25rem);
+}
+
+.price-card__rate-panel {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	background-color: var(--color-ink, #2B2347);
+	color: #fff;
+}
+
+.price-card__from {
+	flex-wrap: wrap;
+}
+
+.price-card__rate-panel .price-card__from-label {
+	color: var(--color-secondary);
+}
+
+.price-card__rate-panel .price-card__rate {
+	font-size: clamp(3.5rem, 2.4rem + 4.4vw, 5.5rem);
+	color: #fff;
+}
+
+.price-card__rate-panel .price-card__basis {
+	margin-top: var(--space-md);
+	font-size: var(--text-lg);
+	color: #fff;
+}
+
+.price-card__rate-panel .price-card__effective {
+	margin-top: 0.5rem;
+	color: rgba(255, 255, 255, 0.76);
+}
+
+.price-card__rate-panel .price-card__caveat {
+	margin-top: var(--space-lg);
+	padding-top: var(--space-lg);
+	border-top: 1px solid rgba(255, 255, 255, 0.16);
+	color: rgba(255, 255, 255, 0.82);
+}
+
+.price-card__detail .price-card__extras-heading {
+	margin-top: 0;
+	padding-top: 0;
+	border-top: 0;
+	font-size: clamp(1.375rem, 1.2rem + 0.6vw, 1.625rem);
+}
+
+.price-card__list {
+	gap: 1rem;
+}
+
+.price-card__item {
+	font-size: var(--text-md);
+}
+
+.price-card__tick {
+	width: 1.75rem;
+	height: 1.75rem;
+}
+
+.price-card__foot {
+	display: grid;
+	gap: var(--space-md);
+	justify-items: start;
+	margin-top: var(--space-xl);
+	padding-top: var(--space-xl);
+	border-top: 1px solid var(--color-hairline);
+}
+
+.price-card__funding {
+	margin: 0;
+	font-size: var(--text-base);
+	line-height: 1.65;
+	color: var(--color-ink-soft);
 }

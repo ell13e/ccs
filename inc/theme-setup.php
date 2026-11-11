@@ -88,8 +88,15 @@ function ccs_hero_photo_fills_banner( $post_id ) {
 	 * wide but shallow strip (Care Guides' 1350×400) was blown up 1.5x to
 	 * cover it, blurred on every screen despite passing the width test.
 	 */
+	/*
+	 * Shape matters too. The banner is a wide strip (about 2.4:1), so a portrait
+	 * photo keeps only a thin slice of itself: the CQC page's 1535x2048 portrait
+	 * showed two foreheads under the menu. A photo taller than it is wide uses
+	 * the inset frame instead, where it is cropped to 4:3 and stays readable.
+	 */
 	return $width >= (int) apply_filters( 'ccs_full_bleed_min_width', 1200 )
-		&& $height >= (int) apply_filters( 'ccs_full_bleed_min_height', 600 );
+		&& $height >= (int) apply_filters( 'ccs_full_bleed_min_height', 600 )
+		&& $width > $height;
 }
 
 /**

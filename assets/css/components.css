@@ -1307,9 +1307,10 @@ a.card {
 	text-underline-offset: 0.15em;
 	/* Padding, not just size: this is the highest-intent control on a page the
 	   reader reached by accident, and it is frequently the thing they actually
-	   wanted. Clears the 24px WCAG 2.2 target minimum with room to spare. */
+	   wanted. 44px tall on phone and desktop (CLAUDE.md rule 14): the phone is a
+	   primary action here, not an inline link, so the 24px floor is not enough. */
 	display: inline-block;
-	padding-block: 4px;
+	padding-block: 0.625rem;
 	white-space: nowrap;
 }
 
@@ -2292,4 +2293,13 @@ a.card {
 	.ccs-faq__item::details-content {
 		transition: none;
 	}
+}
+
+
+/* DEPTH PASS (Nov 2026): the quiet button keeps its white fill and stays
+   secondary (rule 8), but its outline and label are plum instead of grey, so a
+   page of secondary actions still looks like this brand. */
+.btn-quiet {
+	border-color: color-mix(in srgb, var(--color-primary) 38%, #fff);
+	color: var(--color-primary-dark);
 }

@@ -38,16 +38,16 @@ $ccs_steps = apply_filters(
 	'ccs_home_steps',
 	array(
 		array(
-			'title' => __( 'Talk to us', 'ccs-wp-theme' ),
-			'text'  => __( 'A free consultation at your pace, on the phone or at the kitchen table.', 'ccs-wp-theme' ),
+			'title' => ccs_copy( 'steps_1_title' ),
+			'text'  => ccs_copy( 'steps_1_text' ),
 		),
 		array(
-			'title' => __( 'Meet your team', 'ccs-wp-theme' ),
-			'text'  => __( 'We match carers to the person, not to a rota.', 'ccs-wp-theme' ),
+			'title' => ccs_copy( 'steps_2_title' ),
+			'text'  => ccs_copy( 'steps_2_text' ),
 		),
 		array(
-			'title' => __( 'Care begins calmly', 'ccs-wp-theme' ),
-			'text'  => __( 'Planned, unhurried and reviewed as needs change.', 'ccs-wp-theme' ),
+			'title' => ccs_copy( 'steps_3_title' ),
+			'text'  => ccs_copy( 'steps_3_text' ),
 		),
 	)
 );
@@ -65,11 +65,11 @@ $ccs_steps_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'getting-star
 		<header class="ccs-head ccs-head--center">
 			<h2 id="home-steps-heading" class="ccs-title">
 				<?php
-				esc_html_e( 'How care starts', 'ccs-wp-theme' );
+				echo esc_html( ccs_copy( 'steps_title' ) );
 				?>
 			</h2>
 			<p class="ccs-lede">
-				<?php esc_html_e( 'We aim to arrange a consultation within a few days of your enquiry, and can often start within one to two weeks of agreeing a care plan.', 'ccs-wp-theme' ); ?>
+				<?php echo esc_html( ccs_copy( 'steps_lede' ) ); ?>
 			</p>
 		</header>
 
@@ -83,7 +83,7 @@ $ccs_steps_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'getting-star
 		?>
 		<ol class="ccs-steps" role="list">
 			<?php foreach ( $ccs_steps as $ccs_i => $ccs_step ) : ?>
-				<li class="ccs-step">
+				<li class="ccs-step" data-ccs-exception="rule 1: each step is a card at the client's request (Nov 2026); unboxed, the sequence looked unfinished">
 					<span class="ccs-step__num" aria-hidden="true"><?php echo (int) $ccs_i + 1; ?></span>
 					<h3 class="ccs-step__title"><?php echo esc_html( $ccs_step['title'] ); ?></h3>
 					<p class="ccs-step__text"><?php echo esc_html( $ccs_step['text'] ); ?></p>
@@ -93,7 +93,7 @@ $ccs_steps_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'getting-star
 
 		<div class="ccs-section-foot ccs-actions ccs-actions--center">
 			<a class="btn btn-quiet" href="<?php echo esc_url( $ccs_steps_url ); ?>">
-				<?php esc_html_e( 'See the full process', 'ccs-wp-theme' ); ?>
+				<?php echo esc_html( ccs_copy( 'steps_button' ) ); ?>
 			</a>
 		</div>
 
