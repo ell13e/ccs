@@ -85,70 +85,49 @@ if ( $ccs_costs_page instanceof WP_Post ) {
 ?>
 
 <section class="home-costs" aria-labelledby="home-costs-heading">
-	<div class="container container--lg">
+	<div class="home-costs__inner container container--lg">
 
-		<header class="ccs-head ccs-head--center">
+		<div class="home-costs__intro">
 			<p class="ccs-eyebrow"><?php echo esc_html( ccs_copy( 'costs_eyebrow' ) ); ?></p>
-			<h2 id="home-costs-heading" class="ccs-title">
-				<?php echo esc_html( ccs_copy( 'costs_title' ) ); ?>
-			</h2>
-			<p class="ccs-lede">
-				<?php echo esc_html( ccs_copy( 'costs_lede' ) ); ?>
-			</p>
-		</header>
+			<h2 id="home-costs-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'costs_title' ) ); ?></h2>
+			<p class="ccs-lede"><?php echo esc_html( ccs_copy( 'costs_lede' ) ); ?></p>
+			<p class="home-costs__funding"><?php echo esc_html( ccs_copy( 'costs_funding' ) ); ?></p>
+			<?php if ( $ccs_costs_url ) : ?>
+				<a class="ccs-text-link" href="<?php echo esc_url( $ccs_costs_url ); ?>"><?php echo esc_html( $ccs_costs_text ); ?> <span aria-hidden="true">&rarr;</span></a>
+			<?php endif; ?>
+		</div>
 
 		<?php
 		/*
-		 * One wide price panel (redesigned Nov 2026; the client called the old
-		 * layout "awful": loose text on the left, a heavy dark box on the right).
-		 * The rate sits on ink on the left, everything else that can be charged
-		 * sits on white on the right, and the funding note and link close the
-		 * same panel, so the whole answer to "what will it cost?" is one object.
-		 * Same two-part anatomy as the closing card, so the page has one kind of
-		 * feature panel, not two.
+		 * Third version (Nov 2026; the client found the dark two-part panel ugly
+		 * and overwhelming). One soft panel: the rate as the focal point, what it
+		 * covers, the caveat, and the extras one tap away in a disclosure rather
+		 * than all on screen at once. Everything that can be charged is still on
+		 * the page, which is this section's promise.
 		 *
-		 * The caveat under the figure is deliberate, every time a rate is shown:
-		 * the headline is the entry rate for the cheapest band on the schedule,
-		 * and without it the number reads as a flat price.
+		 * The caveat stays with the figure every time: the headline is the entry
+		 * rate for the cheapest band, and alone it reads as a flat price.
 		 */
 		?>
 		<div class="price-card" data-ccs-exception="rule 1: a rate card people compare and screenshot, a distinct object">
-			<div class="price-card__rate-panel">
-				<p class="price-card__from">
-					<span class="price-card__from-label"><?php esc_html_e( 'From', 'ccs-wp-theme' ); ?></span>
-					<span class="price-card__rate"><?php echo esc_html( $ccs_costs['from_rate'] ); ?></span>
-				</p>
-				<p class="price-card__basis"><?php echo esc_html( $ccs_costs['rate_basis'] ); ?></p>
-				<p class="price-card__effective"><?php echo esc_html( $ccs_costs['effective_from'] ); ?></p>
-				<p class="price-card__caveat">
-					<?php echo esc_html( ccs_copy( 'costs_note' ) ); ?>
-				</p>
-			</div>
+			<p class="price-card__from">
+				<span class="price-card__from-label"><?php esc_html_e( 'From', 'ccs-wp-theme' ); ?></span>
+				<span class="price-card__rate"><?php echo esc_html( $ccs_costs['from_rate'] ); ?></span>
+			</p>
+			<p class="price-card__basis"><?php echo esc_html( $ccs_costs['rate_basis'] ); ?></p>
+			<p class="price-card__effective"><?php echo esc_html( $ccs_costs['effective_from'] ); ?></p>
+			<p class="price-card__caveat"><?php echo esc_html( ccs_copy( 'costs_note' ) ); ?></p>
 
-			<div class="price-card__detail">
-				<?php if ( ! empty( $ccs_costs['extras'] ) ) : ?>
-					<h3 class="price-card__extras-heading"><?php echo esc_html( ccs_copy( 'costs_extras_heading' ) ); ?></h3>
+			<?php if ( ! empty( $ccs_costs['extras'] ) ) : ?>
+				<details class="price-extras">
+					<summary class="price-extras__summary"><?php echo esc_html( ccs_copy( 'costs_extras_heading' ) ); ?></summary>
 					<ul class="price-card__list" role="list">
 						<?php foreach ( $ccs_costs['extras'] as $ccs_extra ) : ?>
-							<li class="price-card__item">
-								<span class="price-card__tick"><?php echo ccs_icon( 'check' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
-								<span><?php echo esc_html( $ccs_extra ); ?></span>
-							</li>
+							<li class="price-card__item"><?php echo esc_html( $ccs_extra ); ?></li>
 						<?php endforeach; ?>
 					</ul>
-				<?php endif; ?>
-
-				<div class="price-card__foot">
-					<p class="price-card__funding">
-						<?php echo esc_html( ccs_copy( 'costs_funding' ) ); ?>
-					</p>
-					<?php if ( $ccs_costs_url ) : ?>
-						<a href="<?php echo esc_url( $ccs_costs_url ); ?>" class="btn btn-quiet">
-							<?php echo esc_html( $ccs_costs_text ); ?>
-						</a>
-					<?php endif; ?>
-				</div>
-			</div>
+				</details>
+			<?php endif; ?>
 		</div>
 
 	</div>

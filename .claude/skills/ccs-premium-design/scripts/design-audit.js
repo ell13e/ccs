@@ -134,7 +134,7 @@
 
 		// ---- Rule 9: centred multi-line text ---------------------------------------
 		R.centredParagraphs = Array.prototype.slice.call(main.querySelectorAll('p,.ccs-lede,li,dd')).filter(function (e) {
-			if (!visible(e)) return false;
+			if (!visible(e) || e.closest('[data-ccs-exception]')) return false; // declared exceptions are listed, not flagged
 			var s = cs(e), lh = parseFloat(s.lineHeight) || parseFloat(s.fontSize) * 1.5;
 			return s.textAlign === 'center' && e.getBoundingClientRect().height > lh * 2.3;
 		}).map(function (e) { return label(e) + ' "' + text(e, 30) + '" (' + Math.round(e.getBoundingClientRect().height / (parseFloat(cs(e).lineHeight) || 24)) + ' lines)'; });
@@ -190,7 +190,8 @@
 		// "Search" counts: on a search or 404 page, searching is the primary action.
 		var primaryLabel = /book a free consultation|send my request|request a call|^call\b|^\+?\d[\d\s]{6,}$|current vacancies|apply|^search$/i;
 		R.filledSecondary = Array.prototype.slice.call(main.querySelectorAll('.btn-primary,.btn-accent')).filter(function (b) {
-			return visible(b) && !primaryLabel.test(text(b, 60));
+			// Declared exceptions are listed, not flagged, as everywhere else in this audit.
+			return visible(b) && !b.closest('[data-ccs-exception]') && !primaryLabel.test(text(b, 60));
 		}).map(function (b) { return '"' + text(b, 40) + '"'; });
 
 		// The same primary action twice in the first screen (e.g. a header Book

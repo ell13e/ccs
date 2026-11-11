@@ -484,6 +484,20 @@ class CCS_Theme_Customizer {
 			),
 		) );
 
+		// Shown beside the rating on the CQC page. Update after each inspection.
+		$wp_customize->add_setting( 'ccs_cqc_rating_date', array(
+			'type'              => 'theme_mod',
+			'capability'        => 'edit_theme_options',
+			'default'           => '6 December 2023',
+			'sanitize_callback' => 'sanitize_text_field',
+		) );
+		$wp_customize->add_control( 'ccs_cqc_rating_date', array(
+			'label'       => __( 'Date the rating was published', 'ccs-wp-theme' ),
+			'description' => __( 'As shown on your CQC profile, e.g. 6 December 2023. Update this and the rating above after each inspection.', 'ccs-wp-theme' ),
+			'section'     => 'ccs_cqc',
+			'type'        => 'text',
+		) );
+
 		$wp_customize->add_setting( self::CQC_REPORT_URL, array(
 			'type'              => 'theme_mod',
 			'capability'        => 'edit_theme_options',

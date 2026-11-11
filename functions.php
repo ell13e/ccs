@@ -47,6 +47,8 @@ require_once THEME_DIR . '/inc/team.php';
 require_once THEME_DIR . '/inc/icons.php';
 require_once THEME_DIR . '/inc/theme-images.php';
 require_once THEME_DIR . '/inc/home-content.php';
+require_once THEME_DIR . '/inc/switching.php';
+require_once THEME_DIR . '/inc/forms.php';
 require_once THEME_DIR . '/inc/content-sections.php';
 
 /**

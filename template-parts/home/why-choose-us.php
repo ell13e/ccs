@@ -29,12 +29,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 $services_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'home-care-services-kent' ) : home_url( '/home-care-services-kent/' );
 $about_url    = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'about-home-care-maidstone' ) : home_url( '/about-home-care-maidstone/' );
 
-$why_proof = array(
-	array( 'icon' => 'shield', 'text' => ccs_copy( 'why_proof_1' ) ),
-	array( 'icon' => 'clock', 'text' => ccs_copy( 'why_proof_2' ) ),
-	array( 'icon' => 'people', 'text' => ccs_copy( 'why_proof_3' ) ),
-	array( 'icon' => 'moon', 'text' => ccs_copy( 'why_proof_4' ) ),
-);
 
 /*
  * Collage photographs, largest first. Paths are relative to assets/images/.
@@ -100,15 +94,14 @@ $why_photos = array_values(
 				<?php echo esc_html( ccs_copy( 'why_text_2' ) ); ?>
 			</p>
 
-			<ul class="why-proof" role="list">
-				<?php foreach ( $why_proof as $why_point ) : ?>
-					<li class="why-proof__item">
-						<span class="ccs-badge ccs-badge--sm"><?php echo ccs_icon( $why_point['icon'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
-						<span class="why-proof__text"><?php echo esc_html( $why_point['text'] ); ?></span>
-					</li>
-				<?php endforeach; ?>
-			</ul>
 
+			<?php
+			/*
+			 * Cut back (Nov 2026; the client found this column busy). The four
+			 * proof tiles repeated the hero's CQC badge and this paragraph, so the
+			 * column is now heading, one line, one paragraph and one action.
+			 */
+			?>
 			<div class="ccs-actions">
 				<a href="<?php echo esc_url( $services_url ); ?>" class="btn btn-quiet">
 					<?php echo esc_html( ccs_copy( 'why_button_services' ) ); ?>

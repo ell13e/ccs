@@ -41,6 +41,7 @@ class CCS_Enquiry_Manager {
 	 */
 	private static $source_options = array(
 		'website_form'   => 'Website Form',
+		'switching'      => 'Switching provider',
 		'google_ads'     => 'Google Ads',
 		'facebook_ads'   => 'Facebook Ads',
 		'organic_search' => 'Organic Search',
@@ -585,6 +586,8 @@ class CCS_Enquiry_Manager {
 		$html .= '<tr><th>' . esc_html__( 'Urgency', 'ccs-wp-theme' ) . '</th><td>' . esc_html( isset( self::$urgency_options[ $urgency ] ) ? self::$urgency_options[ $urgency ] : ( $urgency ?: '—' ) ) . '</td></tr>';
 		$html .= '<tr><th>' . esc_html__( 'Status', 'ccs-wp-theme' ) . '</th><td>' . esc_html( isset( self::$status_options[ $status ] ) ? self::$status_options[ $status ] : ( $status ?: '—' ) ) . '</td></tr>';
 		$html .= '<tr><th>' . esc_html__( 'Source', 'ccs-wp-theme' ) . '</th><td>' . esc_html( $this->get_source_label( $source ) ) . '</td></tr>';
+		$heard = get_post_meta( $id, 'enquiry_heard_about', true );
+		$html .= '<tr><th>' . esc_html__( 'Heard about us', 'ccs-wp-theme' ) . '</th><td>' . esc_html( $heard ?: '—' ) . '</td></tr>';
 		$html .= '<tr><th>' . esc_html__( 'Follow-up', 'ccs-wp-theme' ) . '</th><td>' . esc_html( $follow ? gmdate( 'd M Y', strtotime( $follow ) ) : '—' ) . '</td></tr>';
 		if ( $assigned && ( $user = get_userdata( (int) $assigned ) ) ) {
 			$html .= '<tr><th>' . esc_html__( 'Assigned to', 'ccs-wp-theme' ) . '</th><td>' . esc_html( $user->display_name ) . '</td></tr>';

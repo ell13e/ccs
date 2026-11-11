@@ -166,6 +166,8 @@
     fd.append('phone', phone);
     fd.append('date_of_birth', dob);
     fd.append('consent', consent ? 'true' : 'false');
+    var heardEl = form.querySelector('[name="heard_about"]');
+    fd.append('heard_about', heardEl ? heardEl.value : '');
 
     fetch(cfg.ajaxUrl, { method: 'POST', body: fd, credentials: 'same-origin' })
       .then(function (res) { return res.json(); })
@@ -195,6 +197,7 @@
           if (errors.phone) showFieldError('resource-phone', 'resource-phone-error', errors.phone);
           if (errors.date_of_birth) showFieldError('resource-dob', 'resource-dob-error', errors.date_of_birth);
           if (errors.consent) showFieldError('resource-consent', 'resource-consent-error', errors.consent);
+          if (errors.heard_about) showFieldError('resource-heard-about', 'resource-heard-about-error', errors.heard_about);
         }
       })
       .catch(function () {

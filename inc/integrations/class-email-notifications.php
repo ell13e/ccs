@@ -130,6 +130,7 @@ class CCS_Email_Notifications {
 			'enquiry_location'         => __( 'Location / area', 'ccs-wp-theme' ),
 			'enquiry_urgency'          => __( 'Urgency', 'ccs-wp-theme' ),
 			'enquiry_preferred_contact'=> __( 'Preferred contact', 'ccs-wp-theme' ),
+			'enquiry_heard_about'      => __( 'Heard about us', 'ccs-wp-theme' ),
 		);
 
 		$with_whom_labels = array(

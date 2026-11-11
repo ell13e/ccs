@@ -49,6 +49,8 @@ function ccs_icon( $name, $class = '' ) {
 		'mail'     => '<rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m4 7 8 6 8-6"/>',
 		'pin'      => '<path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.4"/>',
 		'check'    => '<path d="m5 12.5 4.2 4.2L19 7"/>',
+		// Switching provider: two arrows passing each other.
+		'switch'   => '<path d="M4 8h14"/><path d="m14.5 4.5 3.5 3.5-3.5 3.5"/><path d="M20 16H6"/><path d="m9.5 12.5-3.5 3.5 3.5 3.5"/>',
 	);
 
 	if ( ! isset( $paths[ $name ] ) ) {

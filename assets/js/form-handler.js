@@ -59,7 +59,7 @@
 	}
 
 	/**
-	 * Validate enquiry form (name, email, phone required).
+	 * Validate enquiry form (name and phone required; email optional, checked if given).
 	 * @param {HTMLFormElement} form
 	 * @returns {Array<{field: HTMLElement, message: string}>} Every problem found; empty when valid.
 	 */
@@ -70,14 +70,37 @@
 		var errors = [];
 		if (name && !name.value.trim()) errors.push({ field: name, message: 'Please enter your name.' });
 		if (phone && !phone.value.trim()) errors.push({ field: phone, message: 'Please enter a phone number so we can call you back.' });
+		// Email is optional (Nov 2026): a name and a phone number are enough to
+		// call someone back. If one is given, it must look complete.
 		if (email) {
 			var emailVal = email.value.trim();
-			if (!emailVal) {
-				errors.push({ field: email, message: 'Please enter your email address.' });
-			} else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+			if (emailVal && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
 				errors.push({ field: email, message: 'This email address looks incomplete. Check it has an @ and an ending like .co.uk.' });
 			}
 		}
+		return errors;
+	}
+
+	/**
+	 * Other required questions (Nov 2026): the "How did you hear about us?"
+	 * dropdown on every form, and the switching form's current-care questions.
+	 * Any select or text input marked required that is empty, and any fieldset
+	 * marked data-ccs-required with nothing chosen. The message comes from the
+	 * field's data-ccs-error, so each says what to do.
+	 * @param {HTMLFormElement} form
+	 * @param {Array} errors Appended to.
+	 */
+	function validateRequiredExtras(form, errors) {
+		var handled = { enquiry_name: 1, enquiry_email: 1, enquiry_phone: 1, name: 1, phone: 1 };
+		Array.prototype.forEach.call(form.querySelectorAll('select[required], input[required]:not([type="radio"]):not([type="checkbox"])'), function (field) {
+			if (handled[field.name] || field.value.trim()) return;
+			errors.push({ field: field, message: field.getAttribute('data-ccs-error') || 'Please fill this in.' });
+		});
+		Array.prototype.forEach.call(form.querySelectorAll('fieldset[data-ccs-required]'), function (set) {
+			if (set.querySelector('input:checked')) return;
+			var first = set.querySelector('input');
+			if (first) errors.push({ field: first, message: set.getAttribute('data-ccs-error') || 'Please choose one.' });
+		});
 		return errors;
 	}
 
@@ -189,7 +212,7 @@
 		form.addEventListener('submit', function(e) {
 			e.preventDefault();
 			Array.prototype.forEach.call(form.querySelectorAll('[aria-invalid="true"]'), clearFieldError);
-			var errors = action === 'submit_enquiry' ? validateEnquiryForm(form) : validateCallbackForm(form);
+			var errors = validateRequiredExtras(form, action === 'submit_enquiry' ? validateEnquiryForm(form) : validateCallbackForm(form));
 			if (errors.length) {
 				errors.forEach(function(err) { showFieldError(err.field, err.message); });
 				showMessage(form, errors.length === 1 ? errors[0].message : 'Please check the ' + errors.length + ' fields marked above.', 'error');
@@ -198,6 +221,19 @@
 			}
 			showMessage(form, '', 'success');
 			submitForm(form, action);
+		});
+
+		// Choosing an answer clears its error (selects and radio groups fire change, not input).
+		form.addEventListener('change', function(e) {
+			var t = e.target;
+			if (!t || !t.closest) return;
+			if (t.type === 'radio') {
+				var set = t.closest('fieldset');
+				var first = set && set.querySelector('input');
+				if (first && first.getAttribute('aria-invalid') === 'true') clearFieldError(first);
+			} else if (t.getAttribute('aria-invalid') === 'true' && t.value) {
+				clearFieldError(t);
+			}
 		});
 
 		// A field's error goes as soon as the person fixes it, not on the next submit.

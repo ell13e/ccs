@@ -73,11 +73,11 @@ $cqc_has_badge = file_exists( $cqc_badge );
 			 * so explicitly here is the single strongest sentence available.
 			 */
 			?>
-			<p class="ccs-lede">
+			<p class="ccs-lede" data-ccs-exception="rule 10: a sourced statistic that cannot be shortened, centred over the regulator's tile; three short lines at desktop">
 				<?php
 				printf(
 					/* translators: %s: linked phrase citing the Homecare Association analysis. */
-					esc_html__( 'Only around one in six home care services in England has a current CQC rating — %s. Ours is published by the regulator, not by us, and you can read it yourself.', 'ccs-wp-theme' ),
+					esc_html__( 'Only around one in six home care services in England has a current CQC rating: %s. Ours is published by the regulator, so you can read it for yourself.', 'ccs-wp-theme' ),
 					sprintf(
 						'<a class="home-cqc__source" href="%1$s" target="_blank" rel="noopener noreferrer">%2$s<span class="screen-reader-text">%3$s</span></a>',
 						esc_url( 'https://www.homecareassociation.org.uk/resource/unseen-and-unrated-more-than-four-in-five-community-social-care-services-in-england-have-no-current-cqc-rating-new-analysis-finds.html' ),
@@ -87,105 +87,59 @@ $cqc_has_badge = file_exists( $cqc_badge );
 				);
 				?>
 			</p>
-			<div class="ccs-actions home-cqc__actions">
-				<?php /* Quiet, not filled: reading the report is a secondary action; booking is the page's primary one (CCS/CLAUDE.md rule 8). */ ?>
-				<a href="<?php echo esc_url( $cqc_url ); ?>" class="btn btn-quiet" target="_blank" rel="noopener noreferrer">
-					<?php echo esc_html( ccs_copy( 'cqc_button' ) ); ?>
-					<span class="screen-reader-text"><?php esc_html_e( '(opens in a new window)', 'ccs-wp-theme' ); ?></span>
-				</a>
-			</div>
+			<?php
+			/*
+			 * No separate "Read our full CQC report" button (Nov 2026): the
+			 * regulator's tile below already links to the report, and the two
+			 * side by side said the same thing twice.
+			 */
+			?>
 		</div>
 
 		<?php
 		/*
-		 * The badge sits in a card rather than floating loose in the right-hand
-		 * column. It is a ~165px box; against a 1280px container that left
-		 * roughly a third of this band visibly empty between the prose and the
-		 * artwork, which is what made the site's most important trust section
-		 * read as the least designed one. The card gives it enough presence to
-		 * balance the prose.
-		 *
-		 * The badge (live widget or fallback) links to the report itself, but a
-		 * logo is not an obvious link to everyone, so the report also has an
-		 * explicit button under the copy (.home-cqc__actions). That button was
-		 * lost in an earlier edit while this comment still described it; it is
-		 * restored there, as a button rather than a text link, because "check
-		 * the regulator's verdict yourself" is this band's whole call to action.
+		 * The rating, set out in the site's own type rather than the regulator's
+		 * widget in a box (client, Nov 2026: "style this nicer without just
+		 * shoving it in a card"). It shows what CQC asks providers to display
+		 * online: the overall rating, the date, and a link to the report on
+		 * cqc.org.uk. The rating and date come from Customize > CQC Information,
+		 * so they must be updated there after each inspection; the widget used to
+		 * do that automatically.
 		 */
+		$cqc_ratings = array(
+			'outstanding'          => __( 'Outstanding', 'ccs-wp-theme' ),
+			'good'                 => __( 'Good', 'ccs-wp-theme' ),
+			'requires-improvement' => __( 'Requires improvement', 'ccs-wp-theme' ),
+			'inadequate'           => __( 'Inadequate', 'ccs-wp-theme' ),
+		);
+		$cqc_rating_key  = (string) get_theme_mod( 'ccs_cqc_rating', '' );
+		$cqc_rating_key  = isset( $cqc_ratings[ $cqc_rating_key ] ) ? $cqc_rating_key : 'good';
+		$cqc_rating_date = (string) get_theme_mod( 'ccs_cqc_rating_date', '6 December 2023' );
 		?>
-		<div class="home-cqc__badge ccs-surface ccs-surface--pad">
-			<?php if ( ! $cqc_hide ) : ?>
-				<?php if ( $cqc_has_badge ) : ?>
-					<?php /*
-					 * Fallback badge, hidden by default and only revealed if the live
-					 * widget script fails to load or execute — a strict CSP, an ad
-					 * blocker, or cqc.org.uk itself being down all leave real users
-					 * with a blank box otherwise (exactly what happens under this
-					 * theme's own local-preview CSP). `<noscript>` alone doesn't cover
-					 * that case, since JS is still enabled; the script's `onerror`
-					 * does.
-					 *
-					 * Hidden by CSS on the front page above 767px, where the hero paints
-					 * this same badge barely a screen earlier — see .home-cqc__badge in
-					 * homepage.css. That has to be a media query rather than a PHP check:
-					 * the hero badge is hidden below 767px, so gating it in PHP would
-					 * leave mobile users with no badge at all when the widget is blocked,
-					 * which is the exact failure this fallback exists to prevent.
-					 */ ?>
-					<?php
-					/*
-					 * No inline style here. It used to carry style="display:none;", with
-					 * the onerror handler below flipping it to style="display:block" —
-					 * which meant the front-page desktop suppression rule three lines
-					 * away in homepage.css could only ever win with !important, because
-					 * nothing else outranks an inline style. Visibility is a class now
-					 * (.is-visible, toggled by onerror instead of a style property), so it
-					 * is decided by ordinary CSS specificity: the suppression rule
-					 * (body.home .home-cqc__badge #cqc-widget-fallback.is-visible) simply
-					 * carries more selectors than the base show rule and wins on its own.
-					 */
-					?>
-					<a
-						id="cqc-widget-fallback"
-						href="<?php echo esc_url( $cqc_url ); ?>"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<img
-							src="<?php echo esc_url( $cqc_badge_url ); ?>"
-							alt="<?php esc_attr_e( 'CQC inspected and rated Good', 'ccs-wp-theme' ); ?>"
-							class="home-cqc__badge-img"
-							width="1184"
-							height="821"
-							<?php echo ccs_theme_image_srcset( 'cqc-badges/CQC inspected and rated good RGB.jpg', '200px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset(). ?>
-							<?php // Lazy: this fallback is hidden unless the CQC widget fails, and an eager hidden image still cost 79KB on every load. ?>
-							loading="lazy"
-							decoding="async"
-						>
-					</a>
-				<?php endif; ?>
-				<script
-					type="text/javascript"
-					src="<?php echo esc_url( 'https://www.cqc.org.uk/sites/all/modules/custom/cqc_widget/widget.js?data-id=' . rawurlencode( $cqc_id ) . '&data-host=https://www.cqc.org.uk&type=location' ); ?>"
-					<?php if ( $cqc_has_badge ) : ?>
-						onerror="var f=document.getElementById('cqc-widget-fallback');if(f){f.classList.add('is-visible');}"
-					<?php endif; ?>
-				></script>
-			<?php elseif ( $cqc_has_badge ) : ?>
-				<a href="<?php echo esc_url( $cqc_url ); ?>" target="_blank" rel="noopener noreferrer">
-					<img
-						src="<?php echo esc_url( $cqc_badge_url ); ?>"
-						alt="<?php esc_attr_e( 'CQC inspected and rated Good', 'ccs-wp-theme' ); ?>"
-						class="home-cqc__badge-img"
-						width="1184"
-						height="821"
-						<?php echo ccs_theme_image_srcset( 'cqc-badges/CQC inspected and rated good RGB.jpg', '200px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset(). ?>
-						loading="lazy"
-						decoding="async"
-					>
-				</a>
+		<dl class="cqc-rating cqc-rating--<?php echo esc_attr( $cqc_rating_key ); ?>">
+			<div class="cqc-rating__item">
+				<dt class="cqc-rating__label"><?php esc_html_e( 'CQC overall rating', 'ccs-wp-theme' ); ?></dt>
+				<dd class="cqc-rating__value">
+					<span class="cqc-rating__dot" aria-hidden="true"></span>
+					<?php echo esc_html( $cqc_ratings[ $cqc_rating_key ] ); ?>
+				</dd>
+			</div>
+			<?php if ( '' !== $cqc_rating_date ) : ?>
+				<div class="cqc-rating__item">
+					<dt class="cqc-rating__label"><?php esc_html_e( 'Rating published', 'ccs-wp-theme' ); ?></dt>
+					<dd class="cqc-rating__value cqc-rating__value--date"><?php echo esc_html( $cqc_rating_date ); ?></dd>
+				</div>
 			<?php endif; ?>
-		</div>
+			<div class="cqc-rating__item">
+				<dt class="cqc-rating__label"><?php esc_html_e( 'Full report', 'ccs-wp-theme' ); ?></dt>
+				<dd class="cqc-rating__value cqc-rating__value--link">
+					<a href="<?php echo esc_url( $cqc_url ); ?>" target="_blank" rel="noopener noreferrer">
+						<?php esc_html_e( 'Read it on cqc.org.uk', 'ccs-wp-theme' ); ?> <span aria-hidden="true">&rarr;</span>
+						<span class="screen-reader-text"><?php esc_html_e( '(opens in a new window)', 'ccs-wp-theme' ); ?></span>
+					</a>
+				</dd>
+			</div>
+		</dl>
 
 	</div>
 </section>

@@ -71,7 +71,14 @@
 						<?php endif; ?>
 					</div>
 				<?php endif; ?>
-				<?php get_template_part( 'template-parts/cqc-regulated-badge', null, array( 'variant' => 'white' ) ); ?>
+				<?php
+				/*
+				 * The small "Regulated by CQC" mark. The full live widget sat here
+				 * briefly and looked like a random insert (client, Nov 2026); the
+				 * rating itself is shown by the hero badge and on the CQC page.
+				 */
+				get_template_part( 'template-parts/cqc-regulated-badge', null, array( 'variant' => 'white' ) );
+				?>
 			</div>
 		</div>
 

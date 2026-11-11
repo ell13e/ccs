@@ -168,7 +168,7 @@ while ( have_posts() ) :
 								</p>
 							<?php endif; ?>
 							<p class="location-card__note">
-								<?php esc_html_e( 'Just outside these? Ring and ask. The honest answer depends on whether we can staff it consistently.', 'ccs-wp-theme' ); ?>
+								<?php esc_html_e( 'Just outside these? Ring and ask. It depends on whether we can send you the same carers every week.', 'ccs-wp-theme' ); ?>
 							</p>
 						</div>
 					<?php endif; ?>

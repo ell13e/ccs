@@ -126,11 +126,26 @@ class CCS_Form_Handlers {
 		if ( trim( $phone ) === '' ) {
 			$errors[] = __( 'Phone is required.', 'ccs-wp-theme' );
 		}
-		if ( trim( $email ) === '' ) {
-			$errors[] = __( 'Email is required.', 'ccs-wp-theme' );
-		} elseif ( ! is_email( $email ) ) {
+		// Email is optional: a name and a phone number are enough to call back.
+		if ( trim( $email ) !== '' && ! is_email( $email ) ) {
 			$errors[] = __( 'Please enter a valid email address.', 'ccs-wp-theme' );
 		}
+		$heard_about = function_exists( 'ccs_heard_about_from_post' ) ? ccs_heard_about_from_post( 'enquiry_heard_about' ) : '';
+		if ( '' === $heard_about ) {
+			$errors[] = __( 'Please tell us how you heard about us.', 'ccs-wp-theme' );
+		}
+
+		$is_switching = isset( $_POST['enquiry_source'] ) && 'switching' === sanitize_text_field( wp_unslash( $_POST['enquiry_source'] ) );
+		if ( $is_switching ) {
+			$timings = function_exists( 'ccs_switch_timing_options' ) ? ccs_switch_timing_options() : array();
+			if ( ! isset( $_POST['switch_provider'] ) || '' === trim( sanitize_text_field( wp_unslash( $_POST['switch_provider'] ) ) ) ) {
+				$errors[] = __( 'Please tell us who provides your care now.', 'ccs-wp-theme' );
+			}
+			if ( ! isset( $_POST['switch_timing'] ) || ! isset( $timings[ sanitize_key( wp_unslash( $_POST['switch_timing'] ) ) ] ) ) {
+				$errors[] = __( 'Please choose when your current care ends.', 'ccs-wp-theme' );
+			}
+		}
+
 		if ( ! empty( $errors ) ) {
 			wp_send_json_error( array( 'message' => implode( ' ', $errors ) ) );
 			return;
@@ -186,6 +201,32 @@ class CCS_Form_Handlers {
 			update_post_meta( $post_id, $key, $value );
 		}
 
+		/*
+		 * Switching enquiries (page-templates/template-switch.php) carry two extra
+		 * answers. They are written into the message, the field the inbox, the
+		 * CSV export and the notification email already show, rather than as new
+		 * meta that none of those know about.
+		 */
+		if ( isset( $_POST['enquiry_source'] ) && 'switching' === sanitize_text_field( wp_unslash( $_POST['enquiry_source'] ) ) ) {
+			$switch_lines = array( __( 'Switching from another provider.', 'ccs-wp-theme' ) );
+			$provider     = isset( $_POST['switch_provider'] ) ? sanitize_text_field( wp_unslash( $_POST['switch_provider'] ) ) : '';
+			$timing       = isset( $_POST['switch_timing'] ) ? sanitize_key( wp_unslash( $_POST['switch_timing'] ) ) : '';
+			$timings      = function_exists( 'ccs_switch_timing_options' ) ? ccs_switch_timing_options() : array();
+
+			if ( '' !== $provider ) {
+				/* translators: %s: name of the family's current care provider. */
+				$switch_lines[] = sprintf( __( 'Current provider: %s', 'ccs-wp-theme' ), $provider );
+			}
+			if ( isset( $timings[ $timing ] ) ) {
+				/* translators: %s: when the family's current care ends. */
+				$switch_lines[] = sprintf( __( 'Current care ends: %s', 'ccs-wp-theme' ), $timings[ $timing ] );
+			}
+
+			$message = (string) get_post_meta( $post_id, 'enquiry_message', true );
+			update_post_meta( $post_id, 'enquiry_message', implode( "\n", $switch_lines ) . ( '' !== $message ? "\n\n" . $message : '' ) );
+		}
+
+		update_post_meta( $post_id, 'enquiry_heard_about', $heard_about );
 		update_post_meta( $post_id, 'enquiry_status', 'new' );
 
 		do_action( 'ccs_enquiry_created', $post_id );
@@ -223,6 +264,10 @@ class CCS_Form_Handlers {
 		if ( trim( $phone ) === '' ) {
 			$errors[] = __( 'Phone is required.', 'ccs-wp-theme' );
 		}
+		$heard_about = function_exists( 'ccs_heard_about_from_post' ) ? ccs_heard_about_from_post( 'enquiry_heard_about' ) : '';
+		if ( '' === $heard_about ) {
+			$errors[] = __( 'Please tell us how you heard about us.', 'ccs-wp-theme' );
+		}
 		if ( ! empty( $errors ) ) {
 			wp_send_json_error( array( 'message' => implode( ' ', $errors ) ) );
 			return;
@@ -254,6 +299,7 @@ class CCS_Form_Handlers {
 		update_post_meta( $post_id, 'enquiry_status', 'new' );
 		update_post_meta( $post_id, 'enquiry_callback_request', '1' );
 		update_post_meta( $post_id, 'enquiry_source', 'phone_call' );
+		update_post_meta( $post_id, 'enquiry_heard_about', $heard_about );
 
 		do_action( 'ccs_callback_request_created', $post_id );
 
