@@ -1,4 +1,15 @@
-# Page copy: suggested rewrites for client approval
+# Page copy rewrites (approved and applied, Nov 2026)
+
+**Status:** approved by the client on 11 Nov 2026 and applied. The theme ships
+these changes in `inc/data/copy-update-2026-11.json`; on any site, the first
+admin page load after the theme update applies each one only where the page
+still holds exactly the old text (`inc/content-updates.php`). Pages the client
+has edited since are left alone and need the wording below pasted in by hand.
+The careers cards are theme strings and change with the theme.
+
+---
+
+Original brief:
 
 Nov 2026. A site-wide audit found three habits that make the copy read as
 machine-written: constant "X, not Y" contrasts (67), announcing honesty
