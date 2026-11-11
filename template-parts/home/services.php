@@ -99,6 +99,7 @@ $ccs_service_fallback_images = array(
  */
 foreach ( $services as $i => $svc ) {
 	$image  = '';
+	$srcset = '';
 	$width  = 0;
 	$height = 0;
 
@@ -108,6 +109,9 @@ foreach ( $services as $i => $svc ) {
 			$image  = $src[0];
 			$width  = isset( $src[1] ) ? (int) $src[1] : 0;
 			$height = isset( $src[2] ) ? (int) $src[2] : 0;
+			// Media Library photo: let WordPress offer its other sizes, so a phone
+			// is not sent the same file as a desktop card.
+			$srcset = (string) wp_get_attachment_image_srcset( get_post_thumbnail_id( $service_posts[ $i ] ), 'large' );
 		}
 	}
 
@@ -125,6 +129,7 @@ foreach ( $services as $i => $svc ) {
 	}
 
 	$services[ $i ]['image']        = $image;
+	$services[ $i ]['image_srcset'] = $srcset;
 	$services[ $i ]['image_width']  = $width;
 	$services[ $i ]['image_height'] = $height;
 }
@@ -145,11 +150,11 @@ $ccs_service_icons = array( 'home', 'cup', 'pulse' );
 		<header class="ccs-head ccs-head--split">
 			<h2 id="home-services-heading" class="ccs-title">
 				<?php
-				esc_html_e( 'Home care services in Maidstone and across Kent', 'ccs-wp-theme' );
+				echo esc_html( ccs_copy( 'services_title' ) );
 				?>
 			</h2>
 			<p class="ccs-lede">
-				<?php esc_html_e( 'Some people need a hand for an hour in the morning. Others need someone there through the night, or a team trained for more complex health needs. We’ll work out which it is with you, before anything is agreed.', 'ccs-wp-theme' ); ?>
+				<?php echo esc_html( ccs_copy( 'services_lede' ) ); ?>
 			</p>
 		</header>
 
@@ -174,6 +179,10 @@ $ccs_service_icons = array( 'home', 'cup', 'pulse' );
 									width="<?php echo esc_attr( (string) $svc['image_width'] ); ?>"
 									height="<?php echo esc_attr( (string) $svc['image_height'] ); ?>"
 								<?php endif; ?>
+								<?php if ( ! empty( $svc['image_srcset'] ) ) : ?>
+									srcset="<?php echo esc_attr( $svc['image_srcset'] ); ?>"
+									sizes="(min-width: 900px) 350px, 100vw"
+								<?php endif; ?>
 								loading="lazy"
 								decoding="async"
 							>
@@ -195,14 +204,14 @@ $ccs_service_icons = array( 'home', 'cup', 'pulse' );
 
 		<div class="home-services__cta">
 			<p class="home-services__cta-text">
-				<?php esc_html_e( 'Tell us what’s happening and we’ll say honestly whether we can help.', 'ccs-wp-theme' ); ?>
+				<?php echo esc_html( ccs_copy( 'services_cta_line' ) ); ?>
 			</p>
 			<div class="ccs-actions ccs-actions--center">
 				<a href="<?php echo esc_url( $contact_url ); ?>" class="btn btn-primary">
 					<?php esc_html_e( 'Book a free consultation', 'ccs-wp-theme' ); ?>
 				</a>
 				<a href="<?php echo esc_url( $services_overview_url ); ?>" class="btn btn-quiet">
-					<?php esc_html_e( 'See all our services', 'ccs-wp-theme' ); ?>
+					<?php echo esc_html( ccs_copy( 'services_button_all' ) ); ?>
 				</a>
 			</div>
 		</div>

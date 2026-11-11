@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
-$ccs_phone     = get_theme_mod( 'ccs_phone', '01234 567890' );
+$ccs_phone     = get_theme_mod( 'ccs_phone', '01622 809 881' );
 $ccs_phone_tel = $ccs_phone ? preg_replace( '/\s+/', '', $ccs_phone ) : '';
 $ccs_hours     = get_theme_mod( 'ccs_office_hours', 'Mon–Fri 9am–5pm' );
 $ccs_email     = get_theme_mod( 'ccs_contact_email', get_option( 'admin_email' ) );
@@ -53,16 +53,16 @@ $ccs_next_steps = apply_filters(
 	'ccs_home_steps',
 	array(
 		array(
-			'title' => __( 'Talk to us', 'ccs-wp-theme' ),
-			'text'  => __( 'A free consultation at your pace, on the phone or at the kitchen table.', 'ccs-wp-theme' ),
+			'title' => ccs_copy( 'steps_1_title' ),
+			'text'  => ccs_copy( 'steps_1_text' ),
 		),
 		array(
-			'title' => __( 'Meet your team', 'ccs-wp-theme' ),
-			'text'  => __( 'We match carers to the person, not to a rota.', 'ccs-wp-theme' ),
+			'title' => ccs_copy( 'steps_2_title' ),
+			'text'  => ccs_copy( 'steps_2_text' ),
 		),
 		array(
-			'title' => __( 'Care begins calmly', 'ccs-wp-theme' ),
-			'text'  => __( 'Planned, unhurried and reviewed as needs change.', 'ccs-wp-theme' ),
+			'title' => ccs_copy( 'steps_3_title' ),
+			'text'  => ccs_copy( 'steps_3_text' ),
 		),
 	)
 );
@@ -74,7 +74,7 @@ $ccs_next_steps = apply_filters(
 		<div class="page-hero__inner container container--lg">
 			<div class="page-hero__text">
 				<?php get_template_part( 'template-parts/breadcrumb' ); ?>
-				<h1 class="page-hero__title"><?php esc_html_e( 'Book your free care consultation', 'ccs-wp-theme' ); ?></h1>
+				<h1 class="page-hero__title"><?php echo esc_html( ccs_copy( 'contact_title' ) ); ?></h1>
 				<p class="page-hero__intro">
 					<?php esc_html_e( "Whether you're looking for home care in Maidstone or elsewhere in Kent, tell us what you'd like to talk about and we'll get in touch to arrange a call or a visit.", 'ccs-wp-theme' ); ?>
 				</p>
@@ -103,7 +103,7 @@ $ccs_next_steps = apply_filters(
 						<span class="ccs-badge"><?php echo ccs_icon( 'mail' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
 						<h3 class="contact-way__title"><?php esc_html_e( 'Email us', 'ccs-wp-theme' ); ?></h3>
 						<a class="contact-way__link" href="<?php echo esc_url( 'mailto:' . antispambot( $ccs_email ) ); ?>" data-ccs-preview="contact_email"><?php echo esc_html( antispambot( $ccs_email ) ); ?></a>
-						<p class="contact-way__meta"><?php esc_html_e( 'For anything that does not need an answer today.', 'ccs-wp-theme' ); ?></p>
+						<p class="contact-way__meta"><?php echo esc_html( ccs_copy( 'contact_email_note' ) ); ?></p>
 					</li>
 				<?php endif; ?>
 
@@ -129,8 +129,8 @@ $ccs_next_steps = apply_filters(
 		<div class="contact-main__inner container container--lg">
 
 			<div class="contact-form-card">
-				<p class="ccs-eyebrow"><?php esc_html_e( 'Free, no obligation', 'ccs-wp-theme' ); ?></p>
-				<h2 id="contact-form-heading" class="contact-form-card__title"><?php esc_html_e( 'Tell us what you need', 'ccs-wp-theme' ); ?></h2>
+				<p class="ccs-eyebrow"><?php echo esc_html( ccs_copy( 'contact_form_eyebrow' ) ); ?></p>
+				<h2 id="contact-form-heading" class="contact-form-card__title"><?php echo esc_html( ccs_copy( 'contact_form_title' ) ); ?></h2>
 				<p id="contact-form-desc" class="contact-form-card__desc">
 					<?php esc_html_e( "A few details are enough to start. Let us know roughly how soon you'd like care to begin and we'll use it as a guide for when to get in touch.", 'ccs-wp-theme' ); ?>
 				</p>
@@ -236,7 +236,7 @@ $ccs_next_steps = apply_filters(
 
 				<?php if ( $ccs_phone_tel ) : ?>
 					<div class="contact-call ccs-on-dark">
-						<h2 class="contact-call__title"><?php esc_html_e( 'Prefer to talk?', 'ccs-wp-theme' ); ?></h2>
+						<h2 class="contact-call__title"><?php echo esc_html( ccs_copy( 'contact_talk_title' ) ); ?></h2>
 						<p class="contact-call__text"><?php esc_html_e( "If a form feels like too much right now, ring our office team and we'll talk it through.", 'ccs-wp-theme' ); ?></p>
 						<?php
 						/*
@@ -260,7 +260,7 @@ $ccs_next_steps = apply_filters(
 
 				<?php if ( ! empty( $ccs_next_steps ) ) : ?>
 					<div class="contact-next">
-						<h2 class="contact-next__title"><?php esc_html_e( 'What happens next', 'ccs-wp-theme' ); ?></h2>
+						<h2 class="contact-next__title"><?php echo esc_html( ccs_copy( 'contact_next_title' ) ); ?></h2>
 						<ol class="contact-next__list" role="list">
 							<?php foreach ( $ccs_next_steps as $ccs_i => $ccs_step ) : ?>
 								<li class="contact-next__item">

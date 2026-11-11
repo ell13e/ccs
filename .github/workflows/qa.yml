@@ -1,0 +1,50 @@
+# Runs bin/qa.sh on every push and pull request: PHP syntax, the homepage copy
+# registry test, the design audit at 1440 and 375, and the internal link check,
+# against a throwaway WordPress Playground with this theme mounted.
+#
+# The theme must be checked out into a folder named CCS: the audit harness is
+# served from /wp-content/themes/CCS/.
+name: QA
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: CCS
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install zsh and ImageMagick
+        run: sudo apt-get update && sudo apt-get install -y zsh imagemagick
+
+      - name: Start WordPress Playground with the theme mounted
+        working-directory: CCS
+        run: |
+          npx --yes @wp-playground/cli@latest server --auto-mount="$PWD" --port=9401 > "$RUNNER_TEMP/playground.log" 2>&1 &
+          for i in $(seq 1 90); do
+            curl -sf -o /dev/null http://127.0.0.1:9401/ && exit 0
+            sleep 2
+          done
+          cat "$RUNNER_TEMP/playground.log"
+          exit 1
+
+      - name: Run QA
+        working-directory: CCS
+        env:
+          CCS_BASE: http://127.0.0.1:9401
+          CHROME: google-chrome
+        run: zsh bin/qa.sh

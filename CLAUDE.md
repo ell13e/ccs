@@ -40,8 +40,10 @@ nav or labels.
 
 **4. Colour comes from the brand, not the trend.** Plum (`--color-primary`
 #564298, ink #2B2347, deep #332659) is the brand's own; mint (`--color-secondary`
-#a8ddd4, #85C4B8 on light) is its accent; grounds are white, cream and
-`--color-band-tint` #F1EFF7. Gradients only where they do a job (a scrim keeping
+#a8ddd4, #85C4B8 on light) is its accent; grounds are white and
+`--color-band-tint` #F1EFF7 only, strictly alternating, with one deep plum band
+per page and the ink footer. Cream is retired (Nov 2026): warm cream beside
+cool lilac made the bands fight, and the client called the page chaotic. Gradients only where they do a job (a scrim keeping
 text legible on a photo); never a tech-style purple-to-indigo sweep for mood.
 
 **5. Icons, not emoji.** One set, `ccs_icon()` in `inc/icons.php`: line icons on a
@@ -146,6 +148,25 @@ when the user's feedback and a rule disagree, raise it.
    screenshots, critique in these rules' terms, fix, repeat. Then run the
    BUILD-STANDARD definition of done.
 
+## Calm first (client feedback, Nov 2026)
+
+The client judged the site "messy and chaotic" after a pass that added
+coloured blocks behind photos. The response was to take things away (not yet
+signed off by the client):
+
+- Two grounds, alternating. Sections of white cards sit on the tint; sections
+  of text or one image sit on white.
+- One photograph per section, in one frame. No collages: the photos differ too
+  much in light and colour to sit together.
+- No decorative shapes, offset blocks or two-tone grounds.
+- Fewer sections. Before adding one, remove one.
+- When asked to make it "look better", simplify and unify before adding.
+- Thin is not calm. The client called the unboxed steps, the text-only
+  differentiators, the old costs layout and the floating CQC widget "awful".
+  A section needs one substantial object (a card row, a panel, a photo); loose
+  text with small marks reads as unfinished. Rule 1 allows a box here when the
+  alternative is that.
+
 ## Standing constraints
 
 - **The homepage hero keeps its current energy and tone.** Tiny polish only,
@@ -161,6 +182,6 @@ when the user's feedback and a rule disagree, raise it.
 - **Third-party embeds:** a new embed needs its host in the CSP
   (`inc/class-security.php`), or it fails silently in production.
 - **Git:** commit or push only when asked.
-- **Previewing locally:** the site runs at `http://127.0.0.1:9400`. Use that, not
+- **Previewing locally:** the site runs at `http://127.0.0.1:9401`. Use that, not
   `localhost`, since assets are served from 127.0.0.1. Add `?fresh=` to bypass
   cached HTML.

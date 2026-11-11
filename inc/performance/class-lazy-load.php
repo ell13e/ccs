@@ -4,7 +4,7 @@
  *
  * Adds loading="lazy" to post content images, post thumbnails, and
  * attachment images. Skips the first above-the-fold image, admin, and feeds.
- * Enqueues a JS fallback for browsers that do not support native lazy loading.
+ * Native only: the real src stays in place (no placeholder, no JS fallback).
  *
  * @package CCS_WP_Theme
  * @since 1.0.0
@@ -18,13 +18,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class CCS_Lazy_Load
  */
 class CCS_Lazy_Load {
-
-	/**
-	 * Placeholder image (1x1 transparent GIF) for lazy images so fallback JS can defer loading.
-	 *
-	 * @var string
-	 */
-	const PLACEHOLDER = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
 	/**
 	 * Count of post thumbnails output this request (first is above fold).
@@ -44,7 +37,7 @@ class CCS_Lazy_Load {
 		add_filter( 'the_content', array( $this, 'filter_content_images' ), 20 );
 		add_filter( 'post_thumbnail_html', array( $this, 'filter_post_thumbnail_html' ), 10, 5 );
 		add_filter( 'wp_get_attachment_image_attributes', array( $this, 'filter_attachment_image_attributes' ), 10, 3 );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_fallback_script' ), 15 );
+		// No fallback script any more: see lazy_img_markup().
 	}
 
 	/**
@@ -136,28 +129,23 @@ class CCS_Lazy_Load {
 	}
 
 	/**
-	 * Output lazy img markup: loading="lazy", real URL in data-src, placeholder in src.
+	 * Lazy img markup: native loading="lazy" with the real src and srcset kept.
 	 *
-	 * Allows the JS fallback to defer loading in browsers that ignore loading="lazy".
+	 * This used to move src into data-src behind a 1×1 placeholder for a JS
+	 * fallback to swap back. In every current browser that script restored all
+	 * of them at once and stripped loading="lazy", so images loaded eagerly
+	 * anyway, and with JS slow or blocked they never loaded at all: cards showed
+	 * an empty tinted box (CCS/CLAUDE.md rule 21). Native lazy loading is
+	 * supported everywhere this site needs to run, so the browser does it.
 	 *
 	 * @param string $html Full img tag.
 	 * @return string Modified HTML.
 	 */
 	private function lazy_img_markup( $html ) {
 		$html = $this->ensure_loading_attribute( $html, 'lazy' );
-
-		// Move src to data-src and set placeholder so fallback JS can control when to load.
-		if ( preg_match( '/\ssrc\s*=\s*(["\'])([^"\']+)\1/is', $html, $src_match ) ) {
-			$url = $src_match[2];
-			if ( strpos( $url, 'data:' ) !== 0 ) {
-				$html = preg_replace( '/\ssrc\s*=\s*["\'][^"\']*["\']/is', ' src="' . esc_attr( self::PLACEHOLDER ) . '" data-src="' . esc_attr( $url ) . '"', $html, 1 );
-				// Move srcset to data-srcset so browser does not load it; fallback JS restores it.
-				if ( preg_match( '/\ssrcset\s*=\s*(["\'])([^"\']+)\1/is', $html, $set_match ) ) {
-					$html = preg_replace( '/\ssrcset\s*=\s*["\'][^"\']*["\']/is', ' data-srcset="' . esc_attr( $set_match[2] ) . '"', $html, 1 );
-				}
-			}
+		if ( ! preg_match( '/\sdecoding\s*=/i', $html ) ) {
+			$html = preg_replace( '/<img(\s)/i', '<img decoding="async"$1', $html, 1 );
 		}
-
 		return $html;
 	}
 
@@ -177,32 +165,5 @@ class CCS_Lazy_Load {
 
 		// Insert before closing > of opening tag.
 		return preg_replace( '/<img(\s)/i', '<img loading="' . esc_attr( $value ) . '"$1', $html, 1 );
-	}
-
-	/**
-	 * Enqueue fallback script for browsers that do not support native loading="lazy".
-	 */
-	public function enqueue_fallback_script() {
-		if ( is_admin() || is_feed() ) {
-			return;
-		}
-
-		wp_enqueue_script(
-			'ccs-lazy-load-fallback',
-			THEME_URL . '/assets/js/lazy-load-fallback.js',
-			array(),
-			THEME_VERSION,
-			true
-		);
-
-		// Optional: load IntersectionObserver polyfill for IE11 (uncomment if supporting IE11).
-		// wp_enqueue_script(
-		// 	'intersection-observer-polyfill',
-		// 	'https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver',
-		// 	array(),
-		// 	null,
-		// 	true
-		// );
-		// wp_script_add_data( 'ccs-lazy-load-fallback', 'after', array( 'intersection-observer-polyfill' ) );
 	}
 }

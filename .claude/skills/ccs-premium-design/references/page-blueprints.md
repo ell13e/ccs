@@ -16,14 +16,16 @@ Blog index · Blog post · 404 · Search
 Job: show that this is a trustworthy local provider and get a consultation booked.
 Primary action: Book a free consultation (hero); phone as the second option.
 1. Hero: unchanged without agreement (photo, promise line, CTAs, CQC badge).
-2. CQC band (tint): the eyebrow "Independently regulated" is one of only two on the page.
-3. Why choose us (white): copy beside a photo collage, proof chips, pull quote.
-4. Services (cream): centred head, three `.svc-card`s, a short CTA line.
-5. How care starts (tint): `.ccs-steps`.
-6. Differentiators (deep plum): numbered cards.
-7. Costs (white): the eyebrow "No hidden fees"; published rate.
-8. Testimonials (cream). 9. Team teaser (tint, `.ccs-team-grid`). 10. Where to go next (white, `.info-card`s).
-11. Partnerships (cream). 12. Closing CTA card.
+2. CQC band (tint): the eyebrow "Independently regulated" is one of only two on the page; the live widget in a card that fits it, shown a third larger.
+3. Why choose us (white): one photo beside copy, proof chips, one quiet button.
+4. Services (tint): split head, three `.svc-card`s, a short CTA line.
+5. Story video (white): centred head, one wide click-to-load video.
+6. Differentiators (deep plum, the page's one dark band): heading, line and Book button left; four tonal panels with icons right.
+7. How care starts (tint): `.ccs-steps` as three white cards with plum numerals and a chevron between.
+8. Costs (white): centred head with the eyebrow "No hidden fees"; one wide two-part price panel (rate on ink, extras, funding note and link on white).
+9. Testimonials (tint). 10. Team teaser (white, `.ccs-team-grid`). 11. Closing CTA card (tint).
+Grounds are set in one block at the end of homepage.css. "Where to go next"
+was dropped and the partner wall moved to About (calm pass, Nov 2026).
 Benchmark: label + H2 on every section, alternating centred and left heads,
 mostly white grounds with an occasional pale grey band, ~1000–1500px sections.
 CCS keeps the rhythm and alternation, not the labels.
@@ -58,7 +60,7 @@ the phone. 4. CTA band.
 ## About (`template-about.php`)
 Job: who we are and why trust us. 1. Photo hero. 2. `.ccs-split` intro (title left,
 editor copy right). 3. Team teaser (`template-parts/home/team`). 4. Story video beside
-its head (`.about-story`, play button bottom-right, clear of the poster's lettering). 5. CTA.
+its head (`.about-story`, play button bottom-right, clear of the poster's lettering). 5. Partner logo wall (tint). 6. CTA.
 Benchmark: label + H1 + images, values cards, "Come and visit us", team.
 
 ## Team (`template-team.php`)

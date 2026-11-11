@@ -85,78 +85,70 @@ if ( $ccs_costs_page instanceof WP_Post ) {
 ?>
 
 <section class="home-costs" aria-labelledby="home-costs-heading">
-	<div class="home-costs__inner container container--lg">
+	<div class="container container--lg">
 
-		<div class="home-costs__intro">
-			<p class="ccs-eyebrow"><?php esc_html_e( 'No hidden fees', 'ccs-wp-theme' ); ?></p>
+		<header class="ccs-head ccs-head--center">
+			<p class="ccs-eyebrow"><?php echo esc_html( ccs_copy( 'costs_eyebrow' ) ); ?></p>
 			<h2 id="home-costs-heading" class="ccs-title">
-				<?php
-				esc_html_e( 'What care costs', 'ccs-wp-theme' );
-				?>
+				<?php echo esc_html( ccs_copy( 'costs_title' ) ); ?>
 			</h2>
 			<p class="ccs-lede">
-				<?php esc_html_e( 'Most providers make you ask. Here are our rates, and every extra that could appear on your invoice — so nothing on it is a surprise.', 'ccs-wp-theme' ); ?>
+				<?php echo esc_html( ccs_copy( 'costs_lede' ) ); ?>
 			</p>
-			<p class="home-costs__funding">
-				<?php esc_html_e( 'Care can be funded privately, through local authority support, or through NHS health funding. We’ll talk you through which applies to you.', 'ccs-wp-theme' ); ?>
-			</p>
-			<?php if ( $ccs_costs_url ) : ?>
-				<div class="ccs-actions">
-					<a href="<?php echo esc_url( $ccs_costs_url ); ?>" class="btn btn-quiet">
-						<?php echo esc_html( $ccs_costs_text ); ?>
-					</a>
-				</div>
-			<?php endif; ?>
-		</div>
+		</header>
 
 		<?php
 		/*
-		 * The rate and the extras in one card, the way a pricing page sets a
-		 * plan: headline figure, what it covers, then everything else that can
-		 * be charged, ticked off underneath. Split across two loose columns, the
-		 * extras read as a separate footnote; inside the card with the rate they
-		 * read as part of the price, which is the claim this section makes.
+		 * One wide price panel (redesigned Nov 2026; the client called the old
+		 * layout "awful": loose text on the left, a heavy dark box on the right).
+		 * The rate sits on ink on the left, everything else that can be charged
+		 * sits on white on the right, and the funding note and link close the
+		 * same panel, so the whole answer to "what will it cost?" is one object.
+		 * Same two-part anatomy as the closing card, so the page has one kind of
+		 * feature panel, not two.
+		 *
+		 * The caveat under the figure is deliberate, every time a rate is shown:
+		 * the headline is the entry rate for the cheapest band on the schedule,
+		 * and without it the number reads as a flat price.
 		 */
 		?>
 		<div class="price-card" data-ccs-exception="rule 1: a rate card people compare and screenshot, a distinct object">
-			<p class="price-card__from">
-				<span class="price-card__from-label"><?php esc_html_e( 'From', 'ccs-wp-theme' ); ?></span>
-				<span class="price-card__rate"><?php echo esc_html( $ccs_costs['from_rate'] ); ?></span>
-			</p>
-			<p class="price-card__basis"><?php echo esc_html( $ccs_costs['rate_basis'] ); ?></p>
-			<p class="price-card__effective"><?php echo esc_html( $ccs_costs['effective_from'] ); ?></p>
-			<?php
-			/*
-			 * Explicit, every time a figure is shown. £36.38 is the entry rate for
-			 * the lightest, cheapest band on the fee schedule (personal care,
-			 * weekday daytime) — the actual charge for any given package depends on
-			 * the type of care, the time of day, and whether it falls on a weekend
-			 * or bank holiday (see the extras list below). Without this line the
-			 * headline figure alone reads as a flat rate, which the fee schedule
-			 * itself is not.
-			 *
-			 * Wording follows how other UK providers phrase the same caveat —
-			 * Bupa: "the exact cost will depend on their specific care needs";
-			 * Home Instead: "The cost of this service depends on several factors,
-			 * including the type of care needed" — adapted to CCS's own actual
-			 * variables rather than copied.
-			 */
-			?>
-			<p class="price-card__caveat">
-				<?php esc_html_e( 'Your actual cost depends on the type of care you need and when it happens — this is our lowest rate, not a flat price.', 'ccs-wp-theme' ); ?>
-			</p>
+			<div class="price-card__rate-panel">
+				<p class="price-card__from">
+					<span class="price-card__from-label"><?php esc_html_e( 'From', 'ccs-wp-theme' ); ?></span>
+					<span class="price-card__rate"><?php echo esc_html( $ccs_costs['from_rate'] ); ?></span>
+				</p>
+				<p class="price-card__basis"><?php echo esc_html( $ccs_costs['rate_basis'] ); ?></p>
+				<p class="price-card__effective"><?php echo esc_html( $ccs_costs['effective_from'] ); ?></p>
+				<p class="price-card__caveat">
+					<?php echo esc_html( ccs_copy( 'costs_note' ) ); ?>
+				</p>
+			</div>
 
-			<?php if ( ! empty( $ccs_costs['extras'] ) ) : ?>
-				<h3 class="price-card__extras-heading"><?php esc_html_e( 'What else you might be charged', 'ccs-wp-theme' ); ?></h3>
-				<ul class="price-card__list" role="list">
-					<?php foreach ( $ccs_costs['extras'] as $ccs_extra ) : ?>
-						<li class="price-card__item">
-							<span class="price-card__tick"><?php echo ccs_icon( 'check' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
-							<span><?php echo esc_html( $ccs_extra ); ?></span>
-						</li>
-					<?php endforeach; ?>
-				</ul>
-			<?php endif; ?>
+			<div class="price-card__detail">
+				<?php if ( ! empty( $ccs_costs['extras'] ) ) : ?>
+					<h3 class="price-card__extras-heading"><?php echo esc_html( ccs_copy( 'costs_extras_heading' ) ); ?></h3>
+					<ul class="price-card__list" role="list">
+						<?php foreach ( $ccs_costs['extras'] as $ccs_extra ) : ?>
+							<li class="price-card__item">
+								<span class="price-card__tick"><?php echo ccs_icon( 'check' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
+								<span><?php echo esc_html( $ccs_extra ); ?></span>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+				<?php endif; ?>
+
+				<div class="price-card__foot">
+					<p class="price-card__funding">
+						<?php echo esc_html( ccs_copy( 'costs_funding' ) ); ?>
+					</p>
+					<?php if ( $ccs_costs_url ) : ?>
+						<a href="<?php echo esc_url( $ccs_costs_url ); ?>" class="btn btn-quiet">
+							<?php echo esc_html( $ccs_costs_text ); ?>
+						</a>
+					<?php endif; ?>
+				</div>
+			</div>
 		</div>
 
 	</div>

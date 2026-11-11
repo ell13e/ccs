@@ -43,8 +43,7 @@ $ccs_careers  = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'careers' ) : 
 						<header class="ccs-head">
 							<h2 id="team-intro-heading" class="ccs-title">
 								<?php
-								/* translators: %s: the emphasised word, drawn with a brush underline. */
-								printf( esc_html__( 'Know who you are %s to', 'ccs-wp-theme' ), ccs_accent( __( 'talking', 'ccs-wp-theme' ) ) );
+								echo ccs_copy_accent( 'team_page_intro_title' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_copy_accent().
 								?>
 							</h2>
 						</header>
@@ -65,10 +64,10 @@ $ccs_careers  = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'careers' ) : 
 		<section class="ccs-section ccs-section--tint team-people" aria-labelledby="team-heading">
 			<div class="container container--lg">
 				<header class="ccs-head ccs-head--center">
-					<p class="ccs-eyebrow"><?php esc_html_e( 'Management and office', 'ccs-wp-theme' ); ?></p>
+					<p class="ccs-eyebrow"><?php echo esc_html( ccs_copy( 'team_page_eyebrow' ) ); ?></p>
 					<h2 id="team-heading" class="ccs-title">
 						<?php
-						esc_html_e( 'Say hello to the team', 'ccs-wp-theme' );
+						echo esc_html( ccs_copy( 'team_page_title' ) );
 						?>
 					</h2>
 				</header>
@@ -124,10 +123,10 @@ $ccs_careers  = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'careers' ) : 
 			<div class="ccs-strip">
 				<span class="ccs-badge"><?php echo ccs_icon( 'people' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
 				<div class="ccs-strip__text">
-					<h2 id="team-join-heading" class="ccs-strip__title"><?php esc_html_e( 'Want to work with us?', 'ccs-wp-theme' ); ?></h2>
-					<p class="ccs-strip__lede"><?php esc_html_e( 'We are always glad to hear from kind, reliable people who want to care well.', 'ccs-wp-theme' ); ?></p>
+					<h2 id="team-join-heading" class="ccs-strip__title"><?php echo esc_html( ccs_copy( 'team_page_strip_title' ) ); ?></h2>
+					<p class="ccs-strip__lede"><?php echo esc_html( ccs_copy( 'team_page_strip_text' ) ); ?></p>
 				</div>
-				<a class="btn btn-quiet ccs-strip__action" href="<?php echo esc_url( $ccs_careers ); ?>"><?php esc_html_e( 'See careers', 'ccs-wp-theme' ); ?></a>
+				<a class="btn btn-quiet ccs-strip__action" href="<?php echo esc_url( $ccs_careers ); ?>"><?php echo esc_html( ccs_copy( 'team_page_strip_button' ) ); ?></a>
 			</div>
 		</div>
 	</section>

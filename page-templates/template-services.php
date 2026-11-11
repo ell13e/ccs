@@ -44,8 +44,7 @@ $ccs_services = ccs_ordered_services();
 					<header class="ccs-head ccs-head--split">
 						<h2 id="services-hub-heading" class="ccs-title">
 							<?php
-							/* translators: %s: the emphasised words, drawn with a brush underline. */
-							printf( esc_html__( 'Care at home, %s', 'ccs-wp-theme' ), ccs_accent( __( 'one team', 'ccs-wp-theme' ) ) );
+							echo ccs_copy_accent( 'services_page_title' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_copy_accent().
 							?>
 						</h2>
 						<?php if ( trim( wp_strip_all_tags( $ccs_intro ) ) !== '' ) : ?>
@@ -65,7 +64,7 @@ $ccs_services = ccs_ordered_services();
 						<header class="ccs-head">
 							<h2 id="services-how-heading" class="ccs-title">
 								<?php
-								esc_html_e( 'Whichever service, the same promise', 'ccs-wp-theme' );
+								echo esc_html( ccs_copy( 'services_page_promise_title' ) );
 								?>
 							</h2>
 						</header>

@@ -33,57 +33,64 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $items = array(
 	array(
-		'title' => __( 'A team matched to you, not whoever is free', 'ccs-wp-theme' ),
-		'desc'  => __( 'The same small team visits you, so you build a relationship and never have to keep explaining your needs. If nobody in our current team fits your hours, your home, or simply doesn’t get on with you, we recruit someone specifically for you.', 'ccs-wp-theme' ),
+		'title' => ccs_copy( 'diff_1_title' ),
+		'desc'  => ccs_copy( 'diff_1_text' ),
 	),
 	array(
-		'title' => __( 'Care plans built around you', 'ccs-wp-theme' ),
-		'desc'  => __( 'Your care plan starts with how you actually live, not a one-size-fits-all checklist. We review it regularly and adjust as your situation changes.', 'ccs-wp-theme' ),
+		'title' => ccs_copy( 'diff_2_title' ),
+		'desc'  => ccs_copy( 'diff_2_text' ),
 	),
 	array(
-		'title' => __( 'Local, and quick to respond', 'ccs-wp-theme' ),
-		'desc'  => __( 'We’re based in Maidstone and work across Kent, so our teams already know your area and can get to you quickly.', 'ccs-wp-theme' ),
+		'title' => ccs_copy( 'diff_3_title' ),
+		'desc'  => ccs_copy( 'diff_3_text' ),
 	),
 	array(
-		'title' => __( 'You are kept in the loop', 'ccs-wp-theme' ),
-		'desc'  => __( 'A named contact who already knows the situation, and updates often enough that you’re never left guessing how a visit went.', 'ccs-wp-theme' ),
+		'title' => ccs_copy( 'diff_4_title' ),
+		'desc'  => ccs_copy( 'diff_4_text' ),
 	),
 );
 ?>
 
 <section class="home-differentiators" aria-labelledby="home-diff-heading">
-	<div class="container container--lg">
-
-		<header class="ccs-head ccs-head--center">
-			<h2 id="home-diff-heading" class="ccs-title ccs-title--on-dark">
-				<?php
-				/* translators: %s: the emphasised word, drawn with a brush underline. */
-				printf( esc_html__( 'What we do %s', 'ccs-wp-theme' ), ccs_accent( __( 'differently', 'ccs-wp-theme' ) ) );
-				?>
-			</h2>
-			<p class="ccs-lede ccs-lede--on-dark">
-				<?php esc_html_e( 'Every provider says they care. These are the four things you can hold us to.', 'ccs-wp-theme' ); ?>
-			</p>
-		</header>
+	<div class="home-diff container container--lg">
 
 		<?php
 		/*
-		 * A 2x2 of panels on the dark band rather than four loose text blocks.
-		 * Loose, the heading sat alone in the top-left with half the band empty
-		 * beside it and the items read as a list; as panels (a lighter tone of
-		 * the same plum, no blur) they read as four commitments of equal
-		 * weight, which is what the intro promises.
+		 * Redesigned Nov 2026 after the client called this band "awful": it was a
+		 * centred heading over four blocks of loose text on plum, which read as a
+		 * wall of copy. Now the argument sits on the left (heading, one line, the
+		 * page's main action) and the four commitments are panels on the right,
+		 * each led by an icon from the site's set: one tone lighter than the band,
+		 * so the depth comes from surface levels (CLAUDE.md rule 6), not effects.
 		 */
+		$ccs_diff_icons   = array( 'people', 'heart', 'pin', 'phone' );
+		$ccs_diff_contact = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' ) : home_url( '/contact-us/' );
 		?>
-		<ol class="home-diff-grid" role="list">
+		<header class="home-diff__head">
+			<h2 id="home-diff-heading" class="ccs-title ccs-title--on-dark">
+				<?php
+				echo ccs_copy_accent( 'diff_title' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_copy_accent().
+				?>
+			</h2>
+			<p class="ccs-lede ccs-lede--on-dark">
+				<?php echo esc_html( ccs_copy( 'diff_lede' ) ); ?>
+			</p>
+			<div class="ccs-actions">
+				<a href="<?php echo esc_url( $ccs_diff_contact ); ?>" class="btn btn-accent">
+					<?php esc_html_e( 'Book a free consultation', 'ccs-wp-theme' ); ?>
+				</a>
+			</div>
+		</header>
+
+		<ul class="home-diff-grid" role="list">
 			<?php foreach ( $items as $i => $item ) : ?>
-				<li class="diff-card">
-					<span class="diff-card__num" aria-hidden="true"><?php echo esc_html( str_pad( (string) ( (int) $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
+				<li class="diff-card" data-ccs-exception="rule 1: four commitments as panels at the client's request (Nov 2026); as loose text the band read as a wall of copy">
+					<span class="diff-card__icon" aria-hidden="true"><?php echo ccs_icon( isset( $ccs_diff_icons[ $i ] ) ? $ccs_diff_icons[ $i ] : 'check' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
 					<h3 class="diff-card__title"><?php echo esc_html( $item['title'] ); ?></h3>
 					<p class="diff-card__text"><?php echo esc_html( $item['desc'] ); ?></p>
 				</li>
 			<?php endforeach; ?>
-		</ol>
+		</ul>
 
 	</div>
 </section>

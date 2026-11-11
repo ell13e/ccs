@@ -49,11 +49,11 @@ $ccs_cta_photo     = file_exists( get_template_directory() . '/assets/images/' .
 			<div class="cta-card__body">
 				<h2 id="home-closing-cta-heading" class="ccs-title ccs-title--on-dark">
 					<?php
-					esc_html_e( 'Not sure where to start?', 'ccs-wp-theme' );
+					echo esc_html( ccs_copy( 'closing_title' ) );
 					?>
 				</h2>
 				<p class="ccs-lede ccs-lede--on-dark">
-					<?php esc_html_e( 'Most people who call us are not ready to arrange anything yet — they just want to talk it through with someone who knows how this works. That conversation is free, and there is nothing to sign at the end of it.', 'ccs-wp-theme' ); ?>
+					<?php echo esc_html( ccs_copy( 'closing_text' ) ); ?>
 				</p>
 
 				<?php
@@ -84,6 +84,7 @@ $ccs_cta_photo     = file_exists( get_template_directory() . '/assets/images/' .
 						alt=""
 						width="1350"
 						height="900"
+						<?php echo ccs_theme_image_srcset( $ccs_cta_photo_rel, '(min-width: 900px) 450px, 100vw' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset(). ?>
 						loading="lazy"
 						decoding="async"
 					>

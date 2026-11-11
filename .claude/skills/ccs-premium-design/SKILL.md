@@ -155,9 +155,26 @@ render-blocking.
    sentence.
 4. Check links with `scripts/link-check.sh` (redirects count as failures).
 
+**Done means all of these, run after the last edit:**
+
+- The audit reports no flags on every page at 1440 and 375, with every run
+  finished. Deliberate exceptions are declared in markup
+  (`data-ccs-exception="rule N: reason"`), so they're listed, not flagged.
+- The screenshot critique at both widths finds nothing left to fix against
+  the blueprints.
+- Links all return 200, and if activation code changed, a fresh boot passes.
+
+Things only the client can supply don't block completion: they can't be fixed
+in code without breaking a rule. Examples: a higher-resolution original for a
+photo the audit reports as "sharp at 1x, short of 2x", or a copy or claims
+decision. List them in the report as **content requests**, each with what's
+needed and why. Don't present them as open design questions. Anything the
+code *can* fix (a stretched or visibly soft image, a broken loader, a
+missing state) is not a content request; fix it.
+
 Environment gotchas:
 
-- Use `http://127.0.0.1:9400` in the pane, not localhost.
+- Use `http://127.0.0.1:9401` in the pane, not localhost.
 - The pane is often a background page, where timers are clamped and
   transitions don't run. Test motion headlessly by seeking
   `getAnimations()` (see the checklist's Motion section).

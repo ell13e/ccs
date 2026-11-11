@@ -152,20 +152,19 @@
 
 /* ---- Other services ----------------------------------------------------- */
 
+/* White, running into the white closing band below (calm pass, Nov 2026):
+   the steps band above is the tint, and with cream retired a tint here would
+   have put two identical grounds together. */
 .service-related {
-	padding-block: var(--section-pad-sm);
-	background-color: var(--color-band-cream);
+	padding-top: var(--section-pad-sm);
+	padding-bottom: 0;
+	background-color: var(--color-background);
 }
 
-/* The hub tile sits among white service cards on cream, so it takes their
-   white ground and float shadow rather than its usual cream. */
+/* The hub tile sits among white service cards, so it takes their white ground
+   and float shadow rather than its usual tint. */
 .service-related .info-card {
 	background-color: var(--color-background);
 	box-shadow: var(--shadow-float);
 }
 
-/* Its badge goes back to lavender: the white badge it uses on a cream card
-   disappears on this white one. */
-.service-related .info-card .ccs-badge {
-	background-color: var(--color-badge);
-}

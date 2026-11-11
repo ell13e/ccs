@@ -10,6 +10,8 @@ lives with the code and a new, undeclared case is still caught.
 ## Hierarchy (rule 8)
 - [ ] Secondary actions ("read the report", "see all", "learn more") are quiet
       (`.btn-quiet` or a link), never filled. Measure: `filledSecondary`.
+- [ ] The same primary action never twice in the first screen (a header button
+      above an identical hero button). Measure: `repeatedPrimary`.
 - [ ] One primary action per view. Measure: `primaryPerSection` in the audit;
       more than one `.btn-primary`/`.btn-accent` in the same section needs a reason.
       Pair a primary with `.btn-quiet` or a text link.

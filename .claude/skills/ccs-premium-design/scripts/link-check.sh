@@ -7,7 +7,7 @@
 # failures on purpose: a link that 301s to the homepage is a broken link that
 # happens to load something.
 
-BASE=${CCS_BASE:-http://127.0.0.1:9400}
+BASE=${CCS_BASE:-http://127.0.0.1:9401}
 (( $# )) || { echo "usage: link-check.sh /path/ ..." >&2; exit 1; }
 LINKS=$(for p in "$@"; do
 	curl -s "$BASE$p?lk=$RANDOM" | grep -o "href=\"${BASE}[^\"#]*" | sed 's/href="//'

@@ -129,15 +129,23 @@
 	function onFormSubmit(e) {
 		var form = e.target.closest('form');
 		if (!form) return;
+		// AJAX forms (data-ccs-action) report through ccs_form_success, and only
+		// once the server has accepted them. Counting their submit event as well
+		// recorded every enquiry twice, and counted attempts that failed
+		// validation as conversions.
+		if (form.hasAttribute('data-ccs-action')) return;
 		var action = form.getAttribute('data-ccs-action') || form.action || '';
 		sendEvent('form_submit', { form_action: action });
 	}
 
 	/**
-	 * Track CTA / primary button clicks (buttons with .btn-primary, .btn-phone, or data-ccs-track).
+	 * Track CTA / primary button clicks (.btn-primary, .btn-accent, .btn-phone, or data-ccs-track).
 	 */
 	function onButtonClick(e) {
-		var btn = e.target.closest('.btn-primary, .btn-phone, [data-ccs-track]');
+		// .btn-accent is the mint "Book a free consultation" button used on the
+		// hero and every closing band: the site's main call to action, and it was
+		// missing from this list, so its clicks were never recorded.
+		var btn = e.target.closest('.btn-primary, .btn-accent, .btn-phone, [data-ccs-track]');
 		if (!btn) return;
 		var label = (btn.textContent || btn.getAttribute('aria-label') || '').trim().slice(0, 100);
 		sendEvent('button_click', { button_text: label });
@@ -160,8 +168,51 @@
 		});
 	}
 
+	/**
+	 * Cookie choice bar (markup from CCS_Analytics::render_consent_bar()).
+	 * The choice is kept in localStorage, which is not sent to any server.
+	 * No stored choice: show the bar. "granted": load tracking. "denied": do
+	 * nothing. If storage is unavailable the bar is shown on each page and the
+	 * choice simply lasts for that page.
+	 */
+	var CONSENT_KEY = 'ccsAnalyticsConsent';
+
+	function readConsent() {
+		try { return window.localStorage.getItem(CONSENT_KEY); } catch (e) { return null; }
+	}
+
+	function initConsent() {
+		var bar = document.getElementById('ccs-consent');
+		var stored = readConsent();
+
+		if (stored === 'granted') {
+			enableTracking();
+			return;
+		}
+		if (!bar || stored === 'denied') return;
+
+		bar.hidden = false;
+		// Lift the floating call button clear of the bar: the phone number must
+		// never be covered (CLAUDE.md rule 21).
+		document.documentElement.style.setProperty('--ccs-consent-height', bar.offsetHeight + 'px');
+		document.body.classList.add('ccs-consent-open');
+
+		bar.addEventListener('click', function (e) {
+			var btn = e.target.closest('[data-ccs-consent]');
+			if (!btn) return;
+			var choice = btn.getAttribute('data-ccs-consent');
+			try { window.localStorage.setItem(CONSENT_KEY, choice); } catch (err) { /* choice lasts for this page only */ }
+			bar.hidden = true;
+			document.body.classList.remove('ccs-consent-open');
+			document.documentElement.style.removeProperty('--ccs-consent-height');
+			if (choice === 'granted') enableTracking();
+		});
+	}
+
 	function init() {
 		if (!ga4Id && !fbPixelId && !gadsId) return;
+
+		if (consentRequired) initConsent();
 
 		// Thank you page: fire conversion once.
 		if (isThankYouPage) {

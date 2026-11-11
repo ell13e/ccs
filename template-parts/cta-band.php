@@ -33,13 +33,13 @@ $ccs_is_careers = function_exists( 'ccs_is_careers_context' ) && ccs_is_careers_
 
 if ( $ccs_is_careers ) {
 	$ccs_cta_url     = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'current-vacancies' ) : home_url( '/careers/current-vacancies/' );
-	$ccs_cta_heading = __( 'Fancy joining us?', 'ccs-wp-theme' );
-	$ccs_cta_text    = __( 'We are always glad to hear from people who want to do this job properly. Have a look at what is open right now.', 'ccs-wp-theme' );
-	$ccs_cta_label   = __( 'See current vacancies', 'ccs-wp-theme' );
+	$ccs_cta_heading = ccs_copy( 'cta_careers_title' );
+	$ccs_cta_text    = ccs_copy( 'cta_careers_text' );
+	$ccs_cta_label   = ccs_copy( 'cta_careers_button' );
 } else {
 	$ccs_cta_url     = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' ) : home_url( '/contact-us/' );
-	$ccs_cta_heading = __( 'Ready when you are', 'ccs-wp-theme' );
-	$ccs_cta_text    = __( 'Start with a conversation, not a commitment. Free, no obligation, no pressure.', 'ccs-wp-theme' );
+	$ccs_cta_heading = ccs_copy( 'cta_title' );
+	$ccs_cta_text    = ccs_copy( 'cta_text' );
 	$ccs_cta_label   = __( 'Book a free consultation', 'ccs-wp-theme' );
 }
 
@@ -85,6 +85,7 @@ $ccs_cta_photo     = ! $ccs_is_careers && file_exists( get_template_directory() 
 						alt=""
 						width="1350"
 						height="900"
+						<?php echo ccs_theme_image_srcset( $ccs_cta_photo_rel, '(min-width: 900px) 450px, 100vw' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset(). ?>
 						loading="lazy"
 						decoding="async"
 					>

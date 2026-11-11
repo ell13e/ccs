@@ -36,8 +36,97 @@ class CCS_Analytics {
 		if ( is_admin() ) {
 			return;
 		}
+		add_filter( 'ccs_content_security_policy', array( $this, 'allow_tracking_hosts' ) );
+		add_action( 'wp_footer', array( $this, 'render_consent_bar' ), 5 );
 		add_action( 'wp_head', array( $this, 'output_tracking_and_data_layer' ), 5 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_events_script' ), 20 );
+	}
+
+	/**
+	 * The cookie choice bar.
+	 *
+	 * Printed only when a tracking ID is set and consent is required (the
+	 * default). UK law (PECR) needs consent before analytics cookies are set, and
+	 * the theme had a "require consent" switch with nothing to ask for it: with
+	 * the switch on tracking never loaded, and with it off it loaded unasked.
+	 *
+	 * A bar at the foot of the screen, not a pop-up (CLAUDE.md rule 21): the page
+	 * stays readable and usable behind it. Accept and reject are the same size
+	 * and style, as the ICO expects, so neither is the easier choice. Hidden in
+	 * the markup; analytics-events.js shows it only when no choice is stored.
+	 */
+	public function render_consent_bar() {
+		$has_any = '' !== (string) get_theme_mod( self::MOD_GA4_ID, '' )
+			|| '' !== (string) get_theme_mod( self::MOD_FB_PIXEL_ID, '' )
+			|| '' !== (string) get_theme_mod( self::MOD_GADS_ID, '' );
+
+		if ( ! $has_any || ! get_theme_mod( self::MOD_REQUIRE_CONSENT, true ) ) {
+			return;
+		}
+
+		$policy     = get_page_by_path( 'cookies' );
+		$policy_url = $policy ? get_permalink( $policy ) : '';
+		?>
+		<div id="ccs-consent" class="ccs-consent" role="region" aria-label="<?php esc_attr_e( 'Cookie choices', 'ccs-wp-theme' ); ?>" hidden>
+			<div class="ccs-consent__inner">
+				<p class="ccs-consent__text">
+					<?php esc_html_e( 'We would like to use analytics cookies to see how this site is used, so we can improve it. They stay off unless you accept.', 'ccs-wp-theme' ); ?>
+					<?php if ( $policy_url ) : ?>
+						<a href="<?php echo esc_url( $policy_url ); ?>"><?php esc_html_e( 'Read our cookie policy', 'ccs-wp-theme' ); ?></a>
+					<?php endif; ?>
+				</p>
+				<div class="ccs-consent__actions">
+					<button type="button" class="btn btn-quiet" data-ccs-consent="granted"><?php esc_html_e( 'Accept analytics cookies', 'ccs-wp-theme' ); ?></button>
+					<button type="button" class="btn btn-quiet" data-ccs-consent="denied"><?php esc_html_e( 'Reject analytics cookies', 'ccs-wp-theme' ); ?></button>
+				</div>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Let the tracking scripts through the Content-Security-Policy, but only for
+	 * the integrations that are switched on.
+	 *
+	 * The policy in CCS_Security allows no analytics host. Without this, an ID
+	 * entered in the Customizer did nothing in production: the browser refused
+	 * the tag script and every beacon, with no error anywhere a client would
+	 * look. Hosts follow each vendor's published CSP guidance. With no ID set
+	 * the policy is returned untouched.
+	 *
+	 * @param string $policy The policy built by CCS_Security.
+	 * @return string
+	 */
+	public function allow_tracking_hosts( $policy ) {
+		$add = array();
+
+		if ( '' !== (string) get_theme_mod( self::MOD_GA4_ID, '' ) || '' !== (string) get_theme_mod( self::MOD_GADS_ID, '' ) ) {
+			$add['script-src'][]  = 'https://*.googletagmanager.com';
+			$add['connect-src'][] = 'https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com';
+		}
+		if ( '' !== (string) get_theme_mod( self::MOD_GADS_ID, '' ) ) {
+			$add['script-src'][]  = 'https://www.googleadservices.com https://www.google.com https://googleads.g.doubleclick.net';
+			$add['connect-src'][] = 'https://www.google.com https://pagead2.googlesyndication.com https://www.googleadservices.com https://googleads.g.doubleclick.net';
+			$add['frame-src'][]   = 'https://www.googletagmanager.com https://td.doubleclick.net';
+		}
+		if ( '' !== (string) get_theme_mod( self::MOD_FB_PIXEL_ID, '' ) ) {
+			$add['script-src'][]  = 'https://connect.facebook.net';
+			$add['connect-src'][] = 'https://www.facebook.com';
+		}
+
+		if ( empty( $add ) || ! is_string( $policy ) || '' === $policy ) {
+			return $policy;
+		}
+
+		$directives = array_map( 'trim', explode( ';', $policy ) );
+		foreach ( $directives as $i => $directive ) {
+			$name = strtok( $directive, ' ' );
+			if ( isset( $add[ $name ] ) ) {
+				$directives[ $i ] = $directive . ' ' . implode( ' ', $add[ $name ] );
+			}
+		}
+
+		return implode( '; ', $directives );
 	}
 
 	/**
@@ -48,7 +137,7 @@ class CCS_Analytics {
 		$fb_id     = get_theme_mod( self::MOD_FB_PIXEL_ID, '' );
 		$gads_id   = get_theme_mod( self::MOD_GADS_ID, '' );
 		$gads_lbl  = get_theme_mod( self::MOD_GADS_LABEL, '' );
-		$consent   = (bool) get_theme_mod( self::MOD_REQUIRE_CONSENT, false );
+		$consent   = (bool) get_theme_mod( self::MOD_REQUIRE_CONSENT, true );
 		$thank_you = get_theme_mod( self::MOD_THANK_YOU_PAGE, '' );
 
 		$has_any = ( $ga4_id !== '' || $fb_id !== '' || $gads_id !== '' );
@@ -195,7 +284,7 @@ class CCS_Analytics {
 		$fb_id     = get_theme_mod( self::MOD_FB_PIXEL_ID, '' );
 		$gads_id   = get_theme_mod( self::MOD_GADS_ID, '' );
 		$gads_lbl  = get_theme_mod( self::MOD_GADS_LABEL, '' );
-		$consent   = (bool) get_theme_mod( self::MOD_REQUIRE_CONSENT, false );
+		$consent   = (bool) get_theme_mod( self::MOD_REQUIRE_CONSENT, true );
 		$thank_you = get_theme_mod( self::MOD_THANK_YOU_PAGE, '' );
 
 		$has_any = ( $ga4_id !== '' || $fb_id !== '' || $gads_id !== '' );

@@ -42,11 +42,11 @@ $cqc_has_badge = file_exists( $cqc_badge );
 			 * read.
 			 */
 			?>
-			<p class="ccs-eyebrow"><?php esc_html_e( 'Independently regulated', 'ccs-wp-theme' ); ?></p>
+			<p class="ccs-eyebrow"><?php echo esc_html( ccs_copy( 'cqc_eyebrow' ) ); ?></p>
 			<h2 id="home-cqc-heading" class="ccs-title">
 				<?php
-				/* translators: %s: the emphasised word, drawn with a brush underline. */
-				printf( esc_html__( 'Rated %s by the CQC', 'ccs-wp-theme' ), ccs_accent( __( 'Good', 'ccs-wp-theme' ) ) );
+				// The word between *asterisks* gets the brush underline; ccs_copy_accent() escapes the rest.
+				echo ccs_copy_accent( 'cqc_title' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				?>
 			</h2>
 			<?php
@@ -90,7 +90,7 @@ $cqc_has_badge = file_exists( $cqc_badge );
 			<div class="ccs-actions home-cqc__actions">
 				<?php /* Quiet, not filled: reading the report is a secondary action; booking is the page's primary one (CCS/CLAUDE.md rule 8). */ ?>
 				<a href="<?php echo esc_url( $cqc_url ); ?>" class="btn btn-quiet" target="_blank" rel="noopener noreferrer">
-					<?php esc_html_e( 'Read our full CQC report', 'ccs-wp-theme' ); ?>
+					<?php echo esc_html( ccs_copy( 'cqc_button' ) ); ?>
 					<span class="screen-reader-text"><?php esc_html_e( '(opens in a new window)', 'ccs-wp-theme' ); ?></span>
 				</a>
 			</div>
@@ -157,6 +157,10 @@ $cqc_has_badge = file_exists( $cqc_badge );
 							class="home-cqc__badge-img"
 							width="1184"
 							height="821"
+							<?php echo ccs_theme_image_srcset( 'cqc-badges/CQC inspected and rated good RGB.jpg', '200px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset(). ?>
+							<?php // Lazy: this fallback is hidden unless the CQC widget fails, and an eager hidden image still cost 79KB on every load. ?>
+							loading="lazy"
+							decoding="async"
 						>
 					</a>
 				<?php endif; ?>
@@ -175,6 +179,7 @@ $cqc_has_badge = file_exists( $cqc_badge );
 						class="home-cqc__badge-img"
 						width="1184"
 						height="821"
+						<?php echo ccs_theme_image_srcset( 'cqc-badges/CQC inspected and rated good RGB.jpg', '200px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset(). ?>
 						loading="lazy"
 						decoding="async"
 					>

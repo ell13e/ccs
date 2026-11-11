@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
-$ccs_phone = get_theme_mod( 'ccs_phone', '01234 567890' );
+$ccs_phone = get_theme_mod( 'ccs_phone', '01622 809 881' );
 $ccs_phone_tel = $ccs_phone ? preg_replace( '/\s+/', '', $ccs_phone ) : '';
 ?>
 
@@ -40,17 +40,25 @@ $ccs_phone_tel = $ccs_phone ? preg_replace( '/\s+/', '', $ccs_phone ) : '';
 	 * share one; see the "Bands" block in design-system.css.
 	 */
 	?>
+	<?php
+	/*
+	 * Calm pass (Nov 2026): eleven bands, down from thirteen. "Where to go next"
+	 * repeated the navigation and was dropped; the partner logo wall (twelve
+	 * multicoloured logos) moved to the About page, where "who we work with" is
+	 * the question being asked. Grounds are set in one block at the end of
+	 * homepage.css.
+	 */
+	?>
 	<?php get_template_part( 'template-parts/home/hero' ); ?>
 	<?php get_template_part( 'template-parts/home/cqc-section' ); ?>
 	<?php get_template_part( 'template-parts/home/why-choose-us' ); ?>
 	<?php get_template_part( 'template-parts/home/services' ); ?>
-	<?php get_template_part( 'template-parts/home/steps' ); ?>
+	<?php get_template_part( 'template-parts/home/story' ); ?>
 	<?php get_template_part( 'template-parts/home/differentiators' ); ?>
+	<?php get_template_part( 'template-parts/home/steps' ); ?>
 	<?php get_template_part( 'template-parts/home/costs' ); ?>
 	<?php get_template_part( 'template-parts/home/testimonial' ); ?>
 	<?php get_template_part( 'template-parts/home/team' ); ?>
-	<?php get_template_part( 'template-parts/home/info-cards' ); ?>
-	<?php get_template_part( 'template-parts/home/partnerships' ); ?>
 	<?php get_template_part( 'template-parts/home/closing-cta' ); ?>
 
 </main>

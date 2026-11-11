@@ -3,11 +3,55 @@
  *
  * CSS custom properties and utility classes for the Kent-based home care theme.
  * Aligned with design-system/MASTER.md: Soft UI Evolution, WCAG 2.1 AA.
- * Enqueue Poppins (400, 500, 600, 700) + Open Sans (400, 600, 700) in theme.
+ * Lora (headings) and Open Sans (body) are self-hosted: see @font-face below.
  *
  * @package CCS_WP_Theme
  * @since 1.0.0
  */
+
+/* -------------------------------------------------------------------------
+   FONTS – self-hosted
+   The theme used to link Google Fonts, but its own Content-Security-Policy
+   (inc/class-security.php: style-src and font-src 'self') blocked that
+   stylesheet, so visitors never received Lora or Open Sans and saw Georgia and
+   a system sans instead. It only looked right on machines with Lora installed.
+   Serving the files from this origin fixes that without loosening the CSP, and
+   no visitor IP goes to a font CDN. Both families are SIL Open Font License;
+   variable weight, Latin subset. Two families only (CLAUDE.md rule 11).
+   The two upright files are preloaded in CCS_Critical_CSS::preload_fonts().
+   ------------------------------------------------------------------------- */
+@font-face {
+	font-family: "Open Sans";
+	font-style: normal;
+	font-weight: 300 800;
+	font-display: swap;
+	src: url("../fonts/open-sans-latin.woff2") format("woff2");
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+	font-family: "Open Sans";
+	font-style: italic;
+	font-weight: 300 800;
+	font-display: swap;
+	src: url("../fonts/open-sans-italic-latin.woff2") format("woff2");
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+	font-family: "Lora";
+	font-style: normal;
+	font-weight: 400 700;
+	font-display: swap;
+	src: url("../fonts/lora-latin.woff2") format("woff2");
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+	font-family: "Lora";
+	font-style: italic;
+	font-weight: 400 700;
+	font-display: swap;
+	src: url("../fonts/lora-italic-latin.woff2") format("woff2");
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
 /* -------------------------------------------------------------------------
    DESIGN TOKENS – CSS Custom Properties
@@ -197,7 +241,9 @@
 	   literal repeat of the differentiators band a few screens earlier; the
 	   page now ends on its most saturated moment rather than its second
 	   identical one. */
-	--color-band-cream: var(--color-background-warm);
+	/* Cream is retired (Nov 2026): a warm neutral beside the cool lilac tint made
+	   the bands fight. The token stays so nothing breaks, and now means the tint. */
+	--color-band-cream: var(--color-band-tint);
 	--color-band-tint: #F1EFF7;
 	--color-band-deep: var(--color-primary-dark);
 	--color-band-deepest: #332659;

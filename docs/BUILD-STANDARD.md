@@ -10,13 +10,14 @@ status column changes.
 
 | £30k standard | Status (Nov 2026) |
 |---|---|
-| Every template on one design system | Homepage only. Inner pages (service, location, team, contact, news) still on the old styles. |
-| Client can edit every word without a developer | No. ~168 homepage strings live in PHP; only rates, phone and ~29 settings are in the Customizer. |
-| Images sized per device (`srcset`), LCP image < ~200KB | No. 0 `srcset` on theme-bundled images; hero 402KB; a 351KB photo serves a ~250px tile. |
-| Automated QA (links, a11y, visual regression) in CI | No. `phpstan.neon` only. |
-| Living design system doc | Stale. `design-system/MASTER.md` still says Poppins; the Nov 2026 section system is undocumented there. |
-| Forms meet WCAG 2.1 AA | No. Service-page callback form: labels are screen-reader-only (sighted users get vanishing placeholders, and "optional" is invisible), and name/phone lack `autocomplete` (1.3.5 Identify Input Purpose, an AA failure). |
-| Conversion tracking | Present (`inc/integrations/class-analytics.php`, `assets/js/analytics-events.js`); not yet verified to fire. |
+| Every template on one design system | Yes. All 20 page types audited 11 Nov 2026 at 1440 and 375: no flags (`run-audit.sh`), 33 internal links all 200. |
+| Client can edit every word without a developer | Mostly. 134 strings are in the Customizer: Homepage content and Page wording (134 in all; the template headings and short lines on inner pages), from one registry (`inc/home-content.php`, printed with `ccs_copy()`). Verified inside WordPress: both panels register, HTML is stripped on save, and an override renders. Still in PHP: the sourced CQC statistic sentence, partner names, form labels, and location-page lines that contain the town name. |
+| Images sized per device (`srcset`), LCP image < ~200KB | Mostly. Theme-bundled photos now print `srcset` from width variants (`ccs_theme_image_srcset()`, `inc/theme-images.php`): the hero serves 43–221KB WebP instead of a 411KB JPEG, and homepage images at desktop fell from about 1.5MB to about 0.6MB. Still without variants: team portraits (512px, right-sized for 2x) and partner logos. |
+| Automated QA (links, a11y, visual regression) in CI | Partly. `bin/qa.sh` runs PHP syntax, the copy registry test, the design audit (20 page types at 1440 and 375) and the link check in one command; it passes locally. `.github/workflows/qa.yml` runs it on push and pull request but has not yet run on GitHub. No visual regression. |
+| Living design system doc | Stale. `design-system/MASTER.md` still describes the pre-Nov 2026 system; its font line is corrected, the section system is still undocumented there. |
+| Brand typefaces reach every visitor | Yes, since Nov 2026. Lora and Open Sans are self-hosted (`assets/fonts/*.woff2`, `@font-face` in `design-system.css`, two preloads). Before that the theme linked Google Fonts, which its own CSP blocked, so visitors saw Georgia and a system sans. |
+| Forms meet WCAG 2.1 AA | Markup yes: visible labels, optional fields marked, `autocomplete` on personal fields (contact and service call-back). Not yet tested with a screen reader. |
+| Conversion tracking | Events verified in the browser (11 Nov 2026): phone, email, main button and form success each fire once. Fixed: enquiries counted twice, failed validations counted as conversions, the mint Book button untracked, and the CSP blocking every tracking host (now allowed only when an ID is set). A cookie choice bar now asks before anything loads (on by default; tested: nothing loads before a choice, reject keeps it off, accept loads it). No ID is configured, so nothing has been confirmed inside GA4 itself. |
 | Professional photography | No: real phone photos. Needs a shoot. Never colour-correct the existing set (client rule). |
 
 ## 2. CSS techniques to apply (from the CSS-Tricks guides, with our caveats)
@@ -39,6 +40,11 @@ direction (a different crop per breakpoint). For WordPress, content photos belon
 in the **Media Library**: `wp_get_attachment_image()` then generates `srcset`
 automatically and the client can replace the photo. Theme-bundled files get
 neither. Resizing to make width variants is allowed; tone or colour changes are not.
+
+To add a variant for a theme-bundled photo, put a resized copy beside the
+original named `{name}-{width}w.webp` (`magick photo.jpg -resize 800x -quality 80
+photo-800w.webp`) and pass the slot's `sizes` to `ccs_theme_image_srcset()`. No
+variants, no srcset: nothing breaks.
 
 **Subgrid**: `grid-row: span N; grid-template-rows: subgrid` lines up titles,
 bodies and footers across a row of cards. Replaces the `flex: 1` push used on
@@ -113,6 +119,7 @@ Started.
 | Long-form page with a contents rail | `get_template_part( 'template-parts/article-body' )` (rail appears at 4+ h2s) | default page, policy pages, Care Guides |
 | Service cards | `get_template_part( 'template-parts/service-cards' )`, ordered by `ccs_ordered_services()` | services hub, location pages |
 | Plain points with an icon | `.feature-grid(--4)` > `.feature-card`; add `.feature-grid--plain` when the points aren't separate objects (no box) | Careers "what to expect" (plain), location local support (boxed) |
+| The story video, large | `template-parts/home/story` (`.home-story`): centred head over one wide click-to-load video on white. Wording shared with the About page. | homepage |
 | A page hero | `template-parts/page-header` decides: full-bleed `.page-hero--photo` when the featured image is 1200px or wider (`ccs_hero_photo_fills_banner()`), `.page-hero--inset` (photo framed beside the text, capped at file width ÷ 1.4) when smaller, plain tint otherwise. The service hero uses the same test. | every inner template |
 | Section head with a long lede | `.ccs-head--split` (title left, lede right, left-aligned) instead of centring a multi-line paragraph | services hub |
 | Link cards | `.info-grid` > `.info-card` | homepage, careers sub-pages, related services |
@@ -125,12 +132,24 @@ Third-party embeds need their host in the CSP (`inc/class-security.php`):
 `frame-src` for iframes, `script-src`/`style-src` for widgets. A missing host
 fails silently in production, not just locally.
 
+### Editable copy (homepage and page wording)
+
+Homepage wording lives in `inc/home-content.php` as one registry: key, Customizer
+section, label, default. Templates print `esc_html( ccs_copy( 'key' ) )`; a heading
+with the brush underline uses `ccs_copy_accent( 'key' )`, where the editor marks
+the word with asterisks ("Rated *Good* by the CQC"). An empty field falls back to
+the default, so nothing can be blanked by accident. To make another string
+editable, add a row and swap the template's `__()` for `ccs_copy()`; the Customizer
+control appears on its own. Never hard-code new homepage copy in a template.
+
 ## 4. Definition of done (run before calling any page finished)
+
+`bin/qa.sh` runs items 2 to 6 for every page type in one go; the rest are by hand.
 
 1. **Real viewports.** Check 375 and 1440 in the browser pane's device emulation.
    Headless Chrome on macOS enforces a ~500px minimum window, so "390px"
    headless screenshots lay out wider and crop: never judge mobile from them.
-   Open the pane on `127.0.0.1:9400`, not `localhost`: WordPress serves assets
+   Open the pane on `127.0.0.1:9401`, not `localhost`: WordPress serves assets
    from 127.0.0.1 and the CSP blocks them cross-origin. For full-page mobile
    captures, frame the page in a same-origin 375px iframe (`frame-ancestors
    'self'` allows it) and screenshot that.

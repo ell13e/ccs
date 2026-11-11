@@ -85,36 +85,33 @@ class CCS_Critical_CSS {
 			return;
 		}
 
-		add_action( 'wp_head', array( $this, 'preload_google_fonts' ), 0 );
+		add_action( 'wp_head', array( $this, 'preload_fonts' ), 0 );
 		add_action( 'wp_head', array( $this, 'inline_critical_css' ), 1 );
 		add_filter( 'style_loader_tag', array( $this, 'defer_stylesheet_tag' ), 10, 4 );
 	}
 
 	/**
-	 * Output preconnect and preload for Google Fonts.
-	 */
-	public function preload_google_fonts() {
-		$font_url = apply_filters( 'ccs_google_fonts_url', $this->get_default_google_fonts_url() );
-
-		if ( empty( $font_url ) || strpos( $font_url, 'fonts.googleapis.com' ) === false ) {
-			return;
-		}
-
-		echo '<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>' . "\n";
-		echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
-		printf(
-			"<link rel=\"preload\" as=\"style\" href=\"%s\">\n",
-			esc_url( $font_url )
-		);
-	}
-
-	/**
-	 * Default Google Fonts URL (Lora + Open Sans per design system, 2026-08-19 refresh).
+	 * Preload the two upright font files every page uses above the fold.
 	 *
-	 * @return string
+	 * Fonts are self-hosted (@font-face in design-system.css). This used to
+	 * preconnect to and preload Google Fonts, which the theme's own CSP blocked,
+	 * so the brand typefaces never reached visitors. Italics are left to load on
+	 * demand: they are only used for a few accents.
 	 */
-	private function get_default_google_fonts_url() {
-		return 'https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Open+Sans:wght@400;500;600;700&display=swap';
+	public function preload_fonts() {
+		$fonts = apply_filters( 'ccs_preload_fonts', array( 'lora-latin.woff2', 'open-sans-latin.woff2' ) );
+
+		foreach ( (array) $fonts as $file ) {
+			if ( ! file_exists( get_template_directory() . '/assets/fonts/' . $file ) ) {
+				continue;
+			}
+			// crossorigin is required on font preloads even for same-origin files,
+			// or the browser fetches the font a second time.
+			printf(
+				"<link rel=\"preload\" as=\"font\" type=\"font/woff2\" href=\"%s\" crossorigin>\n",
+				esc_url( get_template_directory_uri() . '/assets/fonts/' . $file )
+			);
+		}
 	}
 
 	/**

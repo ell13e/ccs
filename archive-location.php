@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
-$ccs_phone     = get_theme_mod( 'ccs_phone', '01234 567890' );
+$ccs_phone     = get_theme_mod( 'ccs_phone', '01622 809 881' );
 $ccs_phone_tel = $ccs_phone ? preg_replace( '/\s+/', '', $ccs_phone ) : '';
 
 $ccs_areas = get_posts(
@@ -38,9 +38,9 @@ $ccs_areas = get_posts(
 		<div class="page-hero__inner container container--lg">
 			<div class="page-hero__text">
 				<?php get_template_part( 'template-parts/breadcrumb' ); ?>
-				<h1 class="page-hero__title"><?php esc_html_e( 'Areas we cover', 'ccs-wp-theme' ); ?></h1>
+				<h1 class="page-hero__title"><?php echo esc_html( ccs_copy( 'areas_title' ) ); ?></h1>
 				<p class="page-hero__intro">
-					<?php esc_html_e( 'Home care across Maidstone and the Kent towns around it. Choose your area to see the villages we visit and the care we provide there.', 'ccs-wp-theme' ); ?>
+					<?php echo esc_html( ccs_copy( 'areas_lede' ) ); ?>
 				</p>
 			</div>
 		</div>
@@ -91,8 +91,8 @@ $ccs_areas = get_posts(
 					<div class="ccs-strip areas-hub__strip">
 						<span class="ccs-badge"><?php echo ccs_icon( 'question' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
 						<div class="ccs-strip__text">
-							<h2 class="ccs-strip__title"><?php esc_html_e( 'Not on the list?', 'ccs-wp-theme' ); ?></h2>
-							<p class="ccs-strip__lede"><?php esc_html_e( 'Ring and ask. The honest answer depends on whether we can staff it consistently.', 'ccs-wp-theme' ); ?></p>
+							<h2 class="ccs-strip__title"><?php echo esc_html( ccs_copy( 'areas_strip_title' ) ); ?></h2>
+							<p class="ccs-strip__lede"><?php echo esc_html( ccs_copy( 'areas_strip_text' ) ); ?></p>
 						</div>
 						<a class="btn btn-quiet ccs-strip__action" href="<?php echo esc_url( 'tel:' . $ccs_phone_tel ); ?>">
 							<?php echo ccs_icon( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?>

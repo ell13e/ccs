@@ -47,9 +47,9 @@ $items = array(
 				?>
 			</h2>
 		</header>
-		<ul class="feature-grid feature-grid--4 feature-grid--plain" role="list">
+		<ul class="feature-grid feature-grid--4" role="list">
 			<?php foreach ( $items as $item ) : ?>
-				<li class="feature-card">
+				<li class="feature-card" data-ccs-exception="rule 1: cards at the client's request (Nov 2026); as loose icon-and-text points this section looked unfinished">
 					<span class="ccs-badge"><?php echo ccs_icon( $item['icon'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
 					<h3 class="feature-card__title"><?php echo esc_html( $item['title'] ); ?></h3>
 					<p class="feature-card__text"><?php echo esc_html( $item['body'] ); ?></p>

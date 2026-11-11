@@ -33,7 +33,7 @@ get_header();
 						<header class="ccs-head">
 							<h2 id="cqc-intro-heading" class="ccs-title">
 								<?php
-								esc_html_e( 'Care you can check for yourself', 'ccs-wp-theme' );
+								echo esc_html( ccs_copy( 'cqc_page_title' ) );
 								?>
 							</h2>
 						</header>
