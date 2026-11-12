@@ -1,7 +1,8 @@
 <?php
 /**
- * Single service template: photo hero, content beside a sticky call-back card,
- * the three steps, other services as photo cards, shared closing card.
+ * Single service template (Nov 2026, structure after ultimacare.co.uk): hero;
+ * introduction beside the call-back card; what we help with as cards; the
+ * steps; questions; the closing card; related services; reviews.
  * Uses service meta: short_description, features, pricing, faqs, service_urgent.
  *
  * @package CCS_WP_Theme
@@ -62,6 +63,48 @@ while ( have_posts() ) :
 			'orderby'        => 'menu_order title',
 			'order'          => 'ASC',
 		) );
+	}
+
+	/*
+	 * The editor text, split at its headings (Nov 2026). The client pointed to
+	 * ultimacare.co.uk's service pages: an introduction, then what the service
+	 * covers as a set of cards, then questions, a person to talk to, related
+	 * services and reviews. Sections that are lists ("What we help with",
+	 * "Conditions we support") become the cards; sections that are prose stay
+	 * in the reading column beside the call-back card. The words are the
+	 * client's own, unchanged; only a trailing colon on a heading is dropped,
+	 * since the heading is no longer followed directly by its list.
+	 */
+	$ccs_svc_split  = ccs_content_sections( apply_filters( 'the_content', get_the_content() ) );
+	$ccs_svc_intro  = $ccs_svc_split['intro'];
+	$ccs_svc_prose  = array();
+	$ccs_svc_lists  = array();
+	foreach ( $ccs_svc_split['sections'] as $ccs_sec ) {
+		$ccs_sec['heading'] = rtrim( $ccs_sec['heading'], " :\t" );
+		if ( preg_match( '#<(ul|ol)[\s>]#i', $ccs_sec['body'] ) ) {
+			$ccs_svc_lists[] = $ccs_sec;
+		} else {
+			$ccs_svc_prose[] = $ccs_sec;
+		}
+	}
+
+	/*
+	 * Questions: only the service's own (Services > edit > FAQs). The general
+	 * questions from the FAQs page used to fill in here, but they repeated the
+	 * same text on all three service pages and the FAQs page, which search
+	 * engines read as duplicate content (Nov 2026). With no questions of its
+	 * own, the section does not show.
+	 */
+	$ccs_svc_faqs     = array();
+	$ccs_svc_faq_page = null;
+	foreach ( $faqs as $ccs_faq ) {
+		$ccs_q = isset( $ccs_faq['question'] ) ? trim( $ccs_faq['question'] ) : '';
+		if ( '' !== $ccs_q ) {
+			$ccs_svc_faqs[] = array( 'q' => $ccs_q, 'a' => wpautop( esc_html( isset( $ccs_faq['answer'] ) ? $ccs_faq['answer'] : '' ) ) );
+		}
+	}
+	foreach ( array( 'faqs', 'resources/faqs' ) as $ccs_path ) {
+		$ccs_svc_faq_page = $ccs_svc_faq_page ? $ccs_svc_faq_page : get_page_by_path( $ccs_path );
 	}
 ?>
 
@@ -169,42 +212,30 @@ while ( have_posts() ) :
 					?>
 				</div>
 			<?php endif; ?>
+			<?php get_template_part( 'template-parts/cqc-hero-card' ); ?>
 		</div>
 	</header>
 
 	<div class="service-body">
 		<div class="service-body__inner container container--lg">
 			<div class="service-body__main">
-				<?php if ( get_the_content() ) : ?>
+				<?php if ( '' !== trim( $ccs_svc_intro ) || ! empty( $ccs_svc_prose ) ) : ?>
 					<?php
 					/*
 					 * page-body typography (components.css) without its page-level
-					 * width and padding: the same headings, tick-badge lists and
-					 * quote panels as every other content page, inside a column.
+					 * width and padding: the same headings and paragraphs as every
+					 * other content page, inside a column.
 					 */
 					?>
 					<div class="service-content page-body page-body--flush entry-content">
-						<?php the_content(); ?>
+						<?php if ( '' !== trim( $ccs_svc_intro ) ) : ?>
+							<div class="service-content__intro"><?php echo $ccs_svc_intro; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content output. ?></div>
+						<?php endif; ?>
+						<?php foreach ( $ccs_svc_prose as $ccs_sec ) : ?>
+							<h2><?php echo esc_html( $ccs_sec['heading'] ); ?></h2>
+							<?php echo $ccs_sec['body']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content output. ?>
+						<?php endforeach; ?>
 					</div>
-				<?php endif; ?>
-
-				<?php if ( ! empty( $features ) ) : ?>
-					<section class="service-features" aria-labelledby="service-features-heading">
-						<h2 id="service-features-heading" class="service-features__heading"><?php echo esc_html( ccs_copy( 'service_included_title' ) ); ?></h2>
-						<ul class="why-proof" role="list">
-							<?php foreach ( $features as $row ) :
-								$text = isset( $row['feature_text'] ) ? $row['feature_text'] : '';
-								if ( $text === '' ) {
-									continue;
-								}
-							?>
-								<li class="why-proof__item">
-									<span class="ccs-badge ccs-badge--sm"><?php echo ccs_icon( 'check' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
-									<span class="why-proof__text"><?php echo esc_html( $text ); ?></span>
-								</li>
-							<?php endforeach; ?>
-						</ul>
-					</section>
 				<?php endif; ?>
 
 				<?php if ( $has_price ) : ?>
@@ -250,32 +281,6 @@ while ( have_posts() ) :
 					</aside>
 				<?php endif; ?>
 
-				<?php if ( ! empty( $faqs ) ) : ?>
-					<section class="service-faqs" aria-labelledby="service-faqs-heading">
-						<h2 id="service-faqs-heading" class="service-faqs__heading"><?php echo esc_html( ccs_copy( 'service_faq_title' ) ); ?></h2>
-						<?php
-						/*
-						 * Native <details>: keyboard and screen-reader behaviour for
-						 * free, and the shared name makes them exclusive (one open at
-						 * a time) without a script. See docs/BUILD-STANDARD.md §3.
-						 */
-						?>
-						<div class="ccs-faq">
-							<?php foreach ( $faqs as $faq ) :
-								$q = isset( $faq['question'] ) ? trim( $faq['question'] ) : '';
-								$a = isset( $faq['answer'] ) ? $faq['answer'] : '';
-								if ( $q === '' ) {
-									continue;
-								}
-							?>
-								<details class="ccs-faq__item" name="service-faq">
-									<summary class="ccs-faq__q"><?php echo esc_html( $q ); ?></summary>
-									<div class="ccs-faq__a"><?php echo wp_kses_post( wpautop( esc_html( $a ) ) ); ?></div>
-								</details>
-							<?php endforeach; ?>
-						</div>
-					</section>
-				<?php endif; ?>
 			</div>
 
 			<aside class="service-sidebar" aria-labelledby="service-sidebar-heading">
@@ -331,7 +336,90 @@ while ( have_posts() ) :
 		</div>
 	</div>
 
-	<?php get_template_part( 'template-parts/home/steps' ); ?>
+	<?php if ( ! empty( $ccs_svc_lists ) || ! empty( $features ) ) : ?>
+		<section class="ccs-section ccs-section--tint service-help" aria-labelledby="service-help-heading">
+			<div class="container container--lg">
+				<header class="ccs-head ccs-head--center">
+					<h2 id="service-help-heading" class="ccs-title">
+						<?php echo ccs_copy_accent( 'service_help_title' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_copy_accent(). ?>
+					</h2>
+				</header>
+				<?php
+				/*
+				 * Each list from the page is one card: its heading, any sentence
+				 * that introduces it, and the list as ticks. A white card on the
+				 * tint, the same card the rest of the site uses (rule 1: each is
+				 * its own group of things we do).
+				 */
+				?>
+				<div class="service-help__grid">
+					<?php foreach ( $ccs_svc_lists as $ccs_sec ) : ?>
+						<article class="service-help__card" data-ccs-exception="rule 1: each card is one group of what this service covers, the structure the client asked for (Nov 2026)">
+							<h3 class="service-help__title"><?php echo esc_html( $ccs_sec['heading'] ); ?></h3>
+							<div class="service-help__body page-body page-body--flush"><?php echo $ccs_sec['body']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content output. ?></div>
+						</article>
+					<?php endforeach; ?>
+					<?php if ( ! empty( $features ) ) : ?>
+						<article class="service-help__card" data-ccs-exception="rule 1: each card is one group of what this service covers, the structure the client asked for (Nov 2026)">
+							<h3 class="service-help__title"><?php echo esc_html( ccs_copy( 'service_included_title' ) ); ?></h3>
+							<div class="service-help__body page-body page-body--flush">
+								<ul>
+									<?php foreach ( $features as $row ) : ?>
+										<?php if ( ! empty( $row['feature_text'] ) ) : ?>
+											<li><?php echo esc_html( $row['feature_text'] ); ?></li>
+										<?php endif; ?>
+									<?php endforeach; ?>
+								</ul>
+							</div>
+						</article>
+					<?php endif; ?>
+				</div>
+			</div>
+		</section>
+	<?php endif; ?>
+
+	<?php
+	/*
+	 * What this service costs: the rate cards from the published fee schedule
+	 * that apply to it (Nov 2026). Unique to each service page, and the
+	 * question families most want answered. The shared "How care starts" steps
+	 * that sat here were removed: the same three steps on every page made the
+	 * service pages read as near-duplicates.
+	 */
+	get_template_part( 'template-parts/rate-table', null, array( 'service' => get_post_field( 'post_name', $post_id ) ) );
+	?>
+
+	<?php if ( ! empty( $ccs_svc_faqs ) ) : ?>
+		<section class="ccs-section ccs-section--tint service-faqs" aria-labelledby="service-faqs-heading">
+			<div class="container container--lg">
+				<div class="ccs-split">
+					<header class="ccs-head">
+						<h2 id="service-faqs-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'service_faq_title' ) ); ?></h2>
+						<?php if ( $ccs_svc_faq_page instanceof WP_Post ) : ?>
+							<a class="ccs-text-link service-faqs__more" href="<?php echo esc_url( get_permalink( $ccs_svc_faq_page ) ); ?>"><?php echo esc_html( ccs_copy( 'service_faq_more' ) ); ?> <span aria-hidden="true">&rarr;</span></a>
+						<?php endif; ?>
+					</header>
+					<?php
+					/*
+					 * Native <details>: keyboard and screen-reader behaviour for
+					 * free, and the shared name makes them exclusive (one open at
+					 * a time) without a script. See docs/BUILD-STANDARD.md §3.
+					 */
+					?>
+					<div class="ccs-faq">
+						<?php foreach ( $ccs_svc_faqs as $ccs_i => $ccs_faq ) : ?>
+							<details class="ccs-faq__item" name="service-faq"<?php echo 0 === $ccs_i ? ' open' : ''; ?>>
+								<summary class="ccs-faq__q"><?php echo esc_html( $ccs_faq['q'] ); ?></summary>
+								<div class="ccs-faq__a"><?php echo wp_kses_post( $ccs_faq['a'] ); ?></div>
+							</details>
+						<?php endforeach; ?>
+					</div>
+				</div>
+			</div>
+		</section>
+	<?php endif; ?>
+
+	<?php get_template_part( 'template-parts/cta-band' ); ?>
 
 	<?php if ( ! empty( $related ) ) : ?>
 		<section class="service-related" aria-labelledby="service-related-heading">
@@ -358,7 +446,7 @@ while ( have_posts() ) :
 					'complex-care'     => 'pulse',
 				);
 				?>
-				<ul class="svc-grid" role="list">
+				<ul class="svc-grid ccs-swipe" role="list">
 					<?php foreach ( $ccs_related_shown as $rel ) : ?>
 						<li class="svc-card">
 							<?php if ( has_post_thumbnail( $rel ) ) : ?>
@@ -382,8 +470,23 @@ while ( have_posts() ) :
 								<h3 class="svc-card__title">
 									<a href="<?php echo esc_url( get_permalink( $rel ) ); ?>" class="svc-card__link"><?php echo esc_html( get_the_title( $rel ) ); ?></a>
 								</h3>
-								<?php if ( has_excerpt( $rel ) ) : ?>
-									<p class="svc-card__text"><?php echo esc_html( get_the_excerpt( $rel ) ); ?></p>
+								<?php
+								/*
+								 * The starting price, not the excerpt: each service's excerpt is
+								 * already its own hero intro, so repeating it here duplicated
+								 * text across the service pages (Nov 2026).
+								 */
+								$ccs_rel_groups = function_exists( 'ccs_fee_groups_for_service' ) ? ccs_fee_groups_for_service( $rel->post_name ) : array();
+								$ccs_rel_fees   = function_exists( 'ccs_fee_schedule' ) ? ccs_fee_schedule() : array();
+								if ( $ccs_rel_groups && isset( $ccs_rel_fees[ $ccs_rel_groups[0] ][0] ) ) :
+									$ccs_rel_first = $ccs_rel_fees[ $ccs_rel_groups[0] ][0];
+									?>
+									<p class="svc-card__text">
+										<?php
+										/* translators: %s: price, e.g. £36.38. */
+										echo esc_html( sprintf( $ccs_rel_first['night'] ? __( 'From %s a night', 'ccs-wp-theme' ) : __( 'From %s an hour', 'ccs-wp-theme' ), $ccs_rel_first['weekday'] ) );
+										?>
+									</p>
 								<?php endif; ?>
 								<span class="svc-card__cue" aria-hidden="true"><?php esc_html_e( 'Read more', 'ccs-wp-theme' ); ?> <span class="svc-card__arrow">&rarr;</span></span>
 							</div>
@@ -407,11 +510,10 @@ while ( have_posts() ) :
 
 	<?php
 	/*
-	 * The shared closing card, as on every other page. This replaces a bespoke
-	 * .service-cta band; its "urgent" variant offered a phone number only, and
-	 * the card already carries the call button beside the consultation link.
+	 * No reviews block here (Nov 2026): the same three reviews on every
+	 * service page made the pages read as near-duplicates to search engines.
+	 * Reviews stay on the homepage.
 	 */
-	get_template_part( 'template-parts/cta-band' );
 	?>
 
 </main>

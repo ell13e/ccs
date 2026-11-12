@@ -276,7 +276,7 @@ class CCS_Structured_Data {
 					'priceCurrency' => 'GBP',
 					'unitCode'      => 'HUR',
 					/* translators: describes what the published hourly rate covers. */
-					'description'   => (string) get_theme_mod( 'ccs_cost_basis', __( 'per hour for personal care, weekdays 7am–10pm', 'ccs-wp-theme' ) ),
+					'description'   => (string) get_theme_mod( 'ccs_cost_basis', __( 'Personal care, weekdays 7am–10pm', 'ccs-wp-theme' ) ),
 				),
 			);
 		}

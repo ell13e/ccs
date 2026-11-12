@@ -59,6 +59,7 @@ $ccs_switch_faqs = array(
 					<?php endif; ?>
 				</div>
 			</div>
+			<?php get_template_part( 'template-parts/cqc-hero-card' ); ?>
 		</div>
 	</header>
 

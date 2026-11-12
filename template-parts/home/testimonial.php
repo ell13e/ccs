@@ -110,7 +110,7 @@ $ccs_review_initials = static function ( $name ) {
 			</h2>
 		</header>
 
-		<ul class="home-reviews__list" role="list">
+		<ul class="home-reviews__list ccs-swipe" role="list">
 			<?php foreach ( $ccs_reviews as $ccs_review ) : ?>
 				<?php $ccs_initials = $ccs_review_initials( $ccs_review['author'] ); ?>
 				<li class="home-reviews__item">

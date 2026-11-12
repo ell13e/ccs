@@ -574,7 +574,6 @@
    HOW CARE STARTS — three steps
    ------------------------------------------------------------------------- */
 
-
 /* -------------------------------------------------------------------------
    WHAT WE DO DIFFERENTLY — four commitments on the dark band
    ------------------------------------------------------------------------- */
@@ -642,153 +641,6 @@
 }
 
 /* -------------------------------------------------------------------------
-   REVIEWS
-   ------------------------------------------------------------------------- */
-
-.home-reviews {
-	padding-block: var(--section-pad);
-	background-color: var(--color-band-cream);
-}
-
-.home-reviews__list {
-	display: grid;
-	gap: var(--space-md);
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-
-@media (min-width: 960px) {
-	.home-reviews__list {
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-		gap: var(--space-lg);
-	}
-}
-
-.home-reviews__item {
-	display: flex;
-}
-
-.review-card {
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-	margin: 0;
-	padding: clamp(1.75rem, 1.2rem + 1.6vw, 2.25rem);
-	border-radius: var(--radius-2xl);
-	background-color: var(--color-background);
-	box-shadow: var(--shadow-float);
-}
-
-.review-card__top {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	margin-bottom: var(--space-md);
-}
-
-/* Purple, not gold: the stars carry the rating, so they need 3:1 against the
-   card as a graphic (WCAG 1.4.11). The usual gold is ~2.3:1 on white. */
-.review-card__rating {
-	display: flex;
-	gap: 0.2rem;
-	color: var(--color-primary);
-}
-
-.review-card__star {
-	display: block;
-}
-
-.review-card__mark {
-	width: 2.25rem;
-	height: auto;
-	color: var(--color-secondary);
-}
-
-.review-card__quote {
-	flex: 1 1 auto;
-	margin: 0 0 var(--space-lg);
-	padding: 0;
-	border: 0;
-}
-
-.review-card__quote p {
-	margin: 0;
-	font-size: var(--text-md);
-	line-height: 1.7;
-	color: var(--color-ink);
-}
-
-.review-card__meta {
-	display: flex;
-	align-items: center;
-	gap: 0.875rem;
-	padding-top: var(--space-md);
-	border-top: 1px solid var(--color-hairline);
-}
-
-.review-card__avatar {
-	display: grid;
-	flex: none;
-	place-items: center;
-	width: 3rem;
-	height: 3rem;
-	border-radius: 50%;
-	background-color: var(--color-badge);
-	color: var(--color-primary);
-	font-family: var(--font-family-heading);
-	font-size: 1rem;
-	font-weight: var(--font-weight-semibold);
-	letter-spacing: 0.02em;
-}
-
-.review-card__avatar .ccs-icon {
-	width: 1.25rem;
-	height: 1.25rem;
-}
-
-.review-card__who {
-	display: flex;
-	flex-direction: column;
-	gap: 0.1rem;
-	min-width: 0;
-}
-
-.review-card__author {
-	font-size: var(--text-base);
-	font-weight: var(--font-weight-bold);
-	color: var(--color-ink);
-}
-
-.review-card__relationship {
-	font-size: var(--text-sm);
-	color: var(--color-ink-soft);
-}
-
-.review-card__source {
-	font-size: var(--text-xs);
-	color: var(--color-accent);
-}
-
-/* Padded to a 26px-tall target. At the text's own 15px it passed WCAG 2.2's
-   spacing exception (nothing else to hit nearby), but this audience includes
-   a lot of older and less steady hands, so the target gets the height anyway. */
-.review-card__source a {
-	display: inline-flex;
-	align-items: center;
-	min-height: 44px;
-	margin-block: -8px;
-	color: inherit;
-	text-decoration: underline;
-	text-underline-offset: 0.2em;
-}
-
-.review-card__source a:hover,
-.review-card__source a:focus-visible {
-	color: var(--color-primary);
-}
-
-/* -------------------------------------------------------------------------
    WHERE TO GO NEXT — three link cards
    ------------------------------------------------------------------------- */
 
@@ -830,7 +682,6 @@
 		transition: none;
 	}
 }
-
 
 /* =========================================================================
    NOV 2026 ADDITIONS: the story video. (A first attempt also put coloured blocks behind the photos;
@@ -1130,7 +981,6 @@
 	}
 }
 
-
 /* =========================================================================
    LIGHTER PASS (Nov 2026): differentiators and costs. Less on screen at once,
    no dark blocks, no icon circles. See template-homepage.php for the why.
@@ -1263,12 +1113,10 @@
 	align-items: start;
 }
 
-
 /* Hero with less in it: the promise gets the space the paragraph had. */
 .home-hero__actions {
 	margin-top: var(--space-xl);
 }
-
 
 /* Hero CQC badge on the content edge, not the window edge: on a wide screen
    it sat far out to the right, detached from the page (client, Nov 2026).
@@ -1668,14 +1516,6 @@ a.home-routes__main::after {
 	}
 }
 
-
-/* =========================================================================
-   COSTS, FEE SHEET (Nov 2026, fifth version; client: "i dont like this
-   section at all"). The heading above, then one wide sheet: the rate as the
-   focal point on the left, the other charges as a ruled table on the right
-   with each price aligned to the right, as on a printed fee schedule. Every
-   earlier costs rule was removed with the old markup.
-   ========================================================================= */
 .home-costs__head {
 	max-width: 52rem;
 	margin-bottom: var(--space-2xl);
@@ -1690,131 +1530,155 @@ a.home-routes__main::after {
 	text-wrap: pretty;
 }
 
-.fee-sheet {
-	display: grid;
-	gap: var(--space-xl);
-	padding: clamp(1.75rem, 1rem + 2.6vw, 3rem);
-	border-radius: var(--radius-3xl);
-	background-color: var(--color-band-tint);
-}
-
-@media (min-width: 900px) {
-	.fee-sheet {
-		grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-		gap: 0;
-		padding-inline: 0;
-	}
-
-	.fee-sheet__rate,
-	.fee-sheet__extras {
-		padding-inline: clamp(2rem, 0.5rem + 3vw, 3.5rem);
-	}
-
-	.fee-sheet__rate {
-		border-right: 1px solid var(--color-hairline);
-	}
-}
-
-/* Both columns open on the same small label, so their tops line up. */
-.fee-sheet__label {
-	margin: 0 0 var(--space-md);
-	font-family: var(--font-family-body);
-	font-size: var(--text-sm);
-	font-weight: var(--font-weight-semibold);
-	line-height: 1.4;
-	color: var(--color-ink-soft);
-}
-
-/* The number families come looking for: the largest type in the section. */
-.fee-sheet__figure {
-	margin: 0;
-	font-family: var(--font-family-heading);
-	font-size: clamp(3.5rem, 2.5rem + 4vw, 5.25rem);
-	font-weight: var(--font-weight-medium);
-	line-height: 1;
-	letter-spacing: -0.02em;
-	color: var(--color-primary-dark);
-}
-
-.fee-sheet__basis {
-	max-width: 24ch;
-	margin: var(--space-md) 0 0;
-	font-size: var(--text-md);
-	font-weight: var(--font-weight-semibold);
-	line-height: 1.45;
-	color: var(--color-ink);
-	text-wrap: balance;
-}
-
-.fee-sheet__note {
-	max-width: 34ch;
-	margin: var(--space-sm) 0 0;
-	font-size: var(--text-base);
-	line-height: 1.6;
-	color: var(--color-ink-soft);
-}
-
-.fee-sheet__date {
-	margin: var(--space-lg) 0 0;
-	font-size: var(--text-sm);
-	color: var(--color-ink-soft);
-}
-
-.fee-sheet__list {
-	margin: 0;
-	border-top: 1px solid var(--color-hairline);
-}
-
-.fee-sheet__row {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: baseline;
-	justify-content: space-between;
-	gap: 0.25rem var(--space-lg);
-	padding-block: 1.05rem;
-	border-bottom: 1px solid var(--color-hairline);
-}
-
-.fee-sheet__row:last-child {
-	padding-bottom: 0;
-	border-bottom: 0;
-}
-
-.fee-sheet__row dt {
-	flex: 1 1 13rem;
-	font-size: var(--text-base);
-	line-height: 1.5;
-	color: var(--color-ink);
-}
-
-.fee-sheet__row dd {
-	margin: 0 0 0 auto;
-	font-family: var(--font-family-heading);
-	font-size: var(--text-md);
-	font-weight: var(--font-weight-medium);
-	line-height: 1.4;
-	color: var(--color-primary-dark);
-	text-align: right;
-}
-
-.fee-sheet__row--full dt {
-	flex-basis: 100%;
-}
-
 .home-costs__more {
 	margin: var(--space-lg) 0 0;
 }
 
+/* Latest articles (Nov 2026; template-parts/home/news.php). White, after the
+   tint team band; the blog index's own cards. The heading and its link share
+   one line on wide screens. */
+.home-news {
+	padding-block: var(--section-pad);
+	background-color: var(--color-background);
+}
 
-/* On a phone a wrapped price sat alone at the right edge, detached from its
-   charge. Below 600px each price sits directly under its charge instead. */
-@media (max-width: 599px) {
-	.fee-sheet__row {
-		display: block;
-	}
+.home-news__head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: end;
+	justify-content: space-between;
+	gap: var(--space-sm) var(--space-xl);
+	max-width: none;
+}
 
-	.fee-sheet__row dd {
-		margin: 0.2rem 0 0;
-		text-align: left;
+.home-news__head .ccs-title {
+	margin-bottom: 0;
+}
+
+.home-news + .home-closing-cta {
+	padding-top: 0;
+}
+
+/* The CQC widget as the route card's last row on phones and tablets (moved
+   there by the script after the strip in template-parts/home/hero.php).
+   It fills the row and starts on the same left edge as the rows above, at
+   full size, with its own border, corner shading and padding removed, so it
+   reads as the card's last row rather than a smaller box sitting inside it
+   (client, Nov 2026: "box doesnt match the container"). CQC's logo, rating,
+   date and button are untouched. */
+.home-routes__cqc {
+	display: block !important;
+	padding: var(--space-md) clamp(1.25rem, 0.9rem + 1vw, 1.75rem) !important;
+}
+
+.home-routes__cqc .hero-cqc {
+	width: 100%;
+	margin-top: 0;
+	overflow: visible;
+	border-radius: 0;
+	box-shadow: none;
+}
+
+.home-routes__cqc div.cqc-widget.cleanslate {
+	width: 100% !important;
+	min-width: 0 !important;
+	zoom: 0.86 !important;
+	border: 0 !important;
+	background-image: none !important;
+	box-shadow: none !important;
+}
+
+.home-routes__cqc div.cqc-widget.cleanslate .cqc-container {
+	padding: 0 !important;
+	background-image: none !important;
+}
+
+.home-routes__cqc div.cqc-widget .cqc-widget-inner .cqc-widget-normal {
+	border-radius: var(--radius-md);
+}
+
+/* The widget ends on a clearing <br> and a floated button, which left a
+   blank strip under the grey panel (client: "weird bottom margin"). The
+   float is contained and the <br> takes no space, so the row's padding is
+   the same above and below. Set slightly smaller than CQC's default, which
+   read as loud beside the card's own type (client: "a bit brash"). */
+.home-routes__cqc div.cqc-widget .cqc-widget-clear {
+	display: none !important;
+}
+
+.home-routes__cqc div.cqc-widget .cqc-widget-normal {
+	display: flow-root !important;
+}
+
+.home-routes__cqc div.cqc-widget .cqc-widget-header,
+.home-routes__cqc div.cqc-widget .cqc-widget-inner {
+	margin-bottom: 0 !important;
+	padding-bottom: 0 !important;
+}
+
+/* Costs, seventh version (Nov 2026): what affects the price on the left, the
+   rate table on the right (template-parts/rate-table.php). */
+.home-costs__grid {
+	display: grid;
+	gap: var(--space-2xl);
+}
+
+@media (min-width: 960px) {
+	.home-costs__grid {
+		grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+		gap: clamp(3rem, 1.5rem + 4vw, 6rem);
+		align-items: start;
 	}
 }
+
+.home-costs__intro .ccs-title {
+	margin-bottom: 0;
+}
+
+.home-costs__factors-title {
+	margin: var(--space-xl) 0 var(--space-sm);
+	font-family: var(--font-family-body);
+	font-size: var(--text-base);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-ink);
+}
+
+.home-costs__factors {
+	display: grid;
+	gap: var(--space-sm);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	counter-reset: factor;
+}
+
+.home-costs__factors li {
+	position: relative;
+	padding-left: 2.25rem;
+	font-size: var(--text-base);
+	line-height: 1.6;
+	color: var(--color-ink);
+	counter-increment: factor;
+}
+
+.home-costs__factors li::before {
+	content: counter(factor);
+	position: absolute;
+	top: 0.05em;
+	left: 0;
+	display: grid;
+	place-items: center;
+	width: 1.6rem;
+	height: 1.6rem;
+	border-radius: 50%;
+	background-color: var(--color-band-tint);
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-primary);
+}
+
+.home-costs__intro .home-costs__funding {
+	margin: var(--space-xl) 0 var(--space-sm);
+	font-size: var(--text-base);
+}
+

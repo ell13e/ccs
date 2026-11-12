@@ -170,13 +170,13 @@ class CCS_Theme_Customizer {
 		$wp_customize->add_setting( self::COST_BASIS, array(
 			'type'              => 'theme_mod',
 			'capability'        => 'edit_theme_options',
-			'default'           => __( 'per hour for personal care, weekdays 7am–10pm', 'ccs-wp-theme' ),
+			'default'           => __( 'Personal care, weekdays 7am–10pm', 'ccs-wp-theme' ),
 			'sanitize_callback' => 'sanitize_text_field',
 			'transport'         => 'postMessage',
 		) );
 		$wp_customize->add_control( self::COST_BASIS, array(
 			'label'       => __( 'What that rate covers', 'ccs-wp-theme' ),
-			'description' => __( 'Shown directly beneath the rate.', 'ccs-wp-theme' ),
+			'description' => __( 'Shown beneath "From £… an hour", e.g. Personal care, weekdays 7am–10pm.', 'ccs-wp-theme' ),
 			'section'     => 'ccs_costs',
 			'type'        => 'text',
 		) );
@@ -193,6 +193,28 @@ class CCS_Theme_Customizer {
 			'description' => __( 'Dating the rate is a trust signal — leave it filled in.', 'ccs-wp-theme' ),
 			'section'     => 'ccs_costs',
 			'type'        => 'text',
+		) );
+
+		/*
+		 * The full fee schedule (Nov 2026): one line per rate, as
+		 * "Card | Rate | Monday to Friday | Saturday and Sunday". The homepage
+		 * shows one card per group with its rates beneath, so every published
+		 * rate is on the page (client asked for a costs section modelled on
+		 * helpinghandshomecare.co.uk's cost page).
+		 */
+		$wp_customize->add_setting( 'ccs_fee_schedule', array(
+			'type'              => 'theme_mod',
+			'capability'        => 'edit_theme_options',
+			'default'           => self::default_fee_schedule(),
+			'sanitize_callback' => 'sanitize_textarea_field',
+			'transport'         => 'refresh',
+		) );
+		$wp_customize->add_control( 'ccs_fee_schedule', array(
+			'label'       => __( 'Fee schedule', 'ccs-wp-theme' ),
+			'description' => __( 'One rate per line: group | what it is | Monday to Friday | Saturday and Sunday. Lines with the same group share a card; the first line\'s weekday price is the card\'s "from" price. Put "night" in a rate\'s name for a fixed price per night.', 'ccs-wp-theme' ),
+			'section'     => 'ccs_costs',
+			'type'        => 'textarea',
+			'rows'        => 10,
 		) );
 
 		$wp_customize->add_setting( self::COST_EXTRAS, array(
@@ -213,6 +235,25 @@ class CCS_Theme_Customizer {
 	}
 
 	/**
+	 * Default fee schedule: the 1 September 2026 to 31 August 2027 rates
+	 * (assets/_Care Services Fees - 2026.pdf), newline separated.
+	 *
+	 * @return string
+	 */
+	public static function default_fee_schedule() {
+		return implode( "\n", array(
+			'Help at home | 7am to 10pm | £36.38 | £43.31',
+			'Help at home | 10pm to 7am | £42.16 | £51.54',
+			'Complex care | 7am to 10pm | £40.43 | £48.51',
+			'Complex care | 10pm to 7am | £46.20 | £53.13',
+			'Nights | Sleep-in night | £242.49 | £242.49',
+			'Nights | Complex sleep-in night | £287.74 | £307.82',
+			'Nights | Waking night | £323.00 | £323.00',
+			'Nights | Complex waking night | £323.00 | £350.92',
+		) );
+	}
+
+	/**
 	 * Default "what else you might be charged" list, newline separated.
 	 *
 	 * Kept as a method rather than a constant so the strings stay translatable.
@@ -222,9 +263,8 @@ class CCS_Theme_Customizer {
 	public static function default_cost_extras() {
 		return implode( "\n", array(
 			__( 'Setting up your care package | £30, one-off', 'ccs-wp-theme' ),
-			__( 'Evenings, weekends and complex care | Higher rates', 'ccs-wp-theme' ),
 			__( 'Bank holidays | Double rate', 'ccs-wp-theme' ),
-			__( 'Christmas Day, Boxing Day and New Year’s Day | Treble rate', 'ccs-wp-theme' ),
+			__( 'Christmas Day, Boxing Day, New Year’s Day and New Year’s Eve after 7pm | Treble rate', 'ccs-wp-theme' ),
 			__( 'Escort visits | 50p a mile, plus parking', 'ccs-wp-theme' ),
 		) );
 	}

@@ -168,3 +168,106 @@
 	box-shadow: var(--shadow-float);
 }
 
+
+/* =========================================================================
+   SERVICE PAGE STRUCTURE (Nov 2026, after ultimacare.co.uk's service pages;
+   CCS colours and components throughout). Grounds alternate: hero tint,
+   introduction white, "how we can support you" tint, steps white, questions
+   tint, the closing card with Victoria and other services on white, reviews
+   tint, then the footer.
+   ========================================================================= */
+
+/* The introduction is the page's lede: the first thing under the hero, set
+   larger than the prose that follows it. */
+.service-content__intro > p {
+	font-size: var(--lede-size);
+	line-height: 1.65;
+	color: var(--color-ink);
+}
+
+.service-content__intro + h2 {
+	margin-top: var(--space-2xl);
+}
+
+/* What we help with: one white card per list on the page. A lone card (one
+   list, as on Domiciliary Care) runs full width with its ticks in columns,
+   so it never sits as a narrow column beside an empty space. */
+.service-help__grid {
+	display: grid;
+	gap: var(--space-lg);
+}
+
+@media (min-width: 860px) {
+	.service-help__grid {
+		grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+		align-items: start;
+	}
+}
+
+.service-help__card {
+	padding: clamp(1.5rem, 1rem + 1.6vw, 2.25rem);
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-float);
+}
+
+.service-help__title {
+	margin: 0 0 var(--space-md);
+	padding-bottom: var(--space-md);
+	border-bottom: 1px solid var(--color-hairline);
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.3rem, 1.15rem + 0.5vw, 1.5rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.25;
+	color: var(--color-ink);
+}
+
+.service-help__body > p {
+	margin: 0 0 var(--space-md);
+	color: var(--color-ink-soft);
+}
+
+.service-help__body ul {
+	margin: 0;
+}
+
+@media (min-width: 860px) {
+	.service-help__card:only-child .service-help__body ul {
+		columns: 2;
+		column-gap: var(--space-2xl);
+	}
+
+	.service-help__card:only-child .service-help__body li {
+		break-inside: avoid;
+	}
+}
+
+/* The steps run white here, between two tint bands. */
+.site-main--service .home-steps {
+	background-color: var(--color-background);
+}
+
+/* Questions: the FAQs page's split layout, heading and link on the left. */
+.service-faqs {
+	margin-top: 0;
+}
+
+.service-faqs__more {
+	display: inline-block;
+	margin-top: var(--space-md);
+}
+
+/* The closing card sits on the tint (Nov 2026): after the steps were
+   removed it followed the white costs section directly. Other services then
+   run on white after it. */
+.site-main--service .cta-band {
+	background-color: var(--color-band-tint);
+}
+
+.site-main--service .service-related {
+	padding-block: var(--section-pad);
+}
+
+.site-main--service .home-reviews {
+	padding-block: var(--section-pad);
+}

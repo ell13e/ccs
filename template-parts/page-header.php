@@ -105,5 +105,6 @@ $ccs_ph_inset = ! $ccs_ph_has_photo
 				?>
 			</div>
 		<?php endif; ?>
+		<?php get_template_part( 'template-parts/cqc-hero-card' ); ?>
 	</div>
 </header>

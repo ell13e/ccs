@@ -861,7 +861,7 @@ body.ccs-mobile-nav-open::before {
 #mobile-navigation .mobile-menu-link:hover,
 #mobile-navigation .mobile-menu-link:focus-visible {
 	color: var(--color-primary);
-	background: var(--color-background-warm);
+	background: var(--color-band-tint);
 }
 
 /* Current page, marked the same way the desktop nav marks it: colour plus a
@@ -910,7 +910,7 @@ body.ccs-mobile-nav-open::before {
 }
 
 #mobile-navigation .nav-sub-toggle:hover {
-	background: var(--color-background-grey);
+	background: var(--color-band-tint);
 	color: var(--color-primary);
 }
 
@@ -926,7 +926,7 @@ body.ccs-mobile-nav-open::before {
 	overflow: hidden;
 	margin: 0;
 	padding: 0;
-	background: var(--color-background-grey);
+	background: var(--color-band-tint);
 	box-shadow: none;
 	border: none;
 	/* A neutral hairline, not the purple bar: purple on the leading edge
@@ -1037,4 +1037,54 @@ body.ccs-mobile-nav-open::before {
 
 .nav-desktop > .nav-list > .menu-item-has-children:is(:hover, :focus-within) > .nav-link::after {
 	transform: translateY(0.14em) rotate(-135deg);
+}
+
+
+/* Phone menu, finished (Nov 2026; client: "i dont like the mobile view").
+   Beige retired from the menu's hover and open states: cream left the site's
+   palette, and the beige flash on tap was its last trace. The panel is a
+   column so the contact block can sit at its foot, filling what was an empty
+   white area with the thing people open a menu on a phone to find. */
+#mobile-navigation.mobile-menu {
+	display: flex;
+	flex-direction: column;
+}
+
+#mobile-navigation.mobile-menu[hidden] {
+	display: none;
+}
+
+.mobile-menu__contact {
+	margin-top: auto;
+	padding: var(--space-lg) var(--space-md) var(--space-md);
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-band-tint);
+}
+
+.mobile-menu__actions {
+	margin-bottom: var(--space-xl);
+}
+
+.mobile-menu__phone {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-sm);
+	min-height: 44px;
+	font-family: var(--font-family-heading);
+	font-size: var(--text-xl);
+	font-weight: var(--font-weight-medium);
+	color: var(--color-ink);
+	text-decoration: none;
+}
+
+.mobile-menu__hours,
+.mobile-menu__address {
+	margin: 0.25rem 0 0;
+	font-size: var(--text-sm);
+	line-height: 1.5;
+	color: var(--color-ink-soft);
+}
+
+.mobile-menu__address {
+	margin-top: var(--space-sm);
 }

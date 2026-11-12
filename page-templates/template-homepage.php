@@ -68,6 +68,7 @@ $ccs_phone_tel = $ccs_phone ? preg_replace( '/\s+/', '', $ccs_phone ) : '';
 	<?php get_template_part( 'template-parts/home/testimonial' ); ?>
 	<?php get_template_part( 'template-parts/home/costs' ); ?>
 	<?php get_template_part( 'template-parts/home/team' ); ?>
+	<?php get_template_part( 'template-parts/home/news' ); ?>
 	<?php get_template_part( 'template-parts/home/closing-cta' ); ?>
 
 </main>

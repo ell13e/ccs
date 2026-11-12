@@ -11,15 +11,11 @@
  * real differentiator, since neither Bluebird Care nor Home Instead publishes
  * rates at all.
  *
- * Figures are the 01 Sept 2026 – 31 Aug 2027 schedule (assets/_Care Services
- * Fees - 2026.pdf), published ahead of the change date rather than showing the
- * 2025 rates that expire on 31 August 2026. Rates are reviewed annually, so they
- * are filterable rather than inlined in the markup — update in one place, or
- * override via the `ccs_home_costs` filter without touching the template.
- *
- * Deliberately a teaser, not the full rate table: strategy.md asks for costs to
- * be one tap from anywhere, and warns against walls of choices for this
- * audience. The full schedule lives on the costs page.
+ * Figures are the 1 Sept 2026 to 31 Aug 2027 schedule (assets/_Care Services
+ * Fees - 2026.pdf), editable in the Customizer. Since Nov 2026 every published
+ * rate is shown, with the note that the real figure is a personalised quote:
+ * the client asked for the reasoning behind not quoting a single price to be
+ * clear, and a full table answers "what could I be charged?" outright.
  *
  * @package CCS_WP_Theme
  */
@@ -29,48 +25,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /*
- * Read from the Customizer (Appearance → Customise → Care Costs) rather than
- * from literals here. These figures were previously hardcoded, which meant the
- * single most frequently changing number on the site — and its clearest
- * advantage over every competitor benchmarked in the UI audit — could only be
- * updated by editing PHP and deploying. Defaults below match the 1 Sept 2026
- * schedule, so an install that has never touched the Customizer renders exactly
- * as before. The `ccs_home_costs` filter still wins over both, for anyone
- * driving these from a plugin or a rate feed.
+ * Rates and charges come from ccs_fee_schedule() and ccs_fee_extras()
+ * (inc/content-sections.php), edited under Customizer > Care Costs, and are
+ * printed by template-parts/rate-table.php.
  */
-$ccs_cost_extras_raw = (string) get_theme_mod(
-	'ccs_cost_extras',
-	class_exists( 'CCS_Theme_Customizer' ) ? CCS_Theme_Customizer::default_cost_extras() : ''
-);
-$ccs_cost_extras = array_values( array_filter( array_map(
-	'trim',
-	preg_split( '/\R/', $ccs_cost_extras_raw ) ?: array()
-), static function ( $line ) {
-	return $line !== '';
-} ) );
-
-/*
- * Each line is "what the charge is | the price" (Nov 2026). A line without
- * the bar still shows, as a full-width row, so older wording never vanishes.
- */
-$ccs_cost_rows = array();
-foreach ( $ccs_cost_extras as $ccs_line ) {
-	$ccs_parts       = array_map( 'trim', explode( '|', $ccs_line, 2 ) );
-	$ccs_cost_rows[] = array(
-		'label' => $ccs_parts[0],
-		'price' => isset( $ccs_parts[1] ) ? $ccs_parts[1] : '',
-	);
-}
-
-$ccs_costs = apply_filters(
-	'ccs_home_costs',
-	array(
-		'from_rate'      => get_theme_mod( 'ccs_cost_from_rate', '£36.38' ),
-		'rate_basis'     => get_theme_mod( 'ccs_cost_basis', __( 'per hour for personal care, weekdays 7am–10pm', 'ccs-wp-theme' ) ),
-		'effective_from' => get_theme_mod( 'ccs_cost_effective_from', __( 'Rates from 1 September 2026', 'ccs-wp-theme' ) ),
-		'extras'         => $ccs_cost_rows,
-	)
-);
 
 /*
  * Resolve the destination against pages that actually exist. ccs_page_url()
@@ -99,64 +57,38 @@ if ( $ccs_costs_page instanceof WP_Post ) {
 
 <?php
 /*
- * Fifth version (Nov 2026; client: "i dont like this section at all"). The
- * old layout put a short intro beside a tall card, so the intro floated in
- * empty space and the extras read as a list of sentences. Now: the heading
- * above, then one wide fee sheet. The rate is the focal point on the left; the
- * charges on the right are a ruled table, each charge with its price aligned
- * to the right, as on a printed fee schedule. Everything that can be charged
- * is still on the page, which is this section's promise.
- *
- * The caveat stays with the figure: the headline is the entry rate for the
- * cheapest band, and alone it reads as a flat price.
+ * Seventh version (Nov 2026; client: the rate cards looked "uneven, messy",
+ * and did not make clear that a published rate is not a quote). Two columns:
+ * on the left, what affects the price and the plain note that the real
+ * figure is a personalised quote after a free consultation (the wording of
+ * the agency's own homecare.co.uk listing); on the right, every published
+ * rate in one even table (template-parts/rate-table.php).
  */
 ?>
 <section class="home-costs" aria-labelledby="home-costs-heading">
 	<div class="container container--lg">
+		<div class="home-costs__grid">
 
-		<header class="home-costs__head">
-			<p class="ccs-eyebrow"><?php echo esc_html( ccs_copy( 'costs_eyebrow' ) ); ?></p>
-			<h2 id="home-costs-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'costs_title' ) ); ?></h2>
-			<p class="home-costs__funding"><?php echo esc_html( ccs_copy( 'costs_funding' ) ); ?></p>
-		</header>
+			<div class="home-costs__intro">
+				<p class="ccs-eyebrow"><?php echo esc_html( ccs_copy( 'costs_eyebrow' ) ); ?></p>
+				<h2 id="home-costs-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'costs_title' ) ); ?></h2>
+				<p class="rate-note"><?php echo esc_html( ccs_copy( 'costs_quote_note' ) ); ?></p>
 
-		<div class="fee-sheet" data-ccs-exception="rule 1: a rate sheet people compare and screenshot, a distinct object">
-			<div class="fee-sheet__rate">
-				<p class="fee-sheet__label"><?php esc_html_e( 'Hourly rate from', 'ccs-wp-theme' ); ?></p>
-				<p class="fee-sheet__figure"><?php echo esc_html( $ccs_costs['from_rate'] ); ?></p>
-				<p class="fee-sheet__basis"><?php echo esc_html( $ccs_costs['rate_basis'] ); ?></p>
-				<p class="fee-sheet__note"><?php echo esc_html( ccs_copy( 'costs_note' ) ); ?></p>
-				<p class="fee-sheet__date"><?php echo esc_html( $ccs_costs['effective_from'] ); ?></p>
+				<h3 class="home-costs__factors-title"><?php echo esc_html( ccs_copy( 'costs_factors_title' ) ); ?></h3>
+				<ol class="home-costs__factors">
+					<li><?php echo esc_html( ccs_copy( 'costs_factor_1' ) ); ?></li>
+					<li><?php echo esc_html( ccs_copy( 'costs_factor_2' ) ); ?></li>
+					<li><?php echo esc_html( ccs_copy( 'costs_factor_3' ) ); ?></li>
+				</ol>
+
+				<p class="home-costs__funding"><?php echo esc_html( ccs_copy( 'costs_funding' ) ); ?></p>
+				<?php if ( $ccs_costs_url ) : ?>
+					<a class="ccs-text-link" href="<?php echo esc_url( $ccs_costs_url ); ?>"><?php echo esc_html( $ccs_costs_text ); ?> <span aria-hidden="true">&rarr;</span></a>
+				<?php endif; ?>
 			</div>
 
-			<?php if ( ! empty( $ccs_costs['extras'] ) ) : ?>
-				<div class="fee-sheet__extras">
-					<h3 class="fee-sheet__label"><?php echo esc_html( ccs_copy( 'costs_extras_heading' ) ); ?></h3>
-					<dl class="fee-sheet__list">
-						<?php foreach ( $ccs_costs['extras'] as $ccs_row ) : ?>
-							<?php
-							// A filter may still pass plain strings; treat each as a label.
-							if ( ! is_array( $ccs_row ) ) {
-								$ccs_row = array( 'label' => (string) $ccs_row, 'price' => '' );
-							}
-							?>
-							<div class="fee-sheet__row<?php echo '' === $ccs_row['price'] ? ' fee-sheet__row--full' : ''; ?>">
-								<dt><?php echo esc_html( $ccs_row['label'] ); ?></dt>
-								<?php if ( '' !== $ccs_row['price'] ) : ?>
-									<dd><?php echo esc_html( $ccs_row['price'] ); ?></dd>
-								<?php endif; ?>
-							</div>
-						<?php endforeach; ?>
-					</dl>
-				</div>
-			<?php endif; ?>
+			<?php get_template_part( 'template-parts/rate-table' ); ?>
+
 		</div>
-
-		<?php if ( $ccs_costs_url ) : ?>
-			<p class="home-costs__more">
-				<a class="ccs-text-link" href="<?php echo esc_url( $ccs_costs_url ); ?>"><?php echo esc_html( $ccs_costs_text ); ?> <span aria-hidden="true">&rarr;</span></a>
-			</p>
-		<?php endif; ?>
-
 	</div>
 </section>
