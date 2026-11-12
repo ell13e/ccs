@@ -200,11 +200,12 @@ class CCS_Theme_Customizer {
 			'capability'        => 'edit_theme_options',
 			'default'           => self::default_cost_extras(),
 			'sanitize_callback' => 'sanitize_textarea_field',
-			'transport'         => 'postMessage',
+			// No live-preview handler exists for this list, so refresh the preview.
+			'transport'         => 'refresh',
 		) );
 		$wp_customize->add_control( self::COST_EXTRAS, array(
 			'label'       => __( 'Additional charges', 'ccs-wp-theme' ),
-			'description' => __( 'One per line. These are what make the "no surprises" promise true — removing them all is not recommended.', 'ccs-wp-theme' ),
+			'description' => __( 'One charge per line: what it is, then | and the price, for example "Bank holidays | Double rate". These make the "no hidden fees" promise true, so keep them all listed.', 'ccs-wp-theme' ),
 			'section'     => 'ccs_costs',
 			'type'        => 'textarea',
 			'rows'        => 6,
@@ -220,10 +221,11 @@ class CCS_Theme_Customizer {
 	 */
 	public static function default_cost_extras() {
 		return implode( "\n", array(
-			__( 'A one-off £30 fee when we set up your care package', 'ccs-wp-theme' ),
-			__( 'Evenings, weekends and complex care are charged at higher rates', 'ccs-wp-theme' ),
-			__( 'Bank holidays are charged at double, and Christmas Day, Boxing Day and New Year’s Day at treble', 'ccs-wp-theme' ),
-			__( 'Escort visits add mileage at 50p per mile, plus any parking', 'ccs-wp-theme' ),
+			__( 'Setting up your care package | £30, one-off', 'ccs-wp-theme' ),
+			__( 'Evenings, weekends and complex care | Higher rates', 'ccs-wp-theme' ),
+			__( 'Bank holidays | Double rate', 'ccs-wp-theme' ),
+			__( 'Christmas Day, Boxing Day and New Year’s Day | Treble rate', 'ccs-wp-theme' ),
+			__( 'Escort visits | 50p a mile, plus parking', 'ccs-wp-theme' ),
 		) );
 	}
 
