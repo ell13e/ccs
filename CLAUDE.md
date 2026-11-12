@@ -82,8 +82,8 @@ when in doubt, more space.
 
 **12. Labels and the underline are rare.** An eyebrow must add something the
 heading doesn't (a promise, who is speaking, a qualifier): zero to two per page.
-The mint underline marks the one word that matters, on one or two headings per
-page.
+The accent (the word in plum italic, no underline since Nov 2026) marks the
+one word that matters, on one or two headings per page.
 
 **13. Unity over invention.** Build from the kit (`docs/BUILD-STANDARD.md` §3)
 before creating anything new. A new pattern must be reusable and documented.

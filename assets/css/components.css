@@ -2391,3 +2391,28 @@ a.card {
 	from { transform: scaleX(0); }
 	to { transform: scaleX(1); }
 }
+
+/* =========================================================================
+   ACCENT, THIRD VERSION (Nov 2026). The client disliked the line under the
+   word. Reference sites on Dribbble and Pinterest with this kind of heading
+   (serif with an italic phrase: "who tend the common ground", "Serif
+   Aesthetic") carry the emphasis in the type alone: an italic in a softer
+   colour, no rule, no marker. So: the heading face's italic, in brand plum,
+   nothing drawn. Mint on dark grounds.
+   ========================================================================= */
+.ccs-accent::after,
+.ccs-title--on-dark .ccs-accent::after,
+.cta-card .ccs-accent::after,
+.ccs-on-dark .ccs-accent::after {
+	content: none;
+	animation: none;
+}
+
+.ccs-accent {
+	font-style: italic;
+	font-weight: var(--font-weight-normal);
+	color: var(--color-primary);
+	/* Italic Lora sits visually lighter than the roman around it; a hair of
+	   extra spacing stops it crowding the next word. */
+	padding-right: 0.04em;
+}

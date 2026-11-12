@@ -40,10 +40,10 @@ demo copy reproduces a real franchise's wording, so take the layout ideas only.
   Check contrast and weight before borrowing anything.
 
 ## The user's own direction
-- **Underline:** one smooth, slightly rising stroke drawn on `::after` under the
-  word, `white-space: nowrap`, path `M 3 7 C 60 4, 140 8, 197 5` in a 200×12 viewBox,
-  stroke-width 6, round caps, stretched to the word. Implemented as `.ccs-accent`
-  (components.css) in CCS mints. Use it on the word that matters, sparingly.
+- **Accent:** `.ccs-accent` sets the word that matters in Lora italic, brand
+  plum (mint on dark), with no underline or marker (Nov 2026, after the client
+  rejected a brush stroke and then a fine rule). Reference: premium serif sites
+  on Dribbble and Pinterest emphasise with italic alone. Use it sparingly.
 - **"Purposeful, not banned":** cards, gradients and labels are all allowed when
   they mean something.
 - **The bar is a premium agency build.** Rebuild the shared system rather than
