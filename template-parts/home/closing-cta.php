@@ -38,7 +38,9 @@ $ccs_cta_phone   = function_exists( 'ccs_get_contact_info' ) ? ccs_get_contact_i
 ?>
 
 <?php
-$ccs_cta_photo_rel = 'site-photos/caregiver-supporting-patient-1.webp';
+// A real CCS photo (Nov 2026). The hands-holding image used here looked like
+// stock and, with this band on every page, appeared 15 times across the site.
+$ccs_cta_photo_rel = 'site-photos/client-celebration.webp';
 $ccs_cta_photo     = file_exists( get_template_directory() . '/assets/images/' . $ccs_cta_photo_rel );
 ?>
 
@@ -82,8 +84,8 @@ $ccs_cta_photo     = file_exists( get_template_directory() . '/assets/images/' .
 					<img
 						src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/' . $ccs_cta_photo_rel ); ?>"
 						alt=""
-						width="1350"
-						height="900"
+						width="1400"
+						height="1050"
 						<?php echo ccs_theme_image_srcset( $ccs_cta_photo_rel, '(min-width: 900px) 450px, 100vw' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset(). ?>
 						loading="lazy"
 						decoding="async"

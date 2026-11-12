@@ -35,7 +35,10 @@ $about_url    = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'about-home-ca
  * A missing file is skipped, so the collage degrades to two photos, or none,
  * rather than rendering an empty frame.
  */
+// The boat trip first (Nov 2026): the summer-party photo is the About hero,
+// and the site showed it twice.
 $why_photos = array(
+	'site-photos/client-boat-trip.webp',
 	'site-photos-extra/client-summer-party-laineys-care-farm.webp',
 	'site-photos/client-easter-activity.webp',
 	'site-photos/WhatsApp-Image-2025-06-13-at-11.53.40.webp',
