@@ -109,23 +109,21 @@ if ( $ccs_costs_page instanceof WP_Post ) {
 		 */
 		?>
 		<div class="price-card" data-ccs-exception="rule 1: a rate card people compare and screenshot, a distinct object">
-			<p class="price-card__from">
-				<span class="price-card__from-label"><?php esc_html_e( 'From', 'ccs-wp-theme' ); ?></span>
-				<span class="price-card__rate"><?php echo esc_html( $ccs_costs['from_rate'] ); ?></span>
-			</p>
+			<p class="price-card__from-label"><?php esc_html_e( 'Hourly rate from', 'ccs-wp-theme' ); ?></p>
+			<p class="price-card__rate"><?php echo esc_html( $ccs_costs['from_rate'] ); ?></p>
 			<p class="price-card__basis"><?php echo esc_html( $ccs_costs['rate_basis'] ); ?></p>
 			<p class="price-card__effective"><?php echo esc_html( $ccs_costs['effective_from'] ); ?></p>
 			<p class="price-card__caveat"><?php echo esc_html( ccs_copy( 'costs_note' ) ); ?></p>
 
 			<?php if ( ! empty( $ccs_costs['extras'] ) ) : ?>
-				<details class="price-extras">
-					<summary class="price-extras__summary"><?php echo esc_html( ccs_copy( 'costs_extras_heading' ) ); ?></summary>
+				<div class="price-extras">
+					<h3 class="price-extras__heading"><?php echo esc_html( ccs_copy( 'costs_extras_heading' ) ); ?></h3>
 					<ul class="price-card__list" role="list">
 						<?php foreach ( $ccs_costs['extras'] as $ccs_extra ) : ?>
 							<li class="price-card__item"><?php echo esc_html( $ccs_extra ); ?></li>
 						<?php endforeach; ?>
 					</ul>
-				</details>
+				</div>
 			<?php endif; ?>
 		</div>
 

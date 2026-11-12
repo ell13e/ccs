@@ -2333,3 +2333,61 @@ a.card {
 		transition: none;
 	}
 }
+
+/* =========================================================================
+   ACCENT, REDESIGNED (Nov 2026; client asked for a more premium version of
+   the brush underline). The emphasised word is set in the heading face's
+   italic, in brand plum, with a fine mint rule close beneath it: an editorial
+   treatment rather than a marker stroke. Still one word per heading, one or
+   two headings per page (rule 12). On dark grounds the word turns mint.
+   ========================================================================= */
+.ccs-accent {
+	position: relative;
+	font-style: italic;
+	font-weight: var(--font-weight-normal);
+	color: var(--color-primary);
+	white-space: nowrap;
+}
+
+.ccs-accent::after {
+	content: "";
+	position: absolute;
+	left: 0.04em;
+	right: 0.04em;
+	bottom: -0.04em;
+	height: max(2px, 0.055em);
+	border-radius: 999px;
+	background: var(--color-secondary-dark, #85C4B8);
+	background-image: none;
+}
+
+.ccs-title--on-dark .ccs-accent,
+.cta-card .ccs-accent,
+.ccs-on-dark .ccs-accent {
+	color: var(--color-secondary);
+}
+
+.ccs-title--on-dark .ccs-accent::after,
+.cta-card .ccs-accent::after,
+.ccs-on-dark .ccs-accent::after {
+	background: rgba(168, 221, 212, 0.6);
+	background-image: none;
+}
+
+/* Draw the line in as the heading comes into view, where supported; the
+   static line is the fallback everywhere else. */
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) {
+		.ccs-accent::after {
+			transform-origin: left center;
+			animation: ccs-accent-draw linear both;
+			animation-timeline: view();
+			animation-range: entry 10% cover 35%;
+		}
+	}
+}
+
+@keyframes ccs-accent-draw {
+	from { transform: scaleX(0); }
+	to { transform: scaleX(1); }
+}
