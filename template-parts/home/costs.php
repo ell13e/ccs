@@ -42,7 +42,7 @@ $ccs_costs_url  = '';
 
 if ( $ccs_costs_page instanceof WP_Post ) {
 	$ccs_costs_url  = get_permalink( $ccs_costs_page );
-	$ccs_costs_text = __( 'See full rates and funding options', 'ccs-wp-theme' );
+	$ccs_costs_text = __( 'See all our rates and ways to pay', 'ccs-wp-theme' );
 } else {
 	$ccs_faqs_page = get_page_by_path( 'faqs' );
 	if ( ! $ccs_faqs_page instanceof WP_Post ) {
@@ -57,13 +57,13 @@ if ( $ccs_costs_page instanceof WP_Post ) {
 
 <?php
 /*
- * Seventh version (Nov 2026; client: the rate cards looked "uneven, messy",
- * and did not make clear that a published rate is not a quote). Two columns:
- * on the left, what affects the price and the plain note that the real
- * figure is a personalised quote after a free consultation (the wording of
- * the agency's own homecare.co.uk listing); on the right, every published
- * rate in one even table (template-parts/rate-table.php).
+ * Eighth version (Nov 2026): the full rate table moved to its own Costs and
+ * funding page (client: "maybe we need a page for this and just a section
+ * directing to it here instead"). Here: the note that published rates are
+ * not a quote, the three starting prices in one small panel, and a link to
+ * the page with every rate.
  */
+$ccs_from = function_exists( 'ccs_fee_schedule' ) ? ccs_fee_schedule() : array();
 ?>
 <section class="home-costs" aria-labelledby="home-costs-heading">
 	<div class="container container--lg">
@@ -73,21 +73,27 @@ if ( $ccs_costs_page instanceof WP_Post ) {
 				<p class="ccs-eyebrow"><?php echo esc_html( ccs_copy( 'costs_eyebrow' ) ); ?></p>
 				<h2 id="home-costs-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'costs_title' ) ); ?></h2>
 				<p class="rate-note"><?php echo esc_html( ccs_copy( 'costs_quote_note' ) ); ?></p>
-
-				<h3 class="home-costs__factors-title"><?php echo esc_html( ccs_copy( 'costs_factors_title' ) ); ?></h3>
-				<ol class="home-costs__factors">
-					<li><?php echo esc_html( ccs_copy( 'costs_factor_1' ) ); ?></li>
-					<li><?php echo esc_html( ccs_copy( 'costs_factor_2' ) ); ?></li>
-					<li><?php echo esc_html( ccs_copy( 'costs_factor_3' ) ); ?></li>
-				</ol>
-
-				<p class="home-costs__funding"><?php echo esc_html( ccs_copy( 'costs_funding' ) ); ?></p>
 				<?php if ( $ccs_costs_url ) : ?>
-					<a class="ccs-text-link" href="<?php echo esc_url( $ccs_costs_url ); ?>"><?php echo esc_html( $ccs_costs_text ); ?> <span aria-hidden="true">&rarr;</span></a>
+					<div class="ccs-actions home-costs__actions">
+						<a class="btn btn-quiet" href="<?php echo esc_url( $ccs_costs_url ); ?>"><?php echo esc_html( $ccs_costs_text ); ?></a>
+					</div>
 				<?php endif; ?>
 			</div>
 
-			<?php get_template_part( 'template-parts/rate-table' ); ?>
+			<?php if ( ! empty( $ccs_from ) ) : ?>
+				<dl class="rate-panel rate-from" data-ccs-exception="rule 1: the starting prices, one distinct object">
+					<?php foreach ( $ccs_from as $ccs_group => $ccs_rows ) : ?>
+						<div class="rate-from__row">
+							<dt><?php echo esc_html( $ccs_group ); ?></dt>
+							<dd>
+								<span class="rate-from__word"><?php esc_html_e( 'from', 'ccs-wp-theme' ); ?></span>
+								<span class="rate-from__price"><?php echo esc_html( $ccs_rows[0]['weekday'] ); ?></span>
+								<span class="rate-from__unit"><?php echo esc_html( $ccs_rows[0]['night'] ? __( 'a night', 'ccs-wp-theme' ) : __( 'an hour', 'ccs-wp-theme' ) ); ?></span>
+							</dd>
+						</div>
+					<?php endforeach; ?>
+				</dl>
+			<?php endif; ?>
 
 		</div>
 	</div>

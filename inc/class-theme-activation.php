@@ -107,6 +107,7 @@ class CCS_Theme_Activation {
 		'cqc-and-our-care'            => array( 'title' => 'CQC and Our Care', 'template' => 'page-templates/template-cqc.php', 'hero_image' => 'assets/images/site-photos/client-easter-activity.webp' ),
 		'getting-started'              => array( 'title' => 'Getting Started', 'template' => 'page-templates/template-getting-started.php' ),
 		'switch-to-us'                 => array( 'title' => 'Switching your home care', 'template' => 'page-templates/template-switch.php' ),
+		'costs-and-funding'            => array( 'title' => 'Costs and funding', 'template' => 'page-templates/template-costs.php' ),
 	);
 
 	/**
