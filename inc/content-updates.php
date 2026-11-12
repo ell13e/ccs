@@ -66,3 +66,96 @@ function ccs_apply_content_updates() {
 	}
 }
 add_action( 'admin_init', 'ccs_apply_content_updates' );
+
+/**
+ * One-time featured-image swaps (Nov 2026). Each applies only while the post
+ * still uses the old image, so a photo the client has chosen is never replaced.
+ *
+ * - "Paying for home care in Kent": the autumn-leaves strip (1350x400) cropped
+ *   badly into blog cards; it now uses the Easter activity photo, which is
+ *   already in the media library.
+ */
+function ccs_apply_thumbnail_updates() {
+	if ( get_option( 'ccs_thumbnail_updates_2026_11' ) ) {
+		return;
+	}
+	$swaps = array(
+		array( 'post' => 'paying-for-home-care-in-kent', 'from' => 'client-creative-activity-autumn-leaves', 'to' => 'client-easter-activity' ),
+	);
+	foreach ( $swaps as $swap ) {
+		$found = get_posts( array( 'name' => $swap['post'], 'post_type' => 'post', 'numberposts' => 1, 'suppress_filters' => true ) );
+		if ( ! $found ) {
+			continue;
+		}
+		$current = (int) get_post_thumbnail_id( $found[0]->ID );
+		if ( ! $current || false === strpos( basename( (string) get_attached_file( $current ) ), $swap['from'] ) ) {
+			continue;
+		}
+		$target = get_posts( array( 'post_type' => 'attachment', 'post_status' => 'inherit', 'numberposts' => -1, 'fields' => 'ids' ) );
+		foreach ( $target as $att ) {
+			if ( 0 === strpos( basename( (string) get_attached_file( $att ) ), $swap['to'] ) ) {
+				set_post_thumbnail( $found[0]->ID, $att );
+				break;
+			}
+		}
+	}
+	update_option( 'ccs_thumbnail_updates_2026_11', 1, false );
+}
+add_action( 'admin_init', 'ccs_apply_thumbnail_updates' );
+
+/**
+ * Current Vacancies hero (Nov 2026). It showed the same summer-party photo as
+ * the About hero; it now shows a team member at an apprenticeships fair, which
+ * suits a jobs page. Imported once into the Media Library (found again by its
+ * theme path, never duplicated) and set only while the page still uses the old
+ * image, so a photo the client has chosen is left alone.
+ */
+function ccs_apply_vacancies_hero_update() {
+	if ( get_option( 'ccs_vacancies_hero_2026_11' ) ) {
+		return;
+	}
+	update_option( 'ccs_vacancies_hero_2026_11', 1, false );
+
+	$page = get_page_by_path( 'careers/current-vacancies' );
+	if ( ! $page instanceof WP_Post ) {
+		return;
+	}
+	$current = (int) get_post_thumbnail_id( $page->ID );
+	if ( $current && false === strpos( basename( (string) get_attached_file( $current ) ), 'home-hero-desktop' ) ) {
+		return;
+	}
+
+	$rel      = 'assets/images/site-photos/careers-apprenticeships-fair.webp';
+	$existing = get_posts( array( 'post_type' => 'attachment', 'post_status' => 'inherit', 'numberposts' => 1, 'meta_key' => '_ccs_source_theme_path', 'meta_value' => $rel, 'fields' => 'ids' ) );
+	$att      = $existing ? (int) $existing[0] : 0;
+
+	if ( ! $att ) {
+		$source = get_template_directory() . '/' . $rel;
+		$upload = wp_upload_dir();
+		if ( ! file_exists( $source ) || ! empty( $upload['error'] ) ) {
+			return;
+		}
+		$name = wp_unique_filename( $upload['path'], wp_basename( $source ) );
+		$dest = trailingslashit( $upload['path'] ) . $name;
+		if ( ! copy( $source, $dest ) ) {
+			return;
+		}
+		$att = wp_insert_attachment(
+			array(
+				'post_mime_type' => 'image/webp',
+				'post_title'     => __( 'Careers: apprenticeships fair', 'ccs-wp-theme' ),
+				'post_status'    => 'inherit',
+			),
+			$dest
+		);
+		if ( is_wp_error( $att ) || ! $att ) {
+			return;
+		}
+		require_once ABSPATH . 'wp-admin/includes/image.php';
+		wp_update_attachment_metadata( $att, wp_generate_attachment_metadata( $att, $dest ) );
+		update_post_meta( $att, '_ccs_source_theme_path', $rel );
+	}
+
+	set_post_thumbnail( $page->ID, $att );
+}
+add_action( 'admin_init', 'ccs_apply_vacancies_hero_update' );

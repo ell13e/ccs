@@ -101,7 +101,7 @@ class CCS_Theme_Activation {
 			'seo_description' => 'Join our Kent home care team. Flexible hours, ongoing training and real support — see current vacancies and what it\'s like to work with us.',
 		),
 		'professional-development'    => array( 'title' => 'Professional Development', 'parent_slug' => 'careers' ),
-		'current-vacancies'           => array( 'title' => 'Current Vacancies', 'parent_slug' => 'careers', 'template' => 'page-templates/template-current-vacancies.php', 'hero_image' => 'assets/images/site-photos/home-hero-desktop.webp' ),
+		'current-vacancies'           => array( 'title' => 'Current Vacancies', 'parent_slug' => 'careers', 'template' => 'page-templates/template-current-vacancies.php', 'hero_image' => 'assets/images/site-photos/careers-apprenticeships-fair.webp' ),
 		'working-for-us'              => array( 'title' => 'Working for Us', 'parent_slug' => 'careers' ),
 		// Optional care pages (Section 7).
 		'cqc-and-our-care'            => array( 'title' => 'CQC and Our Care', 'template' => 'page-templates/template-cqc.php', 'hero_image' => 'assets/images/site-photos/client-easter-activity.webp' ),
