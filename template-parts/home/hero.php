@@ -137,6 +137,18 @@ $hero_address     = get_theme_mod( 'ccs_contact_address', "The Maidstone Studios
 $hero_address_one = $hero_address ? trim( preg_replace( '/\s*\n\s*/', ', ', $hero_address ) ) : '';
 $hero_directions  = $hero_address_one ? 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( $hero_address_one ) : '';
 ?>
+<?php
+/*
+ * One structure for all three routes (Nov 2026, client: "messy inside"):
+ * a small label, one main line that is the link (the whole item is
+ * clickable through it), and one short supporting line.
+ */
+$hero_addr_lines = array_values( array_filter( array_map( 'trim', preg_split( '/\n/', (string) $hero_address ) ) ) );
+$hero_addr_parts = $hero_addr_lines ? array_map( 'trim', explode( ',', $hero_addr_lines[0], 2 ) ) : array();
+$hero_addr_main  = $hero_addr_parts ? $hero_addr_parts[0] : '';
+$hero_postcode   = ( isset( $hero_addr_lines[1] ) && preg_match( '/[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}\s*$/i', $hero_addr_lines[1], $hero_pc ) ) ? strtoupper( trim( $hero_pc[0] ) ) : '';
+$hero_addr_rest  = trim( implode( ', ', array_filter( array( preg_replace( '/^The\s+/i', '', $hero_addr_main ), $hero_postcode ) ) ) );
+?>
 <nav class="home-routes" aria-label="<?php esc_attr_e( 'Ways to get started', 'ccs-wp-theme' ); ?>">
 	<div class="container container--lg">
 		<ul class="home-routes__card" role="list">
@@ -145,10 +157,7 @@ $hero_directions  = $hero_address_one ? 'https://www.google.com/maps/search/?api
 				<li class="home-routes__item">
 					<span class="ccs-badge home-routes__badge" aria-hidden="true"><?php echo ccs_icon( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
 					<div class="home-routes__body">
-						<p class="home-routes__title"><?php esc_html_e( 'Talk to us today', 'ccs-wp-theme' ); ?></p>
-						<a class="home-routes__link home-routes__link--phone" href="<?php echo esc_url( $hero_contact['phone_link'] ); ?>">
-							<span class="screen-reader-text"><?php esc_html_e( 'Call', 'ccs-wp-theme' ); ?> </span><?php echo esc_html( $hero_contact['phone'] ); ?>
-						</a>
+						<a class="home-routes__main" data-ccs-exception="rule 14: the whole route item is the tap target, through a stretched link" href="<?php echo esc_url( $hero_contact['phone_link'] ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Call', 'ccs-wp-theme' ); ?> </span><?php echo esc_html( $hero_contact['phone'] ); ?></a>
 						<?php if ( $hero_hours ) : ?>
 							<p class="home-routes__meta"><?php echo esc_html( $hero_hours ); ?></p>
 						<?php endif; ?>
@@ -159,23 +168,22 @@ $hero_directions  = $hero_address_one ? 'https://www.google.com/maps/search/?api
 			<li class="home-routes__item home-routes__item--switch">
 				<span class="ccs-badge home-routes__badge" aria-hidden="true"><?php echo ccs_icon( 'switch' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
 				<div class="home-routes__body">
-					<p class="home-routes__title"><?php esc_html_e( 'Already have care?', 'ccs-wp-theme' ); ?></p>
-					<p class="home-routes__meta"><?php esc_html_e( 'Moving from another provider? We plan the handover with you.', 'ccs-wp-theme' ); ?></p>
-					<a class="home-routes__link" href="<?php echo esc_url( $hero_switch_url ); ?>"><?php esc_html_e( 'How switching works', 'ccs-wp-theme' ); ?> <span aria-hidden="true">&rarr;</span></a>
+					<a class="home-routes__main" data-ccs-exception="rule 14: the whole route item is the tap target, through a stretched link" href="<?php echo esc_url( $hero_switch_url ); ?>"><?php esc_html_e( 'Switch to us', 'ccs-wp-theme' ); ?></a>
+					<p class="home-routes__meta"><?php esc_html_e( 'We plan the handover for you', 'ccs-wp-theme' ); ?></p>
 				</div>
 			</li>
 
-			<?php if ( $hero_address ) : ?>
+			<?php if ( $hero_addr_main ) : ?>
 				<li class="home-routes__item home-routes__item--office">
 					<span class="ccs-badge home-routes__badge" aria-hidden="true"><?php echo ccs_icon( 'pin' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
 					<div class="home-routes__body">
-						<p class="home-routes__title"><?php esc_html_e( 'Our Maidstone office', 'ccs-wp-theme' ); ?></p>
-						<address class="home-routes__meta"><?php echo nl2br( esc_html( $hero_address ) ); ?></address>
 						<?php if ( $hero_directions ) : ?>
-							<a class="home-routes__link" href="<?php echo esc_url( $hero_directions ); ?>" target="_blank" rel="noopener noreferrer">
-								<?php esc_html_e( 'Get directions', 'ccs-wp-theme' ); ?>
-								<span class="screen-reader-text"><?php esc_html_e( '(opens Google Maps in a new window)', 'ccs-wp-theme' ); ?></span>
-							</a>
+							<a class="home-routes__main" data-ccs-exception="rule 14: the whole route item is the tap target, through a stretched link" href="<?php echo esc_url( $hero_directions ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Maidstone office', 'ccs-wp-theme' ); ?><span class="screen-reader-text"> <?php esc_html_e( '(directions in Google Maps, opens in a new window)', 'ccs-wp-theme' ); ?></span></a>
+						<?php else : ?>
+							<p class="home-routes__main"><?php esc_html_e( 'Maidstone office', 'ccs-wp-theme' ); ?></p>
+						<?php endif; ?>
+						<?php if ( $hero_addr_rest ) : ?>
+							<p class="home-routes__meta"><?php echo esc_html( $hero_addr_rest ); ?></p>
 						<?php endif; ?>
 					</div>
 				</li>

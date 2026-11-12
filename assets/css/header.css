@@ -1016,3 +1016,25 @@ body.ccs-mobile-nav-open::before {
 	top: 50%;
 	margin: -0.3em 0 0;
 }
+
+/* Dropdown chevron re-centred on the label (client: "positioned poorly").
+   Out of the flow, as the hover-jitter fix needs, but now vertically centred
+   on the text's x-height and set close to the word. */
+.nav-desktop > .nav-list > .menu-item-has-children > .nav-link {
+	padding-right: calc(var(--nav-link-pad-x, 0.75rem) + 0.85em);
+}
+
+.nav-desktop > .nav-list > .menu-item-has-children > .nav-link::after {
+	top: 50%;
+	right: var(--nav-link-pad-x, 0.75rem);
+	width: 0.36em;
+	height: 0.36em;
+	margin: -0.26em 0 0;
+	border-right-width: 1.5px;
+	border-bottom-width: 1.5px;
+	transform: rotate(45deg);
+}
+
+.nav-desktop > .nav-list > .menu-item-has-children:is(:hover, :focus-within) > .nav-link::after {
+	transform: translateY(0.14em) rotate(-135deg);
+}
