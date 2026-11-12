@@ -581,6 +581,9 @@ class CCS_Enquiry_Manager {
 		$html .= '<tr><th>' . esc_html__( 'Name', 'ccs-wp-theme' ) . '</th><td>' . esc_html( $name ?: '—' ) . '</td></tr>';
 		$html .= '<tr><th>' . esc_html__( 'Email', 'ccs-wp-theme' ) . '</th><td>' . ( $email ? '<a href="mailto:' . esc_attr( $email ) . '">' . esc_html( $email ) . '</a>' : '—' ) . '</td></tr>';
 		$html .= '<tr><th>' . esc_html__( 'Phone', 'ccs-wp-theme' ) . '</th><td>' . ( $phone ? '<a href="tel:' . esc_attr( preg_replace( '/\s+/', '', $phone ) ) . '">' . esc_html( $phone ) . '</a>' : '—' ) . '</td></tr>';
+		$booked     = get_post_meta( $id, 'enquiry_booked_from', true );
+		$booked_url = get_post_meta( $id, 'enquiry_booked_from_url', true );
+		$html .= '<tr><th>' . esc_html__( 'Booked from', 'ccs-wp-theme' ) . '</th><td>' . ( $booked && $booked_url ? '<a href="' . esc_url( $booked_url ) . '" target="_blank" rel="noopener">' . esc_html( $booked ) . '</a>' : esc_html( $booked ?: '—' ) ) . '</td></tr>';
 		$html .= '<tr><th>' . esc_html__( 'Care type', 'ccs-wp-theme' ) . '</th><td>' . esc_html( $care ?: '—' ) . '</td></tr>';
 		$html .= '<tr><th>' . esc_html__( 'Location', 'ccs-wp-theme' ) . '</th><td>' . esc_html( $location ?: '—' ) . '</td></tr>';
 		$html .= '<tr><th>' . esc_html__( 'Urgency', 'ccs-wp-theme' ) . '</th><td>' . esc_html( isset( self::$urgency_options[ $urgency ] ) ? self::$urgency_options[ $urgency ] : ( $urgency ?: '—' ) ) . '</td></tr>';
@@ -710,6 +713,7 @@ class CCS_Enquiry_Manager {
 			__( 'Name', 'ccs-wp-theme' ),
 			__( 'Email', 'ccs-wp-theme' ),
 			__( 'Phone', 'ccs-wp-theme' ),
+			__( 'Booked from', 'ccs-wp-theme' ),
 			__( 'Care type', 'ccs-wp-theme' ),
 			__( 'Location', 'ccs-wp-theme' ),
 			__( 'Urgency', 'ccs-wp-theme' ),
@@ -729,6 +733,7 @@ class CCS_Enquiry_Manager {
 				get_post_meta( $id, 'enquiry_name', true ),
 				get_post_meta( $id, 'enquiry_email', true ),
 				get_post_meta( $id, 'enquiry_phone', true ),
+				get_post_meta( $id, 'enquiry_booked_from', true ),
 				get_post_meta( $id, 'enquiry_care_type', true ),
 				get_post_meta( $id, 'enquiry_location', true ),
 				$this->get_urgency_label( get_post_meta( $id, 'enquiry_urgency', true ) ),

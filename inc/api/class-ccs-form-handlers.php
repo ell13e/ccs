@@ -228,6 +228,9 @@ class CCS_Form_Handlers {
 
 		update_post_meta( $post_id, 'enquiry_heard_about', $heard_about );
 		update_post_meta( $post_id, 'enquiry_status', 'new' );
+		if ( function_exists( 'ccs_save_enquiry_booked_from' ) ) {
+			ccs_save_enquiry_booked_from( $post_id );
+		}
 
 		do_action( 'ccs_enquiry_created', $post_id );
 
@@ -300,6 +303,9 @@ class CCS_Form_Handlers {
 		update_post_meta( $post_id, 'enquiry_callback_request', '1' );
 		update_post_meta( $post_id, 'enquiry_source', 'phone_call' );
 		update_post_meta( $post_id, 'enquiry_heard_about', $heard_about );
+		if ( function_exists( 'ccs_save_enquiry_booked_from' ) ) {
+			ccs_save_enquiry_booked_from( $post_id );
+		}
 
 		do_action( 'ccs_callback_request_created', $post_id );
 

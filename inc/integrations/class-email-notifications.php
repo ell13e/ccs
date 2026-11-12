@@ -56,6 +56,13 @@ class CCS_Email_Notifications {
 	public function __construct() {
 		add_action( 'ccs_enquiry_created', array( $this, 'on_enquiry_created' ), 10, 1 );
 		add_action( 'ccs_consultation_enquiry_created', array( $this, 'on_consultation_enquiry_created' ), 10, 1 );
+		/*
+		 * Service-page call-back requests were saved but never emailed (found
+		 * Nov 2026), so the office only saw them by opening the inbox. They
+		 * now notify the office like every other enquiry. No confirmation to
+		 * the person: the call-back form does not ask for an email address.
+		 */
+		add_action( 'ccs_callback_request_created', array( $this, 'send_admin_notification' ), 10, 1 );
 	}
 
 	/**
@@ -121,6 +128,7 @@ class CCS_Email_Notifications {
 			'enquiry_name'             => __( 'Name', 'ccs-wp-theme' ),
 			'enquiry_phone'            => __( 'Phone', 'ccs-wp-theme' ),
 			'enquiry_email'            => __( 'Email', 'ccs-wp-theme' ),
+			'enquiry_booked_from'      => __( 'Booked from', 'ccs-wp-theme' ),
 			'enquiry_care_type'        => __( 'Service / Care type', 'ccs-wp-theme' ),
 			'enquiry_with_whom'        => __( 'With Whom?', 'ccs-wp-theme' ),
 			'enquiry_preferred_date'   => __( 'Preferred Date', 'ccs-wp-theme' ),
@@ -148,6 +156,10 @@ class CCS_Email_Notifications {
 				$value = isset( $with_whom_labels[ $value ] ) ? $with_whom_labels[ $value ] : $value;
 			}
 			$value = is_string( $value ) ? trim( $value ) : '';
+			if ( 'enquiry_booked_from' === $meta_key && '' !== $value ) {
+				$from_url = (string) get_post_meta( $post_id, 'enquiry_booked_from_url', true );
+				$value   .= '' !== $from_url ? "\n" . $from_url : '';
+			}
 			if ( $value !== '' || in_array( $meta_key, array( 'enquiry_name', 'enquiry_phone', 'enquiry_email', 'enquiry_message', 'enquiry_newsletter' ), true ) ) {
 				$rows[ $label ] = $value !== '' ? $value : '—';
 			}
@@ -181,7 +193,7 @@ class CCS_Email_Notifications {
 		$logo_html = $this->get_logo_html();
 		$table_rows = '';
 		foreach ( $details as $label => $value ) {
-			$table_rows .= '<tr><td style="padding:10px 14px;border:1px solid #e0e0e0;background:#f6f5ef;font-weight:600;width:38%;font-size:14px;color:' . self::COLOR_TEXT . ';">' . esc_html( $label ) . '</td><td style="padding:10px 14px;border:1px solid #e0e0e0;font-size:14px;color:' . self::COLOR_TEXT . ';">' . ( $label === __( 'Additional Info', 'ccs-wp-theme' ) ? wp_kses_post( $value ) : esc_html( $value ) ) . '</td></tr>';
+			$table_rows .= '<tr><td style="padding:10px 14px;border:1px solid #e0e0e0;background:#f6f5ef;font-weight:600;width:38%;font-size:14px;color:' . self::COLOR_TEXT . ';">' . esc_html( $label ) . '</td><td style="padding:10px 14px;border:1px solid #e0e0e0;font-size:14px;color:' . self::COLOR_TEXT . ';">' . ( $label === __( 'Additional Info', 'ccs-wp-theme' ) ? wp_kses_post( $value ) : nl2br( esc_html( $value ) ) ) . '</td></tr>';
 		}
 
 		$inner = $logo_html .

@@ -35,6 +35,8 @@ class CCS_Enquiry_Meta_Box extends CCS_Meta_Box_Base {
 			'enquiry_message',
 		),
 		'Tracking'         => array(
+			'enquiry_booked_from',
+			'enquiry_booked_from_url',
 			'enquiry_source',
 			'enquiry_landing_page',
 			'enquiry_referrer',
@@ -154,6 +156,17 @@ class CCS_Enquiry_Meta_Box extends CCS_Meta_Box_Base {
 					'email'         => __( 'Email', 'ccs-wp-theme' ),
 				),
 				'placeholder' => __( '— Select —', 'ccs-wp-theme' ),
+			),
+			array(
+				'id'          => 'enquiry_booked_from',
+				'type'        => 'text',
+				'label'       => __( 'Booked from', 'ccs-wp-theme' ),
+				'description' => __( 'The page they were looking at when they asked us to get in touch. Filled in by the website.', 'ccs-wp-theme' ),
+			),
+			array(
+				'id'          => 'enquiry_booked_from_url',
+				'type'        => 'url',
+				'label'       => __( 'Booked from (address)', 'ccs-wp-theme' ),
 			),
 			array(
 				'id'          => 'enquiry_landing_page',
