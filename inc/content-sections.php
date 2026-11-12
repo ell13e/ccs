@@ -131,3 +131,74 @@ function ccs_content_anchors( $html ) {
 		'toc'  => $toc,
 	);
 }
+
+/**
+ * The published fee schedule, grouped into cards (Customizer > Care Costs >
+ * Fee schedule; one line per rate: group | rate | Mon–Fri | Sat–Sun).
+ *
+ * @return array<string, array<int, array{label:string,weekday:string,weekend:string,night:bool}>>
+ */
+function ccs_fee_schedule() {
+	$raw = (string) get_theme_mod(
+		'ccs_fee_schedule',
+		class_exists( 'CCS_Theme_Customizer' ) ? CCS_Theme_Customizer::default_fee_schedule() : ''
+	);
+	$cards = array();
+	foreach ( preg_split( '/\R/', $raw ) ?: array() as $line ) {
+		$cols = array_map( 'trim', explode( '|', $line ) );
+		if ( count( $cols ) < 3 || '' === $cols[0] ) {
+			continue;
+		}
+		$cards[ $cols[0] ][] = array(
+			'label'   => $cols[1],
+			'weekday' => $cols[2],
+			'weekend' => isset( $cols[3] ) ? $cols[3] : '',
+			'night'   => (bool) preg_match( '/\bnight\b/i', $cols[1] ),
+		);
+	}
+	return $cards;
+}
+
+/**
+ * Charges that apply on top of every rate (Customizer > Care Costs >
+ * Additional charges; one per line: what it is | the price).
+ *
+ * @return array<int, array{label:string,price:string}>
+ */
+function ccs_fee_extras() {
+	$raw  = (string) get_theme_mod(
+		'ccs_cost_extras',
+		class_exists( 'CCS_Theme_Customizer' ) ? CCS_Theme_Customizer::default_cost_extras() : ''
+	);
+	$rows = array();
+	foreach ( preg_split( '/\R/', $raw ) ?: array() as $line ) {
+		$line = trim( $line );
+		if ( '' === $line ) {
+			continue;
+		}
+		$parts  = array_map( 'trim', explode( '|', $line, 2 ) );
+		$rows[] = array(
+			'label' => $parts[0],
+			'price' => isset( $parts[1] ) ? $parts[1] : '',
+		);
+	}
+	return $rows;
+}
+
+/**
+ * Which rate cards apply to each service page. Services not listed show all.
+ *
+ * @param string $slug Service slug.
+ * @return string[] Card group names.
+ */
+function ccs_fee_groups_for_service( $slug ) {
+	$map = apply_filters(
+		'ccs_fee_groups_for_service',
+		array(
+			'domiciliary-care' => array( 'Help at home' ),
+			'respite-care'     => array( 'Help at home', 'Nights' ),
+			'complex-care'     => array( 'Complex care', 'Nights' ),
+		)
+	);
+	return isset( $map[ $slug ] ) ? $map[ $slug ] : array();
+}

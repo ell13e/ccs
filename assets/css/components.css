@@ -2416,3 +2416,197 @@ a.card {
 	   extra spacing stops it crowding the next word. */
 	padding-right: 0.04em;
 }
+
+/* =========================================================================
+   CQC CARD IN INNER-PAGE HEROES (Nov 2026; template-parts/cqc-hero-card.php)
+   The regulator's live widget beside every care page's heading, as on
+   ultimacare.co.uk. Same treatment as the homepage hero's widget: CQC's own
+   content, left alone, with the frame clipped and lifted. Under the text on
+   phones; on the hero's lower-right edge from 1024px, lapping the corner of
+   an inset photo. The faint infinity mark steps aside when the card is there.
+   ========================================================================= */
+.page-cqc {
+	width: fit-content;
+	margin-top: var(--space-xl);
+	overflow: hidden;
+	border-radius: var(--radius-xl);
+	box-shadow: var(--shadow-float);
+}
+
+.page-cqc .cqc-widget.cleanslate {
+	border-color: transparent !important;
+	zoom: 0.82 !important;
+}
+
+.page-cqc__fallback {
+	display: none;
+}
+
+.page-cqc__fallback.is-visible {
+	display: block;
+	width: 11rem;
+	line-height: 0;
+}
+
+.page-cqc__fallback img {
+	width: 100%;
+	height: auto;
+}
+
+.page-cqc:not(:has(.cqc-widget, .is-visible)) {
+	box-shadow: none;
+}
+
+.page-hero--photo .page-cqc {
+	position: relative;
+	z-index: 2;
+	box-shadow: 0 14px 40px -12px rgba(12, 8, 28, 0.55);
+}
+
+.page-hero:has(.page-cqc .cqc-widget, .page-cqc .is-visible)::after {
+	display: none;
+}
+
+/* Phones and tablets: lapping the foot of an inset photo rather than adding
+   a block of its own under it. The widget is not shrunk further: below about
+   0.8 its "See the report" link falls under a usable tap size (rule 14). */
+@media (max-width: 1023px) {
+	.page-hero--inset .page-cqc {
+		position: relative;
+		z-index: 2;
+		margin-top: calc(var(--space-2xl) * -1);
+		margin-left: var(--space-md);
+	}
+}
+
+@media (min-width: 1024px) {
+	.page-hero__inner {
+		position: relative;
+	}
+
+	.page-cqc {
+		position: absolute;
+		z-index: 2;
+		right: var(--space-xl);
+		bottom: 0;
+		margin-top: 0;
+	}
+
+	/* An inset photo: the card laps its lower-left corner. */
+	.page-hero--inset .page-hero__text {
+		grid-column: 1;
+		grid-row: 1;
+	}
+
+	.page-hero--inset .page-hero__media {
+		grid-column: 2;
+		grid-row: 1;
+	}
+
+	.page-hero--inset .page-cqc {
+		position: relative;
+		grid-column: 2;
+		grid-row: 1;
+		align-self: end;
+		justify-self: start;
+		right: auto;
+		bottom: auto;
+		translate: -2.5rem 2rem;
+	}
+
+	/* A full-bleed photo: the hero, not the inner box, is the frame. */
+	.page-hero--photo .page-cqc {
+		position: absolute;
+		bottom: var(--space-xl);
+	}
+
+	/* Text stays clear of the card. */
+	.page-hero:not(.page-hero--inset):has(.page-cqc) .page-hero__text {
+		max-width: calc(100% - 15rem);
+	}
+}
+
+/* =========================================================================
+   SWIPEABLE CARD ROWS ON PHONES (Nov 2026; .ccs-swipe)
+   On a phone, three tall cards stacked made the homepage about seventeen
+   screens long (client: "i dont like the mobile view"). Below 860px a row of
+   cards becomes one swipe-across row, the pattern ultimacare.co.uk uses: each
+   card about four-fifths of the screen wide, so the next one peeks in and
+   says "there is more this way". Native scrolling with snap points, nothing
+   scripted, so it never fights the page scroll (rule 21); keyboard users tab
+   through the cards and the row scrolls to each. From 860px the rows are
+   grids again, exactly as before.
+   ========================================================================= */
+@media (max-width: 859px) {
+	/* position: relative so absolutely placed children (screen-reader
+	   labels, stretched links) are clipped by the row; otherwise they escaped
+	   it and widened the whole page by 30px. */
+	ul.ccs-swipe {
+		position: relative;
+		display: grid;
+		grid-template-columns: none;
+		grid-auto-flow: column;
+		grid-auto-columns: min(82%, 22rem);
+		gap: var(--space-md);
+		margin-inline: calc(var(--space-md) * -1);
+		padding: var(--space-xs) var(--space-md) var(--space-lg);
+		overflow-x: auto;
+		overscroll-behavior-x: contain;
+		scroll-snap-type: x mandatory;
+		scroll-padding-inline: var(--space-md);
+		scrollbar-width: none;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	ul.ccs-swipe::-webkit-scrollbar {
+		display: none;
+	}
+
+	ul.ccs-swipe > * {
+		scroll-snap-align: start;
+		min-width: 0;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 859px) {
+	ul.ccs-swipe {
+		margin-inline: calc(var(--space-lg) * -1);
+		padding-inline: var(--space-lg);
+		scroll-padding-inline: var(--space-lg);
+		grid-auto-columns: min(46%, 22rem);
+	}
+}
+
+/* =========================================================================
+   CQC WIDGET, TIDIED WHEREVER IT APPEARS (Nov 2026; client: "this still
+   doesnt sit right"). Inner-page heroes (.page-cqc) and the homepage hero
+   (.hero-cqc). The widget's own corner shading images and grey border are
+   dropped, the clearing <br> and floated button no longer leave a deeper
+   margin at the foot than the head, and the padding is even on all four
+   sides, so it sits in our rounded frame as one clean card. CQC's logo,
+   rating, date and report button are untouched.
+   ========================================================================= */
+:is(.page-cqc, .hero-cqc) div.cqc-widget.cleanslate {
+	border: 0 !important;
+	background-image: none !important;
+}
+
+:is(.page-cqc, .hero-cqc) div.cqc-widget.cleanslate .cqc-container {
+	padding: 1rem !important;
+	background-image: none !important;
+}
+
+:is(.page-cqc, .hero-cqc) div.cqc-widget .cqc-widget-clear {
+	display: none !important;
+}
+
+:is(.page-cqc, .hero-cqc) div.cqc-widget .cqc-widget-normal {
+	display: flow-root !important;
+	border-radius: 8px;
+}
+
+:is(.page-cqc, .hero-cqc) div.cqc-widget .cqc-widget-header,
+:is(.page-cqc, .hero-cqc) div.cqc-widget .cqc-widget-inner {
+	margin-bottom: 0 !important;
+	padding-bottom: 0 !important;
+}

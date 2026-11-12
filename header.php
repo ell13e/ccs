@@ -241,12 +241,6 @@ $ccs_emergency       = $ccs_emergency_on && ( $ccs_emergency_text || $ccs_phone 
 				}
 				?>
 			</nav>
-			<?php
-			/*
-			 * No phone here: the header bar already shows a persistent Call pill at
-			 * this width, so repeating it inside the panel just crowded the actions.
-			 */
-			?>
 			<div class="mobile-menu__actions">
 				<?php if ( $ccs_is_careers_context ) : ?>
 					<?php
@@ -260,6 +254,32 @@ $ccs_emergency       = $ccs_emergency_on && ( $ccs_emergency_text || $ccs_phone 
 					<a href="<?php echo esc_url( $ccs_switch_url ); ?>" class="mobile-menu__switch btn btn-quiet"><?php esc_html_e( 'Switch to us', 'ccs-wp-theme' ); ?></a>
 				<?php endif; ?>
 			</div>
+			<?php
+			/*
+			 * The phone, hours and office at the foot of the menu (Nov 2026,
+			 * client: "i dont like the mobile view"). The header bar on a phone
+			 * shows only the logo and this button, so the panel is where people
+			 * look for a number; the empty space under the buttons now holds it.
+			 */
+			$ccs_menu_address = get_theme_mod( 'ccs_contact_address', "The Maidstone Studios, New Cut Road\nMaidstone, Kent ME14 5NZ" );
+			$ccs_menu_address = $ccs_menu_address ? trim( preg_replace( '/\s*\n\s*/', ', ', $ccs_menu_address ) ) : '';
+			?>
+			<?php if ( ! empty( $ccs_contact['phone'] ) || $ccs_menu_address ) : ?>
+				<div class="mobile-menu__contact">
+					<?php if ( ! empty( $ccs_contact['phone'] ) ) : ?>
+						<a class="mobile-menu__phone" href="<?php echo esc_url( $ccs_contact['phone_link'] ); ?>">
+							<span class="ccs-badge ccs-badge--sm" aria-hidden="true"><?php echo ccs_icon( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
+							<span><span class="screen-reader-text"><?php esc_html_e( 'Call', 'ccs-wp-theme' ); ?> </span><?php echo esc_html( $ccs_contact['phone'] ); ?></span>
+						</a>
+						<?php if ( $ccs_office_hours ) : ?>
+							<p class="mobile-menu__hours"><?php echo esc_html( $ccs_office_hours ); ?></p>
+						<?php endif; ?>
+					<?php endif; ?>
+					<?php if ( $ccs_menu_address ) : ?>
+						<p class="mobile-menu__address"><?php echo esc_html( $ccs_menu_address ); ?></p>
+					<?php endif; ?>
+				</div>
+			<?php endif; ?>
 		</div>
 	</div>
 </header>

@@ -99,6 +99,7 @@ while ( have_posts() ) :
 					<?php endif; ?>
 				</div>
 			</div>
+			<?php get_template_part( 'template-parts/cqc-hero-card' ); ?>
 		</div>
 	</header>
 
@@ -134,10 +135,15 @@ while ( have_posts() ) :
 				 * "Working alongside" was a full card for a single hospital name: a
 				 * box with almost nothing in it (CCS/CLAUDE.md rule 1).
 				 */
-				$ccs_has_areas   = ! empty( $areas_list ) || $county || $postcode;
-				$ccs_has_partner = ! empty( $hospital_names ) || $chc || $council;
+				$ccs_has_areas = ! empty( $areas_list ) || $county || $postcode;
+				/*
+				 * "Working alongside" (local hospitals, NHS Continuing Healthcare and
+				 * council contacts) was removed from the page (client, Nov 2026: "we
+				 * can't confirm we work alongside them"). The fields stay in the
+				 * editor for reference but are not published.
+				 */
 				?>
-				<?php if ( $ccs_has_areas || $ccs_has_partner || $has_team ) : ?>
+				<?php if ( $ccs_has_areas || $has_team ) : ?>
 				<aside class="location-about__aside location-card" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: town name. */ __( 'Coverage around %s', 'ccs-wp-theme' ), $town ) ); ?>">
 					<?php if ( $ccs_has_areas ) : ?>
 						<div class="location-card__group">
@@ -146,61 +152,44 @@ while ( have_posts() ) :
 								<h3 class="location-card__title"><?php esc_html_e( 'Areas we cover', 'ccs-wp-theme' ); ?></h3>
 							</div>
 							<?php if ( ! empty( $areas_list ) ) : ?>
-								<ul class="location-card__pills" role="list">
-									<li><?php echo esc_html( $town ); ?></li>
-									<?php foreach ( $areas_list as $area ) : ?>
-										<li><?php echo esc_html( $area ); ?></li>
-									<?php endforeach; ?>
-								</ul>
-							<?php endif; ?>
-							<?php if ( $county || $postcode ) : ?>
-								<p class="location-card__meta">
+								<?php
+								$ccs_places = array_values( array_unique( array_merge( array( $town ), $areas_list ) ) );
+								$ccs_last   = array_pop( $ccs_places );
+								?>
+								<p class="location-card__areas">
 									<?php
-									$parts = array_filter(
-										array(
-											$county,
-											/* translators: %s: postcode area, e.g. ME. */
-											$postcode ? sprintf( __( '%s postcodes', 'ccs-wp-theme' ), $postcode ) : '',
-										)
+									echo esc_html(
+										$ccs_places
+											/* translators: 1: comma-separated places, 2: the last place. */
+											? sprintf( __( '%1$s and %2$s', 'ccs-wp-theme' ), implode( ', ', $ccs_places ), $ccs_last )
+											: $ccs_last
 									);
-									echo esc_html( implode( ', ', $parts ) );
 									?>
 								</p>
 							<?php endif; ?>
 							<p class="location-card__note">
-								<?php esc_html_e( 'Just outside these? Ring and ask. It depends on whether we can send you the same carers every week.', 'ccs-wp-theme' ); ?>
+								<?php
+								$parts = array_filter(
+									array(
+										$county,
+										/* translators: %s: postcode area, e.g. ME. */
+										$postcode ? sprintf( __( '%s postcodes', 'ccs-wp-theme' ), $postcode ) : '',
+									)
+								);
+								if ( $parts ) {
+									echo esc_html( implode( ', ', $parts ) . '. ' );
+								}
+								if ( $ccs_phone_tel ) {
+									printf(
+										/* translators: %s: office phone number, as a link. */
+										esc_html__( 'Just outside these? Call %s and ask: it depends on whether we can send you the same carers every week.', 'ccs-wp-theme' ),
+										'<a href="' . esc_url( 'tel:' . $ccs_phone_tel ) . '">' . esc_html( $ccs_phone ) . '</a>'
+									);
+								} else {
+									esc_html_e( 'Just outside these? Ring and ask: it depends on whether we can send you the same carers every week.', 'ccs-wp-theme' );
+								}
+								?>
 							</p>
-						</div>
-					<?php endif; ?>
-
-					<?php if ( $ccs_has_partner ) : ?>
-						<div class="location-card__group">
-							<h3 class="location-card__title location-card__title--sub"><?php esc_html_e( 'Working alongside', 'ccs-wp-theme' ); ?></h3>
-							<dl class="location-card__list">
-								<?php foreach ( $hospital_names as $hosp ) : ?>
-									<div>
-										<dt><?php echo esc_html( $hosp['name'] ); ?></dt>
-										<?php if ( $hosp['address'] ) : ?>
-											<dd><?php echo esc_html( $hosp['address'] ); ?></dd>
-										<?php endif; ?>
-										<?php if ( $hosp['phone'] ) : ?>
-											<dd><a href="<?php echo esc_url( 'tel:' . preg_replace( '/\s+/', '', $hosp['phone'] ) ); ?>"><?php echo esc_html( $hosp['phone'] ); ?></a></dd>
-										<?php endif; ?>
-									</div>
-								<?php endforeach; ?>
-								<?php if ( $chc ) : ?>
-									<div>
-										<dt><?php esc_html_e( 'NHS Continuing Healthcare', 'ccs-wp-theme' ); ?></dt>
-										<dd><?php echo nl2br( esc_html( $chc ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped, then line breaks added. ?></dd>
-									</div>
-								<?php endif; ?>
-								<?php if ( $council ) : ?>
-									<div>
-										<dt><?php esc_html_e( 'Council adult services', 'ccs-wp-theme' ); ?></dt>
-										<dd><?php echo nl2br( esc_html( $council ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped, then line breaks added. ?></dd>
-									</div>
-								<?php endif; ?>
-							</dl>
 						</div>
 					<?php endif; ?>
 
@@ -255,12 +244,133 @@ while ( have_posts() ) :
 					?>
 				</h2>
 			</header>
-			<?php get_template_part( 'template-parts/service-cards' ); ?>
+			<?php get_template_part( 'template-parts/service-cards', null, array( 'town' => $town ) ); ?>
 			<div class="ccs-section-foot ccs-actions ccs-actions--center">
 				<a class="btn btn-quiet" href="<?php echo esc_url( $ccs_services_hub ); ?>"><?php esc_html_e( 'See all our services', 'ccs-wp-theme' ); ?></a>
 			</div>
 		</div>
 	</section>
+
+	<?php
+	/*
+	 * Nov 2026, after bluebirdcare.co.uk/maidstone (the client's reference for
+	 * area pages): a map of the town beside where our office is, then how care
+	 * starts, the people behind it, what families say, and a person to talk
+	 * to. All built from parts the rest of the site already uses.
+	 *
+	 * The map is Google's basic embed (no API key), lazy loaded, centred on the
+	 * coordinates stored for this area (the same ones the LocalBusiness schema
+	 * below uses); www.google.com is already in the CSP's frame-src. Plain map
+	 * images, so it works on every phone. OpenStreetMap's embed was tried
+	 * first, but it now needs WebGL and showed blank where that is missing.
+	 */
+	$ccs_office      = get_theme_mod( 'ccs_contact_address', "The Maidstone Studios, New Cut Road\nMaidstone, Kent ME14 5NZ" );
+	$ccs_office_line = $ccs_office ? trim( preg_replace( '/\s*\n\s*/', ', ', $ccs_office ) ) : '';
+	$ccs_hours       = get_theme_mod( 'ccs_office_hours', 'Mon–Fri 9am–5pm' );
+	$ccs_map_lat     = is_numeric( $lat ) ? (float) $lat : 0.0;
+	$ccs_map_lng     = is_numeric( $lng ) ? (float) $lng : 0.0;
+	$ccs_has_map     = $ccs_map_lat && $ccs_map_lng;
+	/*
+	 * The map is searched by the town's name, so it labels the town rather
+	 * than showing a bare coordinate (client, Nov 2026); the stored
+	 * coordinates decide only whether this area gets a map. The one link is a
+	 * route from the town to the office.
+	 */
+	$ccs_place = trim( $town . ', ' . ( $county ? $county : 'Kent' ) . ', UK' );
+	if ( $ccs_has_map ) {
+		$ccs_map_src = 'https://www.google.com/maps?q=' . rawurlencode( $ccs_place ) . '&z=11&output=embed';
+	}
+	/*
+	 * How far the area is from the office, as the crow flies, rounded to the
+	 * mile (Nov 2026). A fact particular to each area page, replacing a
+	 * sentence that was the same on all six. The office is The Maidstone
+	 * Studios, ME14 5NZ (filterable for a move).
+	 */
+	$ccs_office_ll = apply_filters( 'ccs_office_coordinates', array( 51.2810, 0.5480 ) );
+	$ccs_miles     = 0;
+	if ( $ccs_has_map ) {
+		$ccs_dlat  = deg2rad( $ccs_map_lat - $ccs_office_ll[0] );
+		$ccs_dlng  = deg2rad( $ccs_map_lng - $ccs_office_ll[1] );
+		$ccs_h     = sin( $ccs_dlat / 2 ) ** 2 + cos( deg2rad( $ccs_office_ll[0] ) ) * cos( deg2rad( $ccs_map_lat ) ) * sin( $ccs_dlng / 2 ) ** 2;
+		$ccs_miles = (int) round( 3958.8 * 2 * atan2( sqrt( $ccs_h ), sqrt( 1 - $ccs_h ) ) );
+	}
+	$ccs_directions = $ccs_office_line
+		? 'https://www.google.com/maps/dir/?api=1&origin=' . rawurlencode( $ccs_place ) . '&destination=' . rawurlencode( $ccs_office_line )
+		: '';
+	?>
+	<?php if ( $ccs_has_map ) : ?>
+		<section class="ccs-section location-map" aria-labelledby="location-map-heading">
+			<div class="container container--lg">
+				<header class="ccs-head ccs-head--center">
+					<h2 id="location-map-heading" class="ccs-title">
+						<?php
+						/* translators: %s: town name. */
+						echo esc_html( sprintf( __( 'Where we visit around %s', 'ccs-wp-theme' ), $town ) );
+						?>
+					</h2>
+				</header>
+				<?php
+				/*
+				 * One card (client, Nov 2026: the heading, a paragraph, an office box
+				 * and the map at different heights "looks messy"): the office details
+				 * on the left, the map filling the right edge to edge.
+				 */
+				?>
+				<div class="location-map__card">
+					<div class="location-map__details">
+						<div class="location-map__office">
+							<span class="ccs-badge ccs-badge--sm" aria-hidden="true"><?php echo ccs_icon( 'pin' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
+							<p class="location-map__office-title"><?php esc_html_e( 'Our office', 'ccs-wp-theme' ); ?></p>
+						</div>
+						<?php if ( $ccs_office_line ) : ?>
+							<p class="location-map__office-text"><?php echo esc_html( $ccs_office_line ); ?></p>
+						<?php endif; ?>
+						<?php if ( $ccs_hours ) : ?>
+							<p class="location-map__office-text"><?php echo esc_html( $ccs_hours ); ?></p>
+						<?php endif; ?>
+						<p class="location-map__office-note">
+							<?php
+							if ( $ccs_miles >= 3 ) {
+								/* translators: 1: town name, 2: number of miles. */
+								echo esc_html( sprintf( _n( '%1$s is about %2$d mile from our office.', '%1$s is about %2$d miles from our office.', $ccs_miles, 'ccs-wp-theme' ), $town, $ccs_miles ) );
+							} else {
+								/* translators: %s: town name. */
+								echo esc_html( sprintf( __( 'Our office is here in %s.', 'ccs-wp-theme' ), $town ) );
+							}
+							?>
+						</p>
+						<?php if ( $ccs_directions ) : ?>
+							<p class="location-map__links">
+								<a class="ccs-text-link" href="<?php echo esc_url( $ccs_directions ); ?>" target="_blank" rel="noopener noreferrer">
+									<?php
+									/* translators: %s: town name. */
+									echo esc_html( sprintf( __( 'Directions from %s to our office', 'ccs-wp-theme' ), $town ) );
+									?>
+									<span class="screen-reader-text"> <?php esc_html_e( '(opens Google Maps in a new window)', 'ccs-wp-theme' ); ?></span>
+								</a>
+							</p>
+						<?php endif; ?>
+					</div>
+					<div class="location-map__frame">
+						<iframe
+							src="<?php echo esc_url( $ccs_map_src ); ?>"
+							title="<?php echo esc_attr( sprintf( /* translators: %s: town name. */ __( 'Map of %s', 'ccs-wp-theme' ), $town ) ); ?>"
+							loading="lazy"
+						></iframe>
+					</div>
+				</div>
+			</div>
+		</section>
+	<?php endif; ?>
+
+	<?php
+	/*
+	 * The shared steps, team and reviews sections that followed here were
+	 * removed (Nov 2026): repeated word for word on all six area pages, they
+	 * made up most of each page's text, and search engines treat pages that
+	 * similar as duplicates. Each area page now carries only its own facts.
+	 */
+	?>
 
 	<?php
 	$support_items = array();

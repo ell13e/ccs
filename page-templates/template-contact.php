@@ -79,6 +79,7 @@ $ccs_next_steps = apply_filters(
 					<?php esc_html_e( "Whether you're looking for home care in Maidstone or elsewhere in Kent, tell us what you'd like to talk about and we'll get in touch to arrange a call or a visit.", 'ccs-wp-theme' ); ?>
 				</p>
 			</div>
+			<?php get_template_part( 'template-parts/cqc-hero-card' ); ?>
 		</div>
 	</header>
 

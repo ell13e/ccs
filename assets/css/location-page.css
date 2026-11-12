@@ -292,3 +292,232 @@
 .areas-hub__strip {
 	margin-top: clamp(2rem, 1.5rem + 2vw, 3rem);
 }
+
+/* =========================================================================
+   AREA PAGE STRUCTURE (Nov 2026, after bluebirdcare.co.uk/maidstone).
+   Grounds: hero tint, introduction white, services tint, map white, steps
+   tint, team white, reviews tint, the closing card with Victoria on white.
+   ========================================================================= */
+.location-map__card {
+	display: grid;
+	overflow: hidden;
+	border-radius: var(--radius-3xl);
+	background-color: var(--color-band-tint);
+}
+
+@media (min-width: 900px) {
+	.location-map__card {
+		grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+	}
+}
+
+.location-map__details {
+	padding: clamp(1.5rem, 1rem + 2vw, 2.75rem);
+}
+
+.location-map__office {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin-bottom: var(--space-md);
+}
+
+.location-map__office .ccs-badge {
+	background-color: var(--color-background);
+}
+
+.location-map__office-title {
+	margin: 0;
+	font-family: var(--font-family-heading);
+	font-size: var(--text-lg);
+	font-weight: var(--font-weight-medium);
+	color: var(--color-ink);
+}
+
+.location-map__office-text {
+	margin: 0 0 0.25rem;
+	font-size: var(--text-base);
+	line-height: 1.55;
+	color: var(--color-ink);
+}
+
+.location-map__office-note {
+	margin: var(--space-md) 0 0;
+	padding-top: var(--space-md);
+	border-top: 1px solid var(--color-hairline);
+	font-size: var(--text-sm);
+	line-height: 1.55;
+	color: var(--color-ink-soft);
+}
+
+.location-map__links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0 var(--space-lg);
+	margin: var(--space-sm) 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.location-map__links a {
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
+}
+
+.location-map__frame {
+	position: relative;
+	min-height: 18rem;
+}
+
+.location-map__frame iframe {
+	position: absolute;
+	inset: 0;
+	display: block;
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+
+@media (min-width: 900px) {
+	.location-map__frame {
+		min-height: 24rem;
+	}
+}
+
+/* Steps (tint) follow the white map; the team runs white between the steps
+   and the tint reviews. */
+.site-main--location .home-team {
+	background-color: var(--color-background);
+}
+
+.site-main--location .home-steps,
+.site-main--location .home-team,
+.site-main--location .home-reviews {
+	padding-block: var(--section-pad);
+}
+
+/* =========================================================================
+   COVERAGE PANEL, TIDIED (Nov 2026; client: "this whole side is messy").
+   One tint panel instead of a plum rule, pills and three hairlines: the
+   heading with the county and postcode under it, the villages as a plain
+   two-column list, the "ring and ask" line, and the phone number. The
+   "Working alongside" group is gone (unverified claims).
+   ========================================================================= */
+.location-card {
+	padding: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
+	border-top: 0;
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-band-tint);
+}
+
+.location-card__head {
+	margin-bottom: 0;
+}
+
+.location-card__head + .location-card__meta {
+	margin: var(--space-xs) 0 0;
+	padding-left: calc(2.75rem + 0.75rem);
+}
+
+.location-card__areas {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.6rem var(--space-md);
+	margin: var(--space-lg) 0 0;
+	padding: var(--space-lg) 0 0;
+	border-top: 1px solid var(--color-hairline);
+	list-style: none;
+}
+
+.location-card__areas li {
+	font-size: var(--text-base);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.4;
+	color: var(--color-ink);
+}
+
+.location-card .location-card__note {
+	margin: var(--space-lg) 0 0;
+	padding-top: 0;
+	border-top: 0;
+}
+
+.location-card__phone {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-sm);
+	min-height: 44px;
+	margin-top: var(--space-md);
+	font-family: var(--font-family-heading);
+	font-size: var(--text-lg);
+	font-weight: var(--font-weight-medium);
+	color: var(--color-ink);
+	text-decoration: none;
+}
+
+.location-card__phone:hover,
+.location-card__phone:focus-visible {
+	color: var(--color-primary);
+}
+
+/* The icon discs are tint by default; on the tint panel they turn white. */
+.location-card .ccs-badge {
+	background-color: var(--color-background);
+}
+
+/* Coverage panel, even (Nov 2026; client: "messy and uneven"). The panel
+   matches the text column's height, the villages flow as one line with thin
+   separators (no lone name left in a column), and the county, postcodes and
+   "ring and ask" share one short note. No phone here: it is in the hero. */
+@media (min-width: 1000px) {
+	.location-about__grid {
+		align-items: start;
+	}
+
+	.location-about__aside {
+		position: static;
+	}
+}
+
+.location-card {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.location-card p.location-card__areas {
+	display: block;
+	margin: var(--space-md) 0 0;
+	padding: 0;
+	border-top: 0;
+	font-size: var(--text-md);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.6;
+	color: var(--color-ink);
+}
+
+.location-card .location-card__note {
+	margin-top: var(--space-md);
+}
+
+/* The phone number inside the "ring and ask" note is a real link, sized for
+   a thumb (rule 14). */
+.location-card__note a {
+	display: inline-block;
+	min-height: 24px;
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-primary);
+	white-space: nowrap;
+}
+
+.location-map__links {
+	margin: var(--space-sm) 0 0;
+}
+
+
+/* The closing card on the tint, after the white map section (Nov 2026: the
+   steps, team and reviews that separated them were removed). */
+.site-main--location .cta-band {
+	background-color: var(--color-band-tint);
+}

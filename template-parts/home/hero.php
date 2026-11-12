@@ -192,3 +192,37 @@ $hero_addr_rest  = trim( implode( ', ', array_filter( array( preg_replace( '/^Th
 		</ul>
 	</div>
 </nav>
+<?php
+/*
+ * Phones and tablets (Nov 2026). The CQC widget sat under the button as a
+ * 240px block, pushing this strip off the first screen; moved below the
+ * strip on its own, it then floated in white space (client: "this looks weird
+ * on phone"). It now becomes the last row of the route card itself, one
+ * object with the phone and switch rows, and is still on the home page as
+ * the regulator requires. Moved as soon as the strip is parsed, before the
+ * first paint; the widget's own script has already run inside it.
+ */
+?>
+<script>
+(function () {
+	var widget = document.querySelector('.home-hero .hero-cqc');
+	var list = document.querySelector('.home-routes__card');
+	if (!widget || !list || !window.matchMedia) return;
+	var narrow = window.matchMedia('(max-width: 1023px)');
+	var home = widget.parentNode;
+	var next = widget.nextSibling;
+	var row = document.createElement('li');
+	row.className = 'home-routes__item home-routes__cqc';
+	function place() {
+		if (narrow.matches) {
+			row.appendChild(widget);
+			list.appendChild(row);
+		} else {
+			home.insertBefore(widget, next);
+			if (row.parentNode) row.parentNode.removeChild(row);
+		}
+	}
+	place();
+	if (narrow.addEventListener) narrow.addEventListener('change', place);
+})();
+</script>

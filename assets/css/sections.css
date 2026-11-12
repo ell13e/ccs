@@ -1695,3 +1695,289 @@
 .cta-card__media img {
 	object-position: 55% 40%;
 }
+
+/* -------------------------------------------------------------------------
+   REVIEWS (moved from homepage.css, Nov 2026: service pages show them too)
+   ------------------------------------------------------------------------- */
+
+.home-reviews {
+	padding-block: var(--section-pad);
+	background-color: var(--color-band-tint);
+}
+
+.home-reviews__list {
+	display: grid;
+	gap: var(--space-md);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+@media (min-width: 960px) {
+	.home-reviews__list {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--space-lg);
+	}
+}
+
+.home-reviews__item {
+	display: flex;
+}
+
+.review-card {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	margin: 0;
+	padding: clamp(1.75rem, 1.2rem + 1.6vw, 2.25rem);
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-float);
+}
+
+.review-card__top {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: var(--space-md);
+}
+
+/* Purple, not gold: the stars carry the rating, so they need 3:1 against the
+   card as a graphic (WCAG 1.4.11). The usual gold is ~2.3:1 on white. */
+.review-card__rating {
+	display: flex;
+	gap: 0.2rem;
+	color: var(--color-primary);
+}
+
+.review-card__star {
+	display: block;
+}
+
+.review-card__mark {
+	width: 2.25rem;
+	height: auto;
+	color: var(--color-secondary);
+}
+
+.review-card__quote {
+	flex: 1 1 auto;
+	margin: 0 0 var(--space-lg);
+	padding: 0;
+	border: 0;
+}
+
+.review-card__quote p {
+	margin: 0;
+	font-size: var(--text-md);
+	line-height: 1.7;
+	color: var(--color-ink);
+}
+
+.review-card__meta {
+	display: flex;
+	align-items: center;
+	gap: 0.875rem;
+	padding-top: var(--space-md);
+	border-top: 1px solid var(--color-hairline);
+}
+
+.review-card__avatar {
+	display: grid;
+	flex: none;
+	place-items: center;
+	width: 3rem;
+	height: 3rem;
+	border-radius: 50%;
+	background-color: var(--color-badge);
+	color: var(--color-primary);
+	font-family: var(--font-family-heading);
+	font-size: 1rem;
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: 0.02em;
+}
+
+.review-card__avatar .ccs-icon {
+	width: 1.25rem;
+	height: 1.25rem;
+}
+
+.review-card__who {
+	display: flex;
+	flex-direction: column;
+	gap: 0.1rem;
+	min-width: 0;
+}
+
+.review-card__author {
+	font-size: var(--text-base);
+	font-weight: var(--font-weight-bold);
+	color: var(--color-ink);
+}
+
+.review-card__relationship {
+	font-size: var(--text-sm);
+	color: var(--color-ink-soft);
+}
+
+.review-card__source {
+	font-size: var(--text-xs);
+	color: var(--color-accent);
+}
+
+/* Padded to a 26px-tall target. At the text's own 15px it passed WCAG 2.2's
+   spacing exception (nothing else to hit nearby), but this audience includes
+   a lot of older and less steady hands, so the target gets the height anyway. */
+.review-card__source a {
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
+	margin-block: -8px;
+	color: inherit;
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+.review-card__source a:hover,
+.review-card__source a:focus-visible {
+	color: var(--color-primary);
+}
+
+/* =========================================================================
+   PUBLISHED RATES (Nov 2026, seventh version; template-parts/rate-table.php)
+   One tint panel, one table, the same two price columns for every group, so
+   nothing is uneven (client: the rate cards were "uneven, messy"). Groups are
+   set apart by a small plum heading and space, not lines. Prices use lining,
+   tabular figures so the columns align digit for digit. The extra charges
+   follow in the same panel as a short two-column list.
+   ========================================================================= */
+.rate-panel {
+	padding: clamp(1.5rem, 1rem + 1.6vw, 2.5rem);
+	border-radius: var(--radius-3xl);
+	background-color: var(--color-band-tint);
+}
+
+.rate-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-variant-numeric: lining-nums tabular-nums;
+}
+
+.rate-table__caption {
+	caption-side: top;
+	margin-bottom: var(--space-md);
+	font-size: var(--text-sm);
+	color: var(--color-ink-soft);
+	text-align: left;
+}
+
+.rate-table thead th {
+	padding: 0 0 var(--space-xs) var(--space-md);
+	font-size: var(--text-xs);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: 0.02em;
+	color: var(--color-ink-soft);
+	text-align: right;
+	white-space: nowrap;
+}
+
+.rate-table__group th {
+	padding: var(--space-lg) 0 var(--space-xs);
+	font-size: var(--text-base);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-primary);
+	text-align: left;
+}
+
+.rate-table tbody:first-of-type .rate-table__group th {
+	padding-top: var(--space-sm);
+}
+
+.rate-table__per {
+	margin-left: 0.35rem;
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-regular, 400);
+	color: var(--color-ink-soft);
+}
+
+.rate-table tbody tr:not(.rate-table__group) > * {
+	padding: 0.45rem 0 0.45rem var(--space-md);
+	font-size: var(--text-base);
+	line-height: 1.4;
+}
+
+.rate-table tbody tr:not(.rate-table__group) > th {
+	padding-left: 0;
+	font-weight: var(--font-weight-regular, 400);
+	color: var(--color-ink);
+	text-align: left;
+}
+
+.rate-table td {
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-ink);
+	text-align: right;
+	white-space: nowrap;
+}
+
+.rate-extras {
+	margin-top: var(--space-xl);
+}
+
+.rate-extras__title {
+	margin: 0 0 var(--space-xs);
+	font-family: var(--font-family-body);
+	font-size: var(--text-base);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-primary);
+}
+
+.rate-extras__list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.rate-extras__list li {
+	display: flex;
+	justify-content: space-between;
+	gap: var(--space-md);
+	padding-block: 0.4rem;
+	font-size: var(--text-sm);
+	line-height: 1.45;
+	color: var(--color-ink);
+}
+
+.rate-extras__price {
+	flex: none;
+	font-weight: var(--font-weight-semibold);
+	text-align: right;
+}
+
+/* The note that sits with the rates wherever they appear. */
+.rate-note {
+	margin: var(--space-md) 0 0;
+	font-size: var(--lede-size);
+	line-height: 1.65;
+	color: var(--color-ink);
+	text-wrap: pretty;
+}
+
+/* Service pages: the heading and note beside the table. */
+.service-costs__grid {
+	display: grid;
+	gap: var(--space-xl);
+}
+
+@media (min-width: 960px) {
+	.service-costs__grid {
+		grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+		gap: clamp(3rem, 1.5rem + 4vw, 6rem);
+		align-items: start;
+	}
+}
+
+.service-costs__head {
+	margin: 0;
+}
+

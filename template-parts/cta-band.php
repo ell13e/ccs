@@ -52,6 +52,7 @@ if ( $ccs_is_careers ) {
 // stock and, with this band on every page, appeared 15 times across the site.
 $ccs_cta_photo_rel = 'site-photos/client-pottery.webp';
 $ccs_cta_photo     = ! $ccs_is_careers && file_exists( get_template_directory() . '/assets/images/' . $ccs_cta_photo_rel );
+
 ?>
 
 <section class="cta-band" aria-labelledby="cta-band-heading">
