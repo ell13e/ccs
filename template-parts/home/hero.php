@@ -94,39 +94,29 @@ $hero_has_fallback = file_exists( get_template_directory() . '/assets/images/sit
 
 			<?php
 			/*
-			 * The CQC rating set in the site's own type on the photo (client, Nov
-			 * 2026: "a nicely styled version of the CQC frame, not just in a card").
-			 * It replaced the regulator's badge image, which sat in a white box. The
-			 * rating and date come from Customize > CQC Information, as on the CQC
-			 * page, and link to the full report on cqc.org.uk. Bottom-right on the
-			 * content edge at desktop, under the button on phones.
+			 * The regulator's own live rating widget (Nov 2026). Providers must show
+			 * their CQC rating on their website's home page, and the client asked
+			 * for the official widget here. It replaced a rating set in the site's
+			 * type, which the client didn't like. The widget is CQC's markup and is
+			 * not restyled; we only place it, clip its corners and add a shadow.
+			 * If the script is blocked or CQC is down, the official "Inspected and
+			 * rated" artwork shows instead, linking to the same report.
 			 */
-			$hero_ratings   = array(
-				'outstanding'          => __( 'Outstanding', 'ccs-wp-theme' ),
-				'good'                 => __( 'Good', 'ccs-wp-theme' ),
-				'requires-improvement' => __( 'Requires improvement', 'ccs-wp-theme' ),
-				'inadequate'           => __( 'Inadequate', 'ccs-wp-theme' ),
-			);
-			$hero_rating    = (string) get_theme_mod( 'ccs_cqc_rating', '' );
-			$hero_rating    = isset( $hero_ratings[ $hero_rating ] ) ? $hero_rating : 'good';
-			$hero_rated_on  = (string) get_theme_mod( 'ccs_cqc_rating_date', '6 December 2023' );
+			$hero_cqc_id = get_theme_mod( 'ccs_cqc_widget_data_id', '1-2624556588' );
+			$hero_cqc_id = $hero_cqc_id ? $hero_cqc_id : '1-2624556588';
 			?>
-			<a class="hero-rating hero-rating--<?php echo esc_attr( $hero_rating ); ?>" href="<?php echo esc_url( $hero_cqc_url ); ?>" target="_blank" rel="noopener noreferrer">
-				<span class="hero-rating__label"><?php esc_html_e( 'CQC overall rating', 'ccs-wp-theme' ); ?></span>
-				<span class="hero-rating__value"><span class="hero-rating__dot" aria-hidden="true"></span><?php echo esc_html( $hero_ratings[ $hero_rating ] ); ?></span>
-				<span class="hero-rating__meta">
-					<?php
-					if ( '' !== $hero_rated_on ) {
-						/* translators: %s: date the CQC rating was published. */
-						printf( esc_html__( 'Published %s', 'ccs-wp-theme' ), esc_html( $hero_rated_on ) );
-						echo ' &middot; ';
-					}
-					esc_html_e( 'Read the report', 'ccs-wp-theme' );
-					?>
-					<span aria-hidden="true">&rarr;</span>
-				</span>
-				<span class="screen-reader-text"><?php esc_html_e( '(opens cqc.org.uk in a new window)', 'ccs-wp-theme' ); ?></span>
-			</a>
+			<div class="hero-cqc">
+				<?php if ( $hero_has_cqc_badge ) : ?>
+					<a id="hero-cqc-fallback" class="hero-cqc__fallback" href="<?php echo esc_url( $hero_cqc_url ); ?>" target="_blank" rel="noopener noreferrer">
+						<img src="<?php echo esc_url( $hero_cqc_badge_src ); ?>" alt="<?php esc_attr_e( 'CQC inspected and rated Good (opens in a new window)', 'ccs-wp-theme' ); ?>" width="1184" height="821"<?php echo ccs_theme_image_srcset( 'cqc-badges/CQC inspected and rated good RGB.jpg', '200px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset(). ?> loading="lazy" decoding="async">
+					</a>
+				<?php endif; ?>
+				<script
+					type="text/javascript"
+					src="<?php echo esc_url( 'https://www.cqc.org.uk/sites/all/modules/custom/cqc_widget/widget.js?data-id=' . rawurlencode( $hero_cqc_id ) . '&data-host=https://www.cqc.org.uk&type=location' ); ?>"
+					onerror="var f=document.getElementById('hero-cqc-fallback');if(f){f.classList.add('is-visible');}"
+				></script>
+			</div>
 
 
 		</div>

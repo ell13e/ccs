@@ -1633,3 +1633,116 @@
 			linear-gradient(to top, rgba(28, 18, 52, 0.6) 0%, rgba(28, 18, 52, 0.2) 34%, transparent 60%);
 	}
 }
+
+/* Hero rating, second version (Nov 2026, client asked for a restyle): set like
+   a printed seal. "Rated Good" on one line in the heading face, the
+   regulator's full name and the date beneath, then the report link. No
+   uppercase label, no rule above, no dot. */
+.hero-rating {
+	gap: 0.25rem;
+	padding-top: 0;
+	border-top: 0;
+}
+
+.hero-rating__label,
+.hero-rating__dot,
+.hero-rating__meta {
+	display: none;
+}
+
+.hero-rating__value {
+	gap: 0.45rem;
+	align-items: baseline;
+	font-size: clamp(1.875rem, 1.5rem + 1.3vw, 2.5rem);
+	line-height: 1;
+}
+
+.hero-rating__rated {
+	font-style: italic;
+	font-weight: var(--font-weight-normal);
+	font-size: 0.72em;
+	color: var(--color-secondary);
+}
+
+.hero-rating__by {
+	font-size: var(--text-sm);
+	color: rgba(255, 255, 255, 0.88);
+}
+
+.hero-rating__link {
+	justify-self: start;
+	margin-top: 0.15rem;
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-semibold);
+	color: #fff;
+	text-decoration: underline;
+	text-decoration-color: rgba(255, 255, 255, 0.45);
+	text-underline-offset: 0.25em;
+}
+
+.hero-rating:hover .hero-rating__link,
+.hero-rating:focus-visible .hero-rating__link {
+	text-decoration-color: currentColor;
+}
+
+@media (min-width: 1024px) {
+	.hero-rating__link {
+		justify-self: end;
+	}
+}
+
+/* =========================================================================
+   HERO CQC WIDGET (Nov 2026). The regulator's live widget, required on the
+   home page. Placed bottom-right on the content edge at desktop, under the
+   button on phones. Its content is CQC's and is left alone; only its outer
+   frame is clipped and lifted. Replaces .hero-rating.
+   ========================================================================= */
+.hero-rating {
+	display: none;
+}
+
+.hero-cqc {
+	width: fit-content;
+	margin-top: var(--space-xl);
+	overflow: hidden;
+	border-radius: var(--radius-xl);
+	box-shadow: 0 14px 40px -12px rgba(12, 8, 28, 0.55);
+}
+
+.hero-cqc .cqc-widget.cleanslate {
+	border-color: transparent !important;
+	zoom: 0.82 !important;
+}
+
+.hero-cqc__fallback {
+	display: none;
+}
+
+.hero-cqc__fallback.is-visible {
+	display: block;
+	width: 11rem;
+	line-height: 0;
+}
+
+.hero-cqc__fallback img {
+	width: 100%;
+	height: auto;
+}
+
+/* Nothing to show (widget not loaded yet, fallback hidden): no empty frame. */
+.hero-cqc:not(:has(.cqc-widget, .is-visible)) {
+	box-shadow: none;
+}
+
+@media (min-width: 1024px) {
+	.hero-cqc {
+		position: absolute;
+		right: var(--space-xl);
+		bottom: 0;
+		margin-top: 0;
+	}
+
+	.hero-cqc .cqc-widget.cleanslate {
+		zoom: 0.9 !important;
+	}
+}

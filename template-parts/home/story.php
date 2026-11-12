@@ -36,9 +36,6 @@ if ( ! $ccs_story_video ) {
 			<h2 id="home-story-heading" class="ccs-title">
 				<?php echo esc_html( ccs_copy( 'about_story_title' ) ); ?>
 			</h2>
-			<p class="ccs-lede">
-				<?php echo esc_html( ccs_copy( 'about_story_text' ) ); ?>
-			</p>
 		</header>
 
 		<div class="home-story__media">

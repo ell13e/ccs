@@ -161,6 +161,9 @@ signed off by the client):
 - No decorative shapes, offset blocks or two-tone grounds.
 - Fewer sections. Before adding one, remove one.
 - When asked to make it "look better", simplify and unify before adding.
+- Not every section needs a paragraph under its heading (client, Nov 2026).
+  Keep subtext only where it carries information: a fact, a figure, a
+  timescale. A heading and its content are usually enough.
 - Thin is not calm. The client called the unboxed steps, the text-only
   differentiators, the old costs layout and the floating CQC widget "awful".
   A section needs one substantial object (a card row, a panel, a photo); loose
