@@ -61,9 +61,6 @@ $ccs_team_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'who-youll-mee
 				echo esc_html( ccs_copy( 'team_title' ) );
 				?>
 			</h2>
-			<p class="ccs-lede">
-				<?php echo esc_html( ccs_copy( 'team_lede' ) ); ?>
-			</p>
 		</header>
 
 		<ul class="ccs-team-grid" role="list">

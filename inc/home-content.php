@@ -57,6 +57,7 @@ function ccs_copy_sections() {
 		'p_cqc' => array( 'panel' => 'pages', 'title' => __( 'CQC page', 'ccs-wp-theme' ), 'description' => '' ),
 		'p_careers' => array( 'panel' => 'pages', 'title' => __( 'Careers page', 'ccs-wp-theme' ), 'description' => '' ),
 		'p_switch' => array( 'panel' => 'pages', 'title' => __( 'Switching page', 'ccs-wp-theme' ), 'description' => __( 'For families moving their care from another provider. Please check these answers match how you handle a switch.', 'ccs-wp-theme' ) ),
+		'p_vac' => array( 'panel' => 'pages', 'title' => __( 'Vacancies page', 'ccs-wp-theme' ), 'description' => __( 'The wording around the CV Minder job portal. The listings themselves come from CV Minder.', 'ccs-wp-theme' ) ),
 		'p_404' => array( 'panel' => 'pages', 'title' => __( 'Page not found', 'ccs-wp-theme' ), 'description' => '' ),
 	);
 }
@@ -84,7 +85,6 @@ function ccs_copy_fields() {
 		'why_text_2' => array( 'section' => 'why', 'label' => __( 'First paragraph, closing sentence', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'We don’t rush, and we don’t rotate staff every other week.', 'ccs-wp-theme' ) ),
 		'why_button_services' => array( 'section' => 'why', 'label' => __( 'First button label', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'Learn more about our services', 'ccs-wp-theme' ) ),
 		'services_title' => array( 'section' => 'services', 'label' => __( 'Heading', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'Home care services in Maidstone and across Kent', 'ccs-wp-theme' ) ),
-		'services_lede' => array( 'section' => 'services', 'label' => __( 'Introduction', 'ccs-wp-theme' ), 'type' => 'textarea', 'default' => __( 'Some people need a hand for an hour in the morning. Others need someone there through the night, or a team trained for more complex health needs. We’ll work out which it is with you, before anything is agreed.', 'ccs-wp-theme' ) ),
 		'services_cta_line' => array( 'section' => 'services', 'label' => __( 'Line above the buttons', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'Tell us what’s happening and we’ll tell you whether we can help.', 'ccs-wp-theme' ) ),
 		'services_button_all' => array( 'section' => 'services', 'label' => __( 'Second button label', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'See all our services', 'ccs-wp-theme' ) ),
 		'steps_title' => array( 'section' => 'steps', 'label' => __( 'Heading', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'How care starts', 'ccs-wp-theme' ) ),
@@ -97,7 +97,6 @@ function ccs_copy_fields() {
 		'steps_3_text' => array( 'section' => 'steps', 'label' => __( 'Step 3 text', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'Planned, unhurried and reviewed as needs change.', 'ccs-wp-theme' ) ),
 		'steps_button' => array( 'section' => 'steps', 'label' => __( 'Button label', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'See the full process', 'ccs-wp-theme' ) ),
 		'diff_title' => array( 'section' => 'diff', 'label' => __( 'Heading (put *asterisks* round the word to underline)', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'What we do *differently*', 'ccs-wp-theme' ) ),
-		'diff_lede' => array( 'section' => 'diff', 'label' => __( 'Introduction', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'Every provider says they care. These are the four things you can hold us to.', 'ccs-wp-theme' ) ),
 		'diff_1_title' => array( 'section' => 'diff', 'label' => __( 'Point 1 title', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'A small team matched to you', 'ccs-wp-theme' ) ),
 		'diff_1_text' => array( 'section' => 'diff', 'label' => __( 'Point 1 text', 'ccs-wp-theme' ), 'type' => 'textarea', 'default' => __( 'The same small team visits you, so you build a relationship and never have to keep explaining your needs. If nobody in our current team fits your hours, your home, or simply doesn’t get on with you, we recruit someone specifically for you.', 'ccs-wp-theme' ) ),
 		'diff_2_title' => array( 'section' => 'diff', 'label' => __( 'Point 2 title', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'Care plans built around you', 'ccs-wp-theme' ) ),
@@ -108,12 +107,10 @@ function ccs_copy_fields() {
 		'diff_4_text' => array( 'section' => 'diff', 'label' => __( 'Point 4 text', 'ccs-wp-theme' ), 'type' => 'textarea', 'default' => __( 'A named contact who already knows the situation, and updates often enough that you’re never left guessing how a visit went.', 'ccs-wp-theme' ) ),
 		'costs_eyebrow' => array( 'section' => 'costs', 'label' => __( 'Label above the heading', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'No hidden fees', 'ccs-wp-theme' ) ),
 		'costs_title' => array( 'section' => 'costs', 'label' => __( 'Heading', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'What care costs', 'ccs-wp-theme' ) ),
-		'costs_lede' => array( 'section' => 'costs', 'label' => __( 'Introduction', 'ccs-wp-theme' ), 'type' => 'textarea', 'default' => __( 'Most providers make you ask. Here are our rates and every extra that could appear on your invoice, so nothing on it comes as a surprise.', 'ccs-wp-theme' ) ),
 		'costs_funding' => array( 'section' => 'costs', 'label' => __( 'Funding sentence', 'ccs-wp-theme' ), 'type' => 'textarea', 'default' => __( 'Care can be funded privately, through local authority support, or through NHS health funding. We’ll talk you through which applies to you.', 'ccs-wp-theme' ) ),
 		'costs_note' => array( 'section' => 'costs', 'label' => __( 'Note under the rate', 'ccs-wp-theme' ), 'type' => 'textarea', 'default' => __( 'This is our lowest rate. What you pay depends on the type of care and when it happens.', 'ccs-wp-theme' ) ),
 		'costs_extras_heading' => array( 'section' => 'costs', 'label' => __( 'Heading above the list of extras', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'What else you might be charged', 'ccs-wp-theme' ) ),
 		'reviews_title' => array( 'section' => 'reviews', 'label' => __( 'Heading', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'What families say about us', 'ccs-wp-theme' ) ),
-		'reviews_lede' => array( 'section' => 'reviews', 'label' => __( 'Introduction', 'ccs-wp-theme' ), 'type' => 'textarea', 'default' => __( 'Every review here is published elsewhere with its date, so you can read it in full at the source.', 'ccs-wp-theme' ) ),
 		'review_1_quote' => array( 'section' => 'reviews', 'label' => __( 'Review 1: quote', 'ccs-wp-theme' ), 'type' => 'textarea', 'default' => __( '…it was the company owner that came out to start doing my care. She delivered my care for the first two weeks and then slowly introduced other carers to me. This helped me immensely as this was the first time I had received care in my home and I was very anxious.', 'ccs-wp-theme' ) ),
 		'review_1_author' => array( 'section' => 'reviews', 'label' => __( 'Review 1: name or initials', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'T E', 'ccs-wp-theme' ) ),
 		'review_1_relationship' => array( 'section' => 'reviews', 'label' => __( 'Review 1: relationship', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'Receives care at home', 'ccs-wp-theme' ) ),
@@ -131,10 +128,8 @@ function ccs_copy_fields() {
 		'review_3_date' => array( 'section' => 'reviews', 'label' => __( 'Review 3: month and year', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'October 2024', 'ccs-wp-theme' ) ),
 		'reviews_button' => array( 'section' => 'reviews', 'label' => __( 'Button label', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'Read every review on homecare.co.uk', 'ccs-wp-theme' ) ),
 		'team_title' => array( 'section' => 'team', 'label' => __( 'Heading', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'Meet the people behind your care', 'ccs-wp-theme' ) ),
-		'team_lede' => array( 'section' => 'team', 'label' => __( 'Introduction', 'ccs-wp-theme' ), 'type' => 'textarea', 'default' => __( 'The managers and supervisors who run our service. You will know who they are before anyone comes through your door.', 'ccs-wp-theme' ) ),
 		'team_button' => array( 'section' => 'team', 'label' => __( 'Button label', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'Meet the whole team', 'ccs-wp-theme' ) ),
 		'partners_title' => array( 'section' => 'partners', 'label' => __( 'Heading', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'Who we work with', 'ccs-wp-theme' ) ),
-		'partners_lede' => array( 'section' => 'partners', 'label' => __( 'Introduction', 'ccs-wp-theme' ), 'type' => 'textarea', 'default' => __( 'The organisations that regulate us, train our carers and set the standards we work to, and the sister services we run ourselves. You can check us against several of them directly.', 'ccs-wp-theme' ) ),
 		'closing_title' => array( 'section' => 'closing', 'label' => __( 'Heading', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'Not sure where to start?', 'ccs-wp-theme' ) ),
 		'closing_text' => array( 'section' => 'closing', 'label' => __( 'Text', 'ccs-wp-theme' ), 'type' => 'textarea', 'default' => __( 'Most people who call us are not ready to arrange anything yet. They want to talk it through with someone who knows how this works. That conversation is free, and there is nothing to sign at the end of it.', 'ccs-wp-theme' ) ),
 
@@ -225,6 +220,19 @@ function ccs_copy_fields() {
 		'switch_form_title' => array( 'section' => 'p_switch', 'label' => __( 'Form heading', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'Ask about switching', 'ccs-wp-theme' ) ),
 		'switch_form_text' => array( 'section' => 'p_switch', 'label' => __( 'Form introduction', 'ccs-wp-theme' ), 'type' => 'textarea', 'default' => __( 'Your name and a phone number are all we need. We will call you back to talk it through.', 'ccs-wp-theme' ) ),
 		'switch_call_text' => array( 'section' => 'p_switch', 'label' => __( 'Call card text', 'ccs-wp-theme' ), 'type' => 'textarea', 'default' => __( 'Switching can feel like a lot to put in writing. Ring our office team and we will talk it through with you.', 'ccs-wp-theme' ) ),
+		// Vacancies page.
+		'vac_title' => array( 'section' => 'p_vac', 'label' => __( 'Heading', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'Work with us', 'ccs-wp-theme' ) ),
+		'vac_none_text' => array( 'section' => 'p_vac', 'label' => __( 'Line for people with no matching role', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'No role that fits right now? Roles open regularly, so send your details anyway.', 'ccs-wp-theme' ) ),
+		'vac_none_link' => array( 'section' => 'p_vac', 'label' => __( 'Second button label', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'Send us your details', 'ccs-wp-theme' ) ),
+		'vac_jump' => array( 'section' => 'p_vac', 'label' => __( 'Main button label', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'See open roles', 'ccs-wp-theme' ) ),
+		'vac_steps_title' => array( 'section' => 'p_vac', 'label' => __( 'Steps heading', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'What happens after you apply', 'ccs-wp-theme' ) ),
+		'vac_step_1_title' => array( 'section' => 'p_vac', 'label' => __( 'Step 1 title', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'We read every application', 'ccs-wp-theme' ) ),
+		'vac_step_1_text' => array( 'section' => 'p_vac', 'label' => __( 'Step 1 text', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'Someone in our Maidstone office reads it and gets back to you.', 'ccs-wp-theme' ) ),
+		'vac_step_2_title' => array( 'section' => 'p_vac', 'label' => __( 'Step 2 title', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'An informal chat', 'ccs-wp-theme' ) ),
+		'vac_step_2_text' => array( 'section' => 'p_vac', 'label' => __( 'Step 2 text', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'About the role, the hours you want and the area you can cover.', 'ccs-wp-theme' ) ),
+		'vac_step_3_title' => array( 'section' => 'p_vac', 'label' => __( 'Step 3 title', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'Checks and training', 'ccs-wp-theme' ) ),
+		'vac_step_3_text' => array( 'section' => 'p_vac', 'label' => __( 'Step 3 text', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'An enhanced DBS check, which we pay for, then the Care Certificate and shadowing before you work alone.', 'ccs-wp-theme' ) ),
+		'vac_portal_title' => array( 'section' => 'p_vac', 'label' => __( 'Heading above the job portal', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'Open roles', 'ccs-wp-theme' ) ),
 	);
 
 	return $fields;

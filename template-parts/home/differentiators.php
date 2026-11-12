@@ -85,7 +85,6 @@ $items = array(
 				echo ccs_copy_accent( 'diff_title' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_copy_accent().
 				?>
 			</h2>
-			<p class="ccs-lede"><?php echo esc_html( ccs_copy( 'diff_lede' ) ); ?></p>
 
 			<div class="diff-list">
 				<?php foreach ( $items as $i => $item ) : ?>

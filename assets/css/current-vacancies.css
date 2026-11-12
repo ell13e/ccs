@@ -4,25 +4,27 @@
  * @package CCS_WP_Theme
  */
 
-/* CV Minder wrapper: tall container so iframe can size; iframe pinned to bottom. */
+/* CV Minder frame: a fixed, comfortable height with the portal scrolling
+   inside it (Nov 2026). The vendor's standard embed pinned the frame inside a
+   5000px box, so with only a few roles most of the page was blank white (the
+   client asked "why is it so long"). The portal is on another site, so the
+   browser cannot size the frame to its content. Trade-off: a long application
+   form scrolls inside the frame rather than the page. */
 .cvm-embed,
 #cvm_content {
 	position: relative;
-	left: 0;
-	bottom: 0;
-	min-height: 5000px;
 	width: 100%;
+	height: max(900px, 85vh);
+	height: max(900px, 85svh);
 }
 
 .cvm-embed iframe,
 #cvm_content iframe {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	min-width: 250px;
-	min-height: 100%;
+	display: block;
 	width: 100%;
+	min-width: 250px;
+	height: 100%;
+	border: 0;
 }
 
 /* Fallback when CV Minder is disabled. */
@@ -33,4 +35,96 @@
 
 .cvm-fallback .button {
 	margin-top: var(--space-xs, 0.5rem);
+}
+
+/* =========================================================================
+   Page around the portal (Nov 2026). The portal's own sizing above is the
+   vendor's mechanism and stays as it is; these rules only frame it.
+   ========================================================================= */
+.vac-intro__lede p {
+	margin: 0;
+}
+
+.vac-intro__lede p + p {
+	margin-top: var(--space-sm);
+}
+
+.vac-intro__none {
+	margin: var(--space-lg) 0 0;
+	font-size: var(--text-md);
+	color: var(--color-ink-soft);
+}
+
+.vac-steps__title {
+	margin: var(--space-2xl) 0 var(--space-lg);
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.375rem, 1.2rem + 0.6vw, 1.75rem);
+	font-weight: var(--font-weight-medium);
+	color: var(--color-ink);
+	text-align: center;
+}
+
+.vac-portal__title {
+	margin: 0 0 var(--space-lg);
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.75rem, 1.35rem + 1.6vw, 2.5rem);
+	font-weight: var(--font-weight-medium);
+	color: var(--color-ink);
+}
+
+/* One clean frame: white, rounded, a soft shadow. Padding keeps the vendor's
+   content off the rounded corners. */
+.vac-portal__frame {
+	overflow: hidden;
+	padding: clamp(0.5rem, 0.2rem + 1vw, 1.25rem);
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-float);
+}
+
+@media (max-width: 599px) {
+	.vac-steps__title {
+		text-align: left;
+	}
+}
+
+/* Left-aligned: the intro is two paragraphs of the client's own text, too
+   long to read centred (rule 10). */
+.vac-intro__head {
+	max-width: 46rem;
+}
+
+.vac-steps__title {
+	text-align: left;
+}
+
+/* Intro restyle (Nov 2026, client asked): the two lede paragraphs read as
+   one block and fill their lines (balanced wrapping left them ragged at this
+   width), then one action row: jump to the listings, or send details. */
+.vac-intro__head {
+	max-width: 44rem;
+}
+
+.vac-intro__lede,
+.vac-intro__lede p {
+	max-width: none;
+	text-wrap: pretty;
+}
+
+.vac-intro__lede p + p {
+	margin-top: 0.35rem;
+}
+
+.vac-intro__actions {
+	margin-top: var(--space-xl);
+}
+
+.vac-intro__none {
+	margin: var(--space-sm) 0 0;
+	font-size: var(--text-sm);
+	color: var(--color-ink-soft);
+}
+
+#vac-portal-heading {
+	scroll-margin-top: calc(var(--ccs-header-height, 5rem) + var(--space-md));
 }

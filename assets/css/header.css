@@ -176,7 +176,13 @@ body.has-photo-hero:not(.ccs-mobile-nav-open) .site-header:not(.is-scrolled) .na
    is carried by the underline bar and the weight instead, which is also the
    non-colour cue WCAG 1.4.1 wants. The bar uses currentColor, so it turns white
    here with no separate rule. */
-body.has-photo-hero:not(.ccs-mobile-nav-open) .site-header:not(.is-scrolled) .nav-desktop > .nav-list > .menu-item > .nav-link:is(:hover, :focus-visible),
+/* Hover keeps the regular weight (Nov 2026). Bold on hover made the label
+   wider, which pushed every menu item after it sideways: the "jumpy header"
+   the client reported. The underline bar carries the hover state. */
+body.has-photo-hero:not(.ccs-mobile-nav-open) .site-header:not(.is-scrolled) .nav-desktop > .nav-list > .menu-item > .nav-link:is(:hover, :focus-visible) {
+	color: #fff;
+}
+
 body.has-photo-hero:not(.ccs-mobile-nav-open) .site-header:not(.is-scrolled) .nav-desktop > .nav-list > :is(.current-menu-item, .current_page_item, .current-menu-ancestor) > .nav-link {
 	color: #fff;
 	font-weight: var(--font-weight-semibold);
@@ -993,4 +999,20 @@ body.ccs-mobile-nav-open::before {
 	.mobile-menu-btn__icon::after {
 		transition: none;
 	}
+}
+
+/* Hover jitter fix (Nov 2026, client: "jumpy header on interaction"). The
+   dropdown chevron was an inline box inside the link; rotating it on hover
+   rounded the link's width by a pixel, which nudged every menu item after it
+   sideways. The chevron is now positioned out of the flow in space the link
+   reserves, so hovering cannot change any item's width. */
+.nav-desktop > .nav-list > .menu-item-has-children > .nav-link {
+	padding-right: calc(var(--nav-link-pad-x, 0.75rem) + 0.95em);
+}
+
+.nav-desktop > .nav-list > .menu-item-has-children > .nav-link::after {
+	position: absolute;
+	right: var(--nav-link-pad-x, 0.75rem);
+	top: 50%;
+	margin: -0.3em 0 0;
 }

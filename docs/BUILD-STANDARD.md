@@ -28,7 +28,7 @@ status column changes.
 |---|---|---|
 | 1 | Real viewports | Pass. 375 via the true-width harness (`mobile-shot.sh`), 1440 headless and in the pane. |
 | 2–6 | Overflow, one h1, heading order, contrast, targets, links | Pass. `bin/qa.sh`: 21 page types, both widths, no flags; 34 links all 200. |
-| 7 | Fresh boot | Not run. It needs a second Playground on a new database, and previews are kept to the one on 9401. Run before launch. |
+| 7 | Fresh boot | Pass, 11 Nov 2026, on a fresh database on 9401: after first-time setup, no duplicated pages, posts or menu items; main menu 6 items, footer 9, careers 4; Privacy Policy published; switching page created; the shipped copy update applied to all 22 seeded pages. Caveat: of six simultaneous requests in the first second, four got the half-set-up site (default title, unsorted menu); everything was correct from the next request on. |
 | 8 | Stale assets | Pass by design: asset URLs carry the file mtime. |
 | 9 | Hero unchanged unless agreed | Changed with the client's agreement (larger headline, one action, route strip). |
 | 10 | Side by side with ElderlyCare X | Done at 1440 and 375. Structure, rhythm and section anatomy match: contact strip over the hero, centred heads over card rows, one photo per section. The visible gap is photography (studio versus phone). |

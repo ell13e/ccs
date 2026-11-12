@@ -81,9 +81,6 @@ $partners = array(
 				echo esc_html( ccs_copy( 'partners_title' ) );
 				?>
 			</h2>
-			<p class="ccs-lede">
-				<?php echo esc_html( ccs_copy( 'partners_lede' ) ); ?>
-			</p>
 		</header>
 		<ul class="home-partnerships__list">
 			<?php foreach ( $partners as $partner ) : ?>

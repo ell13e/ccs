@@ -106,8 +106,16 @@ Job: is this a good place to work, and is there a job? Primary: See vacancies.
 4. Sub-pages as `.info-card`s (white, flush-bottom). 5. Careers CTA band (no photo).
 
 ## Vacancies (`template-current-vacancies.php`)
-Intro, then the CV Minder iframe (its tall pinned-iframe mechanics are the
-vendor's; don't restyle them). The portal only renders on the registered domain.
+Job: show what is open and make applying feel straightforward.
+1. Photo hero. 2. White: left-aligned head ("Work with us", the page's own intro,
+"No role that fits?" line with a contact link), then "What happens after you
+apply" as `.ccs-steps--panel`. 3. Tint: "Open roles" over the CV Minder iframe in
+one white frame (`.vac-portal__frame`). 4. Careers CTA band.
+The frame is a fixed height (85% of the screen, at least 900px) with the portal scrolling inside; the vendor's 5000px pinned box left most of the page blank. **Never
+load this page in a normal browser for checks:** the client wants requests to
+CV Minder kept to a minimum. Use `CHROME=scripts/chrome-noportal.sh` with
+`mobile-shot.sh` or `run-audit.sh`, which blocks the portal's hosts. `bin/qa.sh`
+skips the page.
 
 ## Long-form and policy pages (`page.php`, `template-content-page.php`, Care Guides)
 `template-parts/article-body`: reading measure ~46rem, sticky "On this page" rail

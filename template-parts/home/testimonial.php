@@ -108,9 +108,6 @@ $ccs_review_initials = static function ( $name ) {
 				echo esc_html( ccs_copy( 'reviews_title' ) );
 				?>
 			</h2>
-			<p class="ccs-lede">
-				<?php echo esc_html( ccs_copy( 'reviews_lede' ) ); ?>
-			</p>
 		</header>
 
 		<ul class="home-reviews__list" role="list">

@@ -90,7 +90,6 @@ if ( $ccs_costs_page instanceof WP_Post ) {
 		<div class="home-costs__intro">
 			<p class="ccs-eyebrow"><?php echo esc_html( ccs_copy( 'costs_eyebrow' ) ); ?></p>
 			<h2 id="home-costs-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'costs_title' ) ); ?></h2>
-			<p class="ccs-lede"><?php echo esc_html( ccs_copy( 'costs_lede' ) ); ?></p>
 			<p class="home-costs__funding"><?php echo esc_html( ccs_copy( 'costs_funding' ) ); ?></p>
 			<?php if ( $ccs_costs_url ) : ?>
 				<a class="ccs-text-link" href="<?php echo esc_url( $ccs_costs_url ); ?>"><?php echo esc_html( $ccs_costs_text ); ?> <span aria-hidden="true">&rarr;</span></a>

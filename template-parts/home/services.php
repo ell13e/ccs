@@ -153,9 +153,6 @@ $ccs_service_icons = array( 'home', 'cup', 'pulse' );
 				echo esc_html( ccs_copy( 'services_title' ) );
 				?>
 			</h2>
-			<p class="ccs-lede">
-				<?php echo esc_html( ccs_copy( 'services_lede' ) ); ?>
-			</p>
 		</header>
 
 		<?php
