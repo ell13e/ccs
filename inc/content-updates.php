@@ -159,3 +159,32 @@ function ccs_apply_vacancies_hero_update() {
 	set_post_thumbnail( $page->ID, $att );
 }
 add_action( 'admin_init', 'ccs_apply_vacancies_hero_update' );
+
+/**
+ * Costs extras as "charge | price" rows (Nov 2026, costs section redesign).
+ *
+ * A site that saved the extras list in the Customizer while it still held the
+ * old sentence-per-line default would keep showing sentences in the new table.
+ * Where the saved value is exactly that old default, drop it so the new
+ * default rows apply. Anything the client wrote themselves is left alone.
+ */
+function ccs_apply_cost_extras_update() {
+	if ( get_option( 'ccs_cost_extras_rows_done' ) ) {
+		return;
+	}
+
+	$old_default = implode( "\n", array(
+		'A one-off £30 fee when we set up your care package',
+		'Evenings, weekends and complex care are charged at higher rates',
+		'Bank holidays are charged at double, and Christmas Day, Boxing Day and New Year’s Day at treble',
+		'Escort visits add mileage at 50p per mile, plus any parking',
+	) );
+
+	$saved = get_theme_mod( 'ccs_cost_extras', null );
+	if ( is_string( $saved ) && trim( str_replace( "\r", '', $saved ) ) === $old_default ) {
+		remove_theme_mod( 'ccs_cost_extras' );
+	}
+
+	update_option( 'ccs_cost_extras_rows_done', 1, false );
+}
+add_action( 'admin_init', 'ccs_apply_cost_extras_update' );

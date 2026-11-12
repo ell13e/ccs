@@ -49,13 +49,26 @@ $ccs_cost_extras = array_values( array_filter( array_map(
 	return $line !== '';
 } ) );
 
+/*
+ * Each line is "what the charge is | the price" (Nov 2026). A line without
+ * the bar still shows, as a full-width row, so older wording never vanishes.
+ */
+$ccs_cost_rows = array();
+foreach ( $ccs_cost_extras as $ccs_line ) {
+	$ccs_parts       = array_map( 'trim', explode( '|', $ccs_line, 2 ) );
+	$ccs_cost_rows[] = array(
+		'label' => $ccs_parts[0],
+		'price' => isset( $ccs_parts[1] ) ? $ccs_parts[1] : '',
+	);
+}
+
 $ccs_costs = apply_filters(
 	'ccs_home_costs',
 	array(
 		'from_rate'      => get_theme_mod( 'ccs_cost_from_rate', '£36.38' ),
 		'rate_basis'     => get_theme_mod( 'ccs_cost_basis', __( 'per hour for personal care, weekdays 7am–10pm', 'ccs-wp-theme' ) ),
 		'effective_from' => get_theme_mod( 'ccs_cost_effective_from', __( 'Rates from 1 September 2026', 'ccs-wp-theme' ) ),
-		'extras'         => $ccs_cost_extras,
+		'extras'         => $ccs_cost_rows,
 	)
 );
 
@@ -84,48 +97,66 @@ if ( $ccs_costs_page instanceof WP_Post ) {
 }
 ?>
 
+<?php
+/*
+ * Fifth version (Nov 2026; client: "i dont like this section at all"). The
+ * old layout put a short intro beside a tall card, so the intro floated in
+ * empty space and the extras read as a list of sentences. Now: the heading
+ * above, then one wide fee sheet. The rate is the focal point on the left; the
+ * charges on the right are a ruled table, each charge with its price aligned
+ * to the right, as on a printed fee schedule. Everything that can be charged
+ * is still on the page, which is this section's promise.
+ *
+ * The caveat stays with the figure: the headline is the entry rate for the
+ * cheapest band, and alone it reads as a flat price.
+ */
+?>
 <section class="home-costs" aria-labelledby="home-costs-heading">
-	<div class="home-costs__inner container container--lg">
+	<div class="container container--lg">
 
-		<div class="home-costs__intro">
+		<header class="home-costs__head">
 			<p class="ccs-eyebrow"><?php echo esc_html( ccs_copy( 'costs_eyebrow' ) ); ?></p>
 			<h2 id="home-costs-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'costs_title' ) ); ?></h2>
 			<p class="home-costs__funding"><?php echo esc_html( ccs_copy( 'costs_funding' ) ); ?></p>
-			<?php if ( $ccs_costs_url ) : ?>
-				<a class="ccs-text-link" href="<?php echo esc_url( $ccs_costs_url ); ?>"><?php echo esc_html( $ccs_costs_text ); ?> <span aria-hidden="true">&rarr;</span></a>
-			<?php endif; ?>
-		</div>
+		</header>
 
-		<?php
-		/*
-		 * Third version (Nov 2026; the client found the dark two-part panel ugly
-		 * and overwhelming). One soft panel: the rate as the focal point, what it
-		 * covers, the caveat, and the extras one tap away in a disclosure rather
-		 * than all on screen at once. Everything that can be charged is still on
-		 * the page, which is this section's promise.
-		 *
-		 * The caveat stays with the figure every time: the headline is the entry
-		 * rate for the cheapest band, and alone it reads as a flat price.
-		 */
-		?>
-		<div class="price-card" data-ccs-exception="rule 1: a rate card people compare and screenshot, a distinct object">
-			<p class="price-card__from-label"><?php esc_html_e( 'Hourly rate from', 'ccs-wp-theme' ); ?></p>
-			<p class="price-card__rate"><?php echo esc_html( $ccs_costs['from_rate'] ); ?></p>
-			<p class="price-card__basis"><?php echo esc_html( $ccs_costs['rate_basis'] ); ?></p>
-			<p class="price-card__effective"><?php echo esc_html( $ccs_costs['effective_from'] ); ?></p>
-			<p class="price-card__caveat"><?php echo esc_html( ccs_copy( 'costs_note' ) ); ?></p>
+		<div class="fee-sheet" data-ccs-exception="rule 1: a rate sheet people compare and screenshot, a distinct object">
+			<div class="fee-sheet__rate">
+				<p class="fee-sheet__label"><?php esc_html_e( 'Hourly rate from', 'ccs-wp-theme' ); ?></p>
+				<p class="fee-sheet__figure"><?php echo esc_html( $ccs_costs['from_rate'] ); ?></p>
+				<p class="fee-sheet__basis"><?php echo esc_html( $ccs_costs['rate_basis'] ); ?></p>
+				<p class="fee-sheet__note"><?php echo esc_html( ccs_copy( 'costs_note' ) ); ?></p>
+				<p class="fee-sheet__date"><?php echo esc_html( $ccs_costs['effective_from'] ); ?></p>
+			</div>
 
 			<?php if ( ! empty( $ccs_costs['extras'] ) ) : ?>
-				<div class="price-extras">
-					<h3 class="price-extras__heading"><?php echo esc_html( ccs_copy( 'costs_extras_heading' ) ); ?></h3>
-					<ul class="price-card__list" role="list">
-						<?php foreach ( $ccs_costs['extras'] as $ccs_extra ) : ?>
-							<li class="price-card__item"><?php echo esc_html( $ccs_extra ); ?></li>
+				<div class="fee-sheet__extras">
+					<h3 class="fee-sheet__label"><?php echo esc_html( ccs_copy( 'costs_extras_heading' ) ); ?></h3>
+					<dl class="fee-sheet__list">
+						<?php foreach ( $ccs_costs['extras'] as $ccs_row ) : ?>
+							<?php
+							// A filter may still pass plain strings; treat each as a label.
+							if ( ! is_array( $ccs_row ) ) {
+								$ccs_row = array( 'label' => (string) $ccs_row, 'price' => '' );
+							}
+							?>
+							<div class="fee-sheet__row<?php echo '' === $ccs_row['price'] ? ' fee-sheet__row--full' : ''; ?>">
+								<dt><?php echo esc_html( $ccs_row['label'] ); ?></dt>
+								<?php if ( '' !== $ccs_row['price'] ) : ?>
+									<dd><?php echo esc_html( $ccs_row['price'] ); ?></dd>
+								<?php endif; ?>
+							</div>
 						<?php endforeach; ?>
-					</ul>
+					</dl>
 				</div>
 			<?php endif; ?>
 		</div>
+
+		<?php if ( $ccs_costs_url ) : ?>
+			<p class="home-costs__more">
+				<a class="ccs-text-link" href="<?php echo esc_url( $ccs_costs_url ); ?>"><?php echo esc_html( $ccs_costs_text ); ?> <span aria-hidden="true">&rarr;</span></a>
+			</p>
+		<?php endif; ?>
 
 	</div>
 </section>

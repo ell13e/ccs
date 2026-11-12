@@ -2316,7 +2316,7 @@ a.card {
 	interpolate-size: allow-keywords;
 }
 
-:is(.price-extras, .diff-item, .ccs-more, .ccs-faq__item)::details-content {
+:is(.diff-item, .ccs-more, .ccs-faq__item)::details-content {
 	block-size: 0;
 	overflow: clip;
 	transition:
@@ -2324,12 +2324,12 @@ a.card {
 		content-visibility 320ms allow-discrete;
 }
 
-:is(.price-extras, .diff-item, .ccs-more, .ccs-faq__item)[open]::details-content {
+:is(.diff-item, .ccs-more, .ccs-faq__item)[open]::details-content {
 	block-size: auto;
 }
 
 @media (prefers-reduced-motion: reduce) {
-	:is(.price-extras, .diff-item, .ccs-more, .ccs-faq__item)::details-content {
+	:is(.diff-item, .ccs-more, .ccs-faq__item)::details-content {
 		transition: none;
 	}
 }
