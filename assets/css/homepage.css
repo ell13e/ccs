@@ -1616,18 +1616,19 @@ a.home-routes__main::after {
 	padding-bottom: 0 !important;
 }
 
-/* Costs, seventh version (Nov 2026): what affects the price on the left, the
-   rate table on the right (template-parts/rate-table.php). */
+/* Costs, eighth version (Nov 2026): the note and a link to the Costs and
+   funding page on the left, the three starting prices on the right, in the
+   same tint panel the full table uses there. */
 .home-costs__grid {
 	display: grid;
 	gap: var(--space-2xl);
+	align-items: center;
 }
 
 @media (min-width: 960px) {
 	.home-costs__grid {
-		grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+		grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
 		gap: clamp(3rem, 1.5rem + 4vw, 6rem);
-		align-items: start;
 	}
 }
 
@@ -1635,50 +1636,49 @@ a.home-routes__main::after {
 	margin-bottom: 0;
 }
 
-.home-costs__factors-title {
-	margin: var(--space-xl) 0 var(--space-sm);
-	font-family: var(--font-family-body);
-	font-size: var(--text-base);
-	font-weight: var(--font-weight-semibold);
-	color: var(--color-ink);
+.home-costs__actions {
+	margin-top: var(--space-xl);
 }
 
-.home-costs__factors {
+.rate-from {
 	display: grid;
-	gap: var(--space-sm);
+	gap: var(--space-lg);
 	margin: 0;
-	padding: 0;
-	list-style: none;
-	counter-reset: factor;
 }
 
-.home-costs__factors li {
-	position: relative;
-	padding-left: 2.25rem;
+.rate-from__row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 0.25rem var(--space-md);
+}
+
+.rate-from__row dt {
 	font-size: var(--text-base);
-	line-height: 1.6;
-	color: var(--color-ink);
-	counter-increment: factor;
-}
-
-.home-costs__factors li::before {
-	content: counter(factor);
-	position: absolute;
-	top: 0.05em;
-	left: 0;
-	display: grid;
-	place-items: center;
-	width: 1.6rem;
-	height: 1.6rem;
-	border-radius: 50%;
-	background-color: var(--color-band-tint);
-	font-size: var(--text-sm);
 	font-weight: var(--font-weight-semibold);
 	color: var(--color-primary);
 }
 
-.home-costs__intro .home-costs__funding {
-	margin: var(--space-xl) 0 var(--space-sm);
-	font-size: var(--text-base);
+.rate-from__row dd {
+	display: flex;
+	align-items: baseline;
+	gap: 0.4rem;
+	margin: 0;
+	font-variant-numeric: lining-nums tabular-nums;
+}
+
+.rate-from__word,
+.rate-from__unit {
+	font-size: var(--text-sm);
+	color: var(--color-ink-soft);
+}
+
+.rate-from__price {
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.75rem, 1.5rem + 0.8vw, 2.125rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.1;
+	color: var(--color-ink);
 }
 

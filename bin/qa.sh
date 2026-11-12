@@ -19,7 +19,7 @@ cd "$THEME_DIR" || exit 1
 FAIL=0
 
 PAGES=(/ /about-home-care-maidstone/ /areas/ /areas/maidstone/ /careers/ /contact-us/
-	/switch-to-us/ /cqc-and-our-care/ /getting-started/ /home-care-services-kent/ /news-and-updates/
+	/switch-to-us/ /costs-and-funding/ /cqc-and-our-care/ /getting-started/ /home-care-services-kent/ /news-and-updates/
 	/resources/ /resources/care-guides/ /resources/faqs/ /resources/referral-information/
 	/services/domiciliary-care/ /services/complex-care/ /who-youll-meet/ /privacy-policy/
 	"/?s=care" /not-a-page/)

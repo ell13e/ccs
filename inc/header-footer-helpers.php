@@ -221,6 +221,7 @@ function ccs_footer_company_fallback_menu() {
  */
 function ccs_footer_help_fallback_menu() {
 	$items = array(
+		array( 'title' => __( 'Costs and funding', 'ccs-wp-theme' ), 'slug' => 'costs-and-funding' ),
 		array( 'title' => __( 'FAQs', 'ccs-wp-theme' ), 'slug' => 'faqs' ),
 		array( 'title' => __( 'Privacy Policy', 'ccs-wp-theme' ), 'slug' => 'privacy-policy' ),
 		array( 'title' => __( 'Terms & Conditions', 'ccs-wp-theme' ), 'slug' => 'terms-and-conditions' ),
