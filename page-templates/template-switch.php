@@ -105,7 +105,7 @@ $ccs_switch_faqs = array(
 				<h2 id="switch-form-heading" class="contact-form-card__title"><?php echo esc_html( ccs_copy( 'switch_form_title' ) ); ?></h2>
 				<p id="switch-form-desc" class="contact-form-card__desc"><?php echo esc_html( ccs_copy( 'switch_form_text' ) ); ?></p>
 
-				<form class="contact-form ccs-form" data-ccs-action="submit_enquiry" method="post" action="" novalidate aria-describedby="switch-form-desc switch-form-message">
+				<form class="contact-form ccs-form" data-ccs-action="submit_enquiry" data-ccs-context="referrer" method="post" action="" novalidate aria-describedby="switch-form-desc switch-form-message">
 					<?php // Tags the enquiry so the office sees at once that this family is switching provider. ?>
 					<input type="hidden" name="enquiry_source" value="switching">
 

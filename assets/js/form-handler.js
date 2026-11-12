@@ -159,6 +159,31 @@
 	}
 
 	/**
+	 * The page the person was looking at when they asked to hear from us, so
+	 * the office knows what they were reading (client, Nov 2026). Forms on a
+	 * page people are sent to (contact, switching) carry
+	 * data-ccs-context="referrer" and report the page that sent them; any
+	 * other form reports its own page. Only this site's pages count, and
+	 * nothing is stored in the browser: the server turns the address into the
+	 * page's title (inc/forms.php, ccs_enquiry_booked_from()).
+	 * @param {HTMLFormElement} form
+	 * @returns {string} A same-site URL, or '' when they came straight to the form.
+	 */
+	function bookedFromPage(form) {
+		var here = window.location.href.split('#')[0];
+		if (form.getAttribute('data-ccs-context') !== 'referrer') return here;
+		var ref = document.referrer || '';
+		try {
+			var url = new URL(ref);
+			if (url.host !== window.location.host) return '';
+			if (url.href.split('#')[0] === here) return '';
+			return url.href;
+		} catch (e) {
+			return '';
+		}
+	}
+
+	/**
 	 * Submit form via AJAX.
 	 * @param {HTMLFormElement} form
 	 * @param {string} action - 'submit_enquiry' | 'request_callback'
@@ -172,6 +197,10 @@
 		if (action === 'request_callback' && config.nonceCallback) {
 			formData.set('nonce', config.nonceCallback);
 		}
+
+		var bookedFrom = bookedFromPage(form);
+		formData.set('enquiry_booked_from', bookedFrom);
+		formData.set('enquiry_form_page', window.location.href.split('#')[0]);
 
 		setLoading(form, true);
 		showMessage(form, '', 'success');

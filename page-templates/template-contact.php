@@ -135,7 +135,7 @@ $ccs_next_steps = apply_filters(
 					<?php esc_html_e( 'Your name and a phone number are all we need. We will call you back to arrange a conversation or a visit.', 'ccs-wp-theme' ); ?>
 				</p>
 
-				<form id="contact-form" class="contact-form ccs-form" data-ccs-action="submit_enquiry" method="post" action="" novalidate aria-describedby="contact-form-desc contact-form-message">
+				<form id="contact-form" class="contact-form ccs-form" data-ccs-action="submit_enquiry" data-ccs-context="referrer" method="post" action="" novalidate aria-describedby="contact-form-desc contact-form-message">
 					<div class="contact-form__grid">
 						<div class="ccs-field">
 							<label for="contact-name" class="ccs-field__label"><?php esc_html_e( 'Your name', 'ccs-wp-theme' ); ?></label>
