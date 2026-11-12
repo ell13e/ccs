@@ -1683,3 +1683,15 @@
 	align-items: center;
 	min-height: 2.75rem;
 }
+
+/* Team captions centred under the photo (client, Nov 2026). */
+.team-tile__tag {
+	align-items: center;
+	text-align: center;
+}
+
+/* The closing-band photo (a client at the pottery wheel) is a portrait:
+   keep his face in frame when phones crop it to a wide strip. */
+.cta-card__media img {
+	object-position: 55% 40%;
+}

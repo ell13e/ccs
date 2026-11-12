@@ -7,222 +7,155 @@
 ?>
 </div><!-- #content -->
 
-<footer id="colophon" class="site-footer site-footer-modern" role="contentinfo">
-	<div class="footer-modern-container">
-		<div class="footer-modern-top">
-			<div class="footer-modern-brand">
+<?php
+/*
+ * Footer, redesigned Nov 2026 (client: "footer needs redesigning"). Three
+ * rows on the ink ground:
+ * 1. The brand: logo and the promise line, with the phone opposite.
+ * 2. Four columns of equal standing: Contact (address, hours), Company,
+ *    Help, Where we work.
+ * 3. A hairline, then copyright left and the CQC mark right.
+ * The site tagline is no longer printed here: it was a keyword string
+ * ("Home Care in Maidstone & Kent - Your Team...") read as a sentence.
+ */
+$footer_phone   = get_theme_mod( 'ccs_phone', '01622 809 881' );
+$footer_address = get_theme_mod( 'ccs_contact_address', "The Maidstone Studios, New Cut Road\nMaidstone, Kent ME14 5NZ" );
+$footer_hours   = get_theme_mod( 'ccs_office_hours', 'Mon–Fri 9am–5pm' );
+$footer_email   = get_theme_mod( 'ccs_contact_email', '' );
+$ccs_footer_locations = get_posts( array(
+	'post_type'              => 'location',
+	'post_status'            => 'publish',
+	'numberposts'            => 12,
+	'orderby'                => 'title',
+	'order'                  => 'ASC',
+	'suppress_filters'       => false,
+	'no_found_rows'          => true,
+	'update_post_meta_cache' => false,
+	'update_post_term_cache' => false,
+) );
+
+/*
+ * Town only. Every one of these posts is titled "Home Care in X",
+ * which would repeat the same three words down the whole column and
+ * bury the only word that differs.
+ *
+ * Deduplicated by town, because a footer must never list the same
+ * place twice however the content got there. Duplicate location
+ * posts are exactly what this install had: the theme's provisioning
+ * is idempotent, but two PHP workers racing the same activation
+ * request insert two copies of everything — the same fault that
+ * doubled the primary nav. Resilient here rather than assuming the
+ * data is clean.
+ */
+$ccs_footer_towns = array();
+foreach ( $ccs_footer_locations as $ccs_loc ) {
+	$ccs_loc_town = get_post_meta( $ccs_loc->ID, 'location_town', true );
+	if ( ! is_string( $ccs_loc_town ) || trim( $ccs_loc_town ) === '' ) {
+		$ccs_loc_town = preg_replace( '/^Home Care in\s+/i', '', get_the_title( $ccs_loc ) );
+	}
+	$ccs_loc_town = trim( (string) $ccs_loc_town );
+	$ccs_loc_key  = strtolower( $ccs_loc_town );
+	if ( $ccs_loc_town === '' || isset( $ccs_footer_towns[ $ccs_loc_key ] ) ) {
+		continue;
+	}
+	$ccs_footer_towns[ $ccs_loc_key ] = array(
+		'town' => $ccs_loc_town,
+		'url'  => get_permalink( $ccs_loc ),
+	);
+}
+
+?>
+<footer id="colophon" class="site-footer site-footer-modern ft" role="contentinfo">
+	<div class="ft__inner container container--lg">
+
+		<div class="ft__top">
+			<div class="ft__brand">
 				<?php if ( has_custom_logo() ) : ?>
 					<?php the_custom_logo(); ?>
 				<?php elseif ( file_exists( get_template_directory() . '/assets/images/brand/ccs-logo-long.png' ) ) : ?>
-					<?php
-					/*
-					 * The packaged lockup, the same fallback the header uses. The footer
-					 * used to drop to the site name in plain type here, so the page opened
-					 * with the logo and closed without it (CLAUDE.md rule 13, unity).
-					 */
-					?>
-					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="footer-modern-logo-link footer-modern-logo-link--img" rel="home">
-						<img
-							src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/brand/ccs-logo-long.png' ); ?>"
-							alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>"
-							width="1617"
-							height="276"
-							loading="lazy"
-							decoding="async"
-						>
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="ft__logo" rel="home">
+						<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/brand/ccs-logo-long.png' ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" width="1617" height="276" loading="lazy" decoding="async">
 					</a>
 				<?php else : ?>
-					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="footer-modern-logo-link" rel="home"><?php bloginfo( 'name' ); ?></a>
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="ft__logo ft__logo--text" rel="home"><?php bloginfo( 'name' ); ?></a>
 				<?php endif; ?>
-				<?php if ( get_bloginfo( 'description' ) ) : ?>
-					<p class="footer-modern-description"><?php echo esc_html( get_bloginfo( 'description' ) ); ?></p>
-				<?php endif; ?>
-				<?php
-				/*
-				 * Name, address, phone and hours together. The footer previously
-				 * carried only a phone number, which left the single most
-				 * important block of local-SEO data on any site — consistent NAP
-				 * — incomplete, and gave a visitor no way to see where the
-				 * office actually is or when someone will answer.
-				 *
-				 * The address falls back to the registered office so the block
-				 * is never empty on a fresh install; a Customizer value wins.
-				 * Same default as the organisation schema in
-				 * inc/seo/class-structured-data.php, so the published address
-				 * and the marked-up address cannot disagree.
-				 */
-				$footer_phone   = get_theme_mod( 'ccs_phone', '01622 809 881' );
-				$footer_address = get_theme_mod( 'ccs_contact_address', "The Maidstone Studios, New Cut Road\nMaidstone, Kent ME14 5NZ" );
-				$footer_hours   = get_theme_mod( 'ccs_office_hours', 'Mon–Fri 9am–5pm' );
-				if ( $footer_phone || $footer_address || $footer_hours ) :
-					?>
-					<div class="footer-modern-contact">
-						<?php if ( $footer_phone ) : ?>
-							<a href="<?php echo esc_url( 'tel:' . preg_replace( '/\s+/', '', $footer_phone ) ); ?>" class="footer-modern-contact__phone"><?php echo esc_html( $footer_phone ); ?></a>
-						<?php endif; ?>
-						<?php if ( $footer_address ) : ?>
-							<address class="footer-modern-contact__address"><?php echo nl2br( esc_html( $footer_address ) ); ?></address>
-						<?php endif; ?>
-						<?php if ( $footer_hours ) : ?>
-							<p class="footer-modern-contact__hours">
-								<span class="footer-modern-contact__hours-label"><?php esc_html_e( 'Office hours', 'ccs-wp-theme' ); ?></span>
-								<?php echo esc_html( $footer_hours ); ?>
-							</p>
-						<?php endif; ?>
-					</div>
-				<?php endif; ?>
-				<?php
-				/*
-				 * The small "Regulated by CQC" mark. The full live widget sat here
-				 * briefly and looked like a random insert (client, Nov 2026); the
-				 * rating itself is shown by the hero badge and on the CQC page.
-				 */
-				get_template_part( 'template-parts/cqc-regulated-badge', null, array( 'variant' => 'white' ) );
-				?>
+				<p class="ft__promise"><?php esc_html_e( 'Your team. Your time. Your life.', 'ccs-wp-theme' ); ?></p>
 			</div>
+			<?php if ( $footer_phone ) : ?>
+				<div class="ft__call">
+					<span class="ft__call-label"><?php esc_html_e( 'Talk to our Maidstone office', 'ccs-wp-theme' ); ?></span>
+					<a class="ft__phone" href="<?php echo esc_url( 'tel:' . preg_replace( '/\s+/', '', $footer_phone ) ); ?>"><?php echo esc_html( $footer_phone ); ?></a>
+				</div>
+			<?php endif; ?>
 		</div>
 
-		<div class="footer-modern-grid">
-			<nav class="footer-modern-col" aria-label="<?php esc_attr_e( 'Company', 'ccs-wp-theme' ); ?>">
-				<h3 class="footer-modern-heading"><?php esc_html_e( 'Company', 'ccs-wp-theme' ); ?></h3>
+		<div class="ft__grid">
+			<div class="ft__col">
+				<h3 class="ft__heading"><?php esc_html_e( 'Visit us', 'ccs-wp-theme' ); ?></h3>
+				<?php if ( $footer_address ) : ?>
+					<address class="ft__text"><?php echo nl2br( esc_html( $footer_address ) ); ?></address>
+				<?php endif; ?>
+				<?php if ( $footer_hours ) : ?>
+					<p class="ft__text ft__hours"><?php echo esc_html( $footer_hours ); ?></p>
+				<?php endif; ?>
+				<?php if ( $footer_email ) : ?>
+					<p class="ft__text"><a class="ft__link" href="<?php echo esc_url( 'mailto:' . antispambot( $footer_email ) ); ?>"><?php echo esc_html( antispambot( $footer_email ) ); ?></a></p>
+				<?php endif; ?>
+			</div>
+
+			<nav class="ft__col" aria-label="<?php esc_attr_e( 'Company', 'ccs-wp-theme' ); ?>">
+				<h3 class="ft__heading"><?php esc_html_e( 'Company', 'ccs-wp-theme' ); ?></h3>
 				<?php
 				if ( has_nav_menu( 'footer_company' ) ) {
-					wp_nav_menu(
-						array(
-							'theme_location' => 'footer_company',
-							'menu_class'     => 'footer-modern-links',
-							'container'      => false,
-							'link_class'     => 'footer-modern-link',
-						)
-					);
+					wp_nav_menu( array( 'theme_location' => 'footer_company', 'menu_class' => 'ft__links footer-modern-links', 'container' => false, 'link_class' => 'ft__link footer-modern-link' ) );
 				} else {
 					ccs_footer_company_fallback_menu();
 				}
 				?>
 			</nav>
 
-			<nav class="footer-modern-col" aria-label="<?php esc_attr_e( 'Help and support', 'ccs-wp-theme' ); ?>">
-				<h3 class="footer-modern-heading"><?php esc_html_e( 'Help', 'ccs-wp-theme' ); ?></h3>
+			<nav class="ft__col" aria-label="<?php esc_attr_e( 'Help and support', 'ccs-wp-theme' ); ?>">
+				<h3 class="ft__heading"><?php esc_html_e( 'Help', 'ccs-wp-theme' ); ?></h3>
 				<?php
 				if ( has_nav_menu( 'footer_help' ) ) {
-					wp_nav_menu(
-						array(
-							'theme_location' => 'footer_help',
-							'menu_class'     => 'footer-modern-links',
-							'container'      => false,
-							'link_class'     => 'footer-modern-link',
-						)
-					);
+					wp_nav_menu( array( 'theme_location' => 'footer_help', 'menu_class' => 'ft__links footer-modern-links', 'container' => false, 'link_class' => 'ft__link footer-modern-link' ) );
 				} else {
 					ccs_footer_help_fallback_menu();
 				}
 				?>
 			</nav>
 
-			<?php
-			/*
-			 * Areas covered, built from the published location posts rather than
-			 * a hardcoded list, so it stays true as towns are added and every
-			 * entry is a real internal link to a real page.
-			 *
-			 * This is the footer's biggest local-SEO gap closed. The benchmarked
-			 * competitors all name places explicitly — Bluebird lists villages
-			 * around Maidstone (Sutton Valence, Harrietsham, Ulcombe, Marden,
-			 * Staplehurst…), Superior's Kent page names hospitals, councils and
-			 * the ICB — and both rank on that specificity. This footer named
-			 * nowhere at all. It also fills the empty right-hand half the two
-			 * column grid left behind.
-			 */
-			$ccs_footer_locations = get_posts( array(
-				'post_type'              => 'location',
-				'post_status'            => 'publish',
-				'numberposts'            => 12,
-				'orderby'                => 'title',
-				'order'                  => 'ASC',
-				'suppress_filters'       => false,
-				'no_found_rows'          => true,
-				'update_post_meta_cache' => false,
-				'update_post_term_cache' => false,
-			) );
-
-			/*
-			 * Town only. Every one of these posts is titled "Home Care in X",
-			 * which would repeat the same three words down the whole column and
-			 * bury the only word that differs.
-			 *
-			 * Deduplicated by town, because a footer must never list the same
-			 * place twice however the content got there. Duplicate location
-			 * posts are exactly what this install had: the theme's provisioning
-			 * is idempotent, but two PHP workers racing the same activation
-			 * request insert two copies of everything — the same fault that
-			 * doubled the primary nav. Resilient here rather than assuming the
-			 * data is clean.
-			 */
-			$ccs_footer_towns = array();
-			foreach ( $ccs_footer_locations as $ccs_loc ) {
-				$ccs_loc_town = get_post_meta( $ccs_loc->ID, 'location_town', true );
-				if ( ! is_string( $ccs_loc_town ) || trim( $ccs_loc_town ) === '' ) {
-					$ccs_loc_town = preg_replace( '/^Home Care in\s+/i', '', get_the_title( $ccs_loc ) );
-				}
-				$ccs_loc_town = trim( (string) $ccs_loc_town );
-				$ccs_loc_key  = strtolower( $ccs_loc_town );
-				if ( $ccs_loc_town === '' || isset( $ccs_footer_towns[ $ccs_loc_key ] ) ) {
-					continue;
-				}
-				$ccs_footer_towns[ $ccs_loc_key ] = array(
-					'town' => $ccs_loc_town,
-					'url'  => get_permalink( $ccs_loc ),
-				);
-			}
-
-			if ( ! empty( $ccs_footer_towns ) ) :
-				?>
-				<nav class="footer-modern-col" aria-label="<?php esc_attr_e( 'Areas we cover', 'ccs-wp-theme' ); ?>">
-					<h3 class="footer-modern-heading"><?php esc_html_e( 'Where we work', 'ccs-wp-theme' ); ?></h3>
-					<ul class="footer-modern-links">
+			<?php if ( ! empty( $ccs_footer_towns ) ) : ?>
+				<nav class="ft__col" aria-label="<?php esc_attr_e( 'Areas we cover', 'ccs-wp-theme' ); ?>">
+					<h3 class="ft__heading"><?php esc_html_e( 'Where we work', 'ccs-wp-theme' ); ?></h3>
+					<ul class="ft__links ft__links--towns">
 						<?php foreach ( $ccs_footer_towns as $ccs_town ) : ?>
-							<li>
-								<a class="footer-modern-link" href="<?php echo esc_url( $ccs_town['url'] ); ?>">
-									<?php echo esc_html( $ccs_town['town'] ); ?>
-								</a>
-							</li>
+							<li><a class="ft__link" href="<?php echo esc_url( $ccs_town['url'] ); ?>"><?php echo esc_html( $ccs_town['town'] ); ?></a></li>
 						<?php endforeach; ?>
 					</ul>
 				</nav>
 			<?php endif; ?>
 		</div>
 
-		<?php
-		$facebook = get_theme_mod( 'ccs_facebook_url', '' );
-		$linkedin = get_theme_mod( 'ccs_linkedin_url', '' );
-		$twitter  = get_theme_mod( 'ccs_twitter_url', '' );
-		$has_social = $facebook !== '' || $linkedin !== '' || $twitter !== '';
-		if ( $has_social ) :
-			$social_links = array();
-			if ( $facebook !== '' ) {
-				$social_links[] = array( 'url' => $facebook, 'name' => 'Facebook', 'label' => __( 'Facebook (opens in new window)', 'ccs-wp-theme' ) );
-			}
-			if ( $linkedin !== '' ) {
-				$social_links[] = array( 'url' => $linkedin, 'name' => 'LinkedIn', 'label' => __( 'LinkedIn (opens in new window)', 'ccs-wp-theme' ) );
-			}
-			if ( $twitter !== '' ) {
-				$social_links[] = array( 'url' => $twitter, 'name' => 'Twitter', 'label' => __( 'Twitter (opens in new window)', 'ccs-wp-theme' ) );
-			}
-			?>
-			<nav class="footer-modern-social" aria-label="<?php esc_attr_e( 'Social media', 'ccs-wp-theme' ); ?>">
-				<ul class="footer-modern-social-list">
-					<?php foreach ( $social_links as $link ) : ?>
-						<li><a href="<?php echo esc_url( $link['url'] ); ?>" target="_blank" rel="noopener noreferrer" aria-label="<?php echo esc_attr( $link['label'] ); ?>"><?php echo esc_html( $link['name'] ); ?></a></li>
-					<?php endforeach; ?>
+		<div class="ft__bottom">
+			<p class="ft__copy">&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?></p>
+			<?php
+			$facebook = get_theme_mod( 'ccs_facebook_url', '' );
+			$linkedin = get_theme_mod( 'ccs_linkedin_url', '' );
+			if ( $facebook || $linkedin ) :
+				?>
+				<ul class="ft__social">
+					<?php if ( $facebook ) : ?>
+						<li><a class="ft__link" href="<?php echo esc_url( $facebook ); ?>" target="_blank" rel="noopener noreferrer">Facebook<span class="screen-reader-text"> <?php esc_html_e( '(opens in a new window)', 'ccs-wp-theme' ); ?></span></a></li>
+					<?php endif; ?>
+					<?php if ( $linkedin ) : ?>
+						<li><a class="ft__link" href="<?php echo esc_url( $linkedin ); ?>" target="_blank" rel="noopener noreferrer">LinkedIn<span class="screen-reader-text"> <?php esc_html_e( '(opens in a new window)', 'ccs-wp-theme' ); ?></span></a></li>
+					<?php endif; ?>
 				</ul>
-			</nav>
-		<?php endif; ?>
-
-		<div class="footer-modern-bottom">
-			<p class="footer-modern-copyright">
-				&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?>. <?php esc_html_e( 'All rights reserved.', 'ccs-wp-theme' ); ?>
-			</p>
+			<?php endif; ?>
+			<div class="ft__cqc"><?php get_template_part( 'template-parts/cqc-regulated-badge', null, array( 'variant' => 'white' ) ); ?></div>
 		</div>
+
 	</div>
 </footer>
 
