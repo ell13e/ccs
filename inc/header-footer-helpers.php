@@ -201,10 +201,10 @@ function ccs_primary_menu_fallback_mobile() {
  */
 function ccs_footer_company_fallback_menu() {
 	$items = array(
-		array( 'title' => __( 'About Us', 'ccs-wp-theme' ), 'slug' => 'about-home-care-maidstone' ),
-		array( 'title' => __( 'Our Services', 'ccs-wp-theme' ), 'slug' => 'home-care-services-kent' ),
+		array( 'title' => __( 'About us', 'ccs-wp-theme' ), 'slug' => 'about-home-care-maidstone' ),
+		array( 'title' => __( 'Our services', 'ccs-wp-theme' ), 'slug' => 'home-care-services-kent' ),
 		array( 'title' => __( 'Careers', 'ccs-wp-theme' ), 'slug' => 'careers' ),
-		array( 'title' => __( 'Contact Us', 'ccs-wp-theme' ), 'slug' => 'contact-us' ),
+		array( 'title' => __( 'Contact us', 'ccs-wp-theme' ), 'slug' => 'contact-us' ),
 	);
 
 	echo '<ul class="footer-modern-links">';
@@ -223,9 +223,9 @@ function ccs_footer_help_fallback_menu() {
 	$items = array(
 		array( 'title' => __( 'Costs and funding', 'ccs-wp-theme' ), 'slug' => 'costs-and-funding' ),
 		array( 'title' => __( 'FAQs', 'ccs-wp-theme' ), 'slug' => 'faqs' ),
-		array( 'title' => __( 'Privacy Policy', 'ccs-wp-theme' ), 'slug' => 'privacy-policy' ),
-		array( 'title' => __( 'Terms & Conditions', 'ccs-wp-theme' ), 'slug' => 'terms-and-conditions' ),
-		array( 'title' => __( 'Accessibility Statement', 'ccs-wp-theme' ), 'slug' => 'accessibility-statement' ),
+		array( 'title' => __( 'Privacy policy', 'ccs-wp-theme' ), 'slug' => 'privacy-policy' ),
+		array( 'title' => __( 'Terms and conditions', 'ccs-wp-theme' ), 'slug' => 'terms-and-conditions' ),
+		array( 'title' => __( 'Accessibility statement', 'ccs-wp-theme' ), 'slug' => 'accessibility-statement' ),
 	);
 
 	echo '<ul class="footer-modern-links">';

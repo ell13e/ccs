@@ -202,3 +202,78 @@ function ccs_fee_groups_for_service( $slug ) {
 	);
 	return isset( $map[ $slug ] ) ? $map[ $slug ] : array();
 }
+
+/**
+ * A service's starting price as a tag on its card photo (Nov 2026, client:
+ * the price "not inside the card"). A solid white pill, so it stays legible
+ * on any photo without a scrim (rule 15).
+ *
+ * @param string $slug Service slug.
+ * @return string Markup, or '' when there is no published price.
+ */
+function ccs_service_price_tag( $slug ) {
+	$groups = ccs_fee_groups_for_service( $slug );
+	$fees   = ccs_fee_schedule();
+	if ( ! $groups || ! isset( $fees[ $groups[0] ][0] ) ) {
+		return '';
+	}
+	$first = $fees[ $groups[0] ][0];
+	return '<p class="svc-card__tag">' . esc_html__( 'From', 'ccs-wp-theme' ) . ' <strong>' . esc_html( $first['weekday'] ) . '</strong> '
+		. esc_html( $first['night'] ? __( 'a night', 'ccs-wp-theme' ) : __( 'an hour', 'ccs-wp-theme' ) ) . '</p>';
+}
+
+/**
+ * Bank holidays in the current fee year (Customizer > Care Costs; one per
+ * line: date | name). Christmas Day, Boxing Day and New Year's Day are
+ * charged at treble and the rest at double, as the fee schedule says; a
+ * substitute day is treated as an ordinary bank holiday.
+ *
+ * @return array<int, array{date:string,day:string,name:string,rate:string}>
+ */
+function ccs_bank_holidays() {
+	$raw  = (string) get_theme_mod(
+		'ccs_bank_holidays',
+		class_exists( 'CCS_Theme_Customizer' ) ? CCS_Theme_Customizer::default_bank_holidays() : ''
+	);
+	$days = array();
+	foreach ( preg_split( '/\R/', $raw ) ?: array() as $line ) {
+		$cols = array_map( 'trim', explode( '|', $line, 2 ) );
+		if ( count( $cols ) < 2 || '' === $cols[0] ) {
+			continue;
+		}
+		$time   = strtotime( $cols[0] );
+		$treble = preg_match( '/christmas day|boxing day|new year/i', $cols[1] ) && ! preg_match( '/substitute/i', $cols[1] );
+		$days[] = array(
+			'date' => $cols[0],
+			'day'  => $time ? wp_date( 'l', $time, new DateTimeZone( 'UTC' ) ) : '',
+			'name' => $cols[1],
+			'rate' => $treble ? __( 'Treble', 'ccs-wp-theme' ) : __( 'Double', 'ccs-wp-theme' ),
+		);
+	}
+	return $days;
+}
+
+/**
+ * The daytime hourly rates as numbers, for the cost estimator: the first row
+ * of each hourly group in the fee schedule.
+ *
+ * @return array<int, array{name:string,weekday:float,weekend:float}>
+ */
+function ccs_estimator_rates() {
+	$out = array();
+	foreach ( ccs_fee_schedule() as $group => $rows ) {
+		if ( empty( $rows[0] ) || $rows[0]['night'] ) {
+			continue;
+		}
+		$wd = (float) preg_replace( '/[^0-9.]/', '', $rows[0]['weekday'] );
+		$we = (float) preg_replace( '/[^0-9.]/', '', $rows[0]['weekend'] );
+		if ( $wd > 0 ) {
+			$out[] = array(
+				'name'    => $group,
+				'weekday' => $wd,
+				'weekend' => $we > 0 ? $we : $wd,
+			);
+		}
+	}
+	return $out;
+}

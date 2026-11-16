@@ -24,8 +24,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 
 $ccs_team     = function_exists( 'ccs_team_members' ) ? ccs_team_members() : array();
-$ccs_team_dir = get_template_directory() . '/assets/images/team/';
-$ccs_team_uri = get_template_directory_uri() . '/assets/images/team/';
 $ccs_careers  = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'careers' ) : home_url( '/careers/' );
 ?>
 
@@ -72,48 +70,10 @@ $ccs_careers  = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'careers' ) : 
 					</h2>
 				</header>
 
-				<ul class="ccs-team-grid" role="list">
-					<?php foreach ( $ccs_team as $ccs_member ) : ?>
-						<?php $ccs_has_photo = ! empty( $ccs_member['photo'] ) && file_exists( $ccs_team_dir . $ccs_member['photo'] ); ?>
-						<li>
-							<figure class="team-tile">
-								<div class="team-tile__photo">
-									<?php if ( $ccs_has_photo ) : ?>
-										<?php
-										/*
-										 * alt="" because the name is the figcaption directly below:
-										 * "Victoria Walker, Victoria Walker, Registered Manager" is what
-										 * a screen reader announced when both carried it.
-										 */
-										?>
-										<img
-											src="<?php echo esc_url( $ccs_team_uri . $ccs_member['photo'] ); ?>"
-											alt=""
-											width="512"
-											height="512"
-											loading="lazy"
-											decoding="async"
-										>
-									<?php else : ?>
-										<?php
-										$ccs_initials = '';
-										foreach ( preg_split( '/[\s-]+/', $ccs_member['name'] ) as $ccs_part ) {
-											if ( '' !== $ccs_part ) {
-												$ccs_initials .= mb_substr( $ccs_part, 0, 1 );
-											}
-										}
-										?>
-										<span class="team-tile__initials" aria-hidden="true"><?php echo esc_html( mb_strtoupper( mb_substr( $ccs_initials, 0, 2 ) ) ); ?></span>
-									<?php endif; ?>
-								</div>
-								<figcaption class="team-tile__tag">
-									<span class="team-tile__name"><?php echo esc_html( $ccs_member['name'] ); ?></span>
-									<span class="team-tile__role"><?php echo esc_html( $ccs_member['role'] ); ?></span>
-								</figcaption>
-							</figure>
-						</li>
-					<?php endforeach; ?>
-				</ul>
+				<?php
+				// Shared tiles; each links to the person's profile (Nov 2026).
+				get_template_part( 'template-parts/team-tiles', null, array( 'members' => $ccs_team ) );
+				?>
 			</div>
 		</section>
 	<?php endif; ?>

@@ -257,6 +257,15 @@
 	outline-offset: var(--focus-ring-offset);
 }
 
+/* The care offered in this area (not every area has domiciliary care). */
+.area-card__services {
+	margin: var(--space-xs) 0 0;
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-semibold);
+	line-height: 1.5;
+	color: var(--color-primary-dark);
+}
+
 .area-card__villages {
 	margin: var(--space-xs) 0 0;
 	font-size: var(--text-sm);
@@ -520,4 +529,15 @@
    steps, team and reviews that separated them were removed). */
 .site-main--location .cta-band {
 	background-color: var(--color-band-tint);
+}
+
+/* The footer is on the tint too now (Nov 2026), so the closing card drops
+   its bottom padding and sits on the footer's ground: one lilac area, not
+   two bands with a wide empty gap between them. */
+.site-main--location .cta-band {
+	padding-bottom: 0;
+}
+
+.location-hero__refer {
+	margin: var(--space-md) 0 0;
 }

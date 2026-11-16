@@ -156,6 +156,16 @@
 	}
 }
 
+/* Two cards (areas without domiciliary care): the same card width as a row
+   of three, centred, rather than leaving an empty third column. */
+@media (min-width: 860px) {
+	.svc-grid:has(> :nth-child(2):last-child) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		max-width: calc((100% - 2 * var(--space-lg)) / 3 * 2 + var(--space-lg));
+		margin-inline: auto;
+	}
+}
+
 /* Isolated so the photo can sit on a negative layer beneath the panel without
    the panel itself being positioned: if the panel were positioned it would
    become the containing block for the stretched link, and only the panel,
@@ -1288,7 +1298,19 @@
 	color: var(--color-primary);
 	text-decoration: underline;
 	text-decoration-color: color-mix(in srgb, var(--color-primary) 35%, transparent);
-	text-underline-offset: 0.2em;
+	text-decoration-thickness: 1.5px;
+	/* One unbroken line under the words (client, Nov 2026: "weird
+	   coverage?"): set below the descenders, so it no longer breaks around
+	   the "p" of "process", and never under the arrow (below). */
+	text-decoration-skip-ink: none;
+	text-underline-offset: 0.3em;
+}
+
+/* The arrow is decoration: an inline-block stops the underline reaching it,
+   where it showed as a second, separate dash. */
+.ccs-text-link > span[aria-hidden="true"] {
+	display: inline-block;
+	text-decoration: none;
 }
 
 .ccs-text-link:hover {
@@ -1981,74 +2003,716 @@
 	margin: 0;
 }
 
-/* =========================================================================
-   COSTS AND FUNDING PAGE (Nov 2026; page-templates/template-costs.php).
-   What affects the price beside the full rate table, then ways to pay.
-   ========================================================================= */
-.costs-rates__grid {
+/* Costs and funding page (page-templates/template-costs.php). */
+.costs-pay__more {
+	margin: var(--space-xl) 0 0;
+}
+
+
+/* Weekly cost estimator (Costs and funding page). The controls on the left
+   group by spacing; the answer on the right is one white card, the only box
+   in the section, holding the figure, how it was worked out, what it leaves
+   out and the next step. Hidden until the script runs. */
+.costs-estimate[hidden] {
+	display: none;
+}
+
+
+
+
+
+
+
+.estimator__kinds {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-xs);
+}
+
+.estimator__kind {
+	position: relative;
+	cursor: pointer;
+}
+
+.estimator__kind input {
+	position: absolute;
+	opacity: 0;
+	inset: 0;
+	margin: 0;
+	cursor: pointer;
+}
+
+.estimator__kind span {
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
+	padding: 0 1.25rem;
+	border: 1px solid var(--color-hairline-strong, rgba(63, 47, 112, 0.28));
+	border-radius: 999px;
+	background-color: var(--color-background);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-ink);
+	transition: background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+}
+
+.estimator__kind input:checked + span {
+	border-color: var(--color-primary);
+	background-color: var(--color-primary);
+	color: #fff;
+}
+
+.estimator__kind input:focus-visible + span {
+	outline: var(--focus-ring);
+	outline-offset: 3px;
+}
+
+.estimator__stepper {
+	display: inline-flex;
+	align-items: stretch;
+	overflow: hidden;
+	border: 1px solid var(--color-hairline-strong, rgba(63, 47, 112, 0.28));
+	border-radius: 999px;
+	background-color: var(--color-background);
+}
+
+.estimator__step {
 	display: grid;
-	gap: var(--space-2xl);
+	place-items: center;
+	width: 3rem;
+	min-height: 48px;
+	border: 0;
+	background: none;
+	font-size: 1.35rem;
+	line-height: 1;
+	color: var(--color-primary);
+	cursor: pointer;
 }
 
-@media (min-width: 960px) {
-	.costs-rates__grid {
-		grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-		gap: clamp(3rem, 1.5rem + 4vw, 6rem);
-		align-items: start;
-	}
+.estimator__step:hover {
+	background-color: var(--color-band-tint);
 }
 
-.costs-explain .ccs-title {
+.estimator__step:focus-visible {
+	outline: var(--focus-ring);
+	outline-offset: -3px;
+}
+
+.estimator__input {
+	width: 4.5rem;
+	border: 0;
+	border-inline: 1px solid var(--color-hairline);
+	background: none;
+	font-family: var(--font-family-heading);
+	font-size: var(--text-lg);
+	font-weight: var(--font-weight-medium);
+	color: var(--color-ink);
+	text-align: center;
+	-moz-appearance: textfield;
+	appearance: textfield;
+}
+
+.estimator__input::-webkit-outer-spin-button,
+.estimator__input::-webkit-inner-spin-button {
+	margin: 0;
+	-webkit-appearance: none;
+}
+
+.estimator__input:focus-visible {
+	outline: var(--focus-ring);
+	outline-offset: -3px;
+}
+
+
+
+
+
+
+
+
+/* =========================================================================
+   PRICE CARDS AND FACTS (Nov 2026; template-parts/price-cards.php). The
+   approved mockup: three even white cards (icon, name, "from" price in the
+   heading face, three rate lines), then the extra charges as four facts in
+   one tint strip. Used on the homepage and the Costs and funding page.
+   ========================================================================= */
+/* Left-aligned heading: a centred three-line note was hard to read, and the
+   eyebrow's leading rule sat off-centre (client, Nov 2026: "good concept,
+   not the best execution"). */
+.costs-head {
+	max-width: 46rem;
+	margin: 0 0 var(--space-2xl);
+}
+
+.costs-head .ccs-title {
 	margin-bottom: 0;
 }
 
-.costs-explain__title {
-	margin: var(--space-xl) 0 var(--space-sm);
+.costs-head .rate-note {
+	max-width: 56ch;
+	color: var(--color-ink-soft);
+}
+
+.price-cards {
+	display: grid;
+	gap: var(--space-lg);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+@media (min-width: 860px) {
+	.price-cards {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+/* A soft shadow only, no outline: one edge, not two. */
+.price-card {
+	display: flex;
+	flex-direction: column;
+	padding: clamp(1.5rem, 1.1rem + 1vw, 2rem);
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-float);
+}
+
+.price-card__head {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.price-card__name {
+	margin: 0;
 	font-family: var(--font-family-body);
 	font-size: var(--text-base);
 	font-weight: var(--font-weight-semibold);
 	color: var(--color-ink);
 }
 
-.costs-explain__factors {
+/* "from £36.38 an hour" as one phrase on the figure's baseline. */
+.price-card__from {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0 0.4rem;
+	margin: var(--space-md) 0 0;
+}
+
+.price-card__word,
+.price-card__unit {
+	font-size: var(--text-sm);
+	color: var(--color-ink-soft);
+}
+
+.price-card__price {
+	font-family: var(--font-family-heading);
+	font-size: clamp(2.125rem, 1.8rem + 1vw, 2.5rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.1;
+	color: var(--color-primary-dark);
+	font-variant-numeric: lining-nums tabular-nums;
+}
+
+.price-card__lines {
 	display: grid;
+	gap: 0.5rem;
+	margin: var(--space-lg) 0 0;
+	padding-top: var(--space-md);
+	border-top: 1px solid var(--color-hairline);
+}
+
+.price-card__lines div {
+	display: flex;
+	justify-content: space-between;
+	gap: var(--space-sm);
+	font-size: var(--text-sm);
+	line-height: 1.45;
+}
+
+.price-card__lines dt {
+	color: var(--color-ink-soft);
+}
+
+.price-card__lines dd {
+	margin: 0;
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-ink);
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+}
+
+.price-card__link {
+	align-self: flex-start;
+	margin-top: auto;
+	padding-top: var(--space-lg);
+	font-size: var(--text-sm);
+}
+
+.price-facts {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--space-lg) var(--space-md);
+	margin: var(--space-lg) 0 0;
+	padding: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-band-tint);
+	list-style: none;
+}
+
+@media (min-width: 860px) {
+	.price-facts {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
+
+.price-facts__item {
+	display: grid;
+	align-content: start;
+	gap: 0.2rem;
+	text-align: left;
+}
+
+.price-facts__value {
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.5rem, 1.3rem + 0.6vw, 1.875rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.1;
+	color: var(--color-ink);
+}
+
+.price-facts__text {
+	font-size: var(--text-sm);
+	line-height: 1.45;
+	color: var(--color-ink-soft);
+}
+
+.costs-more {
+	margin: var(--space-xl) 0 0;
+	text-align: center;
+}
+
+/* Bank holidays as calendar tiles (Costs and funding page). */
+.holiday-tiles {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: var(--space-sm);
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	counter-reset: factor;
 }
 
-.costs-explain__factors li {
-	position: relative;
-	padding-left: 2.25rem;
+@media (min-width: 600px) {
+	.holiday-tiles {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+@media (min-width: 960px) {
+	.holiday-tiles {
+		grid-template-columns: repeat(5, minmax(0, 1fr));
+	}
+}
+
+.holiday-tile {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: var(--space-md) var(--space-sm);
+	border: 1px solid var(--color-hairline);
+	border-radius: var(--radius-xl);
+	background-color: var(--color-background);
+	text-align: center;
+}
+
+.holiday-tile__month {
+	font-size: var(--text-xs);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--color-ink-soft);
+}
+
+.holiday-tile__day {
+	font-family: var(--font-family-heading);
+	font-size: 2rem;
+	font-weight: var(--font-weight-medium);
+	line-height: 1.1;
+	color: var(--color-ink);
+}
+
+.holiday-tile__name {
+	flex: 1;
+	margin-top: 0.25rem;
+	font-size: var(--text-sm);
+	line-height: 1.35;
+	color: var(--color-ink);
+}
+
+.holiday-tile__rate {
+	margin-top: var(--space-sm);
+	padding: 0.15rem 0.7rem;
+	border-radius: 999px;
+	background-color: var(--color-band-tint);
+	font-size: var(--text-xs);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-ink-soft);
+}
+
+.holiday-tile__rate--treble {
+	background-color: var(--color-primary);
+	color: #fff;
+}
+
+/* Ways to pay: one calm list, icon beside each (no boxes). */
+.pay-list {
+	display: grid;
+	gap: var(--space-lg);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.pay-list__item {
+	display: flex;
+	align-items: flex-start;
+	gap: var(--space-md);
+}
+
+.pay-list__item .ccs-badge {
+	flex: none;
+	background-color: var(--color-background);
+}
+
+.pay-list__title {
+	margin: 0;
+	font-family: var(--font-family-body);
+	font-size: var(--text-base);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-ink);
+}
+
+.pay-list__text {
+	margin: 0.15rem 0 0;
 	font-size: var(--text-base);
 	line-height: 1.6;
-	color: var(--color-ink);
-	counter-increment: factor;
+	color: var(--color-ink-soft);
 }
 
-.costs-explain__factors li::before {
-	content: counter(factor);
-	position: absolute;
-	top: 0.05em;
-	left: 0;
+.costs-split {
 	display: grid;
-	place-items: center;
-	width: 1.6rem;
-	height: 1.6rem;
-	border-radius: 50%;
-	background-color: var(--color-band-tint);
-	font-size: var(--text-sm);
-	font-weight: var(--font-weight-semibold);
-	color: var(--color-primary);
+	gap: var(--space-xl);
 }
 
-.costs-explain__actions {
+@media (min-width: 960px) {
+	.costs-split {
+		grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+		gap: clamp(3rem, 1.5rem + 4vw, 6rem);
+		align-items: start;
+	}
+}
+
+.costs-split .ccs-head {
+	margin: 0;
+}
+
+/* Every rate in detail, behind one disclosure on the costs page. */
+.costs-detail {
 	margin-top: var(--space-xl);
 }
 
-.costs-pay__more {
-	margin: var(--space-xl) 0 0;
+.costs-detail > summary {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	min-height: 44px;
+	cursor: pointer;
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-primary);
+	list-style: none;
 }
 
+.costs-detail > summary::-webkit-details-marker {
+	display: none;
+}
+
+.costs-detail > summary::after {
+	content: "+";
+	font-size: 1.25rem;
+	line-height: 1;
+}
+
+.costs-detail[open] > summary::after {
+	content: "–";
+}
+
+.costs-detail .rate-panel {
+	margin-top: var(--space-md);
+}
+
+/* Calculator card (Costs and funding page; Nov 2026, client: the
+   estimator "needs work"). One white card on the tint: the three controls
+   in a row, then the answer in a tint band across the card's foot with the
+   working and the next step, then the note. */
+.calc {
+	overflow: hidden;
+	border-radius: var(--radius-3xl);
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-float);
+}
+
+.calc__controls {
+	display: grid;
+	gap: var(--space-lg) var(--space-xl);
+	padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+}
+
+@media (min-width: 860px) {
+	.calc__controls {
+		grid-template-columns: auto auto auto;
+		justify-content: start;
+		align-items: start;
+	}
+}
+
+.calc__field {
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+.calc__label {
+	display: block;
+	margin: 0 0 var(--space-sm);
+	padding: 0;
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-ink);
+}
+
+.calc__hint {
+	margin: var(--space-xs) 0 0;
+	font-size: var(--text-xs);
+	color: var(--color-ink-soft);
+}
+
+.calc__result {
+	display: grid;
+	gap: var(--space-md) var(--space-xl);
+	align-items: center;
+	padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+	/* A shade lighter than the section's tint, so the band reads as part of
+	   the white card rather than the page showing through it. */
+	background-color: #f8f7fc;
+}
+
+@media (min-width: 860px) {
+	.calc__result {
+		grid-template-columns: auto minmax(0, 1fr) auto;
+	}
+}
+
+.calc__total-label {
+	margin: 0;
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-ink-soft);
+}
+
+.calc__week {
+	margin: 0.15rem 0 0;
+	font-family: var(--font-family-heading);
+	font-size: clamp(2.25rem, 1.9rem + 1.4vw, 3rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.05;
+	color: var(--color-primary-dark);
+	font-variant-numeric: lining-nums tabular-nums;
+}
+
+.calc__month {
+	margin: 0.15rem 0 0;
+	font-size: var(--text-sm);
+	color: var(--color-ink);
+}
+
+.calc__lines {
+	display: grid;
+	gap: 0.25rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	font-size: var(--text-sm);
+	color: var(--color-ink-soft);
+	font-variant-numeric: tabular-nums;
+}
+
+.calc__note {
+	margin: 0;
+	padding: 0 clamp(1.5rem, 1rem + 2vw, 2.5rem) var(--space-lg);
+	background-color: #f8f7fc;
+	font-size: var(--text-xs);
+	color: var(--color-ink-soft);
+}
+
+
+/* The starting price as a tag on a service card's photo, top left (Nov
+   2026, client: the price "not inside the card"). Solid white, so it reads
+   on any photo without a scrim. */
+.svc-card__tag {
+	position: absolute;
+	top: 1rem;
+	left: 1rem;
+	z-index: 1;
+	margin: 0;
+	padding: 0.4rem 0.85rem;
+	border-radius: 999px;
+	background-color: var(--color-background);
+	box-shadow: 0 2px 8px rgba(43, 35, 71, 0.12);
+	font-size: var(--text-xs);
+	line-height: 1.3;
+	color: var(--color-ink-soft);
+}
+
+.svc-card__tag strong {
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-primary-dark);
+}
+
+
+/* -------------------------------------------------------------------------
+   TEAM PROFILES (Nov 2026; page-templates/template-team-member.php, after
+   the ElderlyCare X team member page). The person's photo large beside
+   their role, name and a line about them; one action.
+   ------------------------------------------------------------------------- */
+
+/* A tile that links to a profile: the name's link stretches over the whole
+   tile. The photo sits on a negative layer inside the isolated tile so the
+   name card can stay unpositioned and still paint over it; a positioned
+   card would trap the stretched link inside itself. */
+.team-tile--link {
+	position: relative;
+	isolation: isolate;
+}
+
+.team-tile--link .team-tile__photo {
+	position: relative;
+	z-index: -1;
+}
+
+.team-tile--link .team-tile__tag {
+	position: static;
+}
+
+.team-tile__link {
+	display: block;
+	min-height: 1.5rem; /* the line itself meets the 24px floor too */
+	text-decoration: none;
+}
+
+.team-tile__link::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: var(--radius-xl);
+}
+
+/* The focus ring goes round the whole tile, drawn on the stretched layer. */
+.team-tile__link:focus-visible {
+	outline: none;
+}
+
+.team-tile__link:focus-visible::after {
+	outline: var(--focus-ring);
+	outline-offset: var(--focus-ring-offset);
+}
+
+@media (hover: hover) {
+	.team-tile--link .team-tile__photo img {
+		transition: transform 600ms var(--ease-out);
+	}
+
+	.team-tile--link:hover .team-tile__photo img {
+		transform: scale(1.03);
+	}
+
+	.team-tile--link:hover .team-tile__link {
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
+}
+
+.profile-hero__grid {
+	display: grid;
+	gap: var(--space-xl);
+	align-items: center;
+}
+
+.profile-hero__photo {
+	width: 100%;
+	max-width: 20rem;
+	aspect-ratio: 4 / 5;
+	overflow: hidden;
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-float);
+}
+
+.profile-hero__photo img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: 50% 28%;
+}
+
+.profile-hero__role {
+	margin: var(--space-md) 0 0;
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--color-primary);
+}
+
+.profile-hero .profile-hero__name {
+	margin-top: var(--space-xs);
+}
+
+.profile-hero__intro {
+	max-width: 36rem;
+}
+
+.profile-hero__actions {
+	margin-top: var(--space-lg);
+}
+
+@media (min-width: 860px) {
+	.profile-hero__grid {
+		grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
+		gap: clamp(3rem, 6vw, 6rem);
+	}
+
+	.profile-hero__photo {
+		max-width: none;
+	}
+}
+
+.profile-about__video {
+	margin-top: var(--space-xl);
+}
+
+.profile-video__media {
+	max-width: 52rem;
+	margin-inline: auto;
+}
+
+/* Six others on a profile: two even rows of three, not four and two. */
+@media (min-width: 900px) {
+	.profile-team .ccs-team-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		max-width: 52rem;
+		margin-inline: auto;
+	}
+}

@@ -10,7 +10,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$services_overview_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'home-care-services-kent' ) : home_url( '/home-care-services-kent/' );
 $contact_url           = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' ) : home_url( '/contact-us/' );
 
 // Try to get three service posts (Domiciliary, Respite, Complex) by slug.
@@ -39,7 +38,7 @@ $fallback_services = array(
 	),
 	array(
 		'title'    => __( 'Respite Care', 'ccs-wp-theme' ),
-		'intro'    => __( 'Short breaks so family carers can properly rest. A few hours, an overnight, or longer, with someone you’ve already met stepping in.', 'ccs-wp-theme' ),
+		'intro'    => __( 'Short breaks so family carers can rest. A few hours, an overnight, or longer, with someone you’ve already met stepping in.', 'ccs-wp-theme' ),
 		'link_url' => home_url( '/services/respite-care/' ),
 	),
 	array(
@@ -185,6 +184,16 @@ $ccs_service_icons = array( 'home', 'cup', 'pulse' );
 							>
 						</div>
 					<?php endif; ?>
+					<?php
+					/*
+					 * The starting price as a tag on the photo, above the
+					 * service name rather than in the card's text (client, Nov
+					 * 2026). The homepage's separate costs section went, so
+					 * the price sits where a family chooses the kind of care.
+					 */
+					$ccs_svc_slug = basename( untrailingslashit( (string) wp_parse_url( $svc['link_url'], PHP_URL_PATH ) ) );
+					echo function_exists( 'ccs_service_price_tag' ) ? ccs_service_price_tag( $ccs_svc_slug ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the helper.
+					?>
 					<div class="svc-card__body">
 						<span class="ccs-badge ccs-badge--ring svc-card__badge"><?php echo ccs_icon( $ccs_service_icons[ $i ] ?? 'heart' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
 						<h3 class="svc-card__title">
@@ -199,18 +208,32 @@ $ccs_service_icons = array( 'home', 'cup', 'pulse' );
 			<?php endforeach; ?>
 		</ul>
 
-		<div class="home-services__cta">
-			<p class="home-services__cta-text">
-				<?php echo esc_html( ccs_copy( 'services_cta_line' ) ); ?>
-			</p>
-			<div class="ccs-actions ccs-actions--center">
-				<a href="<?php echo esc_url( $contact_url ); ?>" class="btn btn-primary">
-					<?php esc_html_e( 'Book a free consultation', 'ccs-wp-theme' ); ?>
-				</a>
-				<a href="<?php echo esc_url( $services_overview_url ); ?>" class="btn btn-quiet">
-					<?php echo esc_html( ccs_copy( 'services_button_all' ) ); ?>
-				</a>
+		<?php
+		/*
+		 * The prompt under the cards, as the site's strip (Nov 2026, client:
+		 * a centred line, two buttons and a link stacked under it looked
+		 * "shoved there, packed in and cramped"). One row: the question and
+		 * the rates link on the left, the one action on the right. "See all
+		 * our services" went: the three cards above are all of them.
+		 */
+		$ccs_cta_line  = ccs_copy( 'services_cta_line' );
+		$ccs_cta_split = preg_split( '/(?<=\?)\s+/', $ccs_cta_line, 2 );
+		$ccs_cta_title = $ccs_cta_split[0];
+		$ccs_cta_lede  = isset( $ccs_cta_split[1] ) ? $ccs_cta_split[1] : '';
+		$ccs_costs_link = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'costs-and-funding' ) : '';
+		?>
+		<div class="ccs-strip home-services__strip">
+			<span class="ccs-badge" aria-hidden="true"><?php echo ccs_icon( 'question' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
+			<div class="ccs-strip__text">
+				<h3 class="ccs-strip__title"><?php echo esc_html( $ccs_cta_title ); ?></h3>
+				<p class="ccs-strip__lede">
+					<?php echo esc_html( $ccs_cta_lede ); ?>
+					<?php if ( $ccs_costs_link ) : ?>
+						<a href="<?php echo esc_url( $ccs_costs_link ); ?>"><?php esc_html_e( 'See our rates and ways to pay', 'ccs-wp-theme' ); ?></a>.
+					<?php endif; ?>
+				</p>
 			</div>
+			<a href="<?php echo esc_url( $contact_url ); ?>" class="btn btn-primary ccs-strip__action"><?php esc_html_e( 'Book a free consultation', 'ccs-wp-theme' ); ?></a>
 		</div>
 
 	</div>

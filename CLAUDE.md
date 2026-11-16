@@ -42,7 +42,8 @@ nav or labels.
 #564298, ink #2B2347, deep #332659) is the brand's own; mint (`--color-secondary`
 #a8ddd4, #85C4B8 on light) is its accent; grounds are white and
 `--color-band-tint` #F1EFF7 only, strictly alternating, with one deep plum band
-per page and the ink footer. Cream is retired (Nov 2026): warm cream beside
+per page. The footer is a full-width tint section (Nov 2026, client: it
+replaced the ink footer, after a light reference footer they shared). Cream is retired (Nov 2026): warm cream beside
 cool lilac made the bands fight, and the client called the page chaotic. Gradients only where they do a job (a scrim keeping
 text legible on a photo); never a tech-style purple-to-indigo sweep for mood.
 

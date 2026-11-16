@@ -10,7 +10,16 @@
  * changes, so each can be undone from the editor.
  *
  * Nov 2026: the approved copy rewrites (docs/COPY-REWRITES-FOR-APPROVAL.md)
- * and the em-dash clean-up.
+ * and the em-dash clean-up (copy-update-2026-11); then a pass removing the
+ * AI-writing tells left after it (copy-update-2026-11b, client: "scan the
+ * entire website for ai copy and rewrite"): filler "actually", "properly",
+ * and the "X, not Y" contrasts and "that is the whole point" lines. Each b
+ * row's old text is the page as the first update leaves it, so on a fresh
+ * site the two run in order.
+ *
+ * Links in the files are written with the address of the site they were
+ * made on, or as {home}; both are compared as the current site's address,
+ * so a page with links still matches on the live site.
  *
  * @package CCS_WP_Theme
  */
@@ -23,7 +32,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Apply each update file once.
  */
 function ccs_apply_content_updates() {
-	$updates = array( 'copy-update-2026-11' );
+	$updates = array( 'copy-update-2026-11', 'copy-update-2026-11b' );
+	$home    = untrailingslashit( home_url() );
+	// The site the first file was made on; its links carry this address.
+	$tok   = static function ( $s ) use ( $home ) {
+		return str_replace( array( $home, 'http://127.0.0.1:9401' ), '{home}', (string) $s );
+	};
+	$untok = static function ( $s ) use ( $home ) {
+		return str_replace( '{home}', $home, (string) $s );
+	};
 	$done    = (array) get_option( 'ccs_content_updates_done', array() );
 
 	foreach ( $updates as $key ) {
@@ -50,11 +67,14 @@ function ccs_apply_content_updates() {
 			$norm = static function ( $s ) {
 				return trim( str_replace( "\r\n", "\n", (string) $s ) );
 			};
-			if ( $norm( $post->post_content ) === $norm( $row['old_content'] ) && $row['old_content'] !== $row['new_content'] ) {
-				$change['post_content'] = $row['new_content'];
+			if ( $tok( $norm( $post->post_content ) ) === $tok( $norm( $row['old_content'] ) ) && $row['old_content'] !== $row['new_content'] ) {
+				$change['post_content'] = $untok( $tok( $row['new_content'] ) );
 			}
-			if ( $norm( $post->post_excerpt ) === $norm( $row['old_excerpt'] ) && $row['old_excerpt'] !== $row['new_excerpt'] ) {
-				$change['post_excerpt'] = $row['new_excerpt'];
+			if ( $tok( $norm( $post->post_excerpt ) ) === $tok( $norm( $row['old_excerpt'] ) ) && $row['old_excerpt'] !== $row['new_excerpt'] ) {
+				$change['post_excerpt'] = $untok( $tok( $row['new_excerpt'] ) );
+			}
+			if ( isset( $row['old_title'], $row['new_title'] ) && $post->post_title === $row['old_title'] ) {
+				$change['post_title'] = $row['new_title'];
 			}
 			if ( count( $change ) > 1 ) {
 				wp_update_post( wp_slash( $change ) );

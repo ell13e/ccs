@@ -130,33 +130,6 @@ class CCS_Theme_Activation {
 	 * @var array
 	 */
 	/**
-	 * Top-level primary menu slugs, in order. Restructured 2026-08-19 from a flat
-	 * 10-item list (wrapped to 3 lines in the header) down to 6 — items that used
-	 * to sit flat now nest under About Us / Resources via $primary_menu_children.
-	 *
-	 * @var array
-	 */
-	private $primary_order = array(
-		'home',
-		'home-care-services-kent',
-		'about-home-care-maidstone',
-		'resources',
-		'careers',
-		'contact-us',
-	);
-
-	/**
-	 * Dropdown children for top-level primary menu items (parent slug => child slugs, in order).
-	 * Any slug not listed here (and not 'home', which has no dropdown) renders flat.
-	 *
-	 * @var array<string, array<int, string>>
-	 */
-	private $primary_menu_children = array(
-		'about-home-care-maidstone' => array( 'who-youll-meet', 'cqc-and-our-care', 'getting-started' ),
-		'resources'                 => array( 'care-guides', 'faqs', 'referral-information', 'news-and-updates' ),
-	);
-
-	/**
 	 * Footer menu slugs in order.
 	 *
 	 * @var array
@@ -171,27 +144,6 @@ class CCS_Theme_Activation {
 		'terms-and-conditions',
 		'cookies',
 		'accessibility-statement',
-	);
-
-	/**
-	 * Short navigation labels for primary menu (slug => label). Used so menu items don't use long page titles.
-	 *
-	 * @var array<string, string>
-	 */
-	private $primary_menu_labels = array(
-		'home'                        => 'Home',
-		'about-home-care-maidstone'   => 'About Us',
-		'home-care-services-kent'     => 'Our Services',
-		'who-youll-meet'              => "Who You'll Meet",
-		'careers'                     => 'Careers',
-		'resources'                   => 'Resources',
-		'care-guides'                 => 'Care Guides',
-		'faqs'                        => 'FAQs',
-		'referral-information'        => 'Referral Information',
-		'news-and-updates'            => 'News & Updates',
-		'cqc-and-our-care'            => 'CQC and Our Care',
-		'getting-started'             => 'Getting Started',
-		'contact-us'                  => 'Contact Us',
 	);
 
 	/**
@@ -446,6 +398,10 @@ class CCS_Theme_Activation {
 				),
 			),
 		);
+
+		// Areas without domiciliary care get their own wording and services
+		// (inc/location-services.php), so a fresh site never shows the old copy.
+		$this->locations = ccs_apply_area_copy( $this->locations );
 	}
 
 	/**
@@ -1709,29 +1665,9 @@ class CCS_Theme_Activation {
 	 * @param int $menu_id Nav menu term_id.
 	 */
 	private function build_primary_menu( $menu_id ) {
-		if ( ! $menu_id ) {
-			return;
-		}
-		$position = 0;
-		foreach ( $this->primary_order as $slug ) {
-			if ( ! isset( $this->page_ids[ $slug ] ) ) {
-				continue;
-			}
-			$title     = isset( $this->primary_menu_labels[ $slug ] ) ? $this->primary_menu_labels[ $slug ] : null;
-			$parent_id = $this->add_menu_item( $menu_id, $this->page_ids[ $slug ], 0, $position, $title );
-			$position++;
-
-			if ( ! isset( $this->primary_menu_children[ $slug ] ) ) {
-				continue;
-			}
-			foreach ( $this->primary_menu_children[ $slug ] as $child_slug ) {
-				if ( ! isset( $this->page_ids[ $child_slug ] ) ) {
-					continue;
-				}
-				$child_title = isset( $this->primary_menu_labels[ $child_slug ] ) ? $this->primary_menu_labels[ $child_slug ] : null;
-				$this->add_menu_item( $menu_id, $this->page_ids[ $child_slug ], $parent_id, $position, $child_title );
-				$position++;
-			}
+		// One definition for installs and for existing sites (inc/menu-update.php).
+		if ( function_exists( 'ccs_build_primary_menu' ) ) {
+			ccs_build_primary_menu( $menu_id );
 		}
 	}
 

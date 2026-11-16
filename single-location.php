@@ -82,8 +82,14 @@ while ( have_posts() ) :
 				<?php get_template_part( 'template-parts/breadcrumb' ); ?>
 				<h1 class="page-hero__title">
 					<?php
+					/*
+					 * A page may set its own heading (location_heading): Thanet
+					 * names its three towns, and areas without domiciliary care say what
+					 * they do get (inc/location-services.php).
+					 */
+					$ccs_heading = get_post_meta( $post_id, 'location_heading', true );
 					/* translators: %s: town name. */
-					echo esc_html( sprintf( __( 'Home care in %s', 'ccs-wp-theme' ), $town ) );
+					echo esc_html( $ccs_heading ? $ccs_heading : sprintf( __( 'Home care in %s', 'ccs-wp-theme' ), $town ) );
 					?>
 				</h1>
 				<?php if ( has_excerpt() ) : ?>
@@ -98,6 +104,18 @@ while ( have_posts() ) :
 						</a>
 					<?php endif; ?>
 				</div>
+				<?php
+				/*
+				 * Areas written for professionals (location_audience; none at present, for
+				 * case managers) point to the referral page as well.
+				 */
+				if ( 'professional' === get_post_meta( $post_id, 'location_audience', true ) ) :
+					$ccs_refer = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'referral-information' ) : home_url( '/resources/referral-information/' );
+					?>
+					<p class="location-hero__refer">
+						<a class="ccs-text-link" href="<?php echo esc_url( $ccs_refer ); ?>"><?php esc_html_e( 'Referral information for case managers', 'ccs-wp-theme' ); ?> <span aria-hidden="true">&rarr;</span></a>
+					</p>
+				<?php endif; ?>
 			</div>
 			<?php get_template_part( 'template-parts/cqc-hero-card' ); ?>
 		</div>
@@ -121,8 +139,8 @@ while ( have_posts() ) :
 						<?php else : ?>
 							<p>
 								<?php
-								/* translators: %s: town name. */
-								echo esc_html( sprintf( __( 'We provide domiciliary, respite and complex care in %s and the villages around it, with a small team matched to you and kept consistent.', 'ccs-wp-theme' ), $town ) );
+								/* translators: 1: the care offered, e.g. "Respite and complex care", 2: town name. */
+								echo esc_html( sprintf( __( '%1$s in %2$s and the villages around it, with a small team matched to you and kept consistent.', 'ccs-wp-theme' ), ccs_location_services_label( $post_id ), $town ) );
 								?>
 							</p>
 						<?php endif; ?>
@@ -244,7 +262,25 @@ while ( have_posts() ) :
 					?>
 				</h2>
 			</header>
-			<?php get_template_part( 'template-parts/service-cards', null, array( 'town' => $town ) ); ?>
+			<?php
+			/*
+			 * Only the services offered in this area (location_services, a
+			 * comma-separated list of service slugs; see inc/location-services.php).
+			 */
+			$ccs_area_services = array_filter( array_map( 'trim', explode( ',', (string) get_post_meta( $post_id, 'location_services', true ) ) ) );
+			$ccs_card_args     = array( 'town' => $town );
+			if ( $ccs_area_services && function_exists( 'ccs_ordered_services' ) ) {
+				$ccs_card_args['services'] = array_values(
+					array_filter(
+						ccs_ordered_services(),
+						static function ( $svc ) use ( $ccs_area_services ) {
+							return in_array( $svc->post_name, $ccs_area_services, true );
+						}
+					)
+				);
+			}
+			get_template_part( 'template-parts/service-cards', null, $ccs_card_args );
+			?>
 			<div class="ccs-section-foot ccs-actions ccs-actions--center">
 				<a class="btn btn-quiet" href="<?php echo esc_url( $ccs_services_hub ); ?>"><?php esc_html_e( 'See all our services', 'ccs-wp-theme' ); ?></a>
 			</div>
@@ -330,7 +366,14 @@ while ( have_posts() ) :
 						<?php endif; ?>
 						<p class="location-map__office-note">
 							<?php
-							if ( $ccs_miles >= 3 ) {
+							if ( $ccs_miles > 20 && ! empty( $areas_list ) ) {
+								/*
+								 * Far from the office (Thanet, Herne Bay, Whitstable): the
+								 * mileage says nothing useful, so name the places visited.
+								 */
+								/* translators: 1: area name, 2: three places in it. */
+								echo esc_html( sprintf( __( 'Our carers visit homes across %1$s, including %2$s.', 'ccs-wp-theme' ), $town, implode( ', ', array_slice( $areas_list, 0, 3 ) ) ) );
+							} elseif ( $ccs_miles >= 3 ) {
 								/* translators: 1: town name, 2: number of miles. */
 								echo esc_html( sprintf( _n( '%1$s is about %2$d mile from our office.', '%1$s is about %2$d miles from our office.', $ccs_miles, 'ccs-wp-theme' ), $town, $ccs_miles ) );
 							} else {
