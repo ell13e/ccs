@@ -47,8 +47,10 @@ replaced the ink footer, after a light reference footer they shared). Cream is r
 cool lilac made the bands fight, and the client called the page chaotic. Gradients only where they do a job (a scrim keeping
 text legible on a photo); never a tech-style purple-to-indigo sweep for mood.
 
-**5. Icons, not emoji.** One set, `ccs_icon()` in `inc/icons.php`: line icons on a
-24px grid at one stroke, sized by context (badge 3.5rem, small 2.75rem, inline
+**5. Icons, not emoji.** One set, `ccs_icon()` in `inc/icons.php`: solid icons
+on a 24px grid (Nov 2026, client: fill the same colour as the outline), inner
+details cut out in white, line-only where there is no shape to fill (check,
+switch), sized by context (badge 3.5rem, small 2.75rem, inline
 1.25em). Add new icons to the set; no one-offs. Emoji only in messages.
 
 **6. No decorative effects.** No aurora, glow or bloom. Dark bands get depth
