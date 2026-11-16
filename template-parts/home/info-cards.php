@@ -28,7 +28,7 @@ $cards = array(
 	array(
 		'subheading' => __( 'FAQs', 'ccs-wp-theme' ),
 		'title'      => __( 'Home Care FAQs', 'ccs-wp-theme' ),
-		'body'       => __( 'What does care cost? How quickly can it start? Who will actually turn up? Straight answers to the questions families ask us most, with no jargon.', 'ccs-wp-theme' ),
+		'body'       => __( 'What does care cost? How quickly can it start? Who will turn up? Straight answers to the questions families ask us most, with no jargon.', 'ccs-wp-theme' ),
 		'cta_text'   => __( 'Get answers', 'ccs-wp-theme' ),
 		'cta_url'    => $faqs_url,
 		'icon'       => 'faqs',

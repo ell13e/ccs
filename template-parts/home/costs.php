@@ -57,44 +57,33 @@ if ( $ccs_costs_page instanceof WP_Post ) {
 
 <?php
 /*
- * Eighth version (Nov 2026): the full rate table moved to its own Costs and
- * funding page (client: "maybe we need a page for this and just a section
- * directing to it here instead"). Here: the note that published rates are
- * not a quote, the three starting prices in one small panel, and a link to
- * the page with every rate.
+ * Ninth version (Nov 2026): the approved mockup. Centred heading and the
+ * note that published rates are not a quote, three even price cards, the
+ * extra charges as four facts, and a link to the Costs and funding page
+ * (template-parts/price-cards.php).
  */
-$ccs_from = function_exists( 'ccs_fee_schedule' ) ? ccs_fee_schedule() : array();
+$ccs_links = array(
+	'Help at home' => array( function_exists( 'ccs_page_url' ) ? ccs_page_url( 'home-care-services-kent' ) : home_url( '/' ), __( 'About care at home', 'ccs-wp-theme' ) ),
+	'Complex care' => array( ( $ccs_cc = get_page_by_path( 'complex-care', OBJECT, 'service' ) ) ? get_permalink( $ccs_cc ) : home_url( '/' ), __( 'About complex care', 'ccs-wp-theme' ) ),
+	'Nights'       => array( $ccs_costs_url ? $ccs_costs_url : home_url( '/' ), __( 'See every rate', 'ccs-wp-theme' ) ),
+);
 ?>
 <section class="home-costs" aria-labelledby="home-costs-heading">
 	<div class="container container--lg">
-		<div class="home-costs__grid">
 
-			<div class="home-costs__intro">
-				<p class="ccs-eyebrow"><?php echo esc_html( ccs_copy( 'costs_eyebrow' ) ); ?></p>
-				<h2 id="home-costs-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'costs_title' ) ); ?></h2>
-				<p class="rate-note"><?php echo esc_html( ccs_copy( 'costs_quote_note' ) ); ?></p>
-				<?php if ( $ccs_costs_url ) : ?>
-					<div class="ccs-actions home-costs__actions">
-						<a class="btn btn-quiet" href="<?php echo esc_url( $ccs_costs_url ); ?>"><?php echo esc_html( $ccs_costs_text ); ?></a>
-					</div>
-				<?php endif; ?>
-			</div>
+		<header class="costs-head">
+			<p class="ccs-eyebrow"><?php echo esc_html( ccs_copy( 'costs_eyebrow' ) ); ?></p>
+			<h2 id="home-costs-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'costs_title' ) ); ?></h2>
+			<p class="rate-note"><?php echo esc_html( ccs_copy( 'costs_quote_note' ) ); ?></p>
+		</header>
 
-			<?php if ( ! empty( $ccs_from ) ) : ?>
-				<dl class="rate-panel rate-from" data-ccs-exception="rule 1: the starting prices, one distinct object">
-					<?php foreach ( $ccs_from as $ccs_group => $ccs_rows ) : ?>
-						<div class="rate-from__row">
-							<dt><?php echo esc_html( $ccs_group ); ?></dt>
-							<dd>
-								<span class="rate-from__word"><?php esc_html_e( 'from', 'ccs-wp-theme' ); ?></span>
-								<span class="rate-from__price"><?php echo esc_html( $ccs_rows[0]['weekday'] ); ?></span>
-								<span class="rate-from__unit"><?php echo esc_html( $ccs_rows[0]['night'] ? __( 'a night', 'ccs-wp-theme' ) : __( 'an hour', 'ccs-wp-theme' ) ); ?></span>
-							</dd>
-						</div>
-					<?php endforeach; ?>
-				</dl>
-			<?php endif; ?>
+		<?php get_template_part( 'template-parts/price-cards', null, array( 'links' => $ccs_links ) ); ?>
 
-		</div>
+		<?php if ( $ccs_costs_url ) : ?>
+			<p class="costs-more">
+				<a class="btn btn-quiet" href="<?php echo esc_url( $ccs_costs_url ); ?>"><?php echo esc_html( $ccs_costs_text ); ?></a>
+			</p>
+		<?php endif; ?>
+
 	</div>
 </section>

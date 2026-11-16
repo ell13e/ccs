@@ -64,6 +64,10 @@ $ccs_areas = get_posts(
 							<h3 class="area-card__title">
 								<a class="area-card__link" href="<?php echo esc_url( get_permalink( $ccs_area ) ); ?>"><?php echo esc_html( $ccs_area_town ); ?></a>
 							</h3>
+							<?php
+							/* What this area gets (Nov 2026: not every area has domiciliary care). */
+							?>
+							<p class="area-card__services"><?php echo esc_html( ccs_location_services_label( $ccs_area->ID ) ); ?></p>
 							<?php if ( ! empty( $ccs_area_shown ) ) : ?>
 								<p class="area-card__villages">
 									<?php

@@ -63,34 +63,10 @@ $ccs_team_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'who-youll-mee
 			</h2>
 		</header>
 
-		<ul class="ccs-team-grid" role="list">
-			<?php foreach ( $ccs_team_show as $ccs_member ) : ?>
-				<li class="home-team__item">
-					<?php
-					/*
-					 * alt="" because the caption directly beneath names the person; a
-					 * second "Victoria Walker" from the image would be read out twice.
-					 */
-					?>
-					<figure class="team-tile">
-						<div class="team-tile__photo">
-							<img
-								src="<?php echo esc_url( $ccs_team_uri . $ccs_member['photo'] ); ?>"
-								alt=""
-								width="512"
-								height="512"
-								loading="lazy"
-								decoding="async"
-							>
-						</div>
-						<figcaption class="team-tile__tag">
-							<span class="team-tile__name"><?php echo esc_html( $ccs_member['name'] ); ?></span>
-							<span class="team-tile__role"><?php echo esc_html( $ccs_member['role'] ); ?></span>
-						</figcaption>
-					</figure>
-				</li>
-			<?php endforeach; ?>
-		</ul>
+		<?php
+		// Shared tiles; each links to the person's profile (Nov 2026).
+		get_template_part( 'template-parts/team-tiles', null, array( 'members' => $ccs_team_show, 'item_class' => 'home-team__item' ) );
+		?>
 
 		<div class="ccs-section-foot ccs-actions ccs-actions--center">
 			<a class="btn btn-quiet" href="<?php echo esc_url( $ccs_team_url ); ?>">

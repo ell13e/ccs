@@ -217,6 +217,22 @@ class CCS_Theme_Customizer {
 			'rows'        => 10,
 		) );
 
+		// Bank holidays in the current fee year (page 2 of the fee schedule).
+		$wp_customize->add_setting( 'ccs_bank_holidays', array(
+			'type'              => 'theme_mod',
+			'capability'        => 'edit_theme_options',
+			'default'           => self::default_bank_holidays(),
+			'sanitize_callback' => 'sanitize_textarea_field',
+			'transport'         => 'refresh',
+		) );
+		$wp_customize->add_control( 'ccs_bank_holidays', array(
+			'label'       => __( 'Bank holidays this fee year', 'ccs-wp-theme' ),
+			'description' => __( 'One per line: date | name, e.g. "25 December 2026 | Christmas Day". Christmas Day, Boxing Day and New Year’s Day show as treble; the rest as double.', 'ccs-wp-theme' ),
+			'section'     => 'ccs_costs',
+			'type'        => 'textarea',
+			'rows'        => 8,
+		) );
+
 		$wp_customize->add_setting( self::COST_EXTRAS, array(
 			'type'              => 'theme_mod',
 			'capability'        => 'edit_theme_options',
@@ -231,6 +247,27 @@ class CCS_Theme_Customizer {
 			'section'     => 'ccs_costs',
 			'type'        => 'textarea',
 			'rows'        => 6,
+		) );
+	}
+
+	/**
+	 * Default bank holidays: the dates printed on page 2 of the 1 September
+	 * 2026 to 31 August 2027 fee schedule.
+	 *
+	 * @return string
+	 */
+	public static function default_bank_holidays() {
+		return implode( "\n", array(
+			'25 December 2026 | Christmas Day',
+			'26 December 2026 | Boxing Day',
+			'28 December 2026 | Boxing Day (substitute day)',
+			'1 January 2027 | New Year’s Day',
+			'26 March 2027 | Good Friday',
+			'28 March 2027 | Easter Sunday',
+			'29 March 2027 | Easter Monday',
+			'3 May 2027 | Early May bank holiday',
+			'31 May 2027 | Spring bank holiday',
+			'30 August 2027 | Summer bank holiday',
 		) );
 	}
 
@@ -265,7 +302,7 @@ class CCS_Theme_Customizer {
 			__( 'Setting up your care package | £30, one-off', 'ccs-wp-theme' ),
 			__( 'Bank holidays | Double rate', 'ccs-wp-theme' ),
 			__( 'Christmas Day, Boxing Day, New Year’s Day and New Year’s Eve after 7pm | Treble rate', 'ccs-wp-theme' ),
-			__( 'Escort visits | 50p a mile, plus parking', 'ccs-wp-theme' ),
+			__( 'Escort visits, per mile | 50p, plus parking', 'ccs-wp-theme' ),
 		) );
 	}
 

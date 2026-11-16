@@ -103,7 +103,9 @@
 	position: sticky;
 	top: 0;
 	z-index: var(--z-sticky);
-	background: transparent;
+	/* Solid on every page (Nov 2026): white nav over photos lost contrast
+	   wherever a photo was light, so nothing sits behind the nav now. */
+	background: var(--color-background);
 	/* Explicitly none, not merely absent. The inlined critical CSS still carries
 	   the previous solid header's `box-shadow: 0 1px 0 var(--color-border)`, and
 	   since it wins by default over a rule that simply omits the property, that
@@ -471,9 +473,12 @@ body.has-photo-hero:not(.ccs-mobile-nav-open) .site-header:not(.is-scrolled) .mo
 }
 
 /* Dropdown items carry a chevron inside the link box; keep the underline under
-   the label only, not the chevron. */
+   the label only, not the chevron. The inset is the link's right padding
+   (pad + 0.85em, set further down where the chevron was re-centred); it was
+   still 0.95em, so the bar stopped short of the last letter (client, Nov
+   2026: "weird coverage?"). */
 .nav-desktop > .nav-list > .menu-item-has-children > .nav-link::before {
-	right: calc(var(--nav-link-pad-x, 0.75rem) + 0.95em);
+	right: calc(var(--nav-link-pad-x, 0.75rem) + 0.85em);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -506,10 +511,12 @@ body.has-photo-hero:not(.ccs-mobile-nav-open) .site-header:not(.is-scrolled) .mo
 	transform: translateY(0.05em) rotate(-135deg);
 }
 
-/* The active-state underline would otherwise sit under the chevron too. */
-.nav-desktop .menu-item-has-children.current-menu-ancestor > .nav-link::after {
-	border-color: var(--color-primary);
-}
+/* No colour of its own for the active chevron (Nov 2026, client: the arrow
+   "goes purple on active which isnt good contrast"). A rule here painted it
+   purple whenever its menu held the current page, so over a photo hero the
+   label went white and the arrow stayed purple on the dark photo. It uses
+   currentColor, so it always matches its label: purple on a light header,
+   white over a photo. */
 
 .nav-desktop .sub-menu {
 	position: absolute;
@@ -1087,4 +1094,71 @@ body.ccs-mobile-nav-open::before {
 
 .mobile-menu__address {
 	margin-top: var(--space-sm);
+}
+
+/* =========================================================================
+   DROPDOWN PANELS (Nov 2026; client: "we need a better design for
+   navigation menus"). White rounded panels with a soft shadow, item names
+   only, each a row tinted on hover. No icons and no description lines: a
+   version with both was "messy" (client). "Our services" is one column, the
+   three services then a hairline and the two practical pages; "Areas" lays
+   its twelve towns out in three columns.
+   ========================================================================= */
+.nav-desktop .sub-menu {
+	min-width: 13rem;
+	padding: 0.5rem;
+	border: 0;
+	border-radius: 1.25rem;
+	box-shadow: 0 2px 4px rgba(43, 35, 71, 0.05), 0 24px 56px -18px rgba(43, 35, 71, 0.28);
+}
+
+/* A hover bridge, so moving the pointer down to the panel never closes it. */
+.nav-desktop .sub-menu::before {
+	content: "";
+	position: absolute;
+	inset: -0.75rem 0 auto;
+	height: 0.75rem;
+}
+
+/* Names line up under the label they open from (client, Nov 2026:
+   "weird spacing?"): the panel is pulled left by its own padding plus the
+   item's, less the label's padding (the same clamp as .nav-link's). */
+.nav-desktop > .nav-list > .menu-item > .sub-menu {
+	left: calc(clamp(0.5rem, 0.9vw, 0.875rem) - 0.5rem - 0.9rem);
+}
+
+/* Rows keep the 44px target (rule 14); the label is centred in it. */
+.nav-desktop .sub-menu a {
+	display: flex;
+	align-items: center;
+	min-height: 2.75rem;
+	padding: 0 0.9rem;
+	border-radius: 0.85rem;
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-semibold);
+	line-height: 1.3;
+	white-space: nowrap;
+	color: var(--color-ink);
+	transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.nav-desktop .sub-menu a:hover,
+.nav-desktop .sub-menu a:focus-visible,
+.nav-desktop .sub-menu .current-menu-item > a {
+	background-color: var(--color-band-tint);
+	color: var(--color-ink);
+}
+
+/* Our services: a hairline between the services and the practical pages. */
+.nav-desktop .nav-mega--services > .sub-menu > .menu-item:not(.nav-secondary) + .nav-secondary {
+	margin-top: 0.4rem;
+	padding-top: 0.4rem;
+	border-top: 1px solid var(--color-hairline);
+}
+
+/* Areas: towns in three columns. */
+.nav-desktop .nav-mega--areas > .sub-menu {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	width: 30rem;
 }

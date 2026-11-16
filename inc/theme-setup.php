@@ -200,12 +200,18 @@ function ccs_body_class_photo_hero( $classes ) {
 	 * placeholder there. Full-bleed-photo-behind-white-text is the wrong
 	 * treatment for that content even where a map image exists.
 	 */
-	if ( is_front_page()
-		|| ( is_page() && ccs_page_uses_photo_hero( get_queried_object_id() ) )
-		|| ( is_singular( 'service' ) && ccs_hero_photo_fills_banner( get_queried_object_id() ) )
-	) {
-		$classes[] = 'has-photo-hero';
-	}
+	/*
+	 * The front page is no longer included (Nov 2026): its hero is now two
+	 * photos on a light ground, so the header keeps its dark text there.
+	 */
+	/*
+	 * Retired (Nov 2026; client: "maybe we need a different header design as
+	 * the contrast ratio gets worse the further across"). White nav over a
+	 * photo is only legible where the photo is dark, and these photos are
+	 * dark on the left and light on the right. The header is now solid white
+	 * with dark text on every page and photo heroes start below it, so the
+	 * class is no longer added. The header.css rules keyed on it stay inert.
+	 */
 	return $classes;
 }
 add_filter( 'body_class', 'ccs_body_class_photo_hero', 10, 1 );
@@ -396,6 +402,17 @@ function ccs_theme_scripts() {
 			$theme_uri . '/assets/css/contact-page.css',
 			array( 'ccs-design-system', 'ccs-components' ),
 			$version
+		);
+	}
+
+	// The weekly cost estimator, on the Costs and funding page only.
+	if ( is_page_template( 'page-templates/template-costs.php' ) ) {
+		wp_enqueue_script(
+			'ccs-cost-estimator',
+			$theme_uri . '/assets/js/cost-estimator.js',
+			array(),
+			$version,
+			true
 		);
 	}
 

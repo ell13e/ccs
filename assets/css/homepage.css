@@ -542,32 +542,17 @@
 	}
 }
 
-.home-services__cta {
+.home-services__strip {
 	margin-top: var(--section-head-gap);
-	text-align: center;
+	border: 0;
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-float);
 }
 
-/* Left on phones with the section heads above it (see .ccs-head--center in
-   components.css): three centred lines of display type read as a poster. */
-@media (max-width: 599px) {
-	.home-services__cta {
-		text-align: left;
-	}
-
-	.home-services__cta-text {
-		margin-inline: 0;
-	}
-}
-
-.home-services__cta-text {
-	max-width: 30ch;
-	margin: 0 auto var(--space-lg);
-	font-family: var(--font-family-heading);
-	font-size: clamp(1.375rem, 1.1rem + 1vw, 1.875rem);
-	font-weight: var(--font-weight-medium);
-	line-height: 1.3;
-	color: var(--color-ink);
-	text-wrap: balance;
+.home-services__strip .ccs-strip__lede a {
+	color: var(--color-primary);
+	font-weight: var(--font-weight-semibold);
+	text-underline-offset: 0.2em;
 }
 
 /* -------------------------------------------------------------------------
@@ -1616,69 +1601,320 @@ a.home-routes__main::after {
 	padding-bottom: 0 !important;
 }
 
-/* Costs, eighth version (Nov 2026): the note and a link to the Costs and
-   funding page on the left, the three starting prices on the right, in the
-   same tint panel the full table uses there. */
-.home-costs__grid {
-	display: grid;
-	gap: var(--space-2xl);
+
+/* Grounds after the costs section left the homepage (Nov 2026): reviews
+   (tint), team (white), articles (tint), closing card (white). */
+.home-team {
+	background-color: var(--color-background);
+}
+
+.home-news {
+	background-color: var(--color-band-tint);
+}
+
+.home-news + .home-closing-cta {
+	padding-top: var(--section-pad);
+}
+
+/* =========================================================================
+   TWO-PHOTO HERO (Nov 2026; client, after the ElderlyCare X hero: "two
+   photos that show more of our capabilities"). The heading is centred on
+   the tint ground between two tall 3:4 photographs, the left one lower and
+   the right one higher (the ElderlyCare X layout the client pointed to).
+   From 1200px they keep one size and sit a set distance from the text; on
+   narrower screens the window crops their outer side, as the reference
+   does at 1325px.
+   Below 1200px there is no room beside the text, so the two photos sit side
+   by side under it. Replaces the full-bleed photo, scrim and white type; the
+   rules above for those still exist but no longer match anything visible.
+   ========================================================================= */
+.home-hero--duo {
+	display: block;
+	min-height: 0;
+	padding-block: calc(var(--space-3xl) + var(--ccs-header-height)) calc(var(--space-2xl) + var(--routes-overlap));
+	color: var(--color-ink);
+	background-color: var(--color-band-tint);
+	text-align: center;
+}
+
+.home-hero--duo .home-hero__panel {
 	align-items: center;
+	max-width: 40rem;
+	margin-inline: auto;
 }
 
-@media (min-width: 960px) {
-	.home-costs__grid {
-		grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
-		gap: clamp(3rem, 1.5rem + 4vw, 6rem);
-	}
+.home-hero--duo .home-hero__title {
+	color: var(--color-ink);
+	text-shadow: none;
 }
 
-.home-costs__intro .ccs-title {
-	margin-bottom: 0;
+.home-hero--duo .home-hero__promise {
+	color: var(--color-primary);
+	text-shadow: none;
 }
 
-.home-costs__actions {
+.home-hero--duo .home-hero__actions {
+	justify-content: center;
+}
+
+.home-hero--duo .home-hero__cta {
+	box-shadow: none;
+}
+
+/* Room between the three things in the column (client: "cramped"). */
+.home-hero--duo .home-hero__promise {
+	margin-top: var(--space-md);
+}
+
+.home-hero--duo .home-hero__actions {
 	margin-top: var(--space-xl);
 }
 
-.rate-from {
-	display: grid;
-	gap: var(--space-lg);
+/* The CQC widget under the action, in the column (1024px to 1199px); from
+   1200px it laps the right-hand photo instead (below). */
+.home-hero--duo .hero-cqc {
+	position: static;
+	margin: var(--space-xl) auto 0;
+	box-shadow: var(--shadow-float);
+}
+
+.home-hero__photo {
 	margin: 0;
+	overflow: hidden;
+	background-color: var(--color-background);
 }
 
-.rate-from__row {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: baseline;
-	justify-content: space-between;
-	gap: 0.25rem var(--space-md);
+.home-hero__photo img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
 }
 
-.rate-from__row dt {
-	font-size: var(--text-base);
-	font-weight: var(--font-weight-semibold);
-	color: var(--color-primary);
+/* Faces towards the text, so a crop at the window edge never reaches
+   them: the summer party photo (left) shows her face right of centre; the
+   older woman and her carer (right) keeps both faces left of centre. */
+.home-hero__photo--left img {
+	object-position: 22% 40%;
 }
 
-.rate-from__row dd {
-	display: flex;
-	align-items: baseline;
-	gap: 0.4rem;
-	margin: 0;
-	font-variant-numeric: lining-nums tabular-nums;
+.home-hero__photo--right img {
+	object-position: 75% 45%;
 }
 
-.rate-from__word,
-.rate-from__unit {
-	font-size: var(--text-sm);
-	color: var(--color-ink-soft);
+@media (max-width: 1199px) {
+	.home-hero__photos {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--space-md);
+		width: min(36rem, 100% - 2 * var(--container-padding, 1rem));
+		margin: var(--space-2xl) auto 0;
+	}
+
+	.home-hero__photo {
+		aspect-ratio: 1;
+		border-radius: var(--radius-2xl);
+	}
 }
 
-.rate-from__price {
-	font-family: var(--font-family-heading);
-	font-size: clamp(1.75rem, 1.5rem + 0.8vw, 2.125rem);
-	font-weight: var(--font-weight-medium);
-	line-height: 1.1;
-	color: var(--color-ink);
+@media (min-width: 1200px) {
+	/* Photo size and its gap from the 40rem text column. */
+	.home-hero--duo {
+		--hero-photo-w: clamp(17rem, 21vw, 21rem);
+		--hero-gap: 5rem;
+		min-height: calc(47rem + var(--ccs-header-height));
+		padding-top: calc(var(--space-3xl) * 2 + var(--ccs-header-height));
+	}
+
+	.home-hero__photo {
+		position: absolute;
+		z-index: 1;
+		width: var(--hero-photo-w);
+		aspect-ratio: 3 / 4;
+		border-radius: var(--radius-2xl);
+		box-shadow: var(--shadow-float);
+	}
+
+	.home-hero__photo--left {
+		bottom: calc(var(--routes-overlap) + var(--space-2xl));
+		left: calc(50% - 20rem - var(--hero-gap) - var(--hero-photo-w));
+	}
+
+	.home-hero__photo--right {
+		top: calc(var(--ccs-header-height) + var(--space-xl));
+		right: calc(50% - 20rem - var(--hero-gap) - var(--hero-photo-w));
+	}
 }
 
+/*
+ * The CQC widget as one wide, short row under the button, the logo beside
+ * the rating (client, Nov 2026: "wider and shorter, like the button"). Only
+ * the arrangement changes: CQC's logo, words, colours and button are as
+ * CQC supplies them. Its stylesheet sets every property !important
+ * (cleanslate), so these must be too. Desktop only; below 1024px the widget
+ * becomes the route card's last row.
+ */
+@media (min-width: 1024px) {
+	.home-hero--duo .hero-cqc .cqc-widget.cleanslate,
+	.home-hero--duo .hero-cqc div.cqc-widget .cqc-container,
+	.home-hero--duo .hero-cqc div.cqc-widget .cqc-widget-header,
+	.home-hero--duo .hero-cqc div.cqc-widget .cqc-widget-inner,
+	.home-hero--duo .hero-cqc div.cqc-widget .cqc-service-name,
+	.home-hero--duo .hero-cqc div.cqc-widget .cqc-widget-normal,
+	.home-hero--duo .hero-cqc div.cqc-widget .cqc-widget-normal > * {
+		width: auto !important;
+		min-width: 0 !important;
+	}
+
+	.home-hero--duo .hero-cqc div.cqc-widget .cqc-container {
+		padding: 0.85rem 1.25rem !important;
+	}
+
+	.home-hero--duo .hero-cqc div.cqc-widget .cqc-widget-header {
+		display: flex !important;
+		align-items: center !important;
+		gap: 1.25rem !important;
+		text-align: left !important;
+	}
+
+	.home-hero--duo .hero-cqc div.cqc-widget .cqc-widget-header > a {
+		flex: none !important;
+	}
+
+	.home-hero--duo .hero-cqc div.cqc-widget .cqc-widget-inner {
+		margin: 0 !important;
+	}
+
+	.home-hero--duo .hero-cqc div.cqc-widget .cqc-service-name {
+		margin: 0 0 0.3rem !important;
+	}
+
+	.home-hero--duo .hero-cqc div.cqc-widget .cqc-widget-normal {
+		display: flex !important;
+		flex-wrap: nowrap !important;
+		align-items: center !important;
+		gap: 0 1rem !important;
+		white-space: nowrap !important;
+		margin: 0 !important;
+		padding: 0.45rem 0.75rem !important;
+	}
+
+	.home-hero--duo .hero-cqc div.cqc-widget .cqc-widget-normal > *,
+	.home-hero--duo .hero-cqc div.cqc-widget .cqc-widget-normal > * * {
+		flex: none !important;
+		white-space: nowrap !important;
+	}
+
+	.home-hero--duo .hero-cqc div.cqc-widget .cqc-widget-normal > * {
+		margin: 0 !important;
+		padding-block: 0 !important;
+		line-height: 1.3 !important;
+	}
+
+	/* CQC nudges "Good" down 13px for its stacked layout; level here. */
+	.home-hero--duo .hero-cqc div.cqc-widget .cqc-widget-overall {
+		top: 0 !important;
+	}
+
+	.home-hero--duo .hero-cqc div.cqc-widget .cqc-widget-clear,
+	.home-hero--duo .hero-cqc div.cqc-widget .inherited-facility:empty {
+		display: none !important;
+	}
+}
+
+/*
+ * From 1200px the CQC widget is a badge lapping the lower-left corner of
+ * the right-hand photo (client, Nov 2026, on the column of heading,
+ * promise, button and CQC box: "a bit cramped"). The column keeps one
+ * message and one action; the rating still shows on first view. Compact:
+ * logo beside the provider's name, then the rating, date and report link
+ * in two rows. Arrangement only, as above.
+ */
+@media (min-width: 1200px) {
+	.home-hero--duo .home-hero__inner {
+		position: static;
+	}
+
+	.home-hero--duo .hero-cqc {
+		position: absolute;
+		z-index: 2;
+		top: calc(var(--ccs-header-height) + var(--space-xl) + var(--hero-photo-w) * 4 / 3 - 3.5rem);
+		right: auto;
+		bottom: auto;
+		left: min(calc(50% + 20rem + var(--hero-gap) - 3.5rem), calc(100% - 20rem - var(--space-lg)));
+		width: 20rem;
+		margin: 0;
+	}
+
+	.home-hero--duo .hero-cqc div.cqc-widget .cqc-widget-header {
+		display: grid !important;
+		grid-template-columns: auto minmax(0, 1fr) !important;
+		gap: 0.7rem 0.85rem !important;
+		align-items: center !important;
+	}
+
+	.home-hero--duo .hero-cqc div.cqc-widget .cqc-widget-header > a img {
+		width: 6.25rem !important;
+		height: auto !important;
+	}
+
+	.home-hero--duo .hero-cqc div.cqc-widget .cqc-widget-inner {
+		display: contents !important;
+	}
+
+	.home-hero--duo .hero-cqc div.cqc-widget .cqc-service-name {
+		margin: 0 !important;
+		white-space: normal !important;
+		line-height: 1.3 !important;
+	}
+
+	.home-hero--duo .hero-cqc div.cqc-widget .cqc-widget-normal {
+		display: grid !important;
+		grid-column: 1 / -1 !important;
+		grid-template-columns: minmax(0, 1fr) auto !important;
+		gap: 0.5rem 0.75rem !important;
+		align-items: center !important;
+		padding: 0.6rem 0.75rem !important;
+	}
+
+	/* "Good" keeps its own width, so CQC's dot stays beside the word. */
+	.home-hero--duo .hero-cqc div.cqc-widget .cqc-widget-overall {
+		justify-self: start !important;
+	}
+}
+
+/* Phones, after the ElderlyCare X hero the client pointed to: centred
+   text (a deliberate exception to rule 10, the hero being one short
+   heading and one line), a full-width button, then the two photos side by
+   side in tall frames. */
+@media (max-width: 599px) {
+	.home-hero--duo {
+		padding-top: calc(var(--space-2xl) + var(--ccs-header-height));
+		min-height: 0;
+	}
+
+	.home-hero--duo .home-hero__promise {
+		max-width: none;
+	}
+
+	.home-hero--duo .home-hero__actions {
+		align-items: stretch;
+		width: 100%;
+	}
+
+	.home-hero--duo .home-hero__cta {
+		width: 100%;
+		min-height: 3.25rem;
+		font-size: var(--text-base);
+	}
+
+	.home-hero__photos {
+		width: auto;
+		margin-inline: var(--container-padding, 1rem);
+		gap: var(--space-sm);
+	}
+
+	.home-hero__photo {
+		aspect-ratio: 3 / 4;
+	}
+}

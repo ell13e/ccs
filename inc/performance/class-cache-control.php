@@ -74,6 +74,20 @@ class CCS_Cache_Control {
 		if ( is_user_logged_in() ) {
 			return true;
 		}
+		/*
+		 * A local copy of the site (127.0.0.1, localhost, *.local, *.test, or
+		 * a WordPress environment type of local or development) is never
+		 * cached in the browser: with an hour's cache, design changes did not
+		 * show in the preview until the cache ran out (Nov 2026). The live site
+		 * is unaffected.
+		 */
+		$host = strtolower( (string) wp_parse_url( home_url(), PHP_URL_HOST ) );
+		if ( in_array( wp_get_environment_type(), array( 'local', 'development' ), true )
+			|| in_array( $host, array( '127.0.0.1', 'localhost', '::1' ), true )
+			|| preg_match( '/\.(local|test|localhost)$/', $host )
+		) {
+			return true;
+		}
 		if ( is_admin() ) {
 			return true;
 		}

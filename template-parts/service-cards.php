@@ -7,8 +7,8 @@
  * - services (WP_Post[]) Services to show, already ordered; defaults to
  *   ccs_ordered_services().
  * - town (string) On an area page: the card title names the town ("Respite
- *   care in Tonbridge") and the text is the service's starting price instead
- *   of its excerpt. The same excerpts on all six area pages made them read as
+ *   care in Tonbridge") and the card carries no excerpt, only the price tag
+ *   on its photo. The same excerpts on all six area pages made them read as
  *   near-duplicates to search engines (Nov 2026).
  *
  * @package CCS_WP_Theme
@@ -20,7 +20,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $ccs_cards = isset( $args['services'] ) && is_array( $args['services'] ) ? $args['services'] : ccs_ordered_services();
 $ccs_town  = isset( $args['town'] ) ? trim( (string) $args['town'] ) : '';
-$ccs_fees  = ( '' !== $ccs_town && function_exists( 'ccs_fee_schedule' ) ) ? ccs_fee_schedule() : array();
 
 if ( empty( $ccs_cards ) ) {
 	return;
@@ -42,12 +41,6 @@ $ccs_card_icons = array(
 			/* translators: 1: service name, 2: town. */
 			$ccs_card_title = sprintf( __( '%1$s in %2$s', 'ccs-wp-theme' ), $ccs_card_title, $ccs_town );
 			$ccs_card_text  = '';
-			$ccs_groups     = function_exists( 'ccs_fee_groups_for_service' ) ? ccs_fee_groups_for_service( $ccs_card->post_name ) : array();
-			if ( $ccs_groups && isset( $ccs_fees[ $ccs_groups[0] ][0] ) ) {
-				$ccs_first     = $ccs_fees[ $ccs_groups[0] ][0];
-				/* translators: %s: price, e.g. £36.38. */
-				$ccs_card_text = sprintf( $ccs_first['night'] ? __( 'From %s a night', 'ccs-wp-theme' ) : __( 'From %s an hour', 'ccs-wp-theme' ), $ccs_first['weekday'] );
-			}
 		}
 		?>
 		<li class="svc-card">
@@ -67,6 +60,10 @@ $ccs_card_icons = array(
 					?>
 				</div>
 			<?php endif; ?>
+			<?php
+			// The starting price as a tag on the photo (as on the homepage).
+			echo function_exists( 'ccs_service_price_tag' ) ? ccs_service_price_tag( $ccs_card->post_name ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the helper.
+			?>
 			<div class="svc-card__body">
 				<span class="ccs-badge ccs-badge--ring svc-card__badge"><?php echo ccs_icon( $ccs_card_icons[ $ccs_card->post_name ] ?? 'heart' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
 				<h3 class="svc-card__title">

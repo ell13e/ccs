@@ -1,12 +1,17 @@
 <?php
 /**
- * Homepage hero: full-bleed photo, gradient scrim, content anchored bottom-left.
+ * Homepage hero: the heading centred between two photographs that run off
+ * the left and right edges of the page (Nov 2026, client, after the
+ * ElderlyCare X hero: "two photos that show more of our capabilities"). One
+ * photo of a younger adult at a summer party, one of an older person with
+ * her carer, so a visitor sees both kinds of care at once. (The
+ * boat trip photo was tried first, but the section below already uses it.)
  *
- * Structure follows the "Finding what fits" prototype in
- * reference/finding-what-fits-prototype/ (the agreed design quality bar):
- * immersive photo rather than a side-by-side column, dual-gradient scrim so
- * white type stays legible over any image, and an F-pattern content order —
- * H1, then the brand promise, then support copy, then actions, then quiet proof.
+ * Replaces the full-bleed single photo with white type on a scrim. The light
+ * ground means the header keeps its usual dark text here (the front page no
+ * longer gets .has-photo-hero; see inc/theme-setup.php).
+ *
+ * On phones and tablets the two photos sit side by side under the text.
  *
  * @package CCS_WP_Theme
  */
@@ -45,29 +50,38 @@ $hero_default_file = 'home-hero-family.jpg';
 $hero_has_fallback = file_exists( get_template_directory() . '/assets/images/site-photos/' . $hero_default_file );
 ?>
 
-<section class="home-hero" aria-labelledby="home-hero-heading">
+<?php
+/*
+ * The two photographs. The Customizer's hero image (ccs_hero_image), when
+ * set, replaces the right one; both are filterable. Packaged files are the
+ * client's own photos, cropped by object-position only (never retouched).
+ */
+$hero_photos = apply_filters(
+	'ccs_home_hero_photos',
+	array(
+		/*
+		 * Each photo is framed so its faces sit towards the text: on screens
+		 * between 1200px and about 1500px the window crops the outer side.
+		 * The summer party photo is left (her face is left of centre in the
+		 * file), the older woman and her carer right.
+		 */
+		'left'  => array(
+			'src'   => get_template_directory_uri() . '/assets/images/site-photos-extra/kent-summer-party-hero.webp',
+			'file'  => 'site-photos-extra/kent-summer-party-hero.webp',
+			'alt'   => __( 'A young woman in a flower crown, laughing at a summer party', 'ccs-wp-theme' ),
+			'class' => 'home-hero__photo--left',
+		),
+		'right' => array(
+			'src'   => $hero_image ? $hero_image : ( $hero_has_fallback ? $hero_img_base . $hero_default_file : '' ),
+			'file'  => $hero_image ? '' : 'site-photos/' . $hero_default_file,
+			'alt'   => $hero_image ? $hero_alt : __( 'An older woman smiling with her carer, who holds her hand', 'ccs-wp-theme' ),
+			'class' => 'home-hero__photo--right',
+		),
+	)
+);
+?>
+<section class="home-hero home-hero--duo" aria-labelledby="home-hero-heading">
 
-	<?php if ( $hero_image ) : ?>
-		<img class="home-hero__bg" src="<?php echo esc_url( $hero_image ); ?>" alt="" aria-hidden="true" fetchpriority="high" decoding="async">
-	<?php elseif ( $hero_has_fallback ) : ?>
-		<img class="home-hero__bg" src="<?php echo esc_url( $hero_img_base . $hero_default_file ); ?>" alt="" aria-hidden="true" width="2400" height="1600"<?php echo ccs_theme_image_srcset( 'site-photos/' . $hero_default_file, '100vw' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset(). ?> fetchpriority="high" decoding="async">
-	<?php endif; ?>
-
-	<div class="home-hero__scrim" aria-hidden="true"></div>
-
-
-	<?php
-	/*
-	 * container--lg, not --xl. This was the one container on the entire site
-	 * using the wider 1024px→1440px scale — every other section, on every page,
-	 * uses container--lg (1024px). At wide viewports that put the hero headline
-	 * up to 200px further out than the header logo directly above it and the
-	 * CQC/Why Choose/Services headings directly below it, which is the specific
-	 * misalignment this fixes. .home-hero__panel's own max-width: min(42rem,100%)
-	 * already keeps the headline from feeling lost inside the wider column, so
-	 * nothing about the hero's proportions actually depended on --xl.
-	 */
-	?>
 	<div class="home-hero__inner container container--lg">
 		<div class="home-hero__panel">
 
@@ -79,15 +93,8 @@ $hero_has_fallback = file_exists( get_template_directory() . '/assets/images/sit
 				<?php echo esc_html( ccs_copy( 'hero_promise' ) ); ?>
 			</p>
 
-			<?php
-			/*
-			 * Cut back (Nov 2026; the client found the hero busy): heading, promise
-			 * and one action. The support paragraph said what the next sections
-			 * say, and the proof line repeated the CQC badge beside it.
-			 */
-			?>
 			<div class="home-hero__actions">
-				<a href="<?php echo esc_url( $hero_contact_url ); ?>" class="btn btn-accent home-hero__cta">
+				<a href="<?php echo esc_url( $hero_contact_url ); ?>" class="btn btn-primary home-hero__cta">
 					<?php esc_html_e( 'Book a free consultation', 'ccs-wp-theme' ); ?>
 				</a>
 			</div>
@@ -118,8 +125,17 @@ $hero_has_fallback = file_exists( get_template_directory() . '/assets/images/sit
 				></script>
 			</div>
 
-
 		</div>
+	</div>
+
+	<div class="home-hero__photos">
+		<?php foreach ( $hero_photos as $hero_photo ) : ?>
+			<?php if ( ! empty( $hero_photo['src'] ) ) : ?>
+				<figure class="home-hero__photo <?php echo esc_attr( $hero_photo['class'] ); ?>">
+					<img src="<?php echo esc_url( $hero_photo['src'] ); ?>" alt="<?php echo esc_attr( $hero_photo['alt'] ); ?>"<?php echo ! empty( $hero_photo['file'] ) ? ccs_theme_image_srcset( $hero_photo['file'], '(min-width: 1200px) 18vw, 50vw' ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset(). ?> fetchpriority="high" decoding="async">
+				</figure>
+			<?php endif; ?>
+		<?php endforeach; ?>
 	</div>
 </section>
 

@@ -17,11 +17,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 $scenarios = array(
 	array(
 		'title'       => __( 'Starting care for the first time', 'ccs-wp-theme' ),
-		'description' => __( 'Not sure where to begin? We start with a free, no-obligation conversation about what would actually help, then take the time to match you with the right carer before anything starts.', 'ccs-wp-theme' ),
+		'description' => __( 'Not sure where to begin? We start with a free, no-obligation conversation about what would help, then take the time to match you with the right carer before anything starts.', 'ccs-wp-theme' ),
 		'bullets'     => array(
 			__( 'Free care consultation, no pressure', 'ccs-wp-theme' ),
 			__( 'Matched with your carer before day one', 'ccs-wp-theme' ),
-			__( 'A plan built around you, not a rota', 'ccs-wp-theme' ),
+			__( 'A plan built around your day', 'ccs-wp-theme' ),
 		),
 		'link_text'   => __( 'How it works', 'ccs-wp-theme' ),
 		'link_url'    => ( function_exists( 'ccs_page_url' ) ? ccs_page_url( 'getting-started' ) : home_url( '/getting-started/' ) ),
@@ -29,7 +29,7 @@ $scenarios = array(
 	),
 	array(
 		'title'       => __( '24/7 care at home', 'ccs-wp-theme' ),
-		'description' => __( 'Round-the-clock care in your own home. We support people with complex needs, dementia, or those who simply feel safer with someone there day and night.', 'ccs-wp-theme' ),
+		'description' => __( 'Round-the-clock care in your own home. We support people with complex needs, dementia, or those who feel safer with someone there day and night.', 'ccs-wp-theme' ),
 		'bullets'     => array(
 			__( 'Live-in or visiting care', 'ccs-wp-theme' ),
 			__( 'Complex and dementia care', 'ccs-wp-theme' ),

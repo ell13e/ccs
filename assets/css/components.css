@@ -2480,15 +2480,23 @@ a.card {
 }
 
 @media (min-width: 1024px) {
-	.page-hero__inner {
-		position: relative;
+	/*
+	 * Plain heroes: the text and the card side by side in a grid, the card
+	 * centred against the text, so a short heading (FAQs, Getting started)
+	 * no longer leaves the card riding up into the header (client, Nov 2026:
+	 * "the hero sections on all pages except homepage are messed up").
+	 * .page-hero__inner is not positioned: the full-bleed photo hero anchors
+	 * its photo to the hero itself, and positioning the inner box shrank the
+	 * photo to a strip under a plum band.
+	 */
+	.page-hero:not(.page-hero--photo):not(.page-hero--inset):has(.page-cqc) .page-hero__inner {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		align-items: center;
+		column-gap: clamp(2.5rem, 1rem + 4vw, 5rem);
 	}
 
-	.page-cqc {
-		position: absolute;
-		z-index: 2;
-		right: var(--space-xl);
-		bottom: 0;
+	.page-hero:not(.page-hero--photo):not(.page-hero--inset) .page-cqc {
 		margin-top: 0;
 	}
 
@@ -2505,24 +2513,26 @@ a.card {
 
 	.page-hero--inset .page-cqc {
 		position: relative;
+		z-index: 2;
 		grid-column: 2;
 		grid-row: 1;
 		align-self: end;
 		justify-self: start;
-		right: auto;
-		bottom: auto;
+		margin-top: 0;
 		translate: -2.5rem 2rem;
 	}
 
-	/* A full-bleed photo: the hero, not the inner box, is the frame. */
+	/* A full-bleed photo: on the hero's lower right, on the content edge. */
 	.page-hero--photo .page-cqc {
 		position: absolute;
+		right: calc(max(0px, (100% - var(--content-width-lg)) / 2) + var(--space-xl));
 		bottom: var(--space-xl);
+		margin-top: 0;
 	}
 
-	/* Text stays clear of the card. */
-	.page-hero:not(.page-hero--inset):has(.page-cqc) .page-hero__text {
-		max-width: calc(100% - 15rem);
+	/* Text stays clear of the card over a photo. */
+	.page-hero--photo:has(.page-cqc) .page-hero__text {
+		max-width: min(62%, calc(100% - 17rem));
 	}
 }
 
@@ -2609,4 +2619,22 @@ a.card {
 :is(.page-cqc, .hero-cqc) div.cqc-widget .cqc-widget-inner {
 	margin-bottom: 0 !important;
 	padding-bottom: 0 !important;
+}
+
+/* Below the header, not under it (Nov 2026; last in the file so it wins
+   over the photo hero's height rules above): the header is solid on every
+   page now (see .site-header in header.css), so the photo starts where the
+   header ends and the header's height is no longer added back. */
+.page-hero--photo {
+	margin-top: 0;
+	min-height: min(52vh, 420px);
+	min-height: min(52svh, 420px);
+	padding-top: var(--space-2xl);
+}
+
+@media (min-width: 900px) {
+	.page-hero--photo {
+		min-height: min(58vh, 520px);
+		min-height: min(58svh, 520px);
+	}
 }
