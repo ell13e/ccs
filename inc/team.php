@@ -7,12 +7,12 @@
  * joins or leaves.
  *
  * Roster confirmed with Ellie 2026-08-19. Jacqueline Ellis (Field Care
- * Supervisor) added 2026-11-16 with her photo, supplied by the client. Her
- * photo was taken against a grey wall; at the client's request ("make sure
- * her photo matches the visual of the others") the wall was replaced with
- * the plain white the other headshots have, using macOS's subject cut-out.
- * She herself is untouched: no brightness or colour change. The original
- * is jacqueline_ellis.jpg. Hani Ahmed (formerly Care Manager)
+ * Supervisor) added 2026-11-16. Jacqueline's, Heidi's and Shayna-Rae's
+ * photos were replaced the same day with versions the client edited (their
+ * ID badge set, 1080x1350, kept as the underscore-named originals). The web
+ * versions are cropped and resized only, framed by measured face size to
+ * match the rest of the team: face about 48% of the width, its top about
+ * 22% down, centred. Hani Ahmed (formerly Care Manager)
  * and Zoe Commons (formerly Domiciliary Care Manager) have left CCS and must not
  * appear anywhere on the site. Trish Henley and Jennifer Boorman are still staff
  * but are deliberately not featured on the public team page.
