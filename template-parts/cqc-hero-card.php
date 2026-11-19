@@ -20,6 +20,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/*
+ * Off in inner-page headers (Nov 2026). The client called the header with
+ * this card floating alone beside the heading "shitty" (the Costs page), and
+ * an earlier review found it covering header photos. The rating stays in the
+ * homepage hero, on the CQC page and as the live widget in every page's
+ * footer. The filter turns it back on.
+ */
+if ( ! apply_filters( 'ccs_cqc_in_page_heroes', false ) ) {
+	return;
+}
+
 if ( get_theme_mod( 'ccs_cqc_widget_hide', false )
 	|| ( function_exists( 'ccs_is_careers_context' ) && ccs_is_careers_context() )
 	|| is_page_template( 'page-templates/template-cqc.php' )

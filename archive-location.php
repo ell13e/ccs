@@ -102,6 +102,20 @@ $ccs_areas = get_posts(
 		?>
 		<section class="<?php echo esc_attr( $ccs_area_class ); ?>" aria-labelledby="areas-group-<?php echo (int) $ccs_area_i; ?>">
 			<div class="container container--lg">
+				<?php
+				/*
+				 * A map beside the first group (Nov 2026). A design review found this
+				 * page was type only: no photo, no map. The towns with the fullest
+				 * offer now sit beside a map of Kent, the same Google embed the town
+				 * pages use, so the page has one substantial object and shows where
+				 * "Kent" is at a glance. Only the first card group gets it.
+				 */
+				$ccs_area_with_map = $ccs_area_cards && 1 === $ccs_area_i;
+				?>
+				<?php if ( $ccs_area_with_map ) : ?>
+					<div class="areas-hub__split">
+						<div class="areas-hub__split-main">
+				<?php endif; ?>
 				<h2 id="areas-group-<?php echo (int) $ccs_area_i; ?>" class="areas-hub__group"><?php echo esc_html( $ccs_area_label ); ?></h2>
 
 				<?php if ( $ccs_area_cards ) : ?>
@@ -125,6 +139,17 @@ $ccs_areas = get_posts(
 							</li>
 						<?php endforeach; ?>
 					</ul>
+					<?php if ( $ccs_area_with_map ) : ?>
+						</div>
+						<div class="areas-hub__map">
+							<iframe
+								src="<?php echo esc_url( 'https://www.google.com/maps?q=' . rawurlencode( 'Kent, UK' ) . '&z=9&output=embed' ); ?>"
+								title="<?php esc_attr_e( 'Map of Kent', 'ccs-wp-theme' ); ?>"
+								loading="lazy"
+							></iframe>
+						</div>
+					</div>
+					<?php endif; ?>
 				<?php else : ?>
 					<ul class="area-list" role="list">
 						<?php foreach ( $ccs_area_group['areas'] as $ccs_area_item ) : ?>

@@ -244,13 +244,6 @@ h3, .heading-3 { font-size: var(--text-2xl); font-weight: var(--font-weight-semi
 }
 .btn-primary:hover { background-color: var(--color-primary-dark); border-color: var(--color-primary-dark); color: #fff; }
 
-.btn-secondary {
-	background-color: transparent;
-	border-color: var(--color-primary);
-	color: var(--color-primary);
-}
-.btn-secondary:hover { background-color: var(--color-primary); color: #fff; }
-
 .btn-phone {
 	background-color: var(--color-secondary-dark);
 	border-color: var(--color-secondary-dark);

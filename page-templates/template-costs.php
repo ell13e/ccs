@@ -107,9 +107,16 @@ $ccs_pay_ways = array(
 				<h2 id="costs-more-heading" class="ccs-title"><?php esc_html_e( 'More detail', 'ccs-wp-theme' ); ?></h2>
 			</header>
 			<div class="ccs-faq costs-more__faq">
+				<?php
+				/*
+				 * Every rate as four even cards (Nov 2026). The wide rate table that
+				 * sat here was called "awful" by the client; she was shown four
+				 * cards and a narrow list, built, and chose the cards.
+				 */
+				?>
 				<details class="ccs-faq__item" name="costs-more" id="every-rate">
 					<summary class="ccs-faq__q"><?php esc_html_e( 'Every rate, weekdays and weekends', 'ccs-wp-theme' ); ?></summary>
-					<div class="ccs-faq__a"><?php get_template_part( 'template-parts/rate-table' ); ?></div>
+					<div class="ccs-faq__a"><?php get_template_part( 'template-parts/rate-list' ); ?></div>
 				</details>
 				<?php $ccs_extras = function_exists( 'ccs_fee_extras' ) ? ccs_fee_extras() : array(); ?>
 				<?php if ( ! empty( $ccs_extras ) ) : ?>

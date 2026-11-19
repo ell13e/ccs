@@ -62,7 +62,7 @@ $ccs_careers  = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'careers' ) : 
 		<section class="ccs-section ccs-section--tint team-people" aria-labelledby="team-heading">
 			<div class="container container--lg">
 				<header class="ccs-head ccs-head--center">
-					<p class="ccs-eyebrow"><?php echo esc_html( ccs_copy( 'team_page_eyebrow' ) ); ?></p>
+					<?php // The "Management and office" eyebrow went (Nov 2026 eyebrow review): the paragraph above already says who is shown. ?>
 					<h2 id="team-heading" class="ccs-title">
 						<?php
 						echo esc_html( ccs_copy( 'team_page_title' ) );

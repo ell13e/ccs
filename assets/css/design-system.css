@@ -245,6 +245,7 @@
 	   the bands fight. The token stays so nothing breaks, and now means the tint. */
 	--color-band-cream: var(--color-band-tint);
 	--color-band-tint: #F1EFF7;
+	--color-tile-tint: #E3DFF0;   /* one step deeper than the tint band: a placeholder tile that shows on white and on the tint */
 	--color-band-deep: var(--color-primary-dark);
 	--color-band-deepest: #332659;
 

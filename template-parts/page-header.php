@@ -110,6 +110,15 @@ $ccs_ph_inset = ! $ccs_ph_has_photo
 				?>
 			</div>
 		<?php endif; ?>
-		<?php get_template_part( 'template-parts/cqc-hero-card' ); ?>
+		<?php
+		/*
+		 * One object beside the heading: the photo when the page has one, the
+		 * CQC card when it does not (Nov 2026). Both together put the card on
+		 * top of the photo. The live widget is also in the footer of every page.
+		 */
+		if ( ! $ccs_ph_inset ) {
+			get_template_part( 'template-parts/cqc-hero-card' );
+		}
+		?>
 	</div>
 </header>

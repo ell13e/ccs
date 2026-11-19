@@ -944,8 +944,12 @@ body.ccs-mobile-nav-open::before {
 	transition: max-height var(--duration-normal) var(--ease-out);
 }
 
+/* Tall enough for the longest list. It was 80vh, which cut "Our services"
+   off part-way once it held twenty-one services: the rest could not be
+   reached at all (client, Nov 2026: "fix the mobile menu"). The panel
+   itself scrolls. */
 #mobile-navigation .menu-item.is-expanded > .sub-menu {
-	max-height: 80vh;
+	max-height: 140rem;
 }
 
 #mobile-navigation .sub-menu .menu-item {
@@ -1286,3 +1290,382 @@ body.ccs-mobile-nav-open::before {
 		gap: clamp(0.25rem, 1vw, 1rem);
 	}
 }
+
+
+/* =========================================================================
+   OUR SERVICES, GROUPED (Nov 2026). Twenty services in two sections,
+   "Everyday care" and "Condition-led care", two columns each, and the two
+   practical pages in a narrow fifth column. Each item carries its column
+   (nav-col-1 to 4) from inc/services-2026-11c.php; dense flow stacks each
+   column from the top.
+
+   Fourth pass. Earlier ones: small grey headings (client: sectioning "not
+   good enough"); hairlines round each section ("could use work"); a lilac
+   panel per section and a plum bar ("cards on cards", which is rule 1's
+   box in a box). Now one flat white panel: sections are set apart by space
+   and by a serif heading with a short mint rule under it. Nothing is boxed.
+   ========================================================================= */
+.nav-desktop .nav-mega--services > .sub-menu {
+	grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(0, 0.9fr);
+	grid-auto-flow: row dense;
+	column-gap: 0;
+	width: min(66rem, 100%);
+	padding: 1.75rem 1.5rem 1.5rem;
+}
+
+.nav-desktop .nav-mega--services > .sub-menu > .nav-heading {
+	grid-row: 1;
+	margin: 0 0.9rem 0.75rem;
+}
+
+.nav-desktop .nav-mega--services > .sub-menu > .nav-heading--everyday {
+	grid-column: 1 / span 2;
+}
+
+.nav-desktop .nav-mega--services > .sub-menu > .nav-heading--condition {
+	grid-column: 3 / span 2;
+	margin-left: 2.4rem;
+}
+
+.nav-desktop .nav-mega--services > .sub-menu > .nav-heading > a {
+	display: inline-flex;
+	min-height: 2.25rem;
+	padding: 0;
+	border-radius: 0;
+	font-family: var(--font-family-heading);
+	font-size: 1.3125rem;
+	font-weight: var(--font-weight-medium);
+	color: var(--color-ink);
+}
+
+/* The short mint rule under each heading: the accent, marking a section. */
+.nav-desktop .nav-mega--services > .sub-menu > .nav-heading::after {
+	content: "";
+	display: block;
+	width: 2.5rem;
+	height: 3px;
+	margin-top: 0.35rem;
+	border-radius: 3px;
+	background-color: var(--color-secondary-dark);
+}
+
+.nav-desktop .nav-mega--services > .sub-menu > .nav-heading > a:hover,
+.nav-desktop .nav-mega--services > .sub-menu > .nav-heading > a:focus-visible {
+	background-color: transparent;
+	color: var(--color-primary);
+}
+
+.nav-desktop .nav-mega--services > .sub-menu > .nav-col-1 { grid-column: 1; }
+.nav-desktop .nav-mega--services > .sub-menu > .nav-col-2 { grid-column: 2; }
+.nav-desktop .nav-mega--services > .sub-menu > .nav-col-3 { grid-column: 3; margin-left: 1.5rem; }
+.nav-desktop .nav-mega--services > .sub-menu > .nav-col-4 { grid-column: 4; }
+
+/* The practical pages: plum links in the fifth column, level with the lists. */
+.nav-desktop .nav-mega--services > .sub-menu > .nav-secondary,
+.nav-desktop .nav-mega--services > .sub-menu > .menu-item:not(.nav-secondary) + .nav-secondary {
+	grid-column: 5;
+	margin: 0 0 0 1.5rem;
+	padding: 0;
+	border: 0;
+}
+
+.nav-desktop .nav-mega--services > .sub-menu > .nav-secondary > a {
+	color: var(--color-primary);
+}
+
+.nav-desktop .nav-mega--services > .sub-menu > .nav-secondary > a::after {
+	content: "\2192";
+	margin-left: 0.4rem;
+}
+
+/* The panel is placed against the header's container, centred, and never
+   wider than it, so it cannot run off the side of a narrower window (it was
+   hung from the "Our services" label and was cut off on the right; client,
+   Nov 2026). */
+.nav-desktop .nav-mega--services {
+	position: static;
+}
+
+.header-container {
+	position: relative;
+}
+
+.nav-desktop > .nav-list > .nav-mega--services > .sub-menu {
+	left: 0;
+	right: 0;
+	width: min(68rem, 100%);
+	margin-inline: auto;
+}
+
+.nav-desktop .nav-mega--services > .sub-menu::before {
+	inset: -2rem 0 auto;
+	height: 2rem;
+}
+
+/* Narrower desktops: names may wrap, never clip. */
+.nav-desktop .nav-mega--services > .sub-menu > [class*="nav-col-"] > a {
+	white-space: normal;
+	padding-block: 0.4rem;
+}
+
+/* Phone menu, "Our services": each group is a labelled block, one service a
+   row (two columns wrapped the longer names on real phones; client: "rlly"),
+   then the two practical pages. */
+#mobile-navigation .nav-mega--services > .sub-menu {
+	border-left: 0;
+}
+
+#mobile-navigation .sub-menu .nav-heading > a {
+	min-height: 3rem;
+	padding-top: var(--space-md);
+	padding-left: var(--space-md);
+	border-bottom: 0;
+	font-family: var(--font-family-heading);
+	font-size: var(--text-lg);
+	font-weight: var(--font-weight-medium);
+	color: var(--color-primary);
+}
+
+#mobile-navigation .nav-mega--services > .sub-menu > [class*="nav-col-"] > a {
+	padding: 0 var(--space-md);
+	border-bottom: 0;
+}
+
+#mobile-navigation .nav-mega--services > .sub-menu > .nav-secondary > a {
+	padding-left: var(--space-md);
+	border-bottom: 0;
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-primary);
+}
+
+#mobile-navigation .nav-mega--services > .sub-menu > :not(.nav-secondary) + .nav-secondary {
+	margin-top: var(--space-xs);
+	border-top: 1px solid var(--color-hairline);
+}
+
+/* Phone menu tidy (client, Nov 2026: "what is this"). The open list is
+   plain white under its label, not a lilac block; a row is tinted while it
+   is pressed, never turned white; the page you are on is plum and bold in
+   the list, with the bar kept for top-level rows only (it was drawn on both
+   the section and the page); and the plus button no longer tints on touch,
+   where the tint stuck after a tap. */
+#mobile-navigation .sub-menu {
+	background: transparent;
+	border-left: 0;
+}
+
+#mobile-navigation .sub-menu a {
+	border-bottom: 0;
+}
+
+#mobile-navigation .sub-menu a:hover,
+#mobile-navigation .sub-menu a:focus-visible {
+	background: var(--color-band-tint);
+}
+
+#mobile-navigation .sub-menu .current-menu-item > .mobile-menu-link,
+#mobile-navigation .sub-menu .current_page_item > .mobile-menu-link,
+#mobile-navigation .sub-menu .current-menu-item > a {
+	box-shadow: none;
+	color: var(--color-primary);
+	font-weight: var(--font-weight-semibold);
+}
+
+#mobile-navigation .menu-item.is-expanded > .sub-menu {
+	padding-bottom: var(--space-sm);
+}
+
+@media (hover: none) {
+	#mobile-navigation .nav-sub-toggle:hover {
+		background: transparent;
+		color: var(--color-text);
+	}
+}
+
+#mobile-navigation .nav-sub-toggle {
+	border-left: 0;
+}
+
+/* The two group headings link to their part of the services page, so on
+   that page WordPress marks them as the current page and they picked up the
+   "you are here" tint and colour (client, Nov 2026). A heading is a label:
+   it never shows as current, in the dropdown or the phone menu. */
+.nav-desktop .nav-mega--services > .sub-menu > .nav-heading.current-menu-item > a,
+.nav-desktop .nav-mega--services > .sub-menu > .nav-heading.current_page_item > a {
+	background-color: transparent;
+	color: var(--color-ink);
+}
+
+#mobile-navigation .sub-menu .nav-heading.current-menu-item > a,
+#mobile-navigation .sub-menu .nav-heading.current_page_item > a,
+#mobile-navigation .sub-menu .nav-heading > .mobile-menu-link {
+	box-shadow: none;
+	background: transparent;
+	color: var(--color-primary);
+	font-weight: var(--font-weight-medium);
+}
+
+/* =========================================================================
+   OUR SERVICES: FEATURE PANEL AND HELP ROW (Nov 2026, the layout the client
+   chose from options built after mega menus on Dribbble, then asked to be
+   "less messy"). One photo panel on the left with the section's name; the
+   two groups as plain lists under a serif heading; one quiet row at the
+   foot. No icons, no rules between rows, no arrows on every row: those were
+   the mess. These rules follow the grouped-menu block above and override it.
+   ========================================================================= */
+.nav-feature,
+.nav-help {
+	display: none;
+}
+
+.nav-desktop .nav-mega--services > .sub-menu {
+	grid-template-columns: clamp(15rem, 24vw, 20rem) repeat(4, minmax(0, 1fr));
+	column-gap: 0;
+	padding: 1rem 1.75rem 1rem 1rem;
+}
+
+.nav-desktop > .nav-list > .nav-mega--services > .sub-menu {
+	width: min(76rem, 100%);
+}
+
+/* Left: the photo panel, full height. */
+.nav-desktop .nav-feature {
+	display: block;
+	grid-column: 1;
+	grid-row: 1 / span 9;
+	margin-right: 1.75rem;
+}
+
+.nav-desktop .nav-feature > .nav-feature__link {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	align-items: flex-start;
+	gap: 0.4rem;
+	height: 100%;
+	min-height: 18rem;
+	padding: 1.25rem;
+	border-radius: 1.1rem;
+	white-space: normal;
+	color: #fff;
+	background:
+		linear-gradient(to top, rgba(28, 18, 52, 0.92) 0%, rgba(28, 18, 52, 0.55) 40%, rgba(28, 18, 52, 0) 70%),
+		var(--color-band-deepest) url("../images/site-photos/Untitled-1.webp") 62% 30% / cover no-repeat;
+}
+
+.nav-desktop .nav-feature > .nav-feature__link:hover,
+.nav-desktop .nav-feature > .nav-feature__link:focus-visible {
+	color: #fff;
+}
+
+.nav-desktop .nav-feature > .nav-feature__link,
+.nav-desktop .nav-feature > .nav-feature__link:hover {
+	text-decoration: none;
+}
+
+.nav-feature__title {
+	font-family: var(--font-family-heading);
+	font-size: 1.5rem;
+	font-weight: var(--font-weight-medium);
+	line-height: 1.15;
+}
+
+.nav-feature__text {
+	display: none;
+}
+
+.nav-feature__cue {
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-semibold);
+	/* White, so "Your life." is the only mint on the panel (two mint lines
+	   read as a mistake; client, Nov 2026). */
+	color: #fff;
+}
+
+/* The two groups. */
+.nav-desktop .nav-mega--services > .sub-menu > .nav-heading {
+	margin: 0.75rem 0.9rem 0.5rem;
+}
+
+.nav-desktop .nav-mega--services > .sub-menu > .nav-heading--everyday {
+	grid-column: 2 / span 2;
+}
+
+.nav-desktop .nav-mega--services > .sub-menu > .nav-heading--condition {
+	grid-column: 4 / span 2;
+	margin-left: 0.9rem;
+}
+
+.nav-desktop .nav-mega--services > .sub-menu > .nav-heading::after {
+	display: none;
+}
+
+.nav-desktop .nav-mega--services > .sub-menu > .nav-col-1 { grid-column: 2; margin: 0; }
+.nav-desktop .nav-mega--services > .sub-menu > .nav-col-2 { grid-column: 3; margin: 0; }
+.nav-desktop .nav-mega--services > .sub-menu > .nav-col-3 { grid-column: 4; margin: 0; }
+.nav-desktop .nav-mega--services > .sub-menu > .nav-col-4 { grid-column: 5; margin: 0; }
+
+.nav-desktop .nav-mega--services > .sub-menu > [class*="nav-col-"] > a {
+	white-space: normal;
+	font-weight: var(--font-weight-normal);
+	font-size: var(--text-base);
+}
+
+/* Foot: one quiet row under a single rule. The help line, then the two
+   practical links; the Book button is already in the header beside it. */
+.nav-desktop .nav-help {
+	display: flex;
+	align-items: center;
+	grid-row: 9;
+	grid-column: 2 / span 2;
+	margin: 1rem 0 0 0.9rem;
+	padding-top: 1rem;
+	border-top: 1px solid var(--color-hairline);
+	white-space: normal;
+}
+
+/* The help link is styled exactly as the two practical links beside it:
+   same face, weight, colour and arrow (it was a serif, underlined, and read
+   as a stray; client, Nov 2026). */
+.nav-desktop .nav-help > .nav-help__link {
+	padding-left: 0;
+	color: var(--color-primary);
+	text-decoration: none;
+}
+
+.nav-desktop .nav-help > .nav-help__link::after {
+	content: "\2192";
+	margin-left: 0.4rem;
+}
+
+.nav-desktop .nav-help > .nav-help__link:hover,
+.nav-desktop .nav-help > .nav-help__link:focus-visible {
+	background-color: transparent;
+	text-decoration: none;
+}
+
+/* "Your life." carries the emphasis: its own line, italic, in mint. */
+.nav-feature__title em {
+	display: block;
+	font-style: italic;
+	color: var(--color-secondary);
+}
+
+.nav-desktop .nav-mega--services > .sub-menu > .nav-secondary,
+.nav-desktop .nav-mega--services > .sub-menu > .menu-item:not(.nav-secondary) + .nav-secondary {
+	grid-row: 9;
+	grid-column: 4;
+	align-self: stretch;
+	justify-self: stretch;
+	display: flex;
+	align-items: center;
+	margin: 1rem 0 0;
+	padding-top: 1rem;
+	border-top: 1px solid var(--color-hairline);
+}
+
+.nav-desktop .nav-mega--services > .sub-menu > .nav-secondary + .nav-secondary {
+	grid-column: 5;
+}
+
+/* "Switch to us" uses the kit's sheen button (.btn-sheen, components.css). */

@@ -134,37 +134,12 @@
 	transform: scale(0.98);
 }
 
-/* ---- Secondary (outlined) ---- */
-.btn-secondary {
-	background-color: transparent;
-	border-color: var(--color-primary);
-	color: var(--color-primary);
-}
-
-.btn-secondary:hover {
-	background-color: var(--color-primary);
-	color: #fff;
-}
-
-.btn-secondary:active {
-	background-color: var(--color-primary-dark);
-	border-color: var(--color-primary-dark);
-	transform: scale(0.98);
-}
+/* The old outlined "secondary" and the large size were removed (Nov 2026):
+   no template or page content used them, and the outlined one duplicated
+   .btn-quiet. The button set is primary, quiet and sheen on light grounds,
+   accent and ghost on plum. */
 
 /* ---- Size variants ---- */
-.btn-lg {
-	min-height: 3.25rem;
-	padding: var(--space-sm) var(--space-lg);
-	font-size: var(--text-md);
-}
-
-.btn-lg .icon,
-.btn-lg svg {
-	width: 1.375em;
-	height: 1.375em;
-}
-
 .btn-sm {
 	min-height: 2.75rem; /* 44px touch target per MASTER */
 	padding: 0.375rem var(--space-sm);
@@ -588,6 +563,25 @@ a.card {
 	object-fit: cover;
 	border-radius: var(--radius-2xl);
 	box-shadow: var(--shadow-float);
+}
+
+/* Tablet (Nov 2026): the same side-by-side header with a smaller frame. The
+   stacked phone layout at this width made the photo a full-width slab. */
+@media (min-width: 640px) and (max-width: 899px) {
+	.page-hero--inset .page-hero__inner {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		column-gap: var(--space-xl);
+		align-items: center;
+	}
+
+	.page-hero--inset .page-hero__media {
+		margin-top: 0;
+	}
+
+	.page-hero--inset .page-hero__img {
+		width: min(15rem, var(--ccs-photo-max, 15rem));
+	}
 }
 
 @media (min-width: 900px) {
@@ -1579,20 +1573,24 @@ a.card {
    anatomy in both places now: one filled mint primary, one outlined ghost
    secondary, identical height and radius — the reference set's "ranked dual
    CTA ... encodes ranking purely through fill versus outline". */
+/* The quiet button's twin on plum (client, Nov 2026): a pale wash with no
+   outline, matching .btn-quiet on light grounds, so the pair on a plum band
+   is filled mint (main action) beside a soft fill (second action), the same
+   logic as filled plum beside lilac on white. It was a white outline. */
 .btn-ghost-on-dark {
-	background-color: transparent;
-	border-color: rgba(255, 255, 255, 0.55);
+	background-color: rgba(255, 255, 255, 0.14);
+	border-color: transparent;
 	color: #fff;
 }
 
 .btn-ghost-on-dark:hover {
-	background-color: rgba(255, 255, 255, 0.12);
-	border-color: #fff;
+	background-color: rgba(255, 255, 255, 0.24);
+	border-color: transparent;
 	color: #fff;
 }
 
 .btn-ghost-on-dark:active {
-	background-color: rgba(255, 255, 255, 0.18);
+	background-color: rgba(255, 255, 255, 0.3);
 	transform: scale(0.98);
 }
 
@@ -2301,11 +2299,26 @@ a.card {
 }
 
 
-/* DEPTH PASS (Nov 2026): the quiet button keeps its white fill and stays
-   secondary (rule 8), but its outline and label are plum instead of grey, so a
-   page of secondary actions still looks like this brand. */
+/* QUIET BUTTON: A SOFT LILAC FILL, NO OUTLINE (client, Nov 2026).
+   It was a white pill with a plum hairline, which made it a near twin of the
+   sheen button (.btn-sheen, also a white pill with a purple outline); the
+   client found the set "not different enough". Now the three light-ground
+   buttons differ in kind: filled plum (primary), outlined (sheen), pale fill
+   (quiet). The fill is a wash of plum over whatever is behind it, not a fixed
+   colour, so it reads as lilac on white and as one shade deeper on the tint
+   bands, without a rule for every tinted section. Still the lowest of the
+   three in weight (rule 8): no border, no shadow, plum text. */
 .btn-quiet {
-	border-color: color-mix(in srgb, var(--color-primary) 38%, #fff);
+	background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+	border-color: transparent;
+	color: var(--color-primary-dark);
+	box-shadow: none;
+}
+
+.btn-quiet:hover,
+.btn-quiet:focus-visible {
+	background-color: color-mix(in srgb, var(--color-primary) 17%, transparent);
+	border-color: transparent;
 	color: var(--color-primary-dark);
 }
 
@@ -2636,5 +2649,75 @@ a.card {
 	.page-hero--photo {
 		min-height: min(58vh, 520px);
 		min-height: min(58svh, 520px);
+	}
+}
+
+/* ==========================================================================
+   SHEEN BUTTON (.btn-sheen): a key button style (client, Nov 2026)
+   Arrived at over several rounds on the header's "Switch to us", after
+   "Glowing Border Button" by SpectacledCoder on Dribbble (structure only).
+   A white pill with a 3px outline that is one long fade: deep violet at one
+   point, melting through lavender to pale lilac on the far side, and back.
+   On hover or keyboard focus the bright part travels round the edge.
+
+   When to use it: the one secondary action on a screen that deserves to be
+   noticed beside a filled primary (rule 8: it stays unfilled, so it never
+   competes as a second filled button). One per view; ordinary secondary
+   actions stay .btn-quiet. Light grounds only (white or tint).
+
+   Decisions the client made, so nobody "fixes" them:
+   - purples only, no mint or blue in the sweep;
+   - no glow or shadow, at rest or on hover;
+   - the lap is 2.2s and pauses where it is when the pointer leaves (the
+     animation is always attached, paused, and only runs on hover or focus),
+     so the line never snaps back;
+   - the lightest stop is a real lavender, not near-white, so the faint side
+     still reads as a line.
+   Still under reduced motion. Where @property is unsupported the outline
+   simply does not move.
+   ========================================================================== */
+@property --ccs-sheen-angle {
+	syntax: "<angle>";
+	inherits: false;
+	initial-value: 215deg;
+}
+
+.btn.btn-sheen,
+.btn.btn-sheen:hover,
+.btn.btn-sheen:focus-visible {
+	border: 3px solid transparent;
+	background:
+		linear-gradient(var(--color-background), var(--color-background)) padding-box,
+		conic-gradient(
+			from var(--ccs-sheen-angle),
+			#5c42c2 0deg,
+			#987de8 70deg,
+			#cdbff4 150deg,
+			#d9cef7 180deg,
+			#cdbff4 210deg,
+			#987de8 290deg,
+			#5c42c2 360deg
+		) border-box;
+	color: var(--color-primary);
+	box-shadow: none;
+	animation: ccs-btn-sheen 2.2s linear infinite paused;
+}
+
+.btn.btn-sheen:hover,
+.btn.btn-sheen:focus-visible {
+	animation-play-state: running;
+}
+
+@keyframes ccs-btn-sheen {
+	to {
+		--ccs-sheen-angle: 575deg;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.btn.btn-sheen,
+	.btn.btn-sheen:hover,
+	.btn.btn-sheen:focus-visible {
+		animation: none;
 	}
 }

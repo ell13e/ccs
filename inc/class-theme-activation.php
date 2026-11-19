@@ -637,7 +637,7 @@ class CCS_Theme_Activation {
 <p>We believe that the best care doesn\'t stop when the to-do list is ticked; it carries on in how our carers show up: familiar, unhurried and glad to see you. <strong>Learn more about the home care services we offer in Maidstone &amp; Kent.</strong></p>',
 			// The service list itself is rendered as a card grid by
 			// page-templates/template-services.php, so this intro no longer repeats it.
-			'home-care-services-kent' => '<p class="lead">We provide three kinds of home care across Maidstone and the surrounding Kent towns. Most people start with one and move between them as things change — which is the point of arranging care with one provider rather than several.</p>
+			'home-care-services-kent' => '<p class="lead">We provide home care across Maidstone and the surrounding Kent towns. Most people start with one kind of care and move between them as things change.</p>
 
 <h2>Who we support</h2>
 <p>Adults and children living at home, including people with dementia, Parkinson\'s, MS, acquired brain injury, epilepsy, stroke, and those needing PEG feeding, catheter care or overnight support. We work with people funding their own care, people funded by Kent County Council, and people receiving NHS Continuing Healthcare.</p>

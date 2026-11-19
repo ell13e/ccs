@@ -331,12 +331,14 @@ while ( have_posts() ) :
 		$ccs_miles = (int) round( 3958.8 * 2 * atan2( sqrt( $ccs_h ), sqrt( 1 - $ccs_h ) ) );
 	}
 	/*
-	 * No origin (Nov 2026, user): with only a destination, Google Maps starts
-	 * from wherever the visitor is, which is what "directions" means to them.
-	 * It used to start from the town centre, whoever clicked.
+	 * The link opens the office's own page in Google Maps, which has the
+	 * Directions button on it (Nov 2026, user: "doesn't work properly"). The
+	 * directions URL it replaced started from "Your location" and showed
+	 * "could not calculate directions" whenever Google did not have one. Same
+	 * link as the Contact page.
 	 */
 	$ccs_directions = $ccs_office_line
-		? 'https://www.google.com/maps/dir/?api=1&destination=' . rawurlencode( $ccs_office_line )
+		? 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( $ccs_office_line )
 		: '';
 	?>
 	<?php if ( $ccs_has_map ) : ?>

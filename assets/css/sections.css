@@ -187,9 +187,12 @@
 	background-color: var(--color-band-tint);
 }
 
+/* Deeper than the band tint: on a tint section (the town pages) a tint tile
+   vanished and the icon and price tag floated above the card. */
 .svc-card__media--icon {
 	display: grid;
 	place-items: center;
+	background-color: var(--color-tile-tint);
 	color: var(--color-primary);
 }
 
@@ -1607,13 +1610,16 @@
 	display: none;
 }
 
-.ccs-more > summary::after {
+/* Not the contact forms' summary (.ccs-more__summary, contact-page.css): that
+   one draws its own plus from two bars, and this text "+" used to print on
+   top of it as a doubled, broken-looking sign (client, Nov 2026). */
+.ccs-more > summary:not(.ccs-more__summary)::after {
 	content: "+";
 	font-size: 1.25rem;
 	line-height: 1;
 }
 
-.ccs-more[open] > summary::after {
+.ccs-more[open] > summary:not(.ccs-more__summary)::after {
 	content: "\2013";
 }
 
@@ -4441,4 +4447,354 @@
 p.costs-more {
 	margin: var(--space-xl) 0 0;
 	text-align: center;
+}
+
+
+/* -------------------------------------------------------------------------
+   LINK ROWS (Nov 2026): a list of destinations as rule-divided rows: name,
+   one line, arrow. The whole row is the link. Used by the Resources page.
+   ------------------------------------------------------------------------- */
+
+.link-rows__group + .link-rows__group {
+	margin-top: var(--space-xl);
+}
+
+.link-rows__heading {
+	margin: 0 0 var(--space-xs);
+	font-family: var(--font-family-body);
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-ink-soft);
+}
+
+.link-rows__prose {
+	margin-bottom: var(--space-sm);
+	color: var(--color-ink-soft);
+}
+
+.link-rows__prose > :last-child {
+	margin-bottom: 0;
+}
+
+.link-rows {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-top: 1px solid var(--color-hairline);
+}
+
+.link-row {
+	position: relative;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	column-gap: var(--space-md);
+	align-items: center;
+	padding-block: var(--space-md);
+	border-bottom: 1px solid var(--color-hairline);
+}
+
+.link-row__title {
+	grid-column: 1;
+	margin: 0;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.25rem, 1.15rem + 0.4vw, 1.5rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.25;
+	color: var(--color-ink);
+}
+
+.link-row__link {
+	color: inherit;
+	text-decoration: none;
+}
+
+.link-row__link::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+}
+
+.link-row__link:focus-visible {
+	outline: none;
+}
+
+.link-row__link:focus-visible::after {
+	outline: var(--focus-ring);
+	outline-offset: var(--focus-ring-offset);
+	border-radius: var(--radius-md);
+}
+
+.link-row__line {
+	grid-column: 1;
+	margin: 0.3rem 0 0;
+	font-size: var(--text-base);
+	line-height: 1.55;
+	color: var(--color-ink-soft);
+}
+
+.link-row__cue {
+	grid-column: 2;
+	grid-row: 1 / span 2;
+	font-size: 1.25rem;
+	color: var(--color-primary);
+	transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.link-row:hover .link-row__title {
+	color: var(--color-primary);
+}
+
+.link-row:hover .link-row__cue {
+	transform: translateX(0.25rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.link-row__cue {
+		transition: none;
+	}
+}
+
+/* Resources: the rows beside one photo. Text first in the source so a phone
+   reads the introduction before the picture; the photo leads on wide screens. */
+.resources-hub__layout {
+	display: grid;
+	gap: var(--space-xl);
+}
+
+.resources-hub__lede {
+	margin-bottom: var(--space-xl);
+}
+
+.resources-hub__photo {
+	aspect-ratio: 4 / 3;
+}
+
+.resources-hub__photo img {
+	object-position: 50% 35%;
+}
+
+.resources-hub__strip {
+	margin-top: var(--section-head-gap);
+	grid-template-columns: auto minmax(0, 1fr);
+}
+
+@media (min-width: 900px) {
+	.resources-hub__layout {
+		grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+		column-gap: clamp(3rem, 1rem + 5vw, 6rem);
+		align-items: start;
+	}
+
+	.resources-hub__media {
+		grid-column: 1;
+		grid-row: 1;
+		position: sticky;
+		top: 7rem;
+	}
+
+	.resources-hub__main {
+		grid-column: 2;
+		grid-row: 1;
+	}
+
+	.resources-hub__photo {
+		aspect-ratio: 4 / 5;
+	}
+}
+
+/* Referral information: the accordion beside the plum call card. */
+.referral__layout {
+	display: grid;
+	gap: var(--space-xl);
+}
+
+.referral__lede {
+	margin-bottom: var(--space-lg);
+}
+
+.referral__write {
+	margin-top: var(--space-lg);
+}
+
+@media (min-width: 900px) {
+	.referral__layout {
+		grid-template-columns: minmax(0, 1fr) minmax(18rem, 24rem);
+		column-gap: clamp(2.5rem, 1rem + 4vw, 5rem);
+		align-items: start;
+	}
+}
+
+/* Care guides: the introduction, then the guidance as the standard accordion,
+   in one reading column. */
+.care-guide__inner {
+	max-width: 50rem;
+	margin-inline: auto;
+}
+
+.care-guide__lede {
+	margin-bottom: var(--space-xl);
+}
+
+
+/* -------------------------------------------------------------------------
+   RATE LIST (Nov 2026): every rate, for the Costs page's "Every rate" item.
+   Replaces the wide rate table there: four even cards.
+   ------------------------------------------------------------------------- */
+
+.rate-list__date {
+	margin: 0 0 var(--space-md);
+	font-size: var(--text-sm);
+	color: var(--color-ink-soft);
+}
+
+.rate-list__name {
+	margin: 0 0 var(--space-xs);
+	font-family: var(--font-family-heading);
+	font-size: var(--text-lg);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.25;
+	color: var(--color-ink);
+}
+
+.rate-list__name span {
+	margin-left: 0.35rem;
+	font-family: var(--font-family-body);
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-normal);
+	color: var(--color-ink-soft);
+}
+
+.rate-list__rows {
+	margin: 0;
+}
+
+.rate-list__row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	column-gap: var(--space-md);
+	align-items: baseline;
+	padding-block: var(--space-sm);
+	border-top: 1px solid var(--color-hairline);
+}
+
+.rate-list__row dt {
+	color: var(--color-ink);
+}
+
+.rate-list__row dd {
+	display: grid;
+	justify-items: end;
+	margin: 0;
+	text-align: right;
+}
+
+.rate-list__price {
+	font-size: var(--text-sm);
+	color: var(--color-ink-soft);
+	white-space: nowrap;
+}
+
+.rate-list__price strong {
+	font-family: var(--font-family-heading);
+	font-size: var(--text-lg);
+	font-weight: var(--font-weight-medium);
+	color: var(--color-ink);
+}
+
+.rate-list__weekend {
+	font-size: var(--text-sm);
+	color: var(--color-ink-soft);
+	white-space: nowrap;
+}
+
+/* Cards: four even tint cards, two by two. */
+.rate-list--cards .rate-list__groups {
+	display: grid;
+	gap: var(--space-md);
+}
+
+.rate-list--cards .rate-list__group {
+	padding: var(--space-md);
+	border-radius: var(--radius-lg);
+	background-color: var(--color-band-tint);
+}
+
+@media (min-width: 640px) {
+	.rate-list--cards .rate-list__groups {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+
+/* Services index: two soft panels of large serif names (services page). */
+.services-index {
+	display: grid;
+	gap: var(--space-md);
+	margin-top: var(--space-2xl);
+}
+
+@media (min-width: 900px) {
+	.services-index {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.services-index__panel {
+	padding: clamp(1.75rem, 1.2rem + 2.4vw, 3rem);
+	border-radius: var(--radius-3xl);
+	background-color: var(--color-band-tint);
+	scroll-margin-top: 7rem;
+}
+
+.services-index__title {
+	margin: 0 0 var(--space-md);
+	font-family: var(--font-family-body);
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-ink-soft);
+}
+
+.services-index__list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.15rem 0;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.services-index__list li {
+	display: flex;
+	align-items: center;
+}
+
+/* A mint dot between names. */
+.services-index__list li:not(:last-child)::after {
+	content: "";
+	width: 0.4rem;
+	height: 0.4rem;
+	margin-inline: 0.85rem;
+	border-radius: 50%;
+	background-color: var(--color-secondary-dark);
+}
+
+.services-index__list a {
+	display: inline-flex;
+	align-items: center;
+	min-height: 2.75rem;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.375rem, 1.15rem + 1vw, 1.875rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.2;
+	color: var(--color-ink);
+	text-decoration: none;
+	transition: color var(--duration-fast) var(--ease-out);
+}
+
+.services-index__list a:hover,
+.services-index__list a:focus-visible {
+	color: var(--color-primary);
+	text-decoration: underline;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 0.2em;
 }

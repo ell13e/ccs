@@ -305,6 +305,36 @@ function ccs_apply_working_intro_reword() {
 add_action( 'admin_init', 'ccs_apply_working_intro_reword' );
 
 /**
+ * The services hub no longer says "three kinds of home care" (Nov 2026, user
+ * approved the reword: the site now has eight services). No count is given,
+ * so the sentence holds if services are added. Replaces the first two sentences
+ * and drops the third, once, each only while it still reads exactly as shipped. WordPress keeps a
+ * revision.
+ */
+function ccs_apply_services_intro_reword() {
+	if ( get_option( 'ccs_services_intro_reword_2026_11' ) ) {
+		return;
+	}
+	// Each sentence is swapped on its own, so one the client has edited is left alone.
+	$swaps = array(
+		'We provide three kinds of home care across Maidstone and the surrounding Kent towns.' => 'We provide home care across Maidstone and the surrounding Kent towns.',
+		'Most people start with one and move between them as things change' => 'Most people start with one kind of care and move between them as things change',
+		// The closing sentence went (user: "i hate this wording"), in either form the page may hold.
+		' That is the point of arranging care with one provider rather than several.' => '',
+		' — which is the point of arranging care with one provider rather than several.' => '.',
+	);
+	$pages = get_posts( array( 'name' => 'home-care-services-kent', 'post_type' => 'page', 'post_status' => 'any', 'numberposts' => 1, 'suppress_filters' => true ) );
+	if ( ! empty( $pages ) ) {
+		$content = strtr( $pages[0]->post_content, $swaps );
+		if ( $content !== $pages[0]->post_content ) {
+			wp_update_post( wp_slash( array( 'ID' => $pages[0]->ID, 'post_content' => $content ) ) );
+		}
+	}
+	update_option( 'ccs_services_intro_reword_2026_11', 1, false );
+}
+add_action( 'admin_init', 'ccs_apply_services_intro_reword' );
+
+/**
  * Shorter heading on the careers hub (Nov 2026, user: "too long"). The
  * heading is the page's own first h2, so it is changed once in the page,
  * and only while it still reads exactly as shipped.

@@ -375,7 +375,422 @@
 	margin: var(--space-lg) 0 0;
 }
 
-/* The rate table continues the white band the main column sits in. */
+/* What this service costs: one tint panel of price lines. The section stays
+   white, continuing the band the main column sits in, so it does not touch
+   the tint closing band. */
 .service-body + .service-costs {
 	padding-top: 0;
+}
+
+.service-costs .ccs-lede {
+	max-width: 46rem;
+}
+
+.service-costs__panel {
+	max-width: 36rem;
+	margin-inline: auto;
+	padding: clamp(1.25rem, 0.9rem + 1.6vw, 2rem) clamp(1.5rem, 1rem + 2.4vw, 2.5rem);
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-band-tint);
+}
+
+.service-costs__lines {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.service-costs__lines li {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 0.25rem var(--space-md);
+	padding-block: var(--space-sm);
+	border-bottom: 1px solid var(--color-hairline);
+}
+
+.service-costs__what {
+	color: var(--color-ink);
+}
+
+.service-costs__amount {
+	font-size: var(--text-sm);
+	color: var(--color-ink-soft);
+	white-space: nowrap;
+}
+
+.service-costs__amount strong {
+	font-family: var(--font-family-heading);
+	font-size: var(--text-lg);
+	font-weight: var(--font-weight-medium);
+	color: var(--color-ink);
+}
+
+.service-costs__link {
+	margin-top: var(--space-md);
+}
+
+/* Tablet: the header photo is a smaller frame (components.css), so the price
+   tab is scaled to it instead of spanning the whole photo. */
+@media (min-width: 640px) and (max-width: 899px) {
+	.service-hero__price {
+		transform: scale(0.8);
+		transform-origin: left bottom;
+	}
+}
+
+/* =========================================================================
+   SERVICE BODY (Nov 2026; template-parts/service-body.php). A run of blocks,
+   each two things side by side or one centred object. Structure after
+   lovettcare.co.uk's service pages; CCS colours and type.
+   ========================================================================= */
+
+.svc-split {
+	display: grid;
+	gap: var(--space-2xl);
+	align-items: start;
+}
+
+@media (min-width: 900px) {
+	.svc-split {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		column-gap: clamp(3rem, 1rem + 5vw, 6.5rem);
+	}
+
+	.svc-split--media {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 27rem);
+		align-items: center;
+	}
+
+	.svc-split--form {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 24rem);
+	}
+}
+
+/* A paragraph, not a one-line lede: left-aligned in its centred column
+   (rule 10: centre only short text). */
+.svc-what__lede {
+	max-width: 50rem;
+	margin-inline: auto;
+	text-align: left;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.3125rem, 1.1rem + 0.9vw, 1.75rem);
+	line-height: 1.5;
+	color: var(--color-ink);
+}
+
+.svc-what__intro {
+	max-width: 46rem;
+	margin: var(--space-md) auto 0;
+	font-size: var(--text-md);
+	line-height: 1.7;
+	color: var(--color-ink-soft);
+}
+
+.svc-what__intro > :last-child {
+	margin-bottom: 0;
+}
+
+.svc-heading {
+	margin: 0 0 var(--space-md);
+	font-family: var(--font-family-heading);
+	font-size: var(--text-2xl);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.2;
+	color: var(--color-ink);
+}
+
+.svc-list__items {
+	margin: 0;
+	padding-left: 1.25rem;
+	font-size: var(--text-md);
+	color: var(--color-ink-soft);
+}
+
+.svc-list__items li {
+	padding-block: 0.4rem;
+	line-height: 1.55;
+}
+
+.svc-list__items li::marker {
+	color: var(--color-primary);
+}
+
+/* Two or three even cards. */
+.svc-compare {
+	display: grid;
+	gap: var(--space-md);
+	margin: 0 auto;
+	padding: 0;
+	list-style: none;
+}
+
+@media (min-width: 760px) {
+	.svc-compare--2 {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		max-width: 58rem;
+	}
+
+	.svc-compare--3 {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+.svc-compare__card {
+	padding: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-float);
+}
+
+.svc-compare__title {
+	margin: 0 0 var(--space-xs);
+	font-family: var(--font-family-heading);
+	font-size: var(--text-xl);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.2;
+	color: var(--color-ink);
+}
+
+.svc-compare__text {
+	margin: 0;
+	font-size: var(--text-md);
+	line-height: 1.65;
+	color: var(--color-ink-soft);
+}
+
+/* Costs beside the call-back card. */
+.service-costs--bare {
+	padding: 0;
+}
+
+.service-costs--bare .service-plain__title {
+	margin: 0 0 var(--space-md);
+	font-family: var(--font-family-heading);
+	font-size: var(--text-2xl);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.2;
+	color: var(--color-ink);
+}
+
+.service-costs--bare .service-costs__panel {
+	max-width: none;
+	margin: 0;
+}
+
+.service-costs__panel--white {
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-float);
+}
+
+.svc-split .service-sidebar__sticky {
+	position: static;
+}
+
+.svc-more__inner {
+	max-width: 48rem;
+	margin-inline: auto;
+}
+
+/* Questions: one centred column, heading above the accordion. */
+.service-faqs__inner {
+	max-width: 48rem;
+	margin-inline: auto;
+}
+
+.service-faqs__foot {
+	display: flex;
+	margin: var(--space-lg) 0 0;
+}
+
+@media (min-width: 700px) {
+	.service-faqs__foot {
+		justify-content: center;
+	}
+}
+
+/* The steps on a service page sit on white, between two tint bands. */
+.site-main--service .home-steps {
+	background-color: var(--color-background);
+}
+
+@media (max-width: 599px) {
+	.svc-tile {
+		max-width: none;
+	}
+}
+
+/* The card to page through: what it includes, who it helps, the options. */
+.svc-turn {
+	max-width: 50rem;
+	margin-inline: auto;
+}
+
+.svc-turn.is-enhanced {
+	padding: clamp(1.75rem, 1.2rem + 2.4vw, 3rem);
+	border-radius: var(--radius-3xl);
+	box-shadow: var(--shadow-float);
+}
+
+.svc-turn__title {
+	font-size: var(--title-size);
+}
+
+.svc-turn__list {
+	gap: 0.9rem;
+}
+
+@media (min-width: 700px) {
+	.svc-turn__list {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		column-gap: var(--space-xl);
+	}
+}
+
+.svc-turn__pairs {
+	display: grid;
+	gap: var(--space-lg);
+	margin: 0;
+}
+
+@media (min-width: 700px) {
+	.svc-turn__pairs {
+		grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+		column-gap: var(--space-xl);
+	}
+}
+
+.svc-turn__pairs dt {
+	margin-bottom: 0.4rem;
+	font-family: var(--font-family-heading);
+	font-size: var(--text-xl);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.2;
+	color: var(--color-primary);
+}
+
+.svc-turn__pairs dd {
+	margin: 0;
+	font-size: var(--text-md);
+	line-height: 1.6;
+	color: var(--color-ink-soft);
+}
+
+/* ---- Pack layout: the opening, then each section as its own band. ---- */
+.svc-what__body {
+	max-width: 50rem;
+	margin-inline: auto;
+	font-size: var(--text-md);
+	line-height: 1.7;
+	color: var(--color-ink-soft);
+}
+
+.svc-what__body > p {
+	margin: 0 0 var(--space-md);
+}
+
+.svc-what__body > p:last-child {
+	margin-bottom: 0;
+}
+
+.svc-what__body > .svc-what__lede {
+	margin-bottom: var(--space-lg);
+}
+
+.svc-part__text {
+	max-width: 46rem;
+	margin: 0 auto var(--space-xl);
+	font-size: var(--text-md);
+	line-height: 1.7;
+	color: var(--color-ink-soft);
+}
+
+.svc-part__text > p {
+	margin: 0 0 var(--space-sm);
+}
+
+.svc-part__text:last-child,
+.svc-part__text > p:last-child {
+	margin-bottom: 0;
+}
+
+.svc-part__text:not(:last-child) {
+	margin-bottom: var(--space-xl);
+}
+
+/* A row of cards: a heading and one line each. */
+.svc-points {
+	display: grid;
+	gap: var(--space-md);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+@media (min-width: 700px) {
+	.svc-points {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (min-width: 1000px) {
+	.svc-points--3 {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.svc-points--2 {
+		max-width: 58rem;
+		margin-inline: auto;
+	}
+}
+
+.svc-point {
+	padding: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-float);
+}
+
+.svc-points--tint .svc-point {
+	background-color: var(--color-band-tint);
+	box-shadow: none;
+}
+
+.svc-point__title {
+	margin: 0 0 var(--space-xs);
+	font-family: var(--font-family-heading);
+	font-size: var(--text-xl);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.2;
+	color: var(--color-ink);
+}
+
+.svc-point__text {
+	margin: 0;
+	font-size: var(--text-md);
+	line-height: 1.65;
+	color: var(--color-ink-soft);
+}
+
+/* Plain items: one panel of ticks, two columns. */
+.svc-ticks {
+	max-width: 54rem;
+	margin-inline: auto;
+	padding: clamp(1.5rem, 1.1rem + 1.6vw, 2.5rem);
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-float);
+	gap: 0.9rem var(--space-xl);
+}
+
+.svc-ticks--tint {
+	background-color: var(--color-band-tint);
+	box-shadow: none;
+}
+
+@media (min-width: 700px) {
+	.svc-ticks {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
 }

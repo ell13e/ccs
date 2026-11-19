@@ -542,6 +542,12 @@
 	}
 }
 
+/* One quiet button under the photo cards, to the page that lists every service. */
+.home-services__all {
+	margin: var(--space-xl) 0 0;
+	text-align: center;
+}
+
 .home-services__strip {
 	margin-top: var(--section-head-gap);
 	border: 0;

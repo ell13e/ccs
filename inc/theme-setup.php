@@ -76,6 +76,17 @@ add_filter( 'body_class', 'ccs_body_class_ds_root', 10, 1 );
  * @return bool
  */
 function ccs_hero_photo_fills_banner( $post_id ) {
+	/*
+	 * One header everywhere (Nov 2026). A design review found three header
+	 * styles in use, and the dark full-bleed banner was the odd one: it cropped
+	 * faces at the forehead and its text and the CQC card sat over them. Every
+	 * page with a photo now uses the framed photo beside the heading (the
+	 * "inset" header), whatever the photo's size. The full-bleed banner stays
+	 * in the code behind this filter, off by default.
+	 */
+	if ( ! apply_filters( 'ccs_full_bleed_hero_enabled', false ) ) {
+		return false;
+	}
 	$thumb = get_post_thumbnail_id( $post_id );
 	if ( ! $thumb ) {
 		return false;
@@ -395,8 +406,9 @@ function ccs_theme_scripts() {
 		);
 	}
 
-	// The switching page reuses the contact form card and call card.
-	if ( is_page_template( 'page-templates/template-contact.php' ) || is_page_template( 'page-templates/template-switch.php' ) ) {
+	// The switching page reuses the contact form card and call card; the
+	// referral page reuses the call card.
+	if ( is_page_template( 'page-templates/template-contact.php' ) || is_page_template( 'page-templates/template-switch.php' ) || is_page( 'referral-information' ) ) {
 		wp_enqueue_style(
 			'ccs-contact-page',
 			$theme_uri . '/assets/css/contact-page.css',
@@ -427,7 +439,7 @@ function ccs_theme_scripts() {
 
 	// Stepper (Getting started, the About journey) and the partner-logo
 	// marquee's pause button (homepage). One small file; without it both show as plain, complete content.
-	if ( is_page_template( 'page-templates/template-homepage.php' ) || is_page_template( 'page-templates/template-getting-started.php' ) || is_page_template( 'page-templates/template-about.php' ) || is_page_template( 'page-templates/template-current-vacancies.php' ) || is_page( array( 'working-for-us', 'professional-development' ) ) ) {
+	if ( is_page_template( 'page-templates/template-homepage.php' ) || is_page_template( 'page-templates/template-getting-started.php' ) || is_page_template( 'page-templates/template-about.php' ) || is_page_template( 'page-templates/template-current-vacancies.php' ) || is_page( array( 'working-for-us', 'professional-development' ) ) || is_singular( 'service' ) ) {
 		wp_enqueue_script(
 			'ccs-interactive',
 			$theme_uri . '/assets/js/interactive.js',

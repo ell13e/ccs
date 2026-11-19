@@ -210,11 +210,38 @@ $ccs_service_icons = array( 'home', 'cup', 'pulse' );
 
 		<?php
 		/*
+		 * The other services (Nov 2026: the site has eight, the homepage shows
+		 * three as photo cards). The five without photographs were tried here as
+		 * a row of ruled columns and then as pill links; the client rejected
+		 * both. They are now one quiet button to the services page, which lists
+		 * all eight. The loop below only finds out whether there are more.
+		 */
+		$ccs_also      = array();
+		$ccs_also_desc = function_exists( 'ccs_more_services_2026_11' ) ? ccs_more_services_2026_11() : array();
+		foreach ( function_exists( 'ccs_ordered_services' ) ? ccs_ordered_services() : array() as $ccs_also_post ) {
+			if ( in_array( $ccs_also_post->post_name, $service_slugs, true ) ) {
+				continue;
+			}
+			$ccs_also[] = array(
+				'title' => get_the_title( $ccs_also_post ),
+				'desc'  => isset( $ccs_also_desc[ $ccs_also_post->post_name ]['desc'] ) ? $ccs_also_desc[ $ccs_also_post->post_name ]['desc'] : '',
+				'url'   => get_permalink( $ccs_also_post ),
+			);
+		}
+		?>
+		<?php if ( $ccs_also ) : ?>
+			<p class="home-services__all">
+				<a class="btn btn-quiet btn-sheen" href="<?php echo esc_url( function_exists( 'ccs_page_url' ) ? ccs_page_url( 'home-care-services-kent' ) : home_url( '/home-care-services-kent/' ) ); ?>"><?php esc_html_e( 'See all our services', 'ccs-wp-theme' ); ?> <span aria-hidden="true">&rarr;</span></a>
+			</p>
+		<?php endif; ?>
+
+		<?php
+		/*
 		 * The prompt under the cards, as the site's strip (Nov 2026, client:
 		 * a centred line, two buttons and a link stacked under it looked
 		 * "shoved there, packed in and cramped"). One row: the question and
 		 * the rates link on the left, the one action on the right. "See all
-		 * our services" went: the three cards above are all of them.
+		 * our services" went: every service is linked from this section.
 		 */
 		$ccs_cta_line  = ccs_copy( 'services_cta_line' );
 		$ccs_cta_split = preg_split( '/(?<=\?)\s+/', $ccs_cta_line, 2 );
