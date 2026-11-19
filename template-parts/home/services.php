@@ -71,6 +71,22 @@ if ( count( $service_posts ) >= 3 ) {
 }
 
 /*
+ * Card text is the homepage's own (client rewrite, Nov 2026), not the service
+ * excerpt: the excerpt is also the Services page summary and the search
+ * description, and is written for those. By position in $service_slugs.
+ */
+$ccs_card_copy = array(
+	ccs_copy( 'services_card_domiciliary' ),
+	ccs_copy( 'services_card_respite' ),
+	ccs_copy( 'services_card_complex' ),
+);
+foreach ( $services as $i => $svc ) {
+	if ( ! empty( $ccs_card_copy[ $i ] ) ) {
+		$services[ $i ]['intro'] = $ccs_card_copy[ $i ];
+	}
+}
+
+/*
  * Imagery. These cards were three bordered boxes of prose, which is what made
  * the section read as a template rather than as this company's work — and the
  * theme already ships photographs named for exactly these three services that
@@ -256,7 +272,7 @@ $ccs_service_icons = array( 'home', 'cup', 'pulse' );
 				<p class="ccs-strip__lede">
 					<?php echo esc_html( $ccs_cta_lede ); ?>
 					<?php if ( $ccs_costs_link ) : ?>
-						<a href="<?php echo esc_url( $ccs_costs_link ); ?>"><?php esc_html_e( 'See our rates and ways to pay', 'ccs-wp-theme' ); ?></a>.
+						<a href="<?php echo esc_url( $ccs_costs_link ); ?>"><?php esc_html_e( 'See our rates and ways to pay', 'ccs-wp-theme' ); ?></a>
 					<?php endif; ?>
 				</p>
 			</div>

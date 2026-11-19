@@ -13,8 +13,9 @@
  * overlaps the seam between this section and the cream services band below it.
  * Click-to-load: nothing from YouTube is requested until someone presses play.
  *
- * Heading and text are shared with the About page (Customize > Page wording >
- * About page), so the two never drift apart.
+ * The heading is the homepage's own (Nov 2026, client review: "Where it
+ * started", shared with the About page, did not say what this section is).
+ * It now says there is a video to watch; the About page keeps its heading.
  *
  * @package CCS_WP_Theme
  */
@@ -34,7 +35,7 @@ if ( ! $ccs_story_video ) {
 
 		<header class="ccs-head ccs-head--center">
 			<h2 id="home-story-heading" class="ccs-title">
-				<?php echo esc_html( ccs_copy( 'about_story_title' ) ); ?>
+				<?php echo esc_html( ccs_copy( 'story_title' ) ); ?>
 			</h2>
 		</header>
 

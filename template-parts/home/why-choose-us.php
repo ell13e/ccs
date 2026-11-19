@@ -16,8 +16,8 @@
  * section's copy); they move from a footnote-sized tick list into the shared
  * icon badge, which is how the ElderlyCare template sets its feature points.
  *
- * Copy is unchanged. The best line on the site ("how you like your tea") stays
- * set as a display quote.
+ * Copy rewritten by the client (Nov 2026): heading, one italic line, two short
+ * paragraphs and one action.
  *
  * @package CCS_WP_Theme
  */
@@ -94,6 +94,8 @@ $why_photos = array_values(
 
 			<p class="home-why-choose__text">
 				<?php echo esc_html( ccs_copy( 'why_text_1' ) ); ?>
+			</p>
+			<p class="home-why-choose__text">
 				<?php echo esc_html( ccs_copy( 'why_text_2' ) ); ?>
 			</p>
 

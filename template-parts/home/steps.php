@@ -13,11 +13,9 @@
  * and what it costs, but never what actually happens when you pick up the phone.
  * Not knowing is what stops most first calls.
  *
- * The three titles and lines are the copy deck's, verbatim. The lead-in sentence
- * restates the timing already published in the site's own FAQ ("We aim to arrange
- * a care consultation within a few days of your enquiry... we can often start
- * within one to two weeks"), keeping its "aim" and "often" so the homepage does
- * not promise more than the FAQ does. If that FAQ answer changes, change this.
+ * Copy rewritten by the client (Nov 2026). The lead-in now says care "often
+ * starts within a month" of agreeing the plan. The FAQ page (editor content)
+ * still says "within one to two weeks"; the two should agree.
  *
  * Voice rules (reference/copy/homepage.md): no em dashes, one CTA label. This
  * block deliberately ends on a link to the full process rather than a second
