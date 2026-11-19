@@ -132,12 +132,8 @@ if ( isset( $args['layout'] ) && 'photo' === $args['layout'] ) :
 		$ccs_is_complex = (bool) preg_match( '/complex/i', $ccs_row['label'] );
 		foreach ( $ccs_pp_cards as $ccs_group => $ccs_unused ) {
 			if ( $ccs_is_complex === (bool) preg_match( '/complex/i', $ccs_group ) ) {
+				// Every figure carries "from" (below), so a night that costs more at the weekend needs no note of its own.
 				$ccs_label = ucfirst( trim( preg_replace( '/complex\s*/i', '', $ccs_row['label'] ) ) );
-				// A night that costs more at the weekend is shown as "from" its weekday rate.
-				if ( '' !== $ccs_row['weekend'] && $ccs_row['weekend'] !== $ccs_row['weekday'] ) {
-					/* translators: %s: kind of night, e.g. "Sleep-in night". */
-					$ccs_label = sprintf( __( '%s, from', 'ccs-wp-theme' ), $ccs_label );
-				}
 				$ccs_pp_cards[ $ccs_group ]['lines'][] = array( $ccs_label, $ccs_row['weekday'], __( 'a night', 'ccs-wp-theme' ) );
 				break;
 			}
@@ -178,7 +174,8 @@ if ( isset( $args['layout'] ) && 'photo' === $args['layout'] ) :
 							<li>
 								<?php echo ccs_icon( 'check' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?>
 								<span class="price-photo__what"><?php echo esc_html( $ccs_line[0] ); ?></span>
-								<span class="price-photo__amount"><strong><?php echo esc_html( $ccs_line[1] ); ?></strong> <?php echo esc_html( $ccs_line[2] ); ?></span>
+								<?php // "from" before every figure (client, Nov 2026: "make sure it says from"). ?>
+								<span class="price-photo__amount"><?php esc_html_e( 'from', 'ccs-wp-theme' ); ?> <strong><?php echo esc_html( $ccs_line[1] ); ?></strong> <?php echo esc_html( $ccs_line[2] ); ?></span>
 							</li>
 						<?php endforeach; ?>
 					</ul>

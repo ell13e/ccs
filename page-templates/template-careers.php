@@ -113,7 +113,7 @@ foreach ( $ccs_careers_meta as $ccs_slug => $ccs_meta ) {
 						<?php foreach ( $ccs_careers_cards as $ccs_card ) : ?>
 							<li class="info-card">
 								<span class="ccs-badge"><?php echo ccs_icon( $ccs_card['icon'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
-								<p class="info-card__label"><?php echo esc_html( $ccs_card['label'] ); ?></p>
+								<?php // The small label above each title went (Nov 2026 eyebrow review): "Apply", "Day to day" and "Training" only repeated the titles. ?>
 								<h3 class="info-card__title">
 									<a class="info-card__link" href="<?php echo esc_url( get_permalink( $ccs_card['post'] ) ); ?>"><?php echo esc_html( get_the_title( $ccs_card['post'] ) ); ?></a>
 								</h3>

@@ -52,7 +52,50 @@ $ccs_services = ccs_ordered_services();
 						<?php endif; ?>
 					</header>
 
-					<?php get_template_part( 'template-parts/service-cards', null, array( 'services' => $ccs_services ) ); ?>
+					<?php
+					/*
+					 * Twenty-one services (Nov 2026): the ones with a photograph lead
+					 * as cards; then every service, grouped as the menu groups them
+					 * ("Everyday care", "Condition-led care"), as rows: name, one
+					 * line, arrow. A grid of twenty-one cards, most of them an icon on
+					 * a tile, was the layout a design review marked down.
+					 */
+					$ccs_hub_photo  = array_values( array_filter( $ccs_services, 'has_post_thumbnail' ) );
+					$ccs_hub_groups = function_exists( 'ccs_service_groups' ) ? ccs_service_groups() : array();
+					?>
+					<?php if ( $ccs_hub_photo && $ccs_hub_groups ) : ?>
+						<?php get_template_part( 'template-parts/service-cards', null, array( 'services' => $ccs_hub_photo ) ); ?>
+					<?php elseif ( ! $ccs_hub_groups ) : ?>
+						<?php get_template_part( 'template-parts/service-cards', null, array( 'services' => $ccs_services ) ); ?>
+					<?php endif; ?>
+
+					<?php
+					/*
+					 * Every service as a typographic index: two soft panels, the names
+					 * set large in the heading face and flowing like a sentence, each a
+					 * link. The rows of name-plus-description it replaces were "ugly"
+					 * (client, who asked for something more creative).
+					 */
+					?>
+					<?php if ( $ccs_hub_groups ) : ?>
+						<div class="services-index">
+							<?php foreach ( $ccs_hub_groups as $ccs_hub_key => $ccs_hub_label ) : ?>
+								<nav class="services-index__panel" id="<?php echo esc_attr( $ccs_hub_key ); ?>" aria-labelledby="services-index-<?php echo esc_attr( $ccs_hub_key ); ?>" data-ccs-exception="rule 1: one group of services, a set of links that belongs together">
+									<h2 class="services-index__title" id="services-index-<?php echo esc_attr( $ccs_hub_key ); ?>"><?php echo esc_html( $ccs_hub_label ); ?></h2>
+									<ul class="services-index__list" role="list">
+										<?php foreach ( $ccs_services as $ccs_hub_svc ) : ?>
+											<?php
+											if ( ccs_service_group( $ccs_hub_svc->post_name ) !== $ccs_hub_key ) {
+												continue;
+											}
+											?>
+											<li><a href="<?php echo esc_url( get_permalink( $ccs_hub_svc ) ); ?>"><?php echo esc_html( get_the_title( $ccs_hub_svc ) ); ?></a></li>
+										<?php endforeach; ?>
+									</ul>
+								</nav>
+							<?php endforeach; ?>
+						</div>
+					<?php endif; ?>
 				</div>
 			</section>
 		<?php endif; ?>

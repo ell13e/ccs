@@ -55,9 +55,7 @@ $ccs_classes  = $ccs_featured ? 'post-card post-card--featured' : 'post-card';
 				<span class="post-card__category"><?php echo esc_html( $ccs_category->name ); ?></span>
 			<?php endif; ?>
 			<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( get_the_date() ); ?></time>
-			<?php if ( function_exists( 'ccs_reading_time_label' ) ) : ?>
-				<span class="post-card__reading-time"><?php echo esc_html( ccs_reading_time_label() ); ?></span>
-			<?php endif; ?>
+			<?php // The read time is shown on the article only, not on cards (Nov 2026 eyebrow review). ?>
 		</p>
 		<h2 class="post-card__title">
 			<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>

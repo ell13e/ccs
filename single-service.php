@@ -67,6 +67,34 @@ while ( have_posts() ) :
 	}
 
 	/*
+	 * Related services with a photograph come first (Nov 2026). Five of the
+	 * eight services have no photo yet, and a row of three placeholder tiles
+	 * under "Other ways we can help" read as unfinished. The pool is every
+	 * other service in the site's order; the ones with a featured image lead.
+	 */
+	if ( function_exists( 'ccs_ordered_services' ) ) {
+		$ccs_rel_pool = array_values(
+			array_filter(
+				ccs_ordered_services(),
+				static function ( $svc ) use ( $post_id ) {
+					return (int) $svc->ID !== (int) $post_id;
+				}
+			)
+		);
+		if ( $ccs_rel_pool ) {
+			$related = array_merge(
+				array_filter( $ccs_rel_pool, 'has_post_thumbnail' ),
+				array_filter(
+					$ccs_rel_pool,
+					static function ( $svc ) {
+						return ! has_post_thumbnail( $svc );
+					}
+				)
+			);
+		}
+	}
+
+	/*
 	 * The editor text, split at its headings (Nov 2026). The client pointed to
 	 * ultimacare.co.uk's service pages: an introduction, then what the service
 	 * covers as a set of cards, then questions, a person to talk to, related
@@ -102,6 +130,20 @@ while ( have_posts() ) :
 		$ccs_q = isset( $ccs_faq['question'] ) ? trim( $ccs_faq['question'] ) : '';
 		if ( '' !== $ccs_q ) {
 			$ccs_svc_faqs[] = array( 'q' => $ccs_q, 'a' => wpautop( esc_html( isset( $ccs_faq['answer'] ) ? $ccs_faq['answer'] : '' ) ) );
+		}
+	}
+	// The copy pack's questions for this service lead (inc/service-copy.php); the client's own, from the editor, still win.
+	$ccs_svc_pack = function_exists( 'ccs_service_copy' ) ? ccs_service_copy( get_post_field( 'post_name', $post_id ) ) : array();
+	if ( ! $ccs_svc_faqs && ! empty( $ccs_svc_pack['faqs'] ) ) {
+		foreach ( $ccs_svc_pack['faqs'] as $ccs_faq ) {
+			$ccs_svc_faqs[] = array( 'q' => $ccs_faq[0], 'a' => wpautop( esc_html( $ccs_faq[1] ) ) );
+		}
+		$ccs_svc_faqs[] = array( 'q' => __( 'How can care be paid for?', 'ccs-wp-theme' ), 'a' => wpautop( esc_html__( 'Some people pay for their own care. Others have part or all of it paid by Kent County Council after a free needs assessment, or by the NHS through Continuing Healthcare when the main need is a health need. Our Costs page lists every rate, and we can talk the options through with you.', 'ccs-wp-theme' ) ) );
+	}
+	// No questions of its own in the editor: the built-in plain-English set for this kind of care (inc/service-guides.php).
+	if ( ! $ccs_svc_faqs && function_exists( 'ccs_service_guide_faqs' ) ) {
+		foreach ( ccs_service_guide_faqs( get_post_field( 'post_name', $post_id ) ) as $ccs_faq ) {
+			$ccs_svc_faqs[] = array( 'q' => $ccs_faq['q'], 'a' => wpautop( esc_html( $ccs_faq['a'] ) ) );
 		}
 	}
 	foreach ( array( 'faqs', 'resources/faqs' ) as $ccs_path ) {
@@ -234,115 +276,15 @@ while ( have_posts() ) :
 		</div>
 	</header>
 
-	<div class="service-body">
-		<div class="service-body__inner container container--lg">
-			<div class="service-body__main">
-				<?php
-				/*
-				 * Photo-led layout (Nov 2026; the user called these pages "awfully
-				 * laid out" and chose this structure). The left column is now, in
-				 * order: the opening paragraph as a lede; what the service includes
-				 * as ticked lists (each list the client wrote, under its own
-				 * heading); and the remaining sections in the site's accordion.
-				 * It was a long column of prose, with the lists pushed into cards in
-				 * a band further down. The words are the client's own, unchanged.
-				 */
-				?>
-				<?php if ( '' !== trim( wp_strip_all_tags( $ccs_svc_intro ) ) ) : ?>
-					<div class="ccs-lede ccs-lede--large service-intro"><?php echo $ccs_svc_intro; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content output. ?></div>
-				<?php endif; ?>
-
-				<?php
-				$ccs_svc_ticks = array();
-				foreach ( $ccs_svc_lists as $ccs_sec ) {
-					if ( preg_match_all( '#<li[^>]*>(.*?)</li>#s', $ccs_sec['body'], $ccs_svc_m ) ) {
-						$ccs_svc_ticks[] = array( $ccs_sec['heading'], array_map( 'wp_strip_all_tags', $ccs_svc_m[1] ) );
-					}
-				}
-				$ccs_svc_feature_items = array();
-				foreach ( $features as $row ) {
-					if ( ! empty( $row['feature_text'] ) ) {
-						$ccs_svc_feature_items[] = $row['feature_text'];
-					}
-				}
-				if ( $ccs_svc_feature_items ) {
-					$ccs_svc_ticks[] = array( ccs_copy( 'service_included_title' ), $ccs_svc_feature_items );
-				}
-				?>
-				<?php foreach ( $ccs_svc_ticks as $ccs_svc_tick ) : ?>
-					<div class="service-included">
-						<h2 class="service-included__title"><?php echo esc_html( ucfirst( strtolower( $ccs_svc_tick[0] ) ) ); ?></h2>
-						<ul class="tick-list" role="list">
-							<?php foreach ( $ccs_svc_tick[1] as $ccs_svc_item ) : ?>
-								<li><?php echo ccs_icon( 'check' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?><span><?php echo esc_html( trim( $ccs_svc_item ) ); ?></span></li>
-							<?php endforeach; ?>
-						</ul>
-					</div>
-				<?php endforeach; ?>
-
-				<?php if ( ! empty( $ccs_svc_prose ) ) : ?>
-					<div class="ccs-faq service-more">
-						<?php foreach ( $ccs_svc_prose as $ccs_sec ) : ?>
-							<details class="ccs-faq__item" name="service-more">
-								<summary class="ccs-faq__q"><?php echo esc_html( $ccs_sec['heading'] ); ?></summary>
-								<div class="ccs-faq__a"><?php echo $ccs_sec['body']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content output. ?></div>
-							</details>
-						<?php endforeach; ?>
-					</div>
-				<?php endif; ?>
-
-				<?php if ( function_exists( 'ccs_fee_groups_for_service' ) && ! ccs_fee_groups_for_service( get_post_field( 'post_name', $post_id ) ) ) : ?>
-					<?php // No rate card is mapped to this service yet, so the page points to the published rates instead of showing none. ?>
-					<p class="service-rates-link">
-						<a class="ccs-text-link" href="<?php echo esc_url( function_exists( 'ccs_page_url' ) ? ccs_page_url( 'costs-and-funding' ) : home_url( '/costs-and-funding/' ) ); ?>"><?php esc_html_e( 'See our published rates', 'ccs-wp-theme' ); ?> <span aria-hidden="true">&rarr;</span></a>
-					</p>
-				<?php endif; ?>
-
-				<?php if ( $has_price ) : ?>
-					<aside class="service-pricing" aria-labelledby="service-pricing-heading">
-						<h2 id="service-pricing-heading" class="service-pricing__heading"><?php echo esc_html( ccs_copy( 'service_pricing_title' ) ); ?></h2>
-						<div class="service-pricing__box">
-							<?php if ( $price_from !== '' && (float) $price_from > 0 ) : ?>
-								<p class="service-pricing__range">
-									<?php
-									if ( $price_to !== '' && (float) $price_to > 0 && (float) $price_to !== (float) $price_from ) {
-										printf(
-											/* translators: 1: from price, 2: to price */
-											esc_html__( 'From £%1$s to £%2$s', 'ccs-wp-theme' ),
-											esc_html( number_format( (float) $price_from, 2 ) ),
-											esc_html( number_format( (float) $price_to, 2 ) )
-										);
-									} else {
-										printf(
-											/* translators: %s: price */
-											esc_html__( 'From £%s', 'ccs-wp-theme' ),
-											esc_html( number_format( (float) $price_from, 2 ) )
-										);
-									}
-									?>
-								</p>
-							<?php endif; ?>
-							<?php if ( $typical ) : ?>
-								<p class="service-pricing__hours"><?php echo esc_html( $typical ); ?></p>
-							<?php endif; ?>
-							<?php
-							/*
-							 * Same caveat as the homepage price card, for the same reason:
-							 * a lone "From £X" reads as a flat rate.
-							 */
-							?>
-							<p class="service-pricing__caveat">
-								<?php echo esc_html( ccs_copy( 'service_pricing_note' ) ); ?>
-							</p>
-							<?php if ( $funding ) : ?>
-								<div class="service-pricing__funding"><?php echo wp_kses_post( nl2br( esc_html( $funding ) ) ); ?></div>
-							<?php endif; ?>
-						</div>
-					</aside>
-				<?php endif; ?>
-
-			</div>
-
+	<?php
+	/*
+	 * The body is template-parts/service-body.php (Nov 2026): what this care
+	 * is, who it helps, how its options differ, what it costs beside the
+	 * call-back card, then "Good to know". The call-back card is built here,
+	 * captured, and handed to the part, which decides where it sits.
+	 */
+	ob_start();
+	?>
 			<aside class="service-sidebar" aria-labelledby="service-sidebar-heading">
 				<div class="service-sidebar__sticky">
 					<div class="service-sidebar__card">
@@ -393,37 +335,31 @@ while ( have_posts() ) :
 					</div>
 				</div>
 			</aside>
-		</div>
-	</div>
-
 	<?php
-	/*
-	 * What this service costs: the rate cards from the published fee schedule
-	 * that apply to it (Nov 2026). Unique to each service page, and the
-	 * question families most want answered. The shared "How care starts" steps
-	 * that sat here were removed: the same three steps on every page made the
-	 * service pages read as near-duplicates.
-	 */
-	get_template_part( 'template-parts/rate-table', null, array( 'service' => get_post_field( 'post_name', $post_id ) ) );
+	$ccs_svc_form = ob_get_clean();
+	$ccs_svc_more = ! empty( $ccs_svc_prose ) || ( count( $ccs_svc_lists ) + ( array_filter( wp_list_pluck( $features, 'feature_text' ) ) ? 1 : 0 ) ) > 1;
+	get_template_part(
+		'template-parts/service-body',
+		null,
+		array(
+			'post_id'   => $post_id,
+			'intro'     => $ccs_svc_intro,
+			'lists'     => $ccs_svc_lists,
+			'prose'     => $ccs_svc_prose,
+			'features'  => $features,
+			'form'      => $ccs_svc_form,
+		)
+	);
 	?>
 
 	<?php if ( ! empty( $ccs_svc_faqs ) ) : ?>
-		<section class="ccs-section ccs-section--tint service-faqs" aria-labelledby="service-faqs-heading">
+		<section class="ccs-section<?php echo ( $ccs_svc_pack ? 0 === count( $ccs_svc_pack['sections'] ) % 2 : $ccs_svc_more ) ? ' ccs-section--tint' : ''; ?> ccs-section--flush-bottom service-faqs" aria-labelledby="service-faqs-heading">
 			<div class="container container--lg">
-				<div class="ccs-split">
-					<header class="ccs-head">
+				<?php // Centred heading above the questions (Nov 2026): the title-left split it replaced is a layout the client rejects. ?>
+				<div class="service-faqs__inner">
+					<header class="ccs-head ccs-head--center">
 						<h2 id="service-faqs-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'service_faq_title' ) ); ?></h2>
-						<?php if ( $ccs_svc_faq_page instanceof WP_Post ) : ?>
-							<a class="ccs-text-link service-faqs__more" href="<?php echo esc_url( get_permalink( $ccs_svc_faq_page ) ); ?>"><?php echo esc_html( ccs_copy( 'service_faq_more' ) ); ?> <span aria-hidden="true">&rarr;</span></a>
-						<?php endif; ?>
 					</header>
-					<?php
-					/*
-					 * Native <details>: keyboard and screen-reader behaviour for
-					 * free, and the shared name makes them exclusive (one open at
-					 * a time) without a script. See docs/BUILD-STANDARD.md §3.
-					 */
-					?>
 					<div class="ccs-faq">
 						<?php foreach ( $ccs_svc_faqs as $ccs_i => $ccs_faq ) : ?>
 							<details class="ccs-faq__item" name="service-faq"<?php echo 0 === $ccs_i ? ' open' : ''; ?>>
@@ -432,6 +368,9 @@ while ( have_posts() ) :
 							</details>
 						<?php endforeach; ?>
 					</div>
+					<?php if ( $ccs_svc_faq_page instanceof WP_Post ) : ?>
+						<p class="service-faqs__foot"><a class="ccs-text-link service-faqs__more" href="<?php echo esc_url( get_permalink( $ccs_svc_faq_page ) ); ?>"><?php echo esc_html( ccs_copy( 'service_faq_more' ) ); ?> <span aria-hidden="true">&rarr;</span></a></p>
+					<?php endif; ?>
 				</div>
 			</div>
 		</section>
@@ -477,6 +416,9 @@ while ( have_posts() ) :
 									);
 									?>
 								</div>
+							<?php else : ?>
+								<?php // No photo yet: the service's icon tile in the photo's place, as template-parts/service-cards.php. Without it the panel's overlap pulled the card up over the heading. ?>
+								<div class="svc-card__media svc-card__media--icon" aria-hidden="true" data-ccs-exception="rule 1: stands in for the card's photo until one is chosen; the whole card is the link"><?php echo ccs_icon( ccs_service_icon( $rel->post_name ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></div>
 							<?php endif; ?>
 							<div class="svc-card__body">
 								<span class="ccs-badge ccs-badge--ring svc-card__badge"><?php echo ccs_icon( ccs_service_icon( $rel->post_name ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>

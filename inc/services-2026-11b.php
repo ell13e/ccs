@@ -128,7 +128,7 @@ function ccs_service_icon( $slug ) {
 		'respite-care'     => 'cup',
 		'complex-care'     => 'pulse',
 	);
-	foreach ( ccs_more_services_2026_11() as $more_slug => $more ) {
+	foreach ( array_merge( ccs_more_services_2026_11(), function_exists( 'ccs_more_services_2026_11c' ) ? ccs_more_services_2026_11c() : array() ) as $more_slug => $more ) {
 		$icons[ $more_slug ] = $more['icon'];
 	}
 	return isset( $icons[ $slug ] ) ? $icons[ $slug ] : 'heart';
@@ -140,7 +140,11 @@ function ccs_service_icon( $slug ) {
  * @return string[]
  */
 function ccs_service_order() {
-	return array( 'domiciliary-care', 'respite-care', 'complex-care', 'companionship-care', 'overnight-care', 'continuous-care', 'palliative-care', 'disability-care' );
+	// The first eight, then the thirteen added in inc/services-2026-11c.php (everyday care, then condition-led).
+	return array_merge(
+		array( 'domiciliary-care', 'respite-care', 'complex-care', 'companionship-care', 'overnight-care', 'continuous-care', 'palliative-care', 'disability-care' ),
+		function_exists( 'ccs_more_services_2026_11c' ) ? array_keys( ccs_more_services_2026_11c() ) : array()
+	);
 }
 
 /**

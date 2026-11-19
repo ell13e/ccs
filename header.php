@@ -196,7 +196,7 @@ $ccs_emergency       = $ccs_emergency_on && ( $ccs_emergency_text || $ccs_phone 
 				 */
 				if ( ! $ccs_is_careers_context ) :
 					?>
-					<a href="<?php echo esc_url( $ccs_switch_url ); ?>" class="header-actions__switch btn btn-quiet"><?php esc_html_e( 'Switch to us', 'ccs-wp-theme' ); ?></a>
+					<a href="<?php echo esc_url( $ccs_switch_url ); ?>" class="header-actions__switch btn btn-quiet btn-sheen"><?php esc_html_e( 'Switch to us', 'ccs-wp-theme' ); ?></a>
 				<?php else : ?>
 					<?php
 					/*
@@ -204,7 +204,7 @@ $ccs_emergency       = $ccs_emergency_on && ( $ccs_emergency_text || $ccs_phone 
 					 * left no route to the care side but the logo (client, Nov 2026).
 					 */
 					?>
-					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="header-actions__switch btn btn-quiet"><?php esc_html_e( 'Looking for care?', 'ccs-wp-theme' ); ?></a>
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="header-actions__switch btn btn-quiet btn-sheen"><?php esc_html_e( 'Looking for care?', 'ccs-wp-theme' ); ?></a>
 				<?php endif; ?>
 			</div>
 		</div>

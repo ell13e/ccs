@@ -64,7 +64,7 @@ $ccs_404_links = array(
 	<header class="page-hero">
 		<div class="page-hero__inner container container--lg">
 			<div class="page-hero__text">
-				<p class="page-hero__eyebrow"><?php echo esc_html( ccs_copy( 'e404_eyebrow' ) ); ?></p>
+				<?php // The "Page not found" eyebrow went (Nov 2026 eyebrow review): the heading says the same. ?>
 				<h1 class="page-hero__title"><?php echo esc_html( ccs_copy( 'e404_title' ) ); ?></h1>
 				<p class="page-hero__intro">
 					<?php echo esc_html( ccs_copy( 'e404_text' ) ); ?>

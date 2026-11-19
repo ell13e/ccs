@@ -23,7 +23,41 @@ get_header();
 		<?php get_template_part( 'template-parts/page-header' ); ?>
 		<article id="post-<?php the_ID(); ?>" <?php post_class( 'page-content' ); ?>>
 			<?php if ( trim( get_the_content() ) !== '' ) : ?>
-				<?php get_template_part( 'template-parts/article-body' ); ?>
+				<?php
+				/*
+				 * The guidance as the site's standard accordion (Nov 2026). It was
+				 * seven sections of prose down one column with an "On this page"
+				 * rail, which a design review rated among the weakest pages: a
+				 * family could not see what was covered without scrolling 4,700px.
+				 * Each heading is now a row that opens in place, the first one open.
+				 * The words are the editor's own, split at the headings; a page
+				 * with no headings prints as before.
+				 */
+				$ccs_cg = ccs_content_sections( apply_filters( 'the_content', get_the_content() ) );
+				?>
+				<?php if ( count( $ccs_cg['sections'] ) >= 3 ) : ?>
+					<section class="ccs-section ccs-section--flush-bottom care-guide">
+						<div class="container container--lg">
+							<div class="care-guide__inner">
+								<?php if ( '' !== trim( wp_strip_all_tags( $ccs_cg['intro'] ) ) ) : ?>
+									<div class="ccs-lede ccs-lede--large care-guide__lede">
+										<?php echo wp_kses_post( $ccs_cg['intro'] ); ?>
+									</div>
+								<?php endif; ?>
+								<div class="ccs-faq care-guide__faq">
+									<?php foreach ( $ccs_cg['sections'] as $ccs_cg_i => $ccs_cg_section ) : ?>
+										<details class="ccs-faq__item" name="care-guide"<?php echo 0 === $ccs_cg_i ? ' open' : ''; ?>>
+											<summary class="ccs-faq__q"><?php echo esc_html( $ccs_cg_section['heading'] ); ?></summary>
+											<div class="ccs-faq__a entry-content"><?php echo wp_kses_post( $ccs_cg_section['body'] ); ?></div>
+										</details>
+									<?php endforeach; ?>
+								</div>
+							</div>
+						</div>
+					</section>
+				<?php else : ?>
+					<?php get_template_part( 'template-parts/article-body' ); ?>
+				<?php endif; ?>
 			<?php endif; ?>
 
 			<?php

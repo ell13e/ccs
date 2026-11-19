@@ -28,7 +28,7 @@
 | **Layout** | `.container` (padding from spacing scale). Unchanged. |
 | **Header** | Skip-link, emergency banner, `.site-header`, nav, CTA, toggle. Uses colour and spacing tokens only. |
 | **Hero** | `.home-hero`, grid, title, subtitle, CTAs, trust line. Uses spacing, type, colour; optional `--shadow-subtle` and `--radius-lg` for a stats/trust strip. |
-| **Buttons** | `.btn`, `.btn-primary`, `.btn-secondary`, `.btn-phone` with radius from design system. |
+| **Buttons** | `.btn`, `.btn-primary`, `.btn-phone` with radius from design system. |
 
 ### 1.3 Deferred only (do not put in critical)
 

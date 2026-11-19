@@ -29,20 +29,37 @@ $ccs_ft_service = static function ( $slug ) {
 	return $found ? get_permalink( $found[0] ) : home_url( '/services/' . $slug . '/' );
 };
 
+/*
+ * Every service, in the site's order (Nov 2026: eight, where this column
+ * listed three). Names in sentence case, as the rest of the footer. Costs and
+ * Getting started moved to the second column so the two stay a similar length.
+ */
+$ccs_ft_services = array();
+// The first eight only: with twenty-one services (Nov 2026) the column would run to the foot of the page. The last link goes to them all.
+foreach ( array_slice( function_exists( 'ccs_ordered_services' ) ? ccs_ordered_services() : array(), 0, 8 ) as $ccs_ft_post ) {
+	$ccs_ft_services[] = array( ucfirst( strtolower( get_the_title( $ccs_ft_post ) ) ), get_permalink( $ccs_ft_post ) );
+}
+if ( $ccs_ft_services ) {
+	$ccs_ft_services[] = array( __( 'All our services', 'ccs-wp-theme' ), $ccs_ft_url( 'home-care-services-kent' ) );
+}
+if ( ! $ccs_ft_services ) {
+	$ccs_ft_services = array(
+		array( __( 'Domiciliary care', 'ccs-wp-theme' ), $ccs_ft_service( 'domiciliary-care' ) ),
+		array( __( 'Respite care', 'ccs-wp-theme' ), $ccs_ft_service( 'respite-care' ) ),
+		array( __( 'Complex care', 'ccs-wp-theme' ), $ccs_ft_service( 'complex-care' ) ),
+	);
+}
+
 $ccs_ft_columns = array(
 	array(
 		'title' => __( 'Care', 'ccs-wp-theme' ),
-		'links' => array(
-			array( __( 'Domiciliary care', 'ccs-wp-theme' ), $ccs_ft_service( 'domiciliary-care' ) ),
-			array( __( 'Respite care', 'ccs-wp-theme' ), $ccs_ft_service( 'respite-care' ) ),
-			array( __( 'Complex care', 'ccs-wp-theme' ), $ccs_ft_service( 'complex-care' ) ),
-			array( __( 'Costs and funding', 'ccs-wp-theme' ), $ccs_ft_url( 'costs-and-funding' ) ),
-			array( __( 'Getting started', 'ccs-wp-theme' ), $ccs_ft_url( 'getting-started' ) ),
-		),
+		'links' => $ccs_ft_services,
 	),
 	array(
 		'title' => __( 'About', 'ccs-wp-theme' ),
 		'links' => array(
+			array( __( 'Costs and funding', 'ccs-wp-theme' ), $ccs_ft_url( 'costs-and-funding' ) ),
+			array( __( 'Getting started', 'ccs-wp-theme' ), $ccs_ft_url( 'getting-started' ) ),
 			array( __( 'Who you’ll meet', 'ccs-wp-theme' ), $ccs_ft_url( 'who-youll-meet' ) ),
 			array( __( 'CQC and our care', 'ccs-wp-theme' ), $ccs_ft_url( 'cqc-and-our-care' ) ),
 			array( __( 'FAQs', 'ccs-wp-theme' ), $ccs_ft_url( 'faqs' ) ),

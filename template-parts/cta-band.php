@@ -50,7 +50,27 @@ if ( $ccs_is_careers ) {
  */
 // A real CCS photo (Nov 2026). The hands-holding image used here looked like
 // stock and, with this band on every page, appeared 15 times across the site.
-$ccs_cta_photo_rel = 'site-photos/client-pottery.webp';
+/*
+ * Three photos in rotation (Nov 2026). A design review found the pottery
+ * photo closing about twenty pages, and repeated photos are something the
+ * client has rejected. The page's address picks one, so a page always shows the
+ * same photo and neighbouring pages usually differ. The two added photos are
+ * landscape crops of client originals (crop and resize only, rule 15), used
+ * nowhere else on the site. Each entry: file, width, height, object-position.
+ */
+$ccs_cta_photos    = array(
+	array( 'site-photos/client-pottery.webp', 800, 800, '55% 40%' ),
+	array( 'site-photos/client-afternoon-tea.webp', 1000, 667, '50% 30%' ),
+	array( 'site-photos/client-activity-laughing.webp', 1000, 667, '60% 40%' ),
+);
+// Keyed on the page's address, so archives (no ID) take part in the rotation too.
+// The 'f' prefix is only a seed: of those tried, it spread today's pages most evenly (8, 8 and 9).
+$ccs_cta_key       = isset( $_SERVER['REQUEST_URI'] ) ? (string) wp_parse_url( esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ), PHP_URL_PATH ) : '';
+$ccs_cta_pick      = $ccs_cta_photos[ absint( crc32( 'f' . trim( $ccs_cta_key, '/' ) ) ) % count( $ccs_cta_photos ) ];
+if ( ! file_exists( get_template_directory() . '/assets/images/' . $ccs_cta_pick[0] ) ) {
+	$ccs_cta_pick = $ccs_cta_photos[0];
+}
+$ccs_cta_photo_rel = $ccs_cta_pick[0];
 $ccs_cta_photo     = ! $ccs_is_careers && file_exists( get_template_directory() . '/assets/images/' . $ccs_cta_photo_rel );
 
 ?>
@@ -86,8 +106,9 @@ $ccs_cta_photo     = ! $ccs_is_careers && file_exists( get_template_directory() 
 					<img
 						src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/' . $ccs_cta_photo_rel ); ?>"
 						alt=""
-						width="800"
-						height="800"
+						width="<?php echo (int) $ccs_cta_pick[1]; ?>"
+						height="<?php echo (int) $ccs_cta_pick[2]; ?>"
+						style="object-position: <?php echo esc_attr( $ccs_cta_pick[3] ); ?>;"
 						<?php echo ccs_theme_image_srcset( $ccs_cta_photo_rel, '(min-width: 900px) 450px, 100vw' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset(). ?>
 						loading="lazy"
 						decoding="async"

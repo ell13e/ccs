@@ -58,7 +58,7 @@ function ccs_content_sections( $html ) {
  * @param int $limit Maximum number of services.
  * @return WP_Post[]
  */
-function ccs_ordered_services( $limit = 12 ) {
+function ccs_ordered_services( $limit = 40 ) {
 	$services = get_posts(
 		array(
 			'post_type'      => 'service',
