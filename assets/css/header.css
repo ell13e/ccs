@@ -1156,9 +1156,133 @@ body.ccs-mobile-nav-open::before {
 	border-top: 1px solid var(--color-hairline);
 }
 
+/* Our services with eight services (Nov 2026): two columns of four, then
+   the hairline and the two practical pages across the foot. One column of
+   ten was a very long list (user: "weird looking menu"). */
+.nav-desktop .nav-mega--services > .sub-menu {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	width: 27rem;
+}
+
+.nav-desktop .nav-mega--services > .sub-menu > .menu-item:not(.nav-secondary) + .nav-secondary {
+	grid-column: 1;
+}
+
+.nav-desktop .nav-mega--services > .sub-menu > .nav-secondary {
+	margin-top: 0.4rem;
+	padding-top: 0.4rem;
+	border-top: 1px solid var(--color-hairline);
+}
+
 /* Areas: towns in three columns. */
 .nav-desktop .nav-mega--areas > .sub-menu {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 	width: 30rem;
+}
+
+/* =========================================================================
+   Even sizing across the bar (Nov 2026, user on the careers header:
+   "incredibly uneven sizing between text and buttons and logos and also very
+   cramped"). Measured at 1440: nav labels 14px, button labels 16px, logo 44px
+   tall, so three scales sat side by side. Now nav and buttons share one
+   15px label size, the logo is 40px, and a short menu (four items or fewer,
+   as on the careers pages) spreads its links instead of bunching them.
+   ========================================================================= */
+@media (min-width: 1024px) {
+	.nav-desktop .nav-link,
+	.header-actions .btn {
+		font-size: 0.9375rem;
+	}
+
+	.header-actions .btn {
+		min-height: 44px;
+		padding-inline: 1.25rem;
+	}
+
+	.header-actions {
+		gap: 0.75rem;
+	}
+
+	/* Four links or fewer: room to breathe between them. */
+	.nav-desktop .nav-list:not(:has(> li:nth-child(5))) .nav-link {
+		--nav-link-pad-x: clamp(0.625rem, 1vw, 1rem);
+	}
+}
+
+@media (min-width: 1280px) {
+	.header-logo img,
+	.header-logo__img {
+		height: 2.5rem;
+	}
+
+	.header-inner-wrapper {
+		gap: var(--space-xl);
+	}
+}
+
+/* The logo is 40px tall from 1280px; its link keeps a 44px target. */
+.header-logo .logo-link {
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
+}
+
+/* The logo always keeps clear space before the first link, however full the
+   row is: the nav centres in what is left, and used to run right up to it. */
+@media (min-width: 1024px) {
+	.header-logo {
+		margin-right: clamp(1rem, 0.2rem + 1.6vw, 2.5rem);
+	}
+
+	.header-actions {
+		margin-left: clamp(0.5rem, 0.1rem + 1vw, 1.5rem);
+	}
+}
+
+/* 1024px to 1279px: six links, the logo and the phone button only just fit,
+   so this range runs a size down and gives the space back to the gaps
+   between them (user at 1042px: "cramped"). The 15px labels and the logo's
+   extra margin above were sized for 1280px and up. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+	.nav-desktop .nav-link,
+	.header-actions .btn {
+		font-size: 0.875rem;
+	}
+
+	.header-logo img,
+	.header-logo__img {
+		height: 2rem;
+	}
+
+	.header-logo {
+		margin-right: 0;
+	}
+
+	.header-actions {
+		margin-left: 0;
+	}
+
+	.header-actions .btn {
+		padding-inline: 1rem;
+	}
+
+	.header-inner-wrapper {
+		gap: var(--space-md);
+	}
+
+	.nav-desktop .nav-list {
+		justify-content: space-evenly;
+	}
+}
+
+/* A short menu (the four careers links) is grouped in the middle with an
+   even gap, not spread across the whole bar (user at 1042px: "weird
+   spread"). Only the full six-link menu needs space-evenly to fit. */
+@media (min-width: 1024px) {
+	.nav-desktop .nav-list:not(:has(> li:nth-child(5))) {
+		justify-content: center;
+		gap: clamp(0.25rem, 1vw, 1rem);
+	}
 }

@@ -50,6 +50,7 @@ require_once THEME_DIR . '/inc/home-content.php';
 require_once THEME_DIR . '/inc/switching.php';
 require_once THEME_DIR . '/inc/costs-page.php';
 require_once THEME_DIR . '/inc/menu-update.php';
+require_once THEME_DIR . '/inc/services-2026-11b.php';
 require_once THEME_DIR . '/inc/locations-2026-11.php';
 require_once THEME_DIR . '/inc/location-services.php';
 require_once THEME_DIR . '/inc/forms.php';

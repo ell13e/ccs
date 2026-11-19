@@ -32,7 +32,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Apply each update file once.
  */
 function ccs_apply_content_updates() {
-	$updates = array( 'copy-update-2026-11', 'copy-update-2026-11b' );
+	// 11c (Nov 2026, user: "why is this not backlinked"): the About page's
+	// closing "Learn more about the home care services…" line becomes a link
+	// to the services page. It was bold text that read as a link and was not one.
+	$updates = array( 'copy-update-2026-11', 'copy-update-2026-11b', 'copy-update-2026-11c' );
 	$home    = untrailingslashit( home_url() );
 	// The site the first file was made on; its links carry this address.
 	$tok   = static function ( $s ) use ( $home ) {
@@ -208,3 +211,148 @@ function ccs_apply_cost_extras_update() {
 	update_option( 'ccs_cost_extras_rows_done', 1, false );
 }
 add_action( 'admin_init', 'ccs_apply_cost_extras_update' );
+
+/**
+ * "Working for Us" becomes "Working with us" (Nov 2026, user). The page title
+ * and its careers-menu label are renamed once, and only while they still read
+ * exactly the old way, so a title the client has since changed is left alone.
+ * The address (/careers/working-for-us/) is unchanged, so no link breaks.
+ */
+function ccs_apply_working_with_us_rename() {
+	if ( get_option( 'ccs_working_with_us_renamed' ) ) {
+		return;
+	}
+	$targets = get_posts(
+		array(
+			'post_type'        => array( 'page', 'nav_menu_item' ),
+			'post_status'      => 'any',
+			'title'            => 'Working for Us',
+			'numberposts'      => 20,
+			'suppress_filters' => true,
+		)
+	);
+	foreach ( $targets as $target ) {
+		if ( 'Working for Us' === $target->post_title ) {
+			wp_update_post( array( 'ID' => $target->ID, 'post_title' => 'Working with us' ) );
+		}
+	}
+	update_option( 'ccs_working_with_us_renamed', 1, false );
+}
+add_action( 'admin_init', 'ccs_apply_working_with_us_rename' );
+
+/**
+ * Shorter careers-menu labels (Nov 2026, user: "nav bar is still cramped").
+ * The careers bar held four long labels and two buttons in 1184px, so the
+ * logo touched the first link. "Professional Development" and "Current
+ * Vacancies" become "Development" and "Vacancies" in the menu only: the page
+ * titles are unchanged. Applied once, and only to labels that still read
+ * exactly the old way.
+ */
+function ccs_apply_short_careers_menu_labels() {
+	if ( get_option( 'ccs_short_careers_menu_labels_v2' ) ) {
+		return;
+	}
+	// A menu item for a page has no label of its own until one is typed: it
+	// shows the page's title. So find the items by the page they point to,
+	// and label only those still unlabelled or still carrying the page title.
+	$labels = array(
+		'professional-development' => 'Development',
+		'current-vacancies'        => 'Vacancies',
+	);
+	foreach ( $labels as $slug => $new ) {
+		$pages = get_posts( array( 'name' => $slug, 'post_type' => 'page', 'post_status' => 'publish', 'numberposts' => 1, 'suppress_filters' => true ) );
+		if ( empty( $pages ) ) {
+			continue;
+		}
+		$items = get_posts(
+			array(
+				'post_type'        => 'nav_menu_item',
+				'post_status'      => 'any',
+				'numberposts'      => 20,
+				'meta_key'         => '_menu_item_object_id', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- one-time update.
+				'meta_value'       => (string) $pages[0]->ID, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- one-time update.
+				'suppress_filters' => true,
+			)
+		);
+		foreach ( $items as $item ) {
+			if ( '' === $item->post_title || $pages[0]->post_title === $item->post_title ) {
+				wp_update_post( array( 'ID' => $item->ID, 'post_title' => $new ) );
+			}
+		}
+	}
+	update_option( 'ccs_short_careers_menu_labels_v2', 1, false );
+}
+add_action( 'admin_init', 'ccs_apply_short_careers_menu_labels' );
+
+/**
+ * Friendlier opening on "Working with us" (Nov 2026, user: "the para could be
+ * reworded more friendly"). Replaces the page's first paragraph once, and
+ * only while it still reads exactly as shipped, so wording the client has
+ * since changed is left alone. WordPress keeps a revision.
+ */
+function ccs_apply_working_intro_reword() {
+	if ( get_option( 'ccs_working_intro_reworded' ) ) {
+		return;
+	}
+	$old   = 'We are a small, family-run provider based in Maidstone. That shapes the job more than anything else on this page: you work with a handful of regular clients rather than a different address every hour, and you are known by name in the office.';
+	$new   = 'We’re a small, family-run team in Maidstone, and you’ll feel that from your first day. You’ll look after a handful of regular clients and get to know them well, and everyone in the office will know your name.';
+	$pages = get_posts( array( 'name' => 'working-for-us', 'post_type' => 'page', 'post_status' => 'any', 'numberposts' => 1, 'suppress_filters' => true ) );
+	if ( ! empty( $pages ) && false !== strpos( $pages[0]->post_content, $old ) ) {
+		wp_update_post( wp_slash( array( 'ID' => $pages[0]->ID, 'post_content' => str_replace( $old, $new, $pages[0]->post_content ) ) ) );
+	}
+	update_option( 'ccs_working_intro_reworded', 1, false );
+}
+add_action( 'admin_init', 'ccs_apply_working_intro_reword' );
+
+/**
+ * Shorter heading on the careers hub (Nov 2026, user: "too long"). The
+ * heading is the page's own first h2, so it is changed once in the page,
+ * and only while it still reads exactly as shipped.
+ */
+function ccs_apply_careers_heading_shorten() {
+	if ( get_option( 'ccs_careers_heading_shortened' ) ) {
+		return;
+	}
+	$old   = 'Why choose a career with Continuity?';
+	$pages = get_posts( array( 'name' => 'careers', 'post_type' => 'page', 'post_status' => 'any', 'numberposts' => 1, 'suppress_filters' => true ) );
+	if ( ! empty( $pages ) && false !== strpos( $pages[0]->post_content, $old ) ) {
+		wp_update_post( wp_slash( array( 'ID' => $pages[0]->ID, 'post_content' => str_replace( $old, 'Why work with us?', $pages[0]->post_content ) ) ) );
+	}
+	update_option( 'ccs_careers_heading_shortened', 1, false );
+}
+add_action( 'admin_init', 'ccs_apply_careers_heading_shorten' );
+
+/**
+ * No named qualifications (Nov 2026, user: "we don't know the specific
+ * qualifications we fund"). Two careers pages named Level 2, 3 and 5
+ * diplomas. They now say what the company's job adverts say: there are
+ * opportunities to take health and social care qualifications. Applied once,
+ * and only to text that still reads as shipped.
+ */
+function ccs_apply_unnamed_qualifications() {
+	if ( get_option( 'ccs_unnamed_qualifications' ) ) {
+		return;
+	}
+	$get = static function ( $slug ) {
+		$found = get_posts( array( 'name' => $slug, 'post_type' => 'page', 'post_status' => 'any', 'numberposts' => 1, 'suppress_filters' => true ) );
+		return $found ? $found[0] : null;
+	};
+
+	$page = $get( 'working-for-us' );
+	$old  = 'Beyond that we fund the Level 2 and Level 3 Diploma in Adult Care and specialist training in areas like';
+	if ( $page && false !== strpos( $page->post_content, $old ) ) {
+		wp_update_post( wp_slash( array( 'ID' => $page->ID, 'post_content' => str_replace( $old, 'Beyond that there are opportunities to take health and social care qualifications, and specialist training in areas like', $page->post_content ) ) ) );
+	}
+
+	$page = $get( 'professional-development' );
+	if ( $page && false !== strpos( $page->post_content, 'Level 5 Diploma in Leadership and Management' ) ) {
+		$new     = "\n<p>There are opportunities to take health and social care qualifications while you work with us. Tell us where you want to get to and we will talk through which one fits.</p>\n";
+		$content = preg_replace( '#(<h2[^>]*>\s*Qualifications we fund\s*</h2>).*?(?=<h2|\z)#s', '$1' . $new, $page->post_content, 1 );
+		if ( is_string( $content ) && $content !== $page->post_content ) {
+			$content = str_replace( '>Qualifications we fund<', '>Qualifications<', $content );
+			wp_update_post( wp_slash( array( 'ID' => $page->ID, 'post_content' => $content ) ) );
+		}
+	}
+	update_option( 'ccs_unnamed_qualifications', 1, false );
+}
+add_action( 'admin_init', 'ccs_apply_unnamed_qualifications' );

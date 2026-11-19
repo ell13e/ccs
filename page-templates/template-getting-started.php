@@ -10,7 +10,8 @@
  * How the editor content is read (ccs_content_sections()):
  * - the paragraph before the first h2 is the introduction;
  * - h2s that start with a number ("1. The first conversation") are the
- *   steps, shown as numbered rows, number and title left, text right;
+ *   steps, shown as numbered rows in one white panel: number and title
+ *   left, the step's first paragraph right, the rest one tap away;
  * - every other h2 ("Paying for care", "Safeguarding…") is a question in a
  *   "Good to know" accordion, so the long reference sections are one tap away
  *   instead of all on screen.
@@ -62,37 +63,86 @@ get_header();
 			</article>
 		<?php else : ?>
 
-			<section class="ccs-section gs-steps" aria-labelledby="gs-steps-heading">
+			<?php
+			/*
+			 * Inner-page pass, Nov 2026. This section was 2,500px of text with no
+			 * image: 650 words in hairline rows. Now three things, each one object:
+			 * 1. the introduction beside one real photo (the office team, who take
+			 *    the first call), with the client's intro as a large lede;
+			 * 2. the steps in ONE white panel on the tint (the client called unboxed
+			 *    steps "awful", and six separate cards would be cards for their own
+			 *    sake: rule 1). Each row shows the step's first paragraph; the rest
+			 *    of the client's text opens in place, so no words are cut;
+			 * 3. "Good to know" moves to white so the grounds still alternate.
+			 */
+			?>
+			<section class="ccs-section gs-intro-section" aria-labelledby="gs-steps-heading">
 				<div class="container container--lg">
-
-					<header class="gs-intro">
-						<h2 id="gs-steps-heading" class="ccs-title"><?php esc_html_e( 'From first call to first visit', 'ccs-wp-theme' ); ?></h2>
-						<?php if ( '' !== trim( wp_strip_all_tags( $ccs_gs['intro'] ) ) ) : ?>
-							<div class="ccs-lede gs-intro__lede">
-								<?php echo wp_kses_post( $ccs_gs['intro'] ); ?>
-							</div>
-						<?php endif; ?>
-					</header>
-
-					<ol class="gs-step-list" role="list">
-						<?php foreach ( $ccs_gs_steps as $ccs_gs_step ) : ?>
-							<li class="gs-step">
-								<div class="gs-step__head">
-									<span class="gs-step__num" aria-hidden="true"><?php echo esc_html( str_pad( $ccs_gs_step['num'], 2, '0', STR_PAD_LEFT ) ); ?></span>
-									<h3 class="gs-step__title"><?php echo esc_html( $ccs_gs_step['title'] ); ?></h3>
+					<div class="ccs-media-split">
+						<header class="gs-intro">
+							<h2 id="gs-steps-heading" class="ccs-title"><?php esc_html_e( 'From first call to first visit', 'ccs-wp-theme' ); ?></h2>
+							<?php if ( '' !== trim( wp_strip_all_tags( $ccs_gs['intro'] ) ) ) : ?>
+								<div class="ccs-lede ccs-lede--large gs-intro__lede">
+									<?php echo wp_kses_post( $ccs_gs['intro'] ); ?>
 								</div>
-								<div class="gs-step__body">
-									<?php echo wp_kses_post( $ccs_gs_step['body'] ); ?>
-								</div>
-							</li>
-						<?php endforeach; ?>
-					</ol>
+							<?php endif; ?>
+						</header>
+						<?php
+						ccs_section_photo(
+							'site-photos/WhatsApp-Image-2021-02-10-at-15.39.32.webp',
+							array(
+								'alt'      => __( 'Members of the Continuity Care Services team talking through care notes together', 'ccs-wp-theme' ),
+								'sizes'    => '(min-width: 900px) 520px, 92vw',
+								// Keeps the three faces and crops the right-hand edge, where the
+								// photographer's mark sits.
+								'position' => '0% 50%',
+							)
+						);
+						?>
+					</div>
+				</div>
+			</section>
 
+			<?php
+			/*
+			 * The steps as a stepper (Nov 2026). Two earlier layouts were rejected:
+			 * hairline rows (client: "awful") and rows in one white panel with the
+			 * second paragraph behind "More" (user: "still very blocky text, why
+			 * is there no interactivity or visual interest"). Now one step is on
+			 * screen at a time: a rail of numbered tabs with a line that fills as
+			 * you go, the step's number large, its full text, and previous/next.
+			 * Without JS (assets/js/interactive.js) all six steps list in order.
+			 */
+			?>
+			<section class="ccs-section ccs-section--tint gs-steps" aria-labelledby="gs-stepper-heading">
+				<div class="container container--lg">
+					<h2 id="gs-stepper-heading" class="screen-reader-text"><?php esc_html_e( 'The steps, in order', 'ccs-wp-theme' ); ?></h2>
+					<?php
+					$ccs_gs_items = array();
+					foreach ( $ccs_gs_steps as $ccs_gs_step ) {
+						$ccs_gs_items[] = array(
+							'tab'   => $ccs_gs_step['num'],
+							'name'  => $ccs_gs_step['title'],
+							'num'   => str_pad( $ccs_gs_step['num'], 2, '0', STR_PAD_LEFT ),
+							'title' => $ccs_gs_step['title'],
+							'body'  => $ccs_gs_step['body'],
+						);
+					}
+					get_template_part(
+						'template-parts/stepper',
+						null,
+						array(
+							'id'         => 'gs',
+							'labelledby' => 'gs-stepper-heading',
+							'items'      => $ccs_gs_items,
+						)
+					);
+					?>
 				</div>
 			</section>
 
 			<?php if ( ! empty( $ccs_gs_more ) ) : ?>
-				<section class="ccs-section ccs-section--tint gs-more" aria-labelledby="gs-more-heading">
+				<section class="ccs-section ccs-section--flush-bottom gs-more" aria-labelledby="gs-more-heading">
 					<div class="container container--lg">
 						<div class="ccs-split">
 							<header class="ccs-head">

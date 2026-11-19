@@ -39,43 +39,59 @@ $ccs_vac_steps   = array(
 	while ( have_posts() ) :
 		the_post();
 		?>
-		<?php get_template_part( 'template-parts/page-header' ); ?>
+		<?php
+		// The page's short intro sits in the banner, as on other pages. Under an
+		// "Open roles" heading it was tried left-aligned, split and centred, and
+		// read as an awkward block each time.
+		get_template_part( 'template-parts/page-header', null, array( 'intro' => trim( preg_replace( '/\s+/', ' ', wp_strip_all_tags( get_the_content() ) ) ) ) );
+		?>
 
-		<section class="ccs-section vac-intro" aria-labelledby="vac-heading">
+		<?php
+		/*
+		 * Rebuilt Nov 2026 (user: "I also really hate this whole page"). It
+		 * opened with a block of text, two buttons, a small note and a row of
+		 * steps before any job was in sight. Now, in the order someone looking
+		 * for work needs it:
+		 * 1. the open roles themselves, straight under the hero (white: the
+		 *    hero is tint);
+		 * 2. what happens after you apply, as three steps in one card (tint);
+		 * 3. what new starters tell us, from the onboarding survey (white).
+		 * A "no role that fits? send your details" strip came next and was
+		 * removed: the closing card under it says the same thing (user).
+		 * All wording is unchanged and still comes from Customize > Page wording.
+		 */
+		?>
+		<section class="ccs-section ccs-section--sm vac-portal" aria-labelledby="vac-portal-heading">
 			<div class="container container--lg">
-				<header class="ccs-head vac-intro__head">
-					<h2 id="vac-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'vac_title' ) ); ?></h2>
-					<?php if ( '' !== trim( wp_strip_all_tags( get_the_content() ) ) ) : ?>
-						<div class="ccs-lede vac-intro__lede"><?php the_content(); ?></div>
-					<?php endif; ?>
-					<div class="ccs-actions vac-intro__actions">
-						<a class="btn btn-primary" href="#vac-portal-heading" data-ccs-exception="rule 8: the page's primary action, a jump to the job listings"><?php echo esc_html( ccs_copy( 'vac_jump' ) ); ?> <span aria-hidden="true">&darr;</span></a>
-						<a class="btn btn-quiet" href="<?php echo esc_url( $ccs_vac_contact ); ?>"><?php echo esc_html( ccs_copy( 'vac_none_link' ) ); ?></a>
-					</div>
-					<p class="vac-intro__none"><?php echo esc_html( ccs_copy( 'vac_none_text' ) ); ?></p>
-				</header>
+				<?php // The banner above already says what this is; a lone "Open roles" title over the frame looked silly (user). Kept for screen readers and the section's name. ?>
+				<h2 id="vac-portal-heading" class="screen-reader-text"><?php echo esc_html( ccs_copy( 'vac_portal_title' ) ); ?></h2>
+				<div class="vac-portal__frame" data-ccs-exception="rule 1: the job portal is a separate system, framed as one object">
+					<?php get_template_part( 'template-parts/careers/cv-minder-embed' ); ?>
+				</div>
+			</div>
+		</section>
 
-				<h3 class="vac-steps__title"><?php echo esc_html( ccs_copy( 'vac_steps_title' ) ); ?></h3>
-				<ol class="ccs-steps ccs-steps--panel" role="list" data-ccs-exception="rule 1: one soft panel holding the sequence, as on the homepage">
-					<?php foreach ( $ccs_vac_steps as $ccs_i => $ccs_step ) : ?>
-						<li class="ccs-step">
-							<span class="ccs-step__num" aria-hidden="true"><?php echo (int) $ccs_i + 1; ?></span>
-							<h4 class="ccs-step__title"><?php echo esc_html( $ccs_step['title'] ); ?></h4>
-							<p class="ccs-step__text"><?php echo esc_html( $ccs_step['text'] ); ?></p>
+		<section class="ccs-section ccs-section--tint vac-after" aria-labelledby="vac-after-heading">
+			<div class="container container--lg">
+				<header class="ccs-head ccs-head--center">
+					<h2 id="vac-after-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'vac_steps_title' ) ); ?></h2>
+				</header>
+				<?php // Three one-line steps side by side in one card. The stepper (rail, big number, "Step 1 of 3", Next button) was far too much for three sentences (user: "too busy"). ?>
+				<ol class="next-steps" role="list" data-ccs-exception="rule 1: one card holding the three steps, as on the homepage">
+					<?php foreach ( $ccs_vac_steps as $ccs_vac_i => $ccs_vac_step ) : ?>
+						<li class="next-steps__item">
+							<span class="next-steps__num" aria-hidden="true"><?php echo (int) $ccs_vac_i + 1; ?></span>
+							<h3 class="next-steps__title"><?php echo esc_html( $ccs_vac_step['title'] ); ?></h3>
+							<p class="next-steps__text"><?php echo esc_html( $ccs_vac_step['text'] ); ?></p>
 						</li>
 					<?php endforeach; ?>
 				</ol>
 			</div>
 		</section>
 
-		<section class="ccs-section ccs-section--tint vac-portal" aria-labelledby="vac-portal-heading">
-			<div class="container container--lg">
-				<h2 id="vac-portal-heading" class="vac-portal__title"><?php echo esc_html( ccs_copy( 'vac_portal_title' ) ); ?></h2>
-				<div class="vac-portal__frame" data-ccs-exception="rule 1: the job portal is a separate system, framed as one object">
-					<?php get_template_part( 'template-parts/careers/cv-minder-embed' ); ?>
-				</div>
-			</div>
-		</section>
+		<?php // The survey section only; the benefits are on Working with us. ?>
+		<?php get_template_part( 'template-parts/careers/onboarding-proof' ); ?>
+
 		<?php
 	endwhile;
 	?>

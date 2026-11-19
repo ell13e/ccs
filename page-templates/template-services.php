@@ -60,6 +60,19 @@ $ccs_services = ccs_ordered_services();
 		<?php if ( ! empty( $ccs_content['sections'] ) || empty( $ccs_services ) ) : ?>
 			<section class="ccs-section ccs-section--tint services-how" aria-labelledby="services-how-heading">
 				<div class="container container--lg">
+					<?php
+					/*
+					 * Inner-page pass, Nov 2026. This was a title in an empty left
+					 * column beside 1,650px of text. The topics are now the site's
+					 * accordion (same as FAQs and "Good to know"), first one open:
+					 * six headings on one screen, each answer a tap away.
+					 *
+					 * Tried and rejected by the user the same day: the title beside a
+					 * photo with the topics two across under hairlines. Loose text
+					 * under rules read as unfinished ("thin is not calm"), and the one
+					 * unused carer-and-client photo is too dark for a slot that size.
+					 */
+					?>
 					<div class="ccs-split">
 						<header class="ccs-head">
 							<h2 id="services-how-heading" class="ccs-title">
@@ -69,24 +82,21 @@ $ccs_services = ccs_ordered_services();
 							</h2>
 						</header>
 						<article id="post-<?php the_ID(); ?>" <?php post_class( 'page-content' ); ?>>
-							<div class="page-body page-body--flush entry-content">
-								<?php if ( empty( $ccs_services ) ) : ?>
+							<?php if ( empty( $ccs_services ) ) : ?>
+								<div class="page-body page-body--flush entry-content">
 									<?php echo $ccs_intro; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content output, printed as the_content() would. ?>
-								<?php endif; ?>
-								<?php if ( ! empty( $ccs_content['sections'] ) ) : ?>
-									<?php
-									/*
-									 * The editor's h2s sit under this section's own h2, so they
-									 * print as h3: one outline, no two headings at the same level
-									 * claiming the same rank.
-									 */
-									foreach ( $ccs_content['sections'] as $ccs_section ) :
-										?>
-										<h3><?php echo esc_html( $ccs_section['heading'] ); ?></h3>
-										<?php echo $ccs_section['body']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content output, printed as the_content() would. ?>
+								</div>
+							<?php endif; ?>
+							<?php if ( ! empty( $ccs_content['sections'] ) ) : ?>
+								<div class="ccs-faq">
+									<?php foreach ( $ccs_content['sections'] as $ccs_i => $ccs_section ) : ?>
+										<details class="ccs-faq__item" name="services-how"<?php echo 0 === $ccs_i ? ' open' : ''; ?>>
+											<summary class="ccs-faq__q"><?php echo esc_html( $ccs_section['heading'] ); ?></summary>
+											<div class="ccs-faq__a"><?php echo $ccs_section['body']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content output, printed as the_content() would. ?></div>
+										</details>
 									<?php endforeach; ?>
-								<?php endif; ?>
-							</div>
+								</div>
+							<?php endif; ?>
 						</article>
 					</div>
 				</div>

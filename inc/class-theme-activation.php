@@ -102,7 +102,7 @@ class CCS_Theme_Activation {
 		),
 		'professional-development'    => array( 'title' => 'Professional Development', 'parent_slug' => 'careers' ),
 		'current-vacancies'           => array( 'title' => 'Current Vacancies', 'parent_slug' => 'careers', 'template' => 'page-templates/template-current-vacancies.php', 'hero_image' => 'assets/images/site-photos/careers-apprenticeships-fair.webp' ),
-		'working-for-us'              => array( 'title' => 'Working for Us', 'parent_slug' => 'careers' ),
+		'working-for-us'              => array( 'title' => 'Working with us', 'parent_slug' => 'careers' ),
 		// Optional care pages (Section 7).
 		'cqc-and-our-care'            => array( 'title' => 'CQC and Our Care', 'template' => 'page-templates/template-cqc.php', 'hero_image' => 'assets/images/site-photos/client-easter-activity.webp' ),
 		'getting-started'              => array( 'title' => 'Getting Started', 'template' => 'page-templates/template-getting-started.php' ),
@@ -1683,9 +1683,9 @@ class CCS_Theme_Activation {
 		$careers_order = array( 'careers', 'professional-development', 'current-vacancies', 'working-for-us' );
 		$labels = array(
 			'careers'                 => 'Careers',
-			'professional-development' => 'Professional Development',
-			'current-vacancies'       => 'Current Vacancies',
-			'working-for-us'          => 'Working for Us',
+			'professional-development' => 'Development',
+			'current-vacancies'       => 'Vacancies',
+			'working-for-us'          => 'Working with us',
 		);
 		$position = 0;
 		foreach ( $careers_order as $slug ) {

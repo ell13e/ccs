@@ -23,6 +23,11 @@ $ccs_ph_heading = get_post_meta( $ccs_ph_id, 'ccs_page_heading', true );
 $ccs_ph_heading = ( is_string( $ccs_ph_heading ) && trim( $ccs_ph_heading ) !== '' ) ? trim( $ccs_ph_heading ) : get_the_title( $ccs_ph_id );
 $ccs_ph_intro   = get_post_meta( $ccs_ph_id, 'ccs_page_intro', true );
 $ccs_ph_intro   = is_string( $ccs_ph_intro ) ? trim( $ccs_ph_intro ) : '';
+// A template can hand the banner its intro (the vacancies page passes the
+// page's own opening text, so it is not a second block above the job list).
+if ( '' === $ccs_ph_intro && ! empty( $args['intro'] ) && is_string( $args['intro'] ) ) {
+	$ccs_ph_intro = trim( $args['intro'] );
+}
 /*
  * Photo hero is opt-in via the page's own featured image, minus policy pages.
  * Resolved by ccs_page_uses_photo_hero() (inc/theme-setup.php) rather than

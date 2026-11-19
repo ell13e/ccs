@@ -187,6 +187,29 @@
 	background-color: var(--color-band-tint);
 }
 
+.svc-card__media--icon {
+	display: grid;
+	place-items: center;
+	color: var(--color-primary);
+}
+
+/* The icon is already shown large, so the small badge under it is dropped. */
+.svc-card__media--icon ~ .svc-card__body .svc-card__badge {
+	display: none;
+}
+
+/* The badge used to make the panel's top space, so without it the title sat
+   on the panel's edge (user: "spacing in white card is weird"). */
+.svc-card__media--icon ~ .svc-card__body {
+	padding-top: 1.75rem;
+}
+
+.svc-card__media--icon .ccs-icon {
+	width: 4.5rem;
+	height: 4.5rem;
+	opacity: 0.55;
+}
+
 .svc-card__media img {
 	display: block;
 	width: 100%;
@@ -1290,10 +1313,14 @@
 
 /* A quiet text link for secondary actions under a section (rule 8). */
 .ccs-text-link {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.4rem;
-	min-height: 2.75rem;
+	/* Inline-block, not inline-flex (Nov 2026, user: "this underline looks
+	   weird everywhere"). As a flex container the link passed its underline
+	   to the arrow, which is a flex item, so a second short line sat under
+	   the arrow after a gap. An inline-block arrow inside ordinary inline
+	   text takes no underline. The 44px target comes from padding instead. */
+	display: inline-block;
+	padding-block: calc((2.75rem - 1.5em) / 2);
+	line-height: 1.5;
 	font-weight: var(--font-weight-semibold);
 	color: var(--color-primary);
 	text-decoration: underline;
@@ -1306,10 +1333,10 @@
 	text-underline-offset: 0.3em;
 }
 
-/* The arrow is decoration: an inline-block stops the underline reaching it,
-   where it showed as a second, separate dash. */
+/* The arrow: beside the words, never underlined. */
 .ccs-text-link > span[aria-hidden="true"] {
 	display: inline-block;
+	margin-left: 0.3rem;
 	text-decoration: none;
 }
 
@@ -1505,14 +1532,160 @@
 }
 
 /* =========================================================================
-   GETTING STARTED (page-templates/template-getting-started.php), rebuilt
-   Nov 2026. Steps as numbered rows on white: number and title in the left
-   column, the client's text at reading width on the right, a hairline
-   between rows. Reference sections in a "Good to know" accordion on tint.
+   INNER-PAGE KIT, Nov 2026 (documented in docs/BUILD-STANDARD.md §3).
+   Between the hero and the closing band the inner pages had no imagery:
+   every section was a heading beside paragraphs. These patterns are the
+   shared answer, so the pages vary without each inventing its own layout.
    ========================================================================= */
-.gs-intro {
-	max-width: 46rem;
-	margin-bottom: var(--space-2xl);
+
+/* One photograph, one frame (rule 15, "Calm first"). Cropped by the browser
+   only. Portrait by default, as on the homepage Why section. */
+.ccs-photo {
+	margin: 0;
+	overflow: hidden;
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-band-tint);
+	box-shadow: var(--shadow-float);
+	aspect-ratio: 5 / 4;
+}
+
+.ccs-photo--landscape {
+	aspect-ratio: 3 / 2;
+}
+
+.ccs-photo img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+/* Text beside one photo. Text first in the source, so phones read the
+   heading before the picture. */
+.ccs-media-split {
+	display: grid;
+	gap: var(--space-2xl);
+	align-items: center;
+}
+
+@media (min-width: 900px) {
+	.ccs-media-split {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+		column-gap: clamp(3rem, 1rem + 5vw, 6rem);
+	}
+}
+
+/* The page's opening paragraph: a step up from body, and clearly below the
+   heading (rule 8). Body face and soft ink, not the heading's serif in ink:
+   that first version sat too close to the h2 and the user asked where the
+   hierarchy had gone (Nov 2026). */
+.ccs-lede--large > p:first-child {
+	font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem);
+	line-height: 1.65;
+	color: var(--color-ink-soft);
+	text-wrap: pretty;
+}
+
+/* "More" disclosure: the rest of a passage, one tap away. Native <details>,
+   same summary treatment as the Costs page's "See every rate". */
+.ccs-more {
+	margin-top: var(--space-xs);
+}
+
+.ccs-more > summary {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	min-height: 44px;
+	cursor: pointer;
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-primary);
+	list-style: none;
+}
+
+.ccs-more > summary::-webkit-details-marker {
+	display: none;
+}
+
+.ccs-more > summary::after {
+	content: "+";
+	font-size: 1.25rem;
+	line-height: 1;
+}
+
+.ccs-more[open] > summary::after {
+	content: "\2013";
+}
+
+.ccs-more__body > :first-child {
+	margin-top: 0;
+}
+
+.ccs-more__body > :last-child {
+	margin-bottom: 0;
+}
+
+/* =========================================================================
+   CQC PAGE (template-cqc.php): one photo with the rating on a plum tab over
+   its corner, and the page's heading, text and report link beside it. The
+   same photo-and-tab object as the careers pages (.careers-benefits__media).
+   It replaces a two-part verdict panel the user rejected (Nov 2026).
+   ========================================================================= */
+.cqc-feature {
+	align-items: center;
+}
+
+.cqc-feature__text .ccs-title {
+	margin-bottom: var(--space-md);
+}
+
+.cqc-feature__text .page-body {
+	max-width: 34rem;
+	color: var(--color-ink-soft);
+}
+
+.cqc-feature__report {
+	margin-top: var(--space-xl);
+}
+
+.cqc-feature__note {
+	max-width: 34rem;
+	margin: var(--space-lg) 0 0;
+	font-size: var(--text-sm);
+	line-height: 1.6;
+	color: var(--color-ink-soft);
+}
+
+.cqc-feature__note a {
+	color: var(--color-primary);
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+/* The photo is 550px wide, so its column is capped: never upscaled (rule 15). */
+.cqc-feature__media {
+	width: 100%;
+	max-width: 30rem;
+	justify-self: center;
+}
+
+.cqc-feature__media .careers-benefits__photo {
+	aspect-ratio: 7 / 6;
+}
+
+@media (max-width: 899px) {
+	.cqc-feature > .cqc-feature__media {
+		order: -1;
+	}
+}
+
+/* =========================================================================
+   GETTING STARTED (page-templates/template-getting-started.php). Intro
+   beside a photo on white; the steps as a stepper on the tint; reference
+   sections in a "Good to know" accordion on white.
+   ========================================================================= */
+.gs-intro .ccs-title {
+	margin-bottom: var(--space-lg);
 }
 
 .gs-intro__lede p {
@@ -1523,74 +1696,1486 @@
 	margin-top: var(--space-sm);
 }
 
-.gs-step-list {
-	margin: 0;
-	padding: 0;
-	list-style: none;
+/* =========================================================================
+   STEPPER (.ccs-stepper, assets/js/interactive.js). One white panel: a rail
+   of numbered tabs with a line that fills to the current step, and one
+   step's content at a time. Without JS (.is-enhanced absent) the rail is
+   hidden and every step lists in order, a hairline between.
+   ========================================================================= */
+.ccs-stepper {
+	overflow: hidden;
+	border-radius: var(--radius-3xl);
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-float);
+}
+
+.ccs-stepper__rail {
+	display: none;
+}
+
+.ccs-stepper__panel {
+	display: grid;
+	gap: var(--space-md) clamp(2rem, 1rem + 4vw, 4.5rem);
+	padding: clamp(1.75rem, 1rem + 3.5vw, 3.5rem);
+}
+
+.ccs-stepper__panel + .ccs-stepper__panel {
 	border-top: 1px solid var(--color-hairline);
 }
 
-.gs-step {
-	display: grid;
-	gap: var(--space-sm) var(--space-2xl);
-	padding-block: clamp(1.75rem, 1.2rem + 1.6vw, 2.75rem);
-	border-bottom: 1px solid var(--color-hairline);
+.ccs-stepper__panel:focus-visible {
+	outline: var(--focus-ring);
+	outline-offset: calc(var(--focus-ring-offset) * -3);
 }
 
-@media (min-width: 900px) {
-	.gs-step {
-		grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr);
+@media (min-width: 800px) {
+	.ccs-stepper__panel {
+		grid-template-columns: auto minmax(0, 1fr);
+		align-items: start;
 	}
 }
 
-.gs-step__head {
-	display: flex;
-	align-items: baseline;
-	gap: var(--space-md);
-}
-
-.gs-step__num {
-	flex: none;
+/* The step's number, large: the one piece of display type in the panel. */
+.ccs-stepper__num {
 	font-family: var(--font-family-heading);
-	font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
-	line-height: 1;
+	font-size: clamp(4rem, 2.5rem + 7vw, 8.5rem);
+	line-height: 0.85;
+	/* Plum-grey, not mint: mint on white is 1.5:1 and this is still text. */
 	color: var(--color-accent);
 	font-variant-numeric: tabular-nums;
 }
 
-.gs-step__title {
-	margin: 0;
+.ccs-stepper__count {
+	display: none;
+	margin: 0 0 var(--space-xs);
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-accent);
+}
+
+.ccs-stepper__title {
+	margin: 0 0 var(--space-md);
 	font-family: var(--font-family-heading);
-	font-size: clamp(1.375rem, 1.2rem + 0.6vw, 1.75rem);
+	font-size: clamp(1.625rem, 1.3rem + 1.4vw, 2.375rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.2;
+	color: var(--color-ink);
+	text-wrap: balance;
+}
+
+.ccs-stepper__body {
+	max-width: 40rem;
+	font-size: var(--text-md);
+	line-height: 1.7;
+	color: var(--color-ink-soft);
+}
+
+.ccs-stepper__body > :first-child {
+	margin-top: 0;
+}
+
+.ccs-stepper__body > :last-child {
+	margin-bottom: 0;
+}
+
+/* The first paragraph leads; the rest supports it. */
+.ccs-stepper__body > p:first-child {
+	font-size: clamp(1.125rem, 1.05rem + 0.35vw, 1.25rem);
+	line-height: 1.6;
+	color: var(--color-ink);
+}
+
+.ccs-stepper__body a {
+	color: var(--color-primary);
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+.ccs-stepper__nav {
+	display: none;
+}
+
+/* ---- Enhanced: tabs, one panel at a time ---- */
+.ccs-stepper.is-enhanced .ccs-stepper__rail {
+	position: relative;
+	display: block;
+	padding: clamp(1.25rem, 0.8rem + 2vw, 2rem) clamp(1.25rem, 0.5rem + 3.5vw, 3.5rem) 0;
+}
+
+.ccs-stepper__tabs {
+	position: relative;
+	display: grid;
+	grid-auto-flow: column;
+	grid-auto-columns: minmax(0, 1fr);
+}
+
+/* The line behind the dots: hairline, with a plum fill up to the current
+   step. It runs from the first dot's centre to the last one's. */
+.ccs-stepper__progress {
+	--ccs-step-progress: 0;
+	position: absolute;
+	top: calc(clamp(1.25rem, 0.8rem + 2vw, 2rem) + 1.375rem - 1px);
+	/* Half a column in from each side: --ccs-step-count is set by the template. */
+	left: calc(clamp(1.25rem, 0.5rem + 3.5vw, 3.5rem) + (100% - 2 * clamp(1.25rem, 0.5rem + 3.5vw, 3.5rem)) / (2 * var(--ccs-step-count, 6)));
+	right: calc(clamp(1.25rem, 0.5rem + 3.5vw, 3.5rem) + (100% - 2 * clamp(1.25rem, 0.5rem + 3.5vw, 3.5rem)) / (2 * var(--ccs-step-count, 6)));
+	height: 2px;
+	background-color: var(--color-hairline-strong);
+}
+
+.ccs-stepper__progress::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background-color: var(--color-primary);
+	transform: scaleX(var(--ccs-step-progress));
+	transform-origin: left center;
+	transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.ccs-stepper__tab {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-xs);
+	min-width: 0;
+	padding: 0 0.25rem;
+	border: 0;
+	background: none;
+	font: inherit;
+	color: var(--color-ink-soft);
+	cursor: pointer;
+}
+
+.ccs-stepper__dot {
+	position: relative;
+	display: grid;
+	place-items: center;
+	width: 2.75rem;
+	height: 2.75rem;
+	border: 2px solid var(--color-hairline-strong);
+	border-radius: 50%;
+	background-color: var(--color-background);
+	font-family: var(--font-family-heading);
+	font-size: 1.125rem;
+	color: var(--color-ink-soft);
+	transition:
+		background-color var(--duration-normal) var(--ease-out),
+		border-color var(--duration-normal) var(--ease-out),
+		color var(--duration-normal) var(--ease-out);
+}
+
+.ccs-stepper__name {
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-semibold);
+	line-height: 1.3;
+	text-align: center;
+	text-wrap: balance;
+}
+
+.ccs-stepper__tab.is-done .ccs-stepper__dot {
+	border-color: var(--color-primary);
+	color: var(--color-primary);
+}
+
+.ccs-stepper__tab[aria-selected="true"] {
+	color: var(--color-ink);
+}
+
+.ccs-stepper__tab[aria-selected="true"] .ccs-stepper__dot {
+	border-color: var(--color-primary);
+	background-color: var(--color-primary);
+	color: #fff;
+}
+
+.ccs-stepper__tab:focus-visible {
+	outline: var(--focus-ring);
+	outline-offset: var(--focus-ring-offset);
+	border-radius: var(--radius-md);
+}
+
+@media (hover: hover) {
+	.ccs-stepper__tab:hover .ccs-stepper__dot {
+		border-color: var(--color-primary);
+	}
+}
+
+/* Phones: the dots only; the step's name is the panel's heading. */
+@media (max-width: 799px) {
+	.ccs-stepper__name {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+}
+
+.ccs-stepper.is-enhanced .ccs-stepper__panel {
+	border-top: 0;
+	animation: ccs-step-in var(--duration-normal) var(--ease-out);
+}
+
+/* All panels share one grid cell and the hidden ones are only invisible, so
+   the card is exactly as tall as its longest panel: no jump between steps,
+   and no fixed minimum leaving a short step in a half-empty card (user:
+   "this card sizing is really weird"). visibility:hidden also keeps them
+   out of the tab order and away from screen readers. */
+.ccs-stepper.is-enhanced .ccs-stepper__panels {
+	display: grid;
+}
+
+.ccs-stepper.is-enhanced .ccs-stepper__panel {
+	grid-area: 1 / 1;
+}
+
+.ccs-stepper.is-enhanced .ccs-stepper__panel[hidden] {
+	display: grid;
+	visibility: hidden;
+}
+
+.ccs-stepper.is-enhanced .ccs-stepper__count {
+	display: block;
+}
+
+.ccs-stepper.is-enhanced .ccs-stepper__nav {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-sm);
+	margin-top: var(--space-xl);
+}
+
+@keyframes ccs-step-in {
+	from {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ccs-stepper.is-enhanced .ccs-stepper__panel {
+		animation: none;
+	}
+
+	.ccs-stepper__progress::after,
+	.ccs-stepper__dot {
+		transition: none;
+	}
+}
+
+/* ---- Timeline variant (About: the company journey). The tab is the year,
+   as a pill; the large numeral is the year too, so it runs smaller. ---- */
+.ccs-stepper--years .ccs-stepper__dot {
+	width: auto;
+	min-width: 4.25rem;
+	padding-inline: 0.75rem;
+	border-radius: 999px;
+	font-variant-numeric: tabular-nums;
+}
+
+.ccs-stepper--years .ccs-stepper__num {
+	font-size: clamp(3.5rem, 2rem + 6vw, 6.5rem);
+}
+
+
+/* Eleven years do not fit one row on a phone: the pills wrap, and the line
+   (which only makes sense along one row) is dropped. */
+@media (max-width: 899px) {
+	.ccs-stepper--years .ccs-stepper__tabs {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.ccs-stepper--years .ccs-stepper__tab {
+		padding: 0;
+	}
+
+	.ccs-stepper--years .ccs-stepper__progress {
+		display: none;
+	}
+}
+
+/* =========================================================================
+   JOURNEY (About: the company's story). A sticky column holds the heading
+   and one very large year, which changes as the milestones scroll past; a
+   ribbon runs down beside the milestones and fills in plum as far as you
+   have read. Without JS: ribbon fully drawn, every milestone shown.
+   ========================================================================= */
+.journey-layout {
+	display: grid;
+	gap: var(--space-xl);
+}
+
+.journey-aside .ccs-title {
+	margin-bottom: var(--space-xs);
+}
+
+/* The date range is for screen readers only now: one fewer line of type
+   beside the big year. */
+.journey-aside__range {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+/* The big year belongs to the sticky column, so wide screens only. */
+.journey-aside__year {
+	display: none;
+}
+
+@media (min-width: 900px) {
+	.journey-layout {
+		grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+		column-gap: clamp(2rem, 1rem + 3vw, 4rem);
+		align-items: start;
+	}
+
+	.journey-aside {
+		position: sticky;
+		top: calc(var(--ccs-header-height, 5rem) + var(--space-2xl));
+	}
+
+	.journey-layout.is-enhanced .journey-aside__year {
+		display: block;
+		margin: var(--space-xl) 0 0;
+		font-family: var(--font-family-heading);
+		font-size: clamp(5rem, 2rem + 7vw, 7.5rem);
+		font-style: italic;
+		line-height: 0.9;
+		letter-spacing: -0.02em;
+		color: var(--color-primary);
+		font-variant-numeric: tabular-nums;
+		transition: opacity 180ms var(--ease-out), transform 180ms var(--ease-out);
+	}
+
+	.journey-layout.is-enhanced .journey-aside__year.is-changing {
+		opacity: 0;
+		transform: translateY(0.08em);
+	}
+}
+
+.journey {
+	--journey-progress: 1;
+	position: relative;
+	margin: 0;
+	padding: 0 0 0 4.25rem;
+	list-style: none;
+}
+
+/* A straight rule (third pass, user: "still a bit chaotic"). The swaying
+   ribbon moved every mark off one axis; a plain line with the marks dead
+   centre on it is the calm version. Pale underneath, plum to where you are. */
+.journey::before,
+.journey::after {
+	content: "";
+	position: absolute;
+	top: 0.5rem;
+	bottom: 0.5rem;
+	left: 21px;
+	width: 2px;
+	border-radius: 1px;
+}
+
+.journey::before {
+	background-color: var(--color-hairline-strong);
+}
+
+.journey::after {
+	background-color: var(--color-primary);
+	transform: scaleY(var(--journey-progress));
+	transform-origin: top center;
+}
+
+.journey__item {
+	position: relative;
+	padding-block: 0 clamp(2.5rem, 1.5rem + 3vw, 4rem);
+}
+
+/* The milestone's mark. --dot-x is its sideways shift onto the curve. */
+.journey__dot {
+	--dot-x: 0px;
+	position: absolute;
+	z-index: 1;
+	top: 0.2rem;
+	left: calc(-4.25rem + 22px - 0.5625rem + var(--dot-x));
+	width: 1.125rem;
+	height: 1.125rem;
+	border: 3px solid var(--color-primary);
+	border-radius: 50%;
+	background-color: var(--color-band-tint);
+	transition: background-color var(--duration-normal) var(--ease-out), box-shadow var(--duration-normal) var(--ease-out);
+}
+
+/* Calm pass (user: "bit too chaotic"): the sticky column carries the one
+   display year, so each milestone's own year is a small plain label. It was
+   a second set of large italic numerals competing with the first. */
+.journey__year {
+	margin: 0;
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-bold);
+	letter-spacing: 0.06em;
+	line-height: 1.6;
+	color: var(--color-accent);
+	font-variant-numeric: tabular-nums;
+}
+
+/* Phones have no sticky column, so the year keeps some presence there. */
+@media (max-width: 899px) {
+	.journey__year {
+		font-family: var(--font-family-heading);
+		font-size: 1.75rem;
+		font-weight: var(--font-weight-regular, 400);
+		letter-spacing: 0;
+		line-height: 1.1;
+		color: var(--color-primary);
+	}
+}
+
+.journey__title {
+	margin: 0.25rem 0 var(--space-xs);
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.375rem, 1.2rem + 0.7vw, 1.75rem);
 	font-weight: var(--font-weight-medium);
 	line-height: 1.25;
 	color: var(--color-ink);
 	text-wrap: balance;
 }
 
-.gs-step__body {
-	max-width: 42rem;
+.journey__text {
+	max-width: 32rem;
+	margin: 0;
+	font-size: var(--text-md);
+	line-height: 1.65;
+	color: var(--color-ink-soft);
+}
+
+.journey__photo {
+	max-width: 24rem;
+	margin-top: var(--space-lg);
+}
+
+/* A person, not a scene: a round portrait. */
+.journey__photo--portrait {
+	width: 9rem;
+	aspect-ratio: 1;
+	border: 4px solid var(--color-background);
+	border-radius: 50%;
+}
+
+.journey__item--end {
+	padding-bottom: 0;
+}
+
+.journey__item--end .journey__dot {
+	background-color: var(--color-primary);
+}
+
+.journey__end {
+	margin: 0;
+	padding-top: 0.2rem;
+	font-family: var(--font-family-heading);
+	font-size: var(--text-lg, 1.25rem);
+	font-style: italic;
+	color: var(--color-primary);
+}
+
+/* Reactive states: only the mark fills and the sticky year changes. Unread
+   milestones are no longer faded; half the column in a paler ink was part
+   of what read as chaotic. */
+.journey-layout.is-enhanced .journey__item.is-in .journey__dot {
+	background-color: var(--color-primary);
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+	.journey__dot,
+	.journey-layout.is-enhanced .journey-aside__year {
+		transition: none;
+	}
+}
+
+/* =========================================================================
+   SISTER COMPANIES (About). One feature each, alternating sides: the
+   company's own photo with its logo on a white tab lapping the corner, what
+   it is, three ticked facts, and a link out.
+   ========================================================================= */
+@media (min-width: 900px) {
+	.ccs-media-split--flip > :first-child {
+		order: 2;
+	}
+}
+
+.family-feature {
+	align-items: center;
+}
+
+.family-feature + .family-feature {
+	margin-top: var(--space-3xl);
+}
+
+.family-feature__name {
+	margin: 0 0 var(--space-sm);
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.15;
+	color: var(--color-ink);
+	text-wrap: balance;
+}
+
+.family-feature__lede {
+	max-width: 34rem;
+	margin: 0;
 	font-size: var(--text-md);
 	line-height: 1.7;
 	color: var(--color-ink-soft);
 }
 
-.gs-step__body > :first-child {
-	margin-top: 0;
+/* Facts: three ticked lines, the figure in bold. This is the form the user
+   called "so close"; a figure row, pills and ruled lines were each tried
+   after it and each rejected. */
+.family-feature__facts {
+	display: grid;
+	gap: 0.625rem;
+	margin: var(--space-lg) 0;
+	padding: 0;
+	list-style: none;
 }
 
-.gs-step__body > :last-child {
+.family-feature__facts li {
+	display: flex;
+	gap: 0.625rem;
+	line-height: 1.5;
+	color: var(--color-ink-soft);
+}
+
+.family-feature__facts .ccs-icon {
+	flex: none;
+	width: 1.25em;
+	height: 1.25em;
+	margin-top: 0.125em;
+	color: var(--color-primary);
+}
+
+.family-feature__facts strong {
+	font-weight: var(--font-weight-bold);
+	color: var(--color-ink);
+}
+
+/* Phones: the photo leads, then the words. Text-first left a long run of
+   copy before anything to look at. The logo tab hangs below the photo, so
+   the text needs room under it. */
+@media (max-width: 899px) {
+	.family-feature > .family-feature__media {
+		order: -1;
+		margin-bottom: var(--space-md);
+	}
+}
+
+.family-feature__media {
+	position: relative;
+}
+
+.family-feature__photo {
+	aspect-ratio: 4 / 3;
+}
+
+.family-feature__badge {
+	position: absolute;
+	left: clamp(1rem, 0.5rem + 1.5vw, 1.75rem);
+	bottom: -1.25rem;
+	display: flex;
+	align-items: center;
+	padding: 0.75rem 1.125rem;
+	border-radius: var(--radius-lg);
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-float);
+}
+
+.family-feature__badge img {
+	display: block;
+	width: auto;
+	height: 2.5rem;
+}
+
+.about-intro__text .ccs-title {
+	margin-bottom: var(--space-lg);
+}
+
+/* The careers pages' accordion: centred under its heading at reading width. */
+.careers-topics__faq {
+	max-width: 50rem;
+	margin-inline: auto;
+}
+
+/* Closing card with no photo (careers pages): words left, buttons right,
+   centred on each other. With everything stacked on the left, half the card
+   sat empty (user: "weird positioning of elements inside card"). */
+@media (min-width: 900px) {
+	.cta-card:not(.cta-card--photo) .cta-card__body {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		column-gap: clamp(2rem, 1rem + 4vw, 5rem);
+		align-items: center;
+	}
+
+	.cta-card:not(.cta-card--photo) .cta-card__body > * {
+		grid-column: 1;
+	}
+
+	.cta-card:not(.cta-card--photo) .cta-card__actions {
+		grid-column: 2;
+		grid-row: 1 / span 2;
+		flex-direction: column;
+		align-items: stretch;
+		margin-top: 0;
+	}
+
+	.cta-card:not(.cta-card--photo) .cta-card__actions .btn {
+		justify-content: center;
+	}
+}
+
+/* =========================================================================
+   CAREERS SUB-PAGES (Working with us, Professional Development).
+   ========================================================================= */
+.careers-intro-split__text .ccs-title {
+	margin-bottom: var(--space-lg);
+}
+
+.careers-intro-split__text .ccs-lede > :last-child {
 	margin-bottom: 0;
 }
 
-.gs-step__body p + p {
+/* Benefits: the same composition as the new starters section above it
+   (photo, a tab over its corner, words beside it), on the other side. */
+.careers-benefits__layout {
+	align-items: center;
+}
+
+.careers-benefits__text .ccs-title {
+	margin-bottom: var(--space-lg);
+}
+
+/* The benefits card: the comment rotator's shell, white because this
+   section sits on the tint. Each turn is one group. */
+/* Two classes plus the state, so it beats the tint the base card sets
+   later in this file: the card was the same colour as the section (user). */
+.quote-rotator.quote-rotator--on-tint.is-enhanced {
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-card);
+}
+
+.benefit-rotator__panel {
+	margin: 0 0 var(--space-lg);
+}
+
+.benefit-rotator.is-enhanced .quote-rotator__panels {
+	align-items: start;
+}
+
+.benefit-rotator__head {
+	margin-bottom: var(--space-md);
+}
+
+.benefit-rotator__title {
+	margin: 0;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.375rem, 1.2rem + 0.7vw, 1.75rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.2;
+	color: var(--color-ink);
+}
+
+.benefit-rotator__list {
+	display: grid;
+	gap: 0.625rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.benefit-rotator__list li {
+	display: flex;
+	gap: 0.625rem;
+	font-size: var(--text-md);
+	line-height: 1.45;
+	color: var(--color-ink);
+}
+
+.benefit-rotator__list .ccs-icon {
+	flex: none;
+	width: 1.25em;
+	height: 1.25em;
+	margin-top: 0.1em;
+	color: var(--color-primary);
+}
+
+.careers-benefits__media {
+	position: relative;
+}
+
+.careers-benefits__photo {
+	aspect-ratio: 4 / 5;
+}
+
+/* Benefits only: the photo is exactly as tall as the heading and card
+   beside it, so the two columns end level (user: "busy and uneven"). */
+@media (min-width: 900px) {
+	.careers-benefits .careers-benefits__layout {
+		align-items: stretch;
+	}
+
+	.careers-benefits .careers-benefits__photo {
+		height: 100%;
+		min-height: 22rem;
+		aspect-ratio: auto;
+	}
+}
+
+/* The referral scheme: a plum tab, the figure in mint beside its name, the
+   terms small underneath. (It was a white tab with two lines of grey text
+   and the user asked for a restyle.) */
+.careers-benefits__badge {
+	position: absolute;
+	right: clamp(1rem, 0.5rem + 1.5vw, 1.75rem);
+	bottom: clamp(1rem, 0.5rem + 1.5vw, 1.75rem);
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr);
+	column-gap: 0.875rem;
+	align-items: center;
+	max-width: calc(100% - 2rem);
+	margin: 0;
+	padding: 0.875rem 1.25rem;
+	border-radius: var(--radius-lg);
+	/* The deepest plum, not the mid one: mint on mid plum was too close
+	   (user: "not enough contrast"). */
+	background-color: var(--color-band-deepest);
+	box-shadow: var(--shadow-float);
+	color: #fff;
+}
+
+.careers-benefits__badge strong {
+	grid-row: 1 / span 2;
+	font-family: var(--font-family-heading);
+	font-size: clamp(2rem, 1.6rem + 1.6vw, 2.75rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1;
+	/* A lighter mint, for more contrast again. */
+	color: #cfece7;
+}
+
+.careers-benefits__badge span {
+	font-weight: var(--font-weight-semibold);
+	line-height: 1.3;
+	color: #fff;
+}
+
+.careers-benefits__badge small {
+	font-size: 0.8125rem;
+	line-height: 1.3;
+	color: rgba(255, 255, 255, 0.85);
+}
+
+@media (max-width: 899px) {
+	.careers-benefits__layout > .careers-benefits__media {
+		order: -1;
+	}
+
+	.careers-benefits__photo {
+		aspect-ratio: 3 / 2;
+	}
+}
+
+/* New starters' feedback: a photo with the headline figure on a white tab
+   over its corner; beside it the comments, one at a time, and the other
+   figures as ticked lines. Smoothed (Nov 2026): one spacing step between
+   every part of the text column, the tab sits inside the photo's corner, and
+   comments cross-fade. */
+.careers-proof__layout {
+	align-items: center;
+}
+
+.careers-proof__text {
+	display: grid;
+	gap: var(--space-lg);
+}
+
+.careers-proof__text .ccs-title {
+	margin: 0;
+}
+
+.careers-proof__media {
+	position: relative;
+}
+
+.careers-proof__photo {
+	aspect-ratio: 4 / 5;
+}
+
+/* The same tab as the referral scheme on Working with us: deep plum, the
+   figure large in light mint, what it measures beside it, who gave it small. */
+.careers-proof__badge {
+	position: absolute;
+	left: clamp(1rem, 0.5rem + 1.5vw, 1.75rem);
+	bottom: clamp(1rem, 0.5rem + 1.5vw, 1.75rem);
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr);
+	column-gap: 0.875rem;
+	align-items: center;
+	max-width: calc(100% - 2rem);
+	margin: 0;
+	padding: 0.875rem 1.25rem;
+	border-radius: var(--radius-lg);
+	background-color: var(--color-band-deepest);
+	box-shadow: var(--shadow-float);
+	color: #fff;
+}
+
+.careers-proof__badge strong {
+	grid-row: 1 / span 2;
+	font-family: var(--font-family-heading);
+	font-size: clamp(2rem, 1.6rem + 1.6vw, 2.75rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1;
+	color: #cfece7;
+	font-variant-numeric: tabular-nums;
+}
+
+.careers-proof__badge span {
+	font-weight: var(--font-weight-semibold);
+	line-height: 1.3;
+	color: #fff;
+}
+
+.careers-proof__badge small {
+	font-size: 0.8125rem;
+	line-height: 1.3;
+	color: rgba(255, 255, 255, 0.85);
+}
+
+@media (max-width: 899px) {
+	.careers-proof__layout > .careers-proof__media {
+		order: -1;
+	}
+
+	.careers-proof__photo {
+		aspect-ratio: 3 / 2;
+	}
+}
+
+/* Comments, one at a time, as a testimonial: an opening quote mark, the
+   comment, who said it, then round previous / next buttons with dots between.
+   Every comment shares one grid cell (so the block never changes height) and
+   is centred in it (so a short comment does not leave a gap under itself);
+   they cross-fade. Without the script the comments stack under mint bars. */
+.quote-rotator__mark {
+	display: none;
+}
+
+.quote-rotator__panel {
+	margin: 0 0 var(--space-lg);
+	padding-left: var(--space-lg);
+	border-left: 3px solid var(--color-secondary);
+}
+
+.quote-rotator__panel blockquote {
+	margin: 0;
+}
+
+.quote-rotator__panel blockquote p {
+	margin: 0;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.25rem, 1.1rem + 0.8vw, 1.625rem);
+	line-height: 1.45;
+	color: var(--color-ink);
+	text-wrap: pretty;
+}
+
+/* Real quotation marks round the words, so a comment reads as speech even
+   where the large mark above is not shown. */
+.quote-rotator__panel blockquote p::before {
+	content: "\201C";
+}
+
+.quote-rotator__panel blockquote p::after {
+	content: "\201D";
+}
+
+.quote-rotator__panel figcaption {
+	margin-top: var(--space-sm);
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-ink-soft);
+}
+
+.quote-rotator__controls {
+	display: none;
+}
+
+.quote-rotator.is-enhanced {
+	padding: clamp(1.25rem, 1rem + 1vw, 1.75rem) clamp(1.25rem, 1rem + 1.2vw, 2rem);
+	border-radius: var(--radius-xl);
+	background-color: var(--color-band-tint);
+}
+
+.quote-rotator.is-enhanced .quote-rotator__mark {
+	display: block;
+	height: 0.55em;
+	font-family: var(--font-family-heading);
+	font-size: 4rem;
+	line-height: 1;
+	color: var(--color-primary);
+}
+
+.quote-rotator.is-enhanced .quote-rotator__panels {
+	display: grid;
+	align-items: center;
+}
+
+.quote-rotator.is-enhanced .quote-rotator__panel {
+	grid-area: 1 / 1;
+	margin: 0;
+	padding-left: 0;
+	border-left: 0;
+	opacity: 1;
+	transition: opacity 400ms var(--ease-out), visibility 400ms var(--ease-out);
+}
+
+.quote-rotator.is-enhanced .quote-rotator__panel[hidden] {
+	display: block;
+	visibility: hidden;
+	opacity: 0;
+}
+
+/* One kind of quote mark, not two (user): with the large mark showing, the
+   small ones round the words are dropped. They stay in the plain stacked
+   fallback, which has no large mark. */
+.quote-rotator.is-enhanced .quote-rotator__panel blockquote p::before,
+.quote-rotator.is-enhanced .quote-rotator__panel blockquote p::after {
+	content: none;
+}
+
+.quote-rotator.is-enhanced .quote-rotator__controls {
+	display: flex;
+	align-items: center;
+	gap: var(--space-sm);
+	margin-top: var(--space-md);
+}
+
+.quote-rotator__arrow {
+	display: grid;
+	place-items: center;
+	flex: none;
+	width: 2.75rem;
+	height: 2.75rem;
+	padding: 0;
+	border: 1px solid var(--color-hairline-strong);
+	border-radius: 50%;
+	background-color: var(--color-background);
+	font-size: 1.125rem;
+	line-height: 1;
+	color: var(--color-primary);
+	cursor: pointer;
+	transition: border-color var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+}
+
+.quote-rotator__arrow:focus-visible {
+	outline: var(--focus-ring);
+	outline-offset: var(--focus-ring-offset);
+}
+
+@media (hover: hover) {
+	.quote-rotator__arrow:hover {
+		border-color: var(--color-primary);
+		background-color: var(--color-primary);
+		color: #fff;
+	}
+}
+
+.quote-rotator__dots {
+	display: flex;
+	align-items: center;
+}
+
+/* A 44px-tall target around a small round mark. */
+.quote-rotator__dot {
+	display: grid;
+	place-items: center;
+	width: 1.5rem;
+	height: 2.75rem;
+	padding: 0;
+	border: 0;
+	background: none;
+	cursor: pointer;
+}
+
+.quote-rotator__dot::before {
+	content: "";
+	width: 0.5rem;
+	height: 0.5rem;
+	border-radius: 50%;
+	background-color: var(--color-hairline-strong);
+	transition: background-color var(--duration-normal) var(--ease-out), scale var(--duration-normal) var(--ease-out);
+}
+
+.quote-rotator__dot[aria-selected="true"]::before {
+	background-color: var(--color-primary);
+	scale: 1.35;
+}
+
+.quote-rotator__dot:focus-visible {
+	outline: var(--focus-ring);
+	outline-offset: -4px;
+	border-radius: var(--radius-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.quote-rotator.is-enhanced .quote-rotator__panel,
+	.quote-rotator__dot::before,
+	.quote-rotator__arrow {
+		transition: none;
+	}
+}
+
+.careers-proof__source {
+	margin: 0;
+	font-size: var(--text-sm);
+	line-height: 1.5;
+	color: var(--color-ink-soft);
+}
+
+/* =========================================================================
+   DEVELOPMENT PAGE. The training academy as the photo-and-tab feature.
+   ========================================================================= */
+.pd-academy__layout {
+	align-items: center;
+}
+
+.pd-academy__text .ccs-title {
+	margin-bottom: var(--space-md);
+}
+
+.pd-academy__lede {
+	max-width: 34rem;
+	margin: 0 0 var(--space-xl);
+	font-size: var(--text-md);
+	line-height: 1.7;
+	color: var(--color-ink-soft);
+}
+
+@media (max-width: 899px) {
+	.pd-academy__layout > .careers-benefits__media {
+		order: -1;
+	}
+}
+
+/* Next steps (vacancies): three short steps side by side in one white
+   card, a hairline between. Number, title, one line. */
+.next-steps {
+	display: grid;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-float);
+}
+
+.next-steps__item {
+	padding: clamp(1.5rem, 1.1rem + 1.6vw, 2.5rem);
+}
+
+.next-steps__item + .next-steps__item {
+	border-top: 1px solid var(--color-hairline);
+}
+
+@media (min-width: 800px) {
+	.next-steps {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.next-steps__item + .next-steps__item {
+		border-top: 0;
+		border-left: 1px solid var(--color-hairline);
+	}
+}
+
+.next-steps__num {
+	display: block;
+	margin-bottom: var(--space-sm);
+	font-family: var(--font-family-heading);
+	font-size: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+	font-style: italic;
+	line-height: 1;
+	color: var(--color-primary);
+}
+
+.next-steps__title {
+	margin: 0 0 var(--space-xs);
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.25rem, 1.15rem + 0.4vw, 1.5rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.25;
+	color: var(--color-ink);
+}
+
+.next-steps__text {
+	margin: 0;
+	line-height: 1.6;
+	color: var(--color-ink-soft);
+}
+
+/* "My journey": one person's words, large, with their name. Prints only when
+   the fields are filled in. */
+.careers-story__quote {
+	max-width: 46rem;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.careers-story__label {
+	margin: 0 0 var(--space-md);
+	font-family: var(--font-family-body);
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-bold);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--color-accent);
+}
+
+.careers-story__quote blockquote {
+	margin: 0;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.25rem, 1.1rem + 0.8vw, 1.625rem);
+	line-height: 1.5;
+	color: var(--color-ink);
+}
+
+.careers-story__photo {
+	width: 5rem;
+	height: 5rem;
+	margin-bottom: var(--space-xs);
+	border: 3px solid var(--color-background);
+	border-radius: 50%;
+	object-fit: cover;
+	box-shadow: var(--shadow-card);
+}
+
+.careers-story__quote blockquote p + p {
 	margin-top: var(--space-sm);
 }
 
-.gs-step__body a {
+.careers-story__quote figcaption {
+	display: grid;
+	justify-items: center;
+	gap: 0.125rem;
+	margin-top: var(--space-lg);
+	color: var(--color-ink-soft);
+}
+
+.careers-story__quote figcaption strong {
+	color: var(--color-ink);
+}
+
+/* A feature card with a photo instead of the icon badge (careers "what you
+   can expect"). Two across, the photo down the left of each card and the
+   words beside it; stacked on phones. Four narrow columns with the photo on
+   top cropped faces out of frame and squeezed the text (user: "a bit ugly").
+   Each photo carries its own focal point from the template. */
+@media (min-width: 900px) {
+	.feature-grid--photo {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		/* Every row as tall as the tallest, so all four cards match: the row
+		   with a two-line title was taller than the other (user). */
+		grid-auto-rows: 1fr;
+		gap: var(--space-lg);
+	}
+}
+
+.feature-card--photo {
+	display: grid;
+	overflow: hidden;
+	padding: 0;
+}
+
+.feature-card__photo {
+	aspect-ratio: 3 / 2;
+	border-radius: 0;
+	box-shadow: none;
+}
+
+.feature-card__body {
+	align-self: center;
+	padding: clamp(1.25rem, 1rem + 1vw, 2rem);
+}
+
+.feature-card__body .feature-card__title {
+	margin-bottom: var(--space-xs);
+}
+
+@media (min-width: 560px) {
+	.feature-card--photo {
+		grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+	}
+
+	.feature-card__photo {
+		height: 100%;
+		min-height: 13rem;
+		aspect-ratio: auto;
+	}
+}
+
+/* =========================================================================
+   COSTS PAGE, simplified (Nov 2026). The full rate table and the bank
+   holidays sit in the accordion; ways to pay is a photo with a tab beside
+   an accordion.
+   ========================================================================= */
+.costs-more__faq {
+	max-width: 56rem;
+	margin-inline: auto;
+}
+
+/* Inside the accordion the rate sheet is flat: the item is already its box. */
+.costs-more__faq .rate-panel {
+	padding: 0;
+	border-radius: 0;
+	background: none;
+	box-shadow: none;
+}
+
+.costs-more__faq .ccs-faq__a {
+	text-align: left;
+}
+
+.costs-more__faq .service-costs,
+.costs-more__faq .ccs-section {
+	padding: 0;
+}
+
+.holiday-list {
+	margin: var(--space-md) 0 0;
+	padding: 0;
+	list-style: none;
+	border-top: 1px solid var(--color-hairline);
+}
+
+.holiday-list li {
+	display: grid;
+	grid-template-columns: 7.5rem minmax(0, 1fr) auto;
+	gap: var(--space-md);
+	align-items: baseline;
+	padding-block: 0.625rem;
+	border-bottom: 1px solid var(--color-hairline);
+}
+
+.holiday-list__date {
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-ink);
+	font-variant-numeric: tabular-nums;
+}
+
+.holiday-list__rate {
+	font-weight: var(--font-weight-semibold);
 	color: var(--color-primary);
-	text-decoration: underline;
-	text-underline-offset: 0.2em;
+}
+
+.costs-head.costs-head--center {
+	max-width: 58rem;
+	margin-inline: auto;
+	text-align: center;
+}
+
+.costs-head.costs-head--center .rate-note {
+	max-width: none;
+	font-size: var(--text-md);
+}
+
+@media (max-width: 599px) {
+	.costs-head.costs-head--center {
+		text-align: left;
+	}
+}
+
+/* Two-part rows (name, amount) for the extra charges. */
+.holiday-list--two li {
+	grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.holiday-list--two {
+	margin-top: 0;
+}
+
+.pay-ways {
+	margin: var(--space-md) 0;
+	border-top: 1px solid var(--color-hairline);
+}
+
+.pay-ways > div {
+	padding-block: 0.75rem;
+	border-bottom: 1px solid var(--color-hairline);
+}
+
+.pay-ways dt {
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-ink);
+}
+
+.pay-ways dd {
+	margin: 0.125rem 0 0;
+	color: var(--color-ink-soft);
+}
+
+/* =========================================================================
+   PARTNER MARQUEE (template-parts/home/partnerships.php, layout "marquee").
+   A slim strip of logos moving slowly on white, no boxes. Pauses on hover,
+   on focus and from its button; static and wrapped under reduced motion.
+   ========================================================================= */
+/* Short foot and no rule under it: the strip opens the white band that
+   follows, so the two must not stack their padding into a double gap. */
+.partner-marquee {
+	/* More air above and inside (user: "a bit too cramped"). The foot stays
+	   short because the next band brings its own top padding. */
+	padding-block: var(--space-2xl) 1.5rem;
+	background-color: var(--color-background);
+}
+
+/* Heading and its pause control sit together, centred, at every width. */
+.partner-marquee__head {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-md);
+	margin-bottom: var(--space-xl);
+}
+
+.partner-marquee__title {
+	margin: 0;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.375rem);
+	font-weight: var(--font-weight-medium);
+	color: var(--color-ink);
+}
+
+/* A round 44px control with a drawn pause (two bars) or play (triangle). */
+.partner-marquee__toggle {
+	display: grid;
+	place-items: center;
+	flex: none;
+	width: 2.75rem;
+	height: 2.75rem;
+	padding: 0;
+	border: 1px solid var(--color-hairline-strong);
+	border-radius: 50%;
+	background-color: var(--color-background);
+	color: var(--color-primary);
+	cursor: pointer;
+}
+
+.partner-marquee__toggle[hidden] {
+	display: none;
+}
+
+.partner-marquee__icon {
+	width: 0.75rem;
+	height: 0.875rem;
+	border-inline: 0.25rem solid currentColor;
+}
+
+.partner-marquee.is-paused .partner-marquee__icon {
+	width: 0;
+	height: 0;
+	margin-left: 0.2rem;
+	border-block: 0.45rem solid transparent;
+	border-left: 0.75rem solid currentColor;
+	border-right: 0;
+}
+
+@media (hover: hover) {
+	.partner-marquee__toggle:hover {
+		border-color: var(--color-primary);
+	}
+}
+
+.partner-marquee__viewport {
+	overflow: hidden;
+	/* Logos fade out at the edges instead of being cut mid-letter. */
+	-webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+	mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+
+.partner-marquee__track {
+	display: flex;
+	width: max-content;
+	animation: ccs-marquee 60s linear infinite;
+}
+
+.partner-marquee:hover .partner-marquee__track,
+.partner-marquee:focus-within .partner-marquee__track,
+.partner-marquee.is-paused .partner-marquee__track {
+	animation-play-state: paused;
+}
+
+.partner-marquee__set {
+	display: flex;
+	align-items: center;
+	gap: clamp(3.5rem, 2rem + 5vw, 6.5rem);
+	margin: 0;
+	padding: 0 clamp(1.75rem, 1rem + 2.5vw, 3.25rem);
+	list-style: none;
+}
+
+.partner-marquee__item {
+	flex: none;
+}
+
+.partner-marquee__link {
+	display: block;
+	border-radius: var(--radius-sm);
+}
+
+.partner-marquee__link:focus-visible {
+	outline: var(--focus-ring);
+	outline-offset: 6px;
+}
+
+.partner-marquee__item img {
+	display: block;
+	width: auto;
+	height: clamp(2.75rem, 2.2rem + 1.6vw, 3.5rem);
+}
+
+@keyframes ccs-marquee {
+	to {
+		transform: translateX(-50%);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.partner-marquee__viewport {
+		-webkit-mask-image: none;
+		mask-image: none;
+	}
+
+	.partner-marquee__track {
+		width: auto;
+		animation: none;
+	}
+
+	.partner-marquee__set {
+		flex-wrap: wrap;
+		justify-content: center;
+		row-gap: var(--space-lg);
+	}
+
+	.partner-marquee__set[aria-hidden="true"],
+	.partner-marquee__toggle {
+		display: none;
+	}
 }
 
 
@@ -1735,10 +3320,39 @@
 	list-style: none;
 }
 
-@media (min-width: 960px) {
+/* Three across only from 1200px. At 960 to 1199px each card was under
+   300px wide and its quote ran to a dozen four-word lines (user at 1042px:
+   "looks squished"), so that range keeps the swipe row below. */
+@media (min-width: 1200px) {
 	.home-reviews__list {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 		gap: var(--space-lg);
+	}
+}
+
+@media (min-width: 860px) and (max-width: 1199px) {
+	ul.home-reviews__list.ccs-swipe {
+		position: relative;
+		grid-template-columns: none;
+		grid-auto-flow: column;
+		grid-auto-columns: min(46%, 26rem);
+		gap: var(--space-lg);
+		margin-inline: calc(var(--space-xl) * -1);
+		padding: var(--space-xs) var(--space-xl) var(--space-lg);
+		overflow-x: auto;
+		overscroll-behavior-x: contain;
+		scroll-snap-type: x mandatory;
+		scroll-padding-inline: var(--space-xl);
+		scrollbar-width: none;
+	}
+
+	ul.home-reviews__list.ccs-swipe::-webkit-scrollbar {
+		display: none;
+	}
+
+	ul.home-reviews__list.ccs-swipe > * {
+		scroll-snap-align: start;
+		min-width: 0;
 	}
 }
 
@@ -2287,10 +3901,6 @@
 	color: var(--color-ink-soft);
 }
 
-.costs-more {
-	margin: var(--space-xl) 0 0;
-	text-align: center;
-}
 
 /* Bank holidays as calendar tiles (Costs and funding page). */
 .holiday-tiles {
@@ -2715,4 +4325,120 @@
 		max-width: 52rem;
 		margin-inline: auto;
 	}
+}
+
+/* =========================================================================
+   PRICE PHOTO CARDS (Nov 2026; template-parts/price-cards.php, 'layout' =>
+   'photo'). The Costs page's rates as two photo-topped cards: the starting
+   price on a plum tab over the photo, then the name, a few ticked rates and
+   a quiet link. Structure after helpinghandshomecare.co.uk's cost page,
+   which the user pointed to; the look is ours.
+   ========================================================================= */
+.price-photos {
+	display: grid;
+	gap: var(--space-xl);
+	max-width: 64rem;
+	margin: 0 auto;
+	padding: 0;
+	list-style: none;
+}
+
+@media (min-width: 860px) {
+	.price-photos {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.price-photo {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-float);
+}
+
+/* The card clips the photo to its own corners, so the photo is square-cornered. */
+.price-photo__media .price-photo__img {
+	aspect-ratio: 3 / 2;
+	border-radius: 0;
+	box-shadow: none;
+}
+
+.price-photo__body {
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	padding: clamp(1.5rem, 1.1rem + 1.4vw, 2.25rem);
+}
+
+.price-photo__name {
+	margin: 0 0 var(--space-md);
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.5rem, 1.3rem + 0.7vw, 1.875rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.2;
+	color: var(--color-ink);
+}
+
+.price-photo__lines {
+	margin: 0 0 var(--space-lg);
+	padding: 0;
+	list-style: none;
+}
+
+.price-photo__lines li {
+	display: flex;
+	align-items: center;
+	gap: 0.625rem;
+	padding-block: 0.75rem;
+	border-top: 1px solid var(--color-hairline);
+	line-height: 1.4;
+}
+
+.price-photo__lines li:last-child {
+	border-bottom: 1px solid var(--color-hairline);
+}
+
+.price-photo__lines .ccs-icon {
+	flex: none;
+	width: 1.25rem;
+	height: 1.25rem;
+	color: var(--color-primary);
+}
+
+.price-photo__what {
+	flex: 1 1 auto;
+	color: var(--color-ink);
+}
+
+.price-photo__amount {
+	font-size: var(--text-sm);
+	color: var(--color-ink-soft);
+	white-space: nowrap;
+}
+
+.price-photo__amount strong {
+	font-size: var(--text-base);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-ink);
+	font-variant-numeric: tabular-nums;
+}
+
+.price-photo__link {
+	align-self: flex-start;
+	margin-top: auto;
+}
+
+/* The tab sits bottom-left here: both photos have their person to the right. */
+.price-photo__media .price-photo__tab {
+	right: auto;
+	left: clamp(1rem, 0.5rem + 1.5vw, 1.75rem);
+}
+
+/* The homepage costs section's "see all costs" line. Scoped to the paragraph:
+   the Costs page's accordion section shares the class name. */
+p.costs-more {
+	margin: var(--space-xl) 0 0;
+	text-align: center;
 }

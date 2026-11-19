@@ -15,20 +15,10 @@
 	color: var(--color-ink-soft);
 }
 
-/* The brand's infinity mark, faint, in the corner: the same watermark the
-   page heroes use, in place of the reference's illustration. */
-.site-footer.ftp::after {
-	content: "";
-	position: absolute;
-	z-index: -1;
-	right: -3rem;
-	bottom: -3.5rem;
-	width: min(24rem, 55%);
-	aspect-ratio: 459 / 213;
-	background: url("../images/brand/ccs-infinity-mark.png") no-repeat center / contain;
-	opacity: 0.08;
-	pointer-events: none;
-}
+/* No watermark (Nov 2026, user: "the infinity watermark doesn't look right").
+   It was the brand loop, faint and cropped by the bottom-right corner, where
+   it read as a stray shape behind the CQC badge and the back-to-top button.
+   The logo at the top left already carries the mark. */
 
 .ftp__main {
 	display: grid;

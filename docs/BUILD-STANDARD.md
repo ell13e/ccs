@@ -140,6 +140,21 @@ Started.
 | One-line prompt with a button | `.ccs-strip` | Team ("work with us"), Areas ("not on the list?") |
 | People | `.ccs-team-grid` > `.team-tile` (initials tile when no photo) | homepage, About, Who you'll meet |
 | Questions | native `<details class="ccs-faq__item" name>`; the FAQ block renders the same markup | FAQs, service pages, FAQ block |
+| One photo in a section | `ccs_section_photo( $rel, $args )` (`inc/theme-images.php`) prints `.ccs-photo` (5:4; `--landscape` 3:2). One per section, real photos, unused elsewhere on the site | Getting started intro |
+| Text beside one photo | `.ccs-media-split` (text first in source; photo right at 900px+) | Getting started intro |
+| The page's opening paragraph, large | `.ccs-lede--large` (first paragraph in the body face at 18–21px, soft ink; never the heading serif) | Getting started |
+| The rest of a passage, one tap away | `<details class="ccs-more">` + `.ccs-more__body` | currently unused (was the Getting started rows) |
+| A sequence, one step at a time | `.ccs-stepper` with `data-ccs-stepper` (`assets/js/interactive.js`): tab rail with a progress line, large numeral, back/next; lists every step without JS | Getting started |
+| A history, as a path | `.journey` with `data-ccs-journey` (About): a ribbon down the middle that fills on scroll, milestones either side, year large; copy is one editable field, one line per milestone as `Year \| Heading \| Text` | About |
+| A sister company or partner, explained | `.family-feature` on `.ccs-media-split` (`--flip` alternates sides): its own photo, logo, text, comma-separated facts, link out | About |
+| A page's sections on a careers page | `template-parts/careers/topics`: the ordinary `.ccs-faq` accordion, centred. Tabs, a sticky-heading list, photo rows, a large-type index and the stepper were all rejected here | Working with us, Professional Development |
+| Survey proof | `template-parts/careers/onboarding-proof` (`.careers-proof`): photo with the headline figure on a white tab; comments in `.quote-rotator` (previous / next, dots, cross-fade, stepper script); other figures as ticked lines. Real counts from the onboarding form only. Never on the same page as the benefits section: same composition | vacancies only |
+| Staff benefits | `template-parts/careers/benefits`: the `.quote-rotator` card (white, `--on-tint`) turning through groups of benefits, beside a photo with the referral scheme on a plum tab. One group per line: `Group \| benefit; benefit`. Rejected: dark band of lists, icon cards, long checklists (twice), a changing headline over chips | Working with us only |
+| The training academy feature | `.pd-academy`: photo with a plum tab (reuses `.careers-benefits__media` / `__badge`), one paragraph, link out. Qualification cards and a topic tick-list were tried and removed | Professional Development |
+| A careers sub-page | `template-parts/careers/sub-page` (intro beside a photo, then tabs); slug templates `page-working-for-us.php`, `page-professional-development.php` | careers |
+| Towns grouped by the care offered | `archive-location.php`: a group of three or fewer as `.area-grid--feature` cards, a longer one as one `.area-list` panel of `.area-row`s | Areas hub |
+| Partner logos, moving | `template-parts/home/partnerships` with `layout => 'marquee'` (`.partner-marquee`): pauses on hover, focus and its button; static under reduced motion | homepage |
+| The CQC rating with its explanation | `.cqc-panel` (verdict on tint, text on white) | CQC page |
 | A form | `.ccs-field` / `__label` / `__optional` / `__input` / `__select` / `__textarea`; mark optional fields, not required ones; one column; `fieldset.ccs-field.ccs-choices` with `.ccs-choice` radios for 2–4 options; `novalidate` so `form-handler.js` shows inline `.ccs-field__error` messages | contact, service call-back |
 
 Third-party embeds need their host in the CSP (`inc/class-security.php`):

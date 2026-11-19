@@ -46,64 +46,118 @@ $ccs_areas = get_posts(
 		</div>
 	</header>
 
-	<?php if ( ! empty( $ccs_areas ) ) : ?>
-		<section class="ccs-section ccs-section--flush-bottom areas-hub" aria-labelledby="areas-hub-heading">
-			<div class="container container--lg">
-				<h2 id="areas-hub-heading" class="screen-reader-text"><?php esc_html_e( 'Towns', 'ccs-wp-theme' ); ?></h2>
-				<ul class="area-grid" role="list">
-					<?php foreach ( $ccs_areas as $ccs_area ) : ?>
-						<?php
-						$ccs_area_town     = get_post_meta( $ccs_area->ID, 'location_town', true );
-						$ccs_area_town     = $ccs_area_town ? $ccs_area_town : get_the_title( $ccs_area );
-						$ccs_area_villages = array_filter( array_map( 'trim', explode( "\n", (string) get_post_meta( $ccs_area->ID, 'location_areas_covered', true ) ) ) );
-						$ccs_area_shown    = array_slice( $ccs_area_villages, 0, 5 );
-						$ccs_area_more     = count( $ccs_area_villages ) - count( $ccs_area_shown );
-						?>
-						<li class="area-card">
-							<span class="ccs-badge ccs-badge--sm"><?php echo ccs_icon( 'pin' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
-							<h3 class="area-card__title">
-								<a class="area-card__link" href="<?php echo esc_url( get_permalink( $ccs_area ) ); ?>"><?php echo esc_html( $ccs_area_town ); ?></a>
-							</h3>
-							<?php
-							/* What this area gets (Nov 2026: not every area has domiciliary care). */
-							?>
-							<p class="area-card__services"><?php echo esc_html( ccs_location_services_label( $ccs_area->ID ) ); ?></p>
-							<?php if ( ! empty( $ccs_area_shown ) ) : ?>
-								<p class="area-card__villages">
-									<?php
-									$ccs_area_line = implode( ', ', $ccs_area_shown );
-									if ( $ccs_area_more > 0 ) {
-										/* translators: 1: comma-separated village names, 2: number of further villages. */
-										$ccs_area_line = sprintf( _n( '%1$s and %2$d more', '%1$s and %2$d more', $ccs_area_more, 'ccs-wp-theme' ), $ccs_area_line, $ccs_area_more );
-									}
-									echo esc_html( $ccs_area_line );
-									?>
-								</p>
-							<?php endif; ?>
-							<span class="area-card__cue" aria-hidden="true">
-								<?php
-								/* translators: %s: town name. */
-								echo esc_html( sprintf( __( 'Care in %s', 'ccs-wp-theme' ), $ccs_area_town ) );
-								?>
-								&rarr;
-							</span>
-						</li>
-					<?php endforeach; ?>
-				</ul>
+	<?php
+	/*
+	 * Inner-page pass, Nov 2026 (user: "too repetitive and visually boring").
+	 * This was twelve identical cards, ten of them carrying the same line,
+	 * "Respite and complex care", under the same pin. The towns are now grouped
+	 * by the care offered there, and the group's heading says it once:
+	 * - a small group (three towns or fewer; today Maidstone and Aylesford,
+	 *   the only places with all three services) stays as cards, larger;
+	 * - a longer group is one white panel of rows: town, villages, arrow.
+	 * Groups come from ccs_location_services(), fullest offer first, so a
+	 * change to a town's services regroups the page with no template edit.
+	 */
+	$ccs_area_groups = array();
+	foreach ( $ccs_areas as $ccs_area ) {
+		$ccs_area_label = ccs_location_services_label( $ccs_area->ID );
+		if ( ! isset( $ccs_area_groups[ $ccs_area_label ] ) ) {
+			$ccs_area_groups[ $ccs_area_label ] = array(
+				'count' => count( ccs_location_services( $ccs_area->ID ) ),
+				'areas' => array(),
+			);
+		}
 
-				<?php if ( $ccs_phone_tel ) : ?>
-					<div class="ccs-strip areas-hub__strip">
-						<span class="ccs-badge"><?php echo ccs_icon( 'question' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
-						<div class="ccs-strip__text">
-							<h2 class="ccs-strip__title"><?php echo esc_html( ccs_copy( 'areas_strip_title' ) ); ?></h2>
-							<p class="ccs-strip__lede"><?php echo esc_html( ccs_copy( 'areas_strip_text' ) ); ?></p>
-						</div>
-						<a class="btn btn-quiet ccs-strip__action" href="<?php echo esc_url( 'tel:' . $ccs_phone_tel ); ?>">
-							<?php echo ccs_icon( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?>
-							<span><span class="screen-reader-text"><?php esc_html_e( 'Call', 'ccs-wp-theme' ); ?> </span><?php echo esc_html( $ccs_phone ); ?></span>
-						</a>
-					</div>
+		$ccs_area_town     = get_post_meta( $ccs_area->ID, 'location_town', true );
+		$ccs_area_villages = array_filter( array_map( 'trim', explode( "\n", (string) get_post_meta( $ccs_area->ID, 'location_areas_covered', true ) ) ) );
+		$ccs_area_shown    = array_slice( $ccs_area_villages, 0, 5 );
+		$ccs_area_more     = count( $ccs_area_villages ) - count( $ccs_area_shown );
+		$ccs_area_line     = implode( ', ', $ccs_area_shown );
+		if ( $ccs_area_more > 0 ) {
+			/* translators: 1: comma-separated village names, 2: number of further villages. */
+			$ccs_area_line = sprintf( _n( '%1$s and %2$d more', '%1$s and %2$d more', $ccs_area_more, 'ccs-wp-theme' ), $ccs_area_line, $ccs_area_more );
+		}
+
+		$ccs_area_groups[ $ccs_area_label ]['areas'][] = array(
+			'town'     => $ccs_area_town ? $ccs_area_town : get_the_title( $ccs_area ),
+			'url'      => get_permalink( $ccs_area ),
+			'villages' => $ccs_area_line,
+		);
+	}
+	uasort(
+		$ccs_area_groups,
+		static function ( $a, $b ) {
+			return $b['count'] <=> $a['count'];
+		}
+	);
+	$ccs_area_i = 0;
+	?>
+
+	<?php foreach ( $ccs_area_groups as $ccs_area_label => $ccs_area_group ) : ?>
+		<?php
+		$ccs_area_cards = count( $ccs_area_group['areas'] ) <= 3;
+		// Cards sit on white, the white panel on the tint, so the grounds alternate.
+		$ccs_area_class = $ccs_area_cards ? 'ccs-section ccs-section--sm areas-hub' : 'ccs-section ccs-section--sm ccs-section--tint areas-hub';
+		++$ccs_area_i;
+		?>
+		<section class="<?php echo esc_attr( $ccs_area_class ); ?>" aria-labelledby="areas-group-<?php echo (int) $ccs_area_i; ?>">
+			<div class="container container--lg">
+				<h2 id="areas-group-<?php echo (int) $ccs_area_i; ?>" class="areas-hub__group"><?php echo esc_html( $ccs_area_label ); ?></h2>
+
+				<?php if ( $ccs_area_cards ) : ?>
+					<ul class="area-grid area-grid--feature" role="list">
+						<?php foreach ( $ccs_area_group['areas'] as $ccs_area_item ) : ?>
+							<li class="area-card">
+								<span class="ccs-badge ccs-badge--sm"><?php echo ccs_icon( 'pin' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
+								<h3 class="area-card__title">
+									<a class="area-card__link" href="<?php echo esc_url( $ccs_area_item['url'] ); ?>"><?php echo esc_html( $ccs_area_item['town'] ); ?></a>
+								</h3>
+								<?php if ( '' !== $ccs_area_item['villages'] ) : ?>
+									<p class="area-card__villages"><?php echo esc_html( $ccs_area_item['villages'] ); ?></p>
+								<?php endif; ?>
+								<span class="area-card__cue" aria-hidden="true">
+									<?php
+									/* translators: %s: town name. */
+									echo esc_html( sprintf( __( 'Care in %s', 'ccs-wp-theme' ), $ccs_area_item['town'] ) );
+									?>
+									&rarr;
+								</span>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+				<?php else : ?>
+					<ul class="area-list" role="list">
+						<?php foreach ( $ccs_area_group['areas'] as $ccs_area_item ) : ?>
+							<li class="area-row">
+								<h3 class="area-row__title">
+									<a class="area-row__link" href="<?php echo esc_url( $ccs_area_item['url'] ); ?>"><?php echo esc_html( $ccs_area_item['town'] ); ?></a>
+								</h3>
+								<?php if ( '' !== $ccs_area_item['villages'] ) : ?>
+									<p class="area-row__villages"><?php echo esc_html( $ccs_area_item['villages'] ); ?></p>
+								<?php endif; ?>
+								<span class="area-row__cue" aria-hidden="true">&rarr;</span>
+							</li>
+						<?php endforeach; ?>
+					</ul>
 				<?php endif; ?>
+			</div>
+		</section>
+	<?php endforeach; ?>
+
+	<?php if ( ! empty( $ccs_areas ) && $ccs_phone_tel ) : ?>
+		<section class="ccs-section ccs-section--sm ccs-section--flush-bottom areas-hub-ask" aria-labelledby="areas-ask-heading">
+			<div class="container container--lg">
+				<div class="ccs-strip areas-hub__strip">
+					<span class="ccs-badge"><?php echo ccs_icon( 'question' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
+					<div class="ccs-strip__text">
+						<h2 id="areas-ask-heading" class="ccs-strip__title"><?php echo esc_html( ccs_copy( 'areas_strip_title' ) ); ?></h2>
+						<p class="ccs-strip__lede"><?php echo esc_html( ccs_copy( 'areas_strip_text' ) ); ?></p>
+					</div>
+					<a class="btn btn-quiet ccs-strip__action" href="<?php echo esc_url( 'tel:' . $ccs_phone_tel ); ?>">
+						<?php echo ccs_icon( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?>
+						<span><span class="screen-reader-text"><?php esc_html_e( 'Call', 'ccs-wp-theme' ); ?> </span><?php echo esc_html( $ccs_phone ); ?></span>
+					</a>
+				</div>
 			</div>
 		</section>
 	<?php endif; ?>

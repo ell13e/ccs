@@ -425,6 +425,18 @@ function ccs_theme_scripts() {
 		);
 	}
 
+	// Stepper (Getting started, the About journey) and the partner-logo
+	// marquee's pause button (homepage). One small file; without it both show as plain, complete content.
+	if ( is_page_template( 'page-templates/template-homepage.php' ) || is_page_template( 'page-templates/template-getting-started.php' ) || is_page_template( 'page-templates/template-about.php' ) || is_page_template( 'page-templates/template-current-vacancies.php' ) || is_page( array( 'working-for-us', 'professional-development' ) ) ) {
+		wp_enqueue_script(
+			'ccs-interactive',
+			$theme_uri . '/assets/js/interactive.js',
+			array(),
+			$version,
+			true
+		);
+	}
+
 	wp_enqueue_script(
 		'ccs-navigation',
 		$theme_uri . '/assets/js/navigation.js',

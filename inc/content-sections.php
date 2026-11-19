@@ -71,7 +71,7 @@ function ccs_ordered_services( $limit = 12 ) {
 		)
 	);
 
-	$rank = array_flip( array( 'domiciliary-care', 'respite-care', 'complex-care' ) );
+	$rank = array_flip( function_exists( 'ccs_service_order' ) ? ccs_service_order() : array( 'domiciliary-care', 'respite-care', 'complex-care' ) );
 	usort(
 		$services,
 		static function ( $a, $b ) use ( $rank ) {

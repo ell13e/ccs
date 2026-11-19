@@ -44,7 +44,7 @@ foreach ( $fields as $key => $field ) {
 	}
 }
 
-$templates = array_merge( glob( $root . '/*.php' ), glob( $root . '/page-templates/*.php' ), glob( $root . '/template-parts/*.php' ), glob( $root . '/template-parts/home/*.php' ) );
+$templates = array_merge( glob( $root . '/*.php' ), glob( $root . '/page-templates/*.php' ), glob( $root . '/template-parts/*.php' ), glob( $root . '/template-parts/home/*.php' ), glob( $root . '/template-parts/careers/*.php' ) );
 $used      = array();
 foreach ( $templates as $template ) {
 	preg_match_all( "/ccs_copy(?:_accent)?\( '([a-z0-9_]+)' \)/", file_get_contents( $template ), $m );

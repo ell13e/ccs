@@ -34,8 +34,10 @@ CCS keeps the rhythm and alternation, not the labels.
 ## Services hub (`template-services.php`)
 Job: help someone pick the right kind of care. Primary: a service card, then booking.
 1. Photo page hero. 2. `.ccs-head--split` (title left, the page's own lead
-paragraph right) over `template-parts/service-cards` (white). 3. "How we work":
-`.ccs-split`, editor h2s rendered as h3 (tint). 4. CTA band.
+paragraph right) over `template-parts/service-cards` (white). 3. "The same
+promise" (tint): `.ccs-split`, the editor's h2s as the native accordion
+(`.ccs-faq`, first open). Not loose text under hairlines, and no photo here:
+both were tried and rejected (Nov 2026). 4. CTA band.
 Benchmark: one long section, a centred head over a dense service grid.
 
 ## Service single (`single-service.php`)
