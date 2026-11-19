@@ -95,3 +95,58 @@ function ccs_theme_image_srcset( $rel, $sizes ) {
 
 	return ' srcset="' . implode( ', ', $parts ) . '" sizes="' . esc_attr( $sizes ) . '"';
 }
+
+/**
+ * One bundled photograph in the shared section frame (.ccs-photo).
+ *
+ * Added Nov 2026 for the inner pages: between the hero and the closing band
+ * most of them had no imagery at all, so every page read as a heading beside
+ * paragraphs. One real photo per section, in one frame (CCS/CLAUDE.md, "Calm
+ * first"); the browser crops it, nothing is filtered (rule 15).
+ *
+ * Prints nothing when the file is missing, so a removed photo leaves a text
+ * section, never an empty frame.
+ *
+ * @param string $rel  Path relative to assets/images/.
+ * @param array  $args alt (string, '' when decorative), sizes (string),
+ *                     class (extra classes), position (CSS object-position).
+ * @return void
+ */
+function ccs_section_photo( $rel, $args = array() ) {
+	$args = wp_parse_args(
+		$args,
+		array(
+			'alt'      => '',
+			'sizes'    => '(min-width: 900px) 480px, 92vw',
+			'class'    => '',
+			'position' => '',
+		)
+	);
+
+	$path = get_template_directory() . '/assets/images/' . $rel;
+	if ( ! file_exists( $path ) ) {
+		return;
+	}
+
+	$size     = wp_getimagesize( $path );
+	$segments = array_map( 'rawurlencode', explode( '/', $rel ) );
+	$src      = get_template_directory_uri() . '/assets/images/' . implode( '/', $segments );
+	?>
+	<figure class="ccs-photo<?php echo '' !== $args['class'] ? ' ' . esc_attr( $args['class'] ) : ''; ?>">
+		<img
+			src="<?php echo esc_url( $src ); ?>"
+			alt="<?php echo esc_attr( $args['alt'] ); ?>"
+			<?php if ( is_array( $size ) ) : ?>
+				width="<?php echo (int) $size[0]; ?>"
+				height="<?php echo (int) $size[1]; ?>"
+			<?php endif; ?>
+			<?php if ( '' !== $args['position'] ) : ?>
+				style="object-position: <?php echo esc_attr( $args['position'] ); ?>;"
+			<?php endif; ?>
+			<?php echo ccs_theme_image_srcset( $rel, $args['sizes'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset(). ?>
+			loading="lazy"
+			decoding="async"
+		>
+	</figure>
+	<?php
+}

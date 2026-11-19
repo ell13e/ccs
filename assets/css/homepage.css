@@ -1918,3 +1918,33 @@ a.home-routes__main::after {
 		aspect-ratio: 3 / 4;
 	}
 }
+
+/* 1024px to 1199px: the pair of photos is exactly as wide as the CQC strip
+   above it (41rem: the strip measures 655px once the regulator's widget has loaded), so their edges line up (user:
+   the two being different widths "looks weird"). */
+@media (min-width: 1024px) and (max-width: 1199px) {
+	.home-hero--duo .home-hero__photos {
+		width: min(41rem, 100% - 2 * var(--container-padding, 1rem));
+	}
+}
+
+/* Hero photo crops, measured from the photographs (user: "always cropped
+   poorly across responsive views"). Left: her face and flower crown sit at
+   22% to 68% of the photo's width, so the frame centres on 44%; it used to
+   centre on 34% and cut the right of her face. Right: the two faces and the
+   carer's hair span 35% to 88%, more than half the photo, which a 3:4 frame
+   cannot hold, so the tall frames are 4:5 (a little wider for their height)
+   and both people fit whole. Crop only; the photos are untouched. */
+.home-hero__photo--left img {
+	object-position: 40% 50%;
+}
+
+.home-hero__photo--right img {
+	object-position: 75% 50%;
+}
+
+@media (max-width: 599px), (min-width: 1200px) {
+	.home-hero__photo {
+		aspect-ratio: 4 / 5;
+	}
+}

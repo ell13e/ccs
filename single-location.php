@@ -200,11 +200,11 @@ while ( have_posts() ) :
 								if ( $ccs_phone_tel ) {
 									printf(
 										/* translators: %s: office phone number, as a link. */
-										esc_html__( 'Just outside these? Call %s and ask: it depends on whether we can send you the same carers every week.', 'ccs-wp-theme' ),
+										esc_html__( 'Just outside these? We may still be able to help. Call %s and we will tell you whether we can cover where you live.', 'ccs-wp-theme' ),
 										'<a href="' . esc_url( 'tel:' . $ccs_phone_tel ) . '">' . esc_html( $ccs_phone ) . '</a>'
 									);
 								} else {
-									esc_html_e( 'Just outside these? Ring and ask: it depends on whether we can send you the same carers every week.', 'ccs-wp-theme' );
+									esc_html_e( 'Just outside these? We may still be able to help. Call us and we will tell you whether we can cover where you live.', 'ccs-wp-theme' );
 								}
 								?>
 							</p>
@@ -330,8 +330,13 @@ while ( have_posts() ) :
 		$ccs_h     = sin( $ccs_dlat / 2 ) ** 2 + cos( deg2rad( $ccs_office_ll[0] ) ) * cos( deg2rad( $ccs_map_lat ) ) * sin( $ccs_dlng / 2 ) ** 2;
 		$ccs_miles = (int) round( 3958.8 * 2 * atan2( sqrt( $ccs_h ), sqrt( 1 - $ccs_h ) ) );
 	}
+	/*
+	 * No origin (Nov 2026, user): with only a destination, Google Maps starts
+	 * from wherever the visitor is, which is what "directions" means to them.
+	 * It used to start from the town centre, whoever clicked.
+	 */
 	$ccs_directions = $ccs_office_line
-		? 'https://www.google.com/maps/dir/?api=1&origin=' . rawurlencode( $ccs_place ) . '&destination=' . rawurlencode( $ccs_office_line )
+		? 'https://www.google.com/maps/dir/?api=1&destination=' . rawurlencode( $ccs_office_line )
 		: '';
 	?>
 	<?php if ( $ccs_has_map ) : ?>
@@ -385,10 +390,7 @@ while ( have_posts() ) :
 						<?php if ( $ccs_directions ) : ?>
 							<p class="location-map__links">
 								<a class="ccs-text-link" href="<?php echo esc_url( $ccs_directions ); ?>" target="_blank" rel="noopener noreferrer">
-									<?php
-									/* translators: %s: town name. */
-									echo esc_html( sprintf( __( 'Directions from %s to our office', 'ccs-wp-theme' ), $town ) );
-									?>
+									<?php esc_html_e( 'Get directions to our office', 'ccs-wp-theme' ); ?>
 									<span class="screen-reader-text"> <?php esc_html_e( '(opens Google Maps in a new window)', 'ccs-wp-theme' ); ?></span>
 								</a>
 							</p>

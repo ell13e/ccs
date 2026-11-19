@@ -79,6 +79,8 @@
 	padding: clamp(0.5rem, 0.2rem + 1vw, 1.25rem);
 	border-radius: var(--radius-2xl);
 	background-color: var(--color-background);
+	/* A hairline as well as the shadow: the frame now sits on white. */
+	border: 1px solid var(--color-hairline);
 	box-shadow: var(--shadow-float);
 }
 
@@ -128,3 +130,4 @@
 #vac-portal-heading {
 	scroll-margin-top: calc(var(--ccs-header-height, 5rem) + var(--space-md));
 }
+

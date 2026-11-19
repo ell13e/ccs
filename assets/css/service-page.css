@@ -271,3 +271,111 @@
 .site-main--service .home-reviews {
 	padding-block: var(--section-pad);
 }
+
+/* =========================================================================
+   Photo-led layout (Nov 2026). Hero: the starting price on a plum tab over
+   the photo's corner (the same tab as the careers pages). Main column: lede,
+   ticked lists, accordion. The rate table follows in the same white band.
+   ========================================================================= */
+.page-hero--inset .page-hero__media {
+	position: relative;
+	width: fit-content;
+	max-width: 100%;
+}
+
+.service-hero__price {
+	position: absolute;
+	left: clamp(0.75rem, 0.4rem + 1vw, 1.25rem);
+	bottom: clamp(0.75rem, 0.4rem + 1vw, 1.25rem);
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr);
+	column-gap: 0.75rem;
+	align-items: center;
+	margin: 0;
+	padding: 0.75rem 1.125rem;
+	border-radius: var(--radius-lg);
+	background-color: var(--color-band-deepest);
+	box-shadow: var(--shadow-float);
+	color: #fff;
+}
+
+.service-hero__price strong {
+	grid-row: 1 / span 2;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1;
+	color: #cfece7;
+	font-variant-numeric: tabular-nums;
+}
+
+.service-hero__price span {
+	font-weight: var(--font-weight-semibold);
+	line-height: 1.3;
+}
+
+.service-hero__price small {
+	font-size: 0.8125rem;
+	line-height: 1.3;
+	color: rgba(255, 255, 255, 0.85);
+}
+
+.service-intro > :last-child {
+	margin-bottom: 0;
+}
+
+.service-included {
+	margin-top: var(--space-xl);
+}
+
+.service-included__title {
+	margin: 0 0 var(--space-md);
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.375rem, 1.2rem + 0.8vw, 1.75rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.25;
+	color: var(--color-ink);
+}
+
+/* A plain two-column ticked list of short items. */
+.tick-list {
+	display: grid;
+	gap: 0.625rem var(--space-lg);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+@media (min-width: 560px) {
+	.tick-list {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.tick-list li {
+	display: flex;
+	gap: 0.5rem;
+	line-height: 1.45;
+	color: var(--color-ink);
+}
+
+.tick-list .ccs-icon {
+	flex: none;
+	width: 1.25em;
+	height: 1.25em;
+	margin-top: 0.1em;
+	color: var(--color-primary);
+}
+
+.service-more {
+	margin-top: var(--space-xl);
+}
+
+.service-rates-link {
+	margin: var(--space-lg) 0 0;
+}
+
+/* The rate table continues the white band the main column sits in. */
+.service-body + .service-costs {
+	padding-top: 0;
+}

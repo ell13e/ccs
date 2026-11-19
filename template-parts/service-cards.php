@@ -25,11 +25,6 @@ if ( empty( $ccs_cards ) ) {
 	return;
 }
 
-$ccs_card_icons = array(
-	'domiciliary-care' => 'home',
-	'respite-care'     => 'cup',
-	'complex-care'     => 'pulse',
-);
 ?>
 <ul class="svc-grid ccs-swipe" role="list">
 	<?php foreach ( $ccs_cards as $ccs_card ) : ?>
@@ -59,13 +54,16 @@ $ccs_card_icons = array(
 					);
 					?>
 				</div>
+			<?php else : ?>
+				<?php // No photo yet: the service's icon on the tint, in the photo's place, so every card in a row is the same height. ?>
+				<div class="svc-card__media svc-card__media--icon" aria-hidden="true" data-ccs-exception="rule 1: stands in for the card's photo until one is chosen; the whole card is the link"><?php echo ccs_icon( ccs_service_icon( $ccs_card->post_name ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></div>
 			<?php endif; ?>
 			<?php
 			// The starting price as a tag on the photo (as on the homepage).
 			echo function_exists( 'ccs_service_price_tag' ) ? ccs_service_price_tag( $ccs_card->post_name ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the helper.
 			?>
 			<div class="svc-card__body">
-				<span class="ccs-badge ccs-badge--ring svc-card__badge"><?php echo ccs_icon( $ccs_card_icons[ $ccs_card->post_name ] ?? 'heart' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
+				<span class="ccs-badge ccs-badge--ring svc-card__badge"><?php echo ccs_icon( ccs_service_icon( $ccs_card->post_name ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
 				<h3 class="svc-card__title">
 					<a href="<?php echo esc_url( get_permalink( $ccs_card ) ); ?>" class="svc-card__link"><?php echo esc_html( $ccs_card_title ); ?></a>
 				</h3>

@@ -99,6 +99,101 @@ foreach ( function_exists( 'ccs_fee_extras' ) ? ccs_fee_extras() : array() as $c
 }
 ?>
 
+<?php
+/*
+ * 'layout' => 'photo' (Costs page, Nov 2026). Two photo-topped cards, one
+ * for each kind of hourly care, after the cost page the user pointed to
+ * (helpinghandshomecare.co.uk: a photo, the name, a few ticked prices, a
+ * link). The starting price sits on a plum tab over the photo's corner, the
+ * object she approved on the careers pages. The night rates are shared out:
+ * the complex ones to the complex card, the rest to the other. It replaced
+ * three white cards and then a three-row price list, both rejected.
+ * 'photos' (array group => [file, alt, object-position]) supplies the photos.
+ */
+if ( isset( $args['layout'] ) && 'photo' === $args['layout'] ) :
+	$ccs_pp_photos = isset( $args['photos'] ) && is_array( $args['photos'] ) ? $args['photos'] : array();
+	$ccs_pp_cards  = array();
+	$ccs_pp_nights = array();
+	foreach ( $ccs_pc_groups as $ccs_group => $ccs_rows ) {
+		if ( $ccs_rows[0]['night'] ) {
+			$ccs_pp_nights = array_merge( $ccs_pp_nights, $ccs_rows );
+			continue;
+		}
+		$ccs_lines = array( array( __( 'Weekdays, daytime', 'ccs-wp-theme' ), $ccs_rows[0]['weekday'], __( 'an hour', 'ccs-wp-theme' ) ) );
+		if ( '' !== $ccs_rows[0]['weekend'] ) {
+			$ccs_lines[] = array( __( 'Weekends, daytime', 'ccs-wp-theme' ), $ccs_rows[0]['weekend'], __( 'an hour', 'ccs-wp-theme' ) );
+		}
+		$ccs_pp_cards[ $ccs_group ] = array(
+			'price' => $ccs_rows[0]['weekday'],
+			'lines' => $ccs_lines,
+		);
+	}
+	foreach ( $ccs_pp_nights as $ccs_row ) {
+		$ccs_is_complex = (bool) preg_match( '/complex/i', $ccs_row['label'] );
+		foreach ( $ccs_pp_cards as $ccs_group => $ccs_unused ) {
+			if ( $ccs_is_complex === (bool) preg_match( '/complex/i', $ccs_group ) ) {
+				$ccs_label = ucfirst( trim( preg_replace( '/complex\s*/i', '', $ccs_row['label'] ) ) );
+				// A night that costs more at the weekend is shown as "from" its weekday rate.
+				if ( '' !== $ccs_row['weekend'] && $ccs_row['weekend'] !== $ccs_row['weekday'] ) {
+					/* translators: %s: kind of night, e.g. "Sleep-in night". */
+					$ccs_label = sprintf( __( '%s, from', 'ccs-wp-theme' ), $ccs_label );
+				}
+				$ccs_pp_cards[ $ccs_group ]['lines'][] = array( $ccs_label, $ccs_row['weekday'], __( 'a night', 'ccs-wp-theme' ) );
+				break;
+			}
+		}
+	}
+	?>
+	<ul class="price-photos" role="list">
+		<?php foreach ( $ccs_pp_cards as $ccs_group => $ccs_card ) : ?>
+			<?php
+			$ccs_photo = isset( $ccs_pp_photos[ $ccs_group ] ) ? $ccs_pp_photos[ $ccs_group ] : null;
+			$ccs_link  = isset( $ccs_pc_links[ $ccs_group ] ) ? $ccs_pc_links[ $ccs_group ] : null;
+			?>
+			<li class="price-photo" data-ccs-exception="rule 1: each card is one kind of care and its prices, compared side by side">
+				<div class="careers-benefits__media price-photo__media">
+					<?php
+					if ( $ccs_photo && function_exists( 'ccs_section_photo' ) ) {
+						ccs_section_photo(
+							$ccs_photo[0],
+							array(
+								'alt'      => $ccs_photo[1],
+								'sizes'    => '(min-width: 860px) 30rem, 92vw',
+								'class'    => 'price-photo__img',
+								'position' => isset( $ccs_photo[2] ) ? $ccs_photo[2] : '50% 50%',
+							)
+						);
+					}
+					?>
+					<p class="careers-benefits__badge price-photo__tab" data-ccs-exception="rule 1: the starting price, set on the photo as a label">
+						<strong><?php echo esc_html( $ccs_card['price'] ); ?></strong>
+						<span><?php esc_html_e( 'an hour', 'ccs-wp-theme' ); ?></span>
+						<small><?php esc_html_e( 'Starting rate', 'ccs-wp-theme' ); ?></small>
+					</p>
+				</div>
+				<div class="price-photo__body">
+					<h3 class="price-photo__name"><?php echo esc_html( $ccs_group ); ?></h3>
+					<ul class="price-photo__lines" role="list">
+						<?php foreach ( $ccs_card['lines'] as $ccs_line ) : ?>
+							<li>
+								<?php echo ccs_icon( 'check' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?>
+								<span class="price-photo__what"><?php echo esc_html( $ccs_line[0] ); ?></span>
+								<span class="price-photo__amount"><strong><?php echo esc_html( $ccs_line[1] ); ?></strong> <?php echo esc_html( $ccs_line[2] ); ?></span>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+					<?php if ( $ccs_link ) : ?>
+						<a class="btn btn-quiet price-photo__link" href="<?php echo esc_url( $ccs_link[0] ); ?>"><?php echo esc_html( $ccs_link[1] ); ?> <span aria-hidden="true">&rarr;</span></a>
+					<?php endif; ?>
+				</div>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+	<?php
+	return;
+endif;
+?>
+
 <ul class="price-cards" role="list">
 	<?php foreach ( $ccs_pc_cards as $ccs_card ) : ?>
 		<li class="price-card" data-ccs-exception="rule 1: each card is one kind of care and its prices, compared side by side">
@@ -126,7 +221,8 @@ foreach ( function_exists( 'ccs_fee_extras' ) ? ccs_fee_extras() : array() as $c
 	<?php endforeach; ?>
 </ul>
 
-<?php if ( ! empty( $ccs_pc_facts ) ) : ?>
+<?php // The Costs page lists the extra charges in its accordion instead ('facts' => false). ?>
+<?php if ( ! empty( $ccs_pc_facts ) && ( ! isset( $args['facts'] ) || $args['facts'] ) ) : ?>
 	<ul class="price-facts" role="list" data-ccs-exception="rule 1: the extra charges grouped as one strip, read together with the cards" aria-label="<?php esc_attr_e( 'Also charged', 'ccs-wp-theme' ); ?>">
 		<?php foreach ( $ccs_pc_facts as $ccs_fact ) : ?>
 			<li class="price-facts__item">

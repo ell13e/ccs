@@ -1,8 +1,9 @@
 <?php
 /**
- * Single service template (Nov 2026, structure after ultimacare.co.uk): hero;
- * introduction beside the call-back card; what we help with as cards; the
- * steps; questions; the closing card; related services; reviews.
+ * Single service template (Nov 2026, photo-led): hero with the starting price
+ * on a tab over the photo; the opening paragraph, what's included as ticked
+ * lists and the rest in an accordion, beside the call-back card; the rate
+ * table; questions; the closing card; related services.
  * Uses service meta: short_description, features, pricing, faqs, service_urgent.
  *
  * @package CCS_WP_Theme
@@ -194,6 +195,24 @@ while ( have_posts() ) :
 						)
 					);
 					?>
+			<?php
+			/*
+			 * The starting price on a tab over the hero photo (the layout the
+			 * user chose). It replaces the CQC card that sat here: the rating
+			 * is in the footer of every page. Only where a published rate is
+			 * mapped to this service and the hero has a photo to sit on.
+			 */
+			$ccs_svc_groups = function_exists( 'ccs_fee_groups_for_service' ) ? ccs_fee_groups_for_service( get_post_field( 'post_name', $post_id ) ) : array();
+			$ccs_svc_fees   = function_exists( 'ccs_fee_schedule' ) ? ccs_fee_schedule() : array();
+			?>
+			<?php if ( $ccs_svc_groups && isset( $ccs_svc_fees[ $ccs_svc_groups[0] ][0] ) ) : ?>
+				<?php $ccs_svc_first = $ccs_svc_fees[ $ccs_svc_groups[0] ][0]; ?>
+				<p class="service-hero__price" data-ccs-exception="rule 1: the starting price, set on the photo as a label">
+					<strong><?php echo esc_html( $ccs_svc_first['weekday'] ); ?></strong>
+					<span><?php echo esc_html( $ccs_svc_first['night'] ? __( 'a night', 'ccs-wp-theme' ) : __( 'an hour', 'ccs-wp-theme' ) ); ?></span>
+					<small><?php esc_html_e( 'Starting rate', 'ccs-wp-theme' ); ?></small>
+				</p>
+			<?php endif; ?>
 				</div>
 			<?php endif; ?>
 			<?php if ( $ccs_service_has_photo ) : ?>
@@ -212,30 +231,71 @@ while ( have_posts() ) :
 					?>
 				</div>
 			<?php endif; ?>
-			<?php get_template_part( 'template-parts/cqc-hero-card' ); ?>
 		</div>
 	</header>
 
 	<div class="service-body">
 		<div class="service-body__inner container container--lg">
 			<div class="service-body__main">
-				<?php if ( '' !== trim( $ccs_svc_intro ) || ! empty( $ccs_svc_prose ) ) : ?>
-					<?php
-					/*
-					 * page-body typography (components.css) without its page-level
-					 * width and padding: the same headings and paragraphs as every
-					 * other content page, inside a column.
-					 */
-					?>
-					<div class="service-content page-body page-body--flush entry-content">
-						<?php if ( '' !== trim( $ccs_svc_intro ) ) : ?>
-							<div class="service-content__intro"><?php echo $ccs_svc_intro; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content output. ?></div>
-						<?php endif; ?>
+				<?php
+				/*
+				 * Photo-led layout (Nov 2026; the user called these pages "awfully
+				 * laid out" and chose this structure). The left column is now, in
+				 * order: the opening paragraph as a lede; what the service includes
+				 * as ticked lists (each list the client wrote, under its own
+				 * heading); and the remaining sections in the site's accordion.
+				 * It was a long column of prose, with the lists pushed into cards in
+				 * a band further down. The words are the client's own, unchanged.
+				 */
+				?>
+				<?php if ( '' !== trim( wp_strip_all_tags( $ccs_svc_intro ) ) ) : ?>
+					<div class="ccs-lede ccs-lede--large service-intro"><?php echo $ccs_svc_intro; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content output. ?></div>
+				<?php endif; ?>
+
+				<?php
+				$ccs_svc_ticks = array();
+				foreach ( $ccs_svc_lists as $ccs_sec ) {
+					if ( preg_match_all( '#<li[^>]*>(.*?)</li>#s', $ccs_sec['body'], $ccs_svc_m ) ) {
+						$ccs_svc_ticks[] = array( $ccs_sec['heading'], array_map( 'wp_strip_all_tags', $ccs_svc_m[1] ) );
+					}
+				}
+				$ccs_svc_feature_items = array();
+				foreach ( $features as $row ) {
+					if ( ! empty( $row['feature_text'] ) ) {
+						$ccs_svc_feature_items[] = $row['feature_text'];
+					}
+				}
+				if ( $ccs_svc_feature_items ) {
+					$ccs_svc_ticks[] = array( ccs_copy( 'service_included_title' ), $ccs_svc_feature_items );
+				}
+				?>
+				<?php foreach ( $ccs_svc_ticks as $ccs_svc_tick ) : ?>
+					<div class="service-included">
+						<h2 class="service-included__title"><?php echo esc_html( ucfirst( strtolower( $ccs_svc_tick[0] ) ) ); ?></h2>
+						<ul class="tick-list" role="list">
+							<?php foreach ( $ccs_svc_tick[1] as $ccs_svc_item ) : ?>
+								<li><?php echo ccs_icon( 'check' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?><span><?php echo esc_html( trim( $ccs_svc_item ) ); ?></span></li>
+							<?php endforeach; ?>
+						</ul>
+					</div>
+				<?php endforeach; ?>
+
+				<?php if ( ! empty( $ccs_svc_prose ) ) : ?>
+					<div class="ccs-faq service-more">
 						<?php foreach ( $ccs_svc_prose as $ccs_sec ) : ?>
-							<h2><?php echo esc_html( $ccs_sec['heading'] ); ?></h2>
-							<?php echo $ccs_sec['body']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content output. ?>
+							<details class="ccs-faq__item" name="service-more">
+								<summary class="ccs-faq__q"><?php echo esc_html( $ccs_sec['heading'] ); ?></summary>
+								<div class="ccs-faq__a"><?php echo $ccs_sec['body']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content output. ?></div>
+							</details>
 						<?php endforeach; ?>
 					</div>
+				<?php endif; ?>
+
+				<?php if ( function_exists( 'ccs_fee_groups_for_service' ) && ! ccs_fee_groups_for_service( get_post_field( 'post_name', $post_id ) ) ) : ?>
+					<?php // No rate card is mapped to this service yet, so the page points to the published rates instead of showing none. ?>
+					<p class="service-rates-link">
+						<a class="ccs-text-link" href="<?php echo esc_url( function_exists( 'ccs_page_url' ) ? ccs_page_url( 'costs-and-funding' ) : home_url( '/costs-and-funding/' ) ); ?>"><?php esc_html_e( 'See our published rates', 'ccs-wp-theme' ); ?> <span aria-hidden="true">&rarr;</span></a>
+					</p>
 				<?php endif; ?>
 
 				<?php if ( $has_price ) : ?>
@@ -336,48 +396,6 @@ while ( have_posts() ) :
 		</div>
 	</div>
 
-	<?php if ( ! empty( $ccs_svc_lists ) || ! empty( $features ) ) : ?>
-		<section class="ccs-section ccs-section--tint service-help" aria-labelledby="service-help-heading">
-			<div class="container container--lg">
-				<header class="ccs-head ccs-head--center">
-					<h2 id="service-help-heading" class="ccs-title">
-						<?php echo ccs_copy_accent( 'service_help_title' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_copy_accent(). ?>
-					</h2>
-				</header>
-				<?php
-				/*
-				 * Each list from the page is one card: its heading, any sentence
-				 * that introduces it, and the list as ticks. A white card on the
-				 * tint, the same card the rest of the site uses (rule 1: each is
-				 * its own group of things we do).
-				 */
-				?>
-				<div class="service-help__grid">
-					<?php foreach ( $ccs_svc_lists as $ccs_sec ) : ?>
-						<article class="service-help__card" data-ccs-exception="rule 1: each card is one group of what this service covers, the structure the client asked for (Nov 2026)">
-							<h3 class="service-help__title"><?php echo esc_html( $ccs_sec['heading'] ); ?></h3>
-							<div class="service-help__body page-body page-body--flush"><?php echo $ccs_sec['body']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content output. ?></div>
-						</article>
-					<?php endforeach; ?>
-					<?php if ( ! empty( $features ) ) : ?>
-						<article class="service-help__card" data-ccs-exception="rule 1: each card is one group of what this service covers, the structure the client asked for (Nov 2026)">
-							<h3 class="service-help__title"><?php echo esc_html( ccs_copy( 'service_included_title' ) ); ?></h3>
-							<div class="service-help__body page-body page-body--flush">
-								<ul>
-									<?php foreach ( $features as $row ) : ?>
-										<?php if ( ! empty( $row['feature_text'] ) ) : ?>
-											<li><?php echo esc_html( $row['feature_text'] ); ?></li>
-										<?php endif; ?>
-									<?php endforeach; ?>
-								</ul>
-							</div>
-						</article>
-					<?php endif; ?>
-				</div>
-			</div>
-		</section>
-	<?php endif; ?>
-
 	<?php
 	/*
 	 * What this service costs: the rate cards from the published fee schedule
@@ -440,11 +458,6 @@ while ( have_posts() ) :
 				 * to the services hub instead of a hole in the grid.
 				 */
 				$ccs_related_shown = array_slice( $related, 0, 3 );
-				$ccs_rel_icons     = array(
-					'domiciliary-care' => 'home',
-					'respite-care'     => 'cup',
-					'complex-care'     => 'pulse',
-				);
 				?>
 				<ul class="svc-grid ccs-swipe" role="list">
 					<?php foreach ( $ccs_related_shown as $rel ) : ?>
@@ -466,7 +479,7 @@ while ( have_posts() ) :
 								</div>
 							<?php endif; ?>
 							<div class="svc-card__body">
-								<span class="ccs-badge ccs-badge--ring svc-card__badge"><?php echo ccs_icon( $ccs_rel_icons[ $rel->post_name ] ?? 'heart' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
+								<span class="ccs-badge ccs-badge--ring svc-card__badge"><?php echo ccs_icon( ccs_service_icon( $rel->post_name ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
 								<h3 class="svc-card__title">
 									<a href="<?php echo esc_url( get_permalink( $rel ) ); ?>" class="svc-card__link"><?php echo esc_html( get_the_title( $rel ) ); ?></a>
 								</h3>

@@ -60,6 +60,7 @@ $ccs_phone_tel = $ccs_phone ? preg_replace( '/\s+/', '', $ccs_phone ) : '';
 	 * to show less at once. Grounds alternate white / tint from "Why choose us".
 	 */
 	?>
+	<?php get_template_part( 'template-parts/home/partnerships', null, array( 'layout' => 'marquee' ) ); ?>
 	<?php get_template_part( 'template-parts/home/why-choose-us' ); ?>
 	<?php get_template_part( 'template-parts/home/services' ); ?>
 	<?php get_template_part( 'template-parts/home/steps' ); ?>
