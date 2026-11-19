@@ -35,7 +35,10 @@ function ccs_apply_content_updates() {
 	// 11c (Nov 2026, user: "why is this not backlinked"): the About page's
 	// closing "Learn more about the home care services…" line becomes a link
 	// to the services page. It was bold text that read as a link and was not one.
-	$updates = array( 'copy-update-2026-11', 'copy-update-2026-11b', 'copy-update-2026-11c' );
+	// 11d (Nov 2026, client): the FAQ's "How quickly can care start?" answer now
+	// says "often starts within a month", matching the homepage steps intro.
+	// 11e: the same sentence, shortened after the client's copy review.
+	$updates = array( 'copy-update-2026-11', 'copy-update-2026-11b', 'copy-update-2026-11c', 'copy-update-2026-11d', 'copy-update-2026-11e' );
 	$home    = untrailingslashit( home_url() );
 	// The site the first file was made on; its links carry this address.
 	$tok   = static function ( $s ) use ( $home ) {

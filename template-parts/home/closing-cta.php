@@ -57,6 +57,9 @@ $ccs_cta_photo     = file_exists( get_template_directory() . '/assets/images/' .
 				<p class="ccs-lede ccs-lede--on-dark">
 					<?php echo esc_html( ccs_copy( 'closing_text' ) ); ?>
 				</p>
+				<p class="ccs-lede ccs-lede--on-dark">
+					<?php echo esc_html( ccs_copy( 'closing_text_2' ) ); ?>
+				</p>
 
 				<?php
 				/*
