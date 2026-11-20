@@ -333,7 +333,7 @@ class CCS_Theme_Customizer {
 		$wp_customize->add_setting( self::CONTACT_EMAIL, array(
 			'type'              => 'theme_mod',
 			'capability'        => 'edit_theme_options',
-			'default'           => get_option( 'admin_email' ),
+			'default'           => 'office@continuitycareservices.co.uk',
 			'sanitize_callback' => 'sanitize_email',
 			'transport'         => 'postMessage',
 		) );

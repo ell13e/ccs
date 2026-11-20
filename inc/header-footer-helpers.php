@@ -34,7 +34,27 @@ function ccs_get_contact_info() {
 	return array(
 		'phone'      => $phone,
 		'phone_link' => $link,
+		'email'      => ccs_contact_email(),
 	);
+}
+
+/**
+ * The office email address shown to visitors.
+ *
+ * The Customizer's contact email, unless it is empty or a placeholder: the
+ * setting used to default to the WordPress admin address, which on a fresh
+ * or local install is something like admin@localhost.com and was showing on
+ * the site (client, Nov 2026). Falls back to the office address.
+ *
+ * @return string
+ */
+function ccs_contact_email() {
+	$office = 'office@continuitycareservices.co.uk';
+	$email  = trim( (string) get_theme_mod( 'ccs_contact_email', '' ) );
+	if ( '' === $email || ! is_email( $email ) || preg_match( '/@(localhost|example\.|wordpress\.)|^(admin|wordpress)@/i', $email ) ) {
+		return $office;
+	}
+	return $email;
 }
 
 /**
@@ -264,3 +284,38 @@ function ccs_footer_help_fallback_menu() {
 function ccs_accent( $word ) {
 	return '<span class="ccs-accent">' . esc_html( $word ) . '</span>';
 }
+
+/**
+ * Menu links to the old Care guides page go straight to the guides on the
+ * Resources hub (Nov 2026: the guides are read there; the page redirects).
+ * Saves every visitor a redirect and keeps the link check clean. The menu
+ * item itself is untouched, so the client can still rename or remove it.
+ *
+ * @param array $items Menu item objects.
+ * @return array
+ */
+function ccs_menu_care_guides_to_hub( $items ) {
+	static $from = null;
+	static $to   = null;
+	if ( null === $from ) {
+		$from  = '';
+		$guide = get_page_by_path( 'resources/care-guides' );
+		$hub   = get_page_by_path( 'resources' );
+		if ( $guide instanceof WP_Post && $hub instanceof WP_Post && 'publish' === $hub->post_status ) {
+			$from = untrailingslashit( get_permalink( $guide ) );
+			$to   = add_query_arg( 'show', 'care-guides', get_permalink( $hub ) );
+		}
+	}
+	if ( '' === $from ) {
+		return $items;
+	}
+	foreach ( $items as $item ) {
+		if ( isset( $item->url ) && untrailingslashit( $item->url ) === $from ) {
+			$item->url = $to;
+		}
+	}
+	return $items;
+}
+// Not hooked since the guides got their own page back (Nov 2026, client:
+// Resources is a signpost page, not a hub).
+

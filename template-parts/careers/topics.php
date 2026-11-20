@@ -31,7 +31,21 @@ $ccs_tp_id = isset( $args['id'] ) ? sanitize_html_class( $args['id'] ) : 'topics
 ?>
 <header class="ccs-head ccs-head--center">
 	<h2 id="<?php echo esc_attr( $ccs_tp_id ); ?>-topics-heading" class="ccs-title"><?php echo esc_html( $args['title'] ); ?></h2>
+	<?php if ( ! empty( $args['lede'] ) && '' !== trim( wp_strip_all_tags( $args['lede'] ) ) ) : ?>
+		<div class="ccs-lede"><?php echo wp_kses_post( $args['lede'] ); ?></div>
+	<?php endif; ?>
 </header>
+<?php
+// The homepage's numbered accordion, on the pages redesigned to match it (Nov 2026).
+if ( ! empty( $args['numbered'] ) ) {
+	$ccs_tp_items = array();
+	foreach ( $ccs_tp_sections as $ccs_tp_section ) {
+		$ccs_tp_items[] = array( 'heading' => $ccs_tp_section['heading'], 'body' => $ccs_tp_section['body'] );
+	}
+	get_template_part( 'template-parts/num-acc', null, array( 'items' => $ccs_tp_items, 'name' => $ccs_tp_id . '-topics', 'class' => 'num-acc--center' ) );
+	return;
+}
+?>
 <div class="ccs-faq careers-topics__faq">
 	<?php foreach ( $ccs_tp_sections as $ccs_tp_i => $ccs_tp_section ) : ?>
 		<details class="ccs-faq__item" name="<?php echo esc_attr( $ccs_tp_id ); ?>-topics"<?php echo 0 === $ccs_tp_i ? ' open' : ''; ?>>

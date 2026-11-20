@@ -293,6 +293,14 @@
 	   padding on every section read as machine-made; the generous tier is kept
 	   for the sections that carry the argument (rule 9, CLAUDE.md). */
 	--section-pad-sm: clamp(3.5rem, 2.4rem + 3.6vw, 6rem);
+	/* The space inside a card (Nov 2026, client: "the spacing inside of cards
+	   across responsive viewpoints is raising concerns"). Each card had its
+	   own clamp, so the rate card, the costs and referral cards, the prompt
+	   card and the contact form each sat a different distance in from their
+	   edge, and the differences changed with the screen. One inset for cards,
+	   one for the small tiles inside grids. */
+	--card-pad: clamp(1.5rem, 1rem + 2.2vw, 3rem);
+	--card-pad-sm: clamp(1.25rem, 1rem + 1vw, 1.75rem);
 	--section-head-gap: clamp(2.5rem, 1.6rem + 3vw, 4rem);
 	--title-size: clamp(2rem, 1.3rem + 2.9vw, 3.25rem);
 	--lede-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);

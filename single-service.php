@@ -183,7 +183,15 @@ while ( have_posts() ) :
 	$ccs_contact_url       = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' ) : home_url( '/contact-us/' );
 	$ccs_services_hub_url  = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'home-care-services-kent' ) : home_url( '/home-care-services-kent/' );
 	?>
-	<header class="page-hero<?php echo $ccs_service_has_photo ? ' page-hero--photo' : ( $ccs_service_inset ? ' page-hero--inset' : '' ); ?>">
+	<?php
+	/*
+	 * The site's standard header (Nov 2026 redesign). The service's photo
+	 * moved into the first section of the body, where it sits beside the
+	 * opening text with the starting price on a tab, so a service with a
+	 * small photo and one with none open the same way.
+	 */
+	?>
+	<header class="page-hero<?php echo $ccs_service_has_photo ? ' page-hero--photo' : ''; ?>">
 		<?php if ( $ccs_service_has_photo ) : ?>
 			<div class="page-hero__scrim" aria-hidden="true"></div>
 		<?php endif; ?>
@@ -223,40 +231,6 @@ while ( have_posts() ) :
 					<?php endif; ?>
 				</div>
 			</div>
-			<?php if ( $ccs_service_inset ) : ?>
-				<div class="page-hero__media" style="<?php echo esc_attr( '--ccs-photo-max:' . ccs_hero_photo_max_width( $post_id ) . 'px' ); ?>">
-					<?php
-					echo get_the_post_thumbnail(
-						$post_id,
-						'full',
-						array(
-							'class'         => 'page-hero__img',
-							'loading'       => 'eager',
-							'fetchpriority' => 'high',
-							'sizes'         => '(min-width: 900px) 24rem, 92vw',
-						)
-					);
-					?>
-			<?php
-			/*
-			 * The starting price on a tab over the hero photo (the layout the
-			 * user chose). It replaces the CQC card that sat here: the rating
-			 * is in the footer of every page. Only where a published rate is
-			 * mapped to this service and the hero has a photo to sit on.
-			 */
-			$ccs_svc_groups = function_exists( 'ccs_fee_groups_for_service' ) ? ccs_fee_groups_for_service( get_post_field( 'post_name', $post_id ) ) : array();
-			$ccs_svc_fees   = function_exists( 'ccs_fee_schedule' ) ? ccs_fee_schedule() : array();
-			?>
-			<?php if ( $ccs_svc_groups && isset( $ccs_svc_fees[ $ccs_svc_groups[0] ][0] ) ) : ?>
-				<?php $ccs_svc_first = $ccs_svc_fees[ $ccs_svc_groups[0] ][0]; ?>
-				<p class="service-hero__price" data-ccs-exception="rule 1: the starting price, set on the photo as a label">
-					<strong><?php echo esc_html( $ccs_svc_first['weekday'] ); ?></strong>
-					<span><?php echo esc_html( $ccs_svc_first['night'] ? __( 'a night', 'ccs-wp-theme' ) : __( 'an hour', 'ccs-wp-theme' ) ); ?></span>
-					<small><?php esc_html_e( 'Starting rate', 'ccs-wp-theme' ); ?></small>
-				</p>
-			<?php endif; ?>
-				</div>
-			<?php endif; ?>
 			<?php if ( $ccs_service_has_photo ) : ?>
 				<div class="page-hero__media">
 					<?php
@@ -285,32 +259,6 @@ while ( have_posts() ) :
 	 */
 	ob_start();
 	?>
-			<aside class="service-sidebar" aria-labelledby="service-sidebar-heading">
-				<div class="service-sidebar__sticky">
-					<div class="service-sidebar__card">
-						<p class="ccs-eyebrow"><?php echo esc_html( ccs_copy( 'service_callback_eyebrow' ) ); ?></p>
-						<h2 id="service-sidebar-heading" class="service-sidebar__heading"><?php echo esc_html( ccs_copy( 'service_callback_title' ) ); ?></h2>
-						<?php if ( $ccs_phone_tel ) : ?>
-							<a href="<?php echo esc_url( 'tel:' . $ccs_phone_tel ); ?>" class="service-sidebar__phone">
-								<span class="ccs-badge ccs-badge--sm"><?php echo ccs_icon( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
-								<span><?php echo esc_html( $ccs_phone ); ?></span>
-							</a>
-						<?php endif; ?>
-						<?php if ( $ccs_office_hrs ) : ?>
-							<p class="service-sidebar__hours"><?php echo esc_html( $ccs_office_hrs ); ?></p>
-						<?php endif; ?>
-
-						<?php
-						/*
-						 * Visible labels above every field, not placeholders. The
-						 * labels used to be screen-reader-only, so sighted visitors
-						 * saw prompts that vanished as soon as they began typing, and
-						 * "optional" appeared only in the hidden label. autocomplete
-						 * on name and phone meets WCAG 2.1 1.3.5 (Identify Input
-						 * Purpose), which this form failed, and lets the browser fill
-						 * them in for people who find typing hard.
-						 */
-						?>
 						<form class="service-sidebar__form ccs-form" data-ccs-action="request_callback" method="post" action="" novalidate aria-describedby="callback-form-message">
 							<div class="ccs-field">
 								<label for="service-cb-name" class="ccs-field__label"><?php esc_html_e( 'Your name', 'ccs-wp-theme' ); ?></label>
@@ -329,12 +277,9 @@ while ( have_posts() ) :
 							</div>
 							<?php ccs_heard_about_field( 'service-cb-heard-about' ); ?>
 							<input type="text" name="_company" value="" tabindex="-1" autocomplete="off" aria-hidden="true" class="ccs-honeypot">
-							<button type="submit" class="btn btn-primary service-sidebar__submit"><?php esc_html_e( 'Request a call back', 'ccs-wp-theme' ); ?></button>
+							<button type="submit" class="btn btn-accent service-sidebar__submit"><?php esc_html_e( 'Request a call back', 'ccs-wp-theme' ); ?></button>
 							<div id="callback-form-message" data-ccs-form-message class="ccs-form-message" role="alert" aria-live="polite" hidden></div>
 						</form>
-					</div>
-				</div>
-			</aside>
 	<?php
 	$ccs_svc_form = ob_get_clean();
 	$ccs_svc_more = ! empty( $ccs_svc_prose ) || ( count( $ccs_svc_lists ) + ( array_filter( wp_list_pluck( $features, 'feature_text' ) ) ? 1 : 0 ) ) > 1;
@@ -348,30 +293,38 @@ while ( have_posts() ) :
 			'prose'     => $ccs_svc_prose,
 			'features'  => $features,
 			'form'      => $ccs_svc_form,
+			'phone'     => $ccs_phone,
+			'phone_tel' => $ccs_phone_tel,
+			'hours'     => $ccs_office_hrs,
 		)
 	);
 	?>
 
 	<?php if ( ! empty( $ccs_svc_faqs ) ) : ?>
-		<section class="ccs-section<?php echo ( $ccs_svc_pack ? 0 === count( $ccs_svc_pack['sections'] ) % 2 : $ccs_svc_more ) ? ' ccs-section--tint' : ''; ?> ccs-section--flush-bottom service-faqs" aria-labelledby="service-faqs-heading">
+		<section class="ccs-section ccs-section--sm service-faqs" aria-labelledby="service-faqs-heading">
 			<div class="container container--lg">
-				<?php // Centred heading above the questions (Nov 2026): the title-left split it replaced is a layout the client rejects. ?>
-				<div class="service-faqs__inner">
-					<header class="ccs-head ccs-head--center">
-						<h2 id="service-faqs-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'service_faq_title' ) ); ?></h2>
-					</header>
-					<div class="ccs-faq">
-						<?php foreach ( $ccs_svc_faqs as $ccs_i => $ccs_faq ) : ?>
-							<details class="ccs-faq__item" name="service-faq"<?php echo 0 === $ccs_i ? ' open' : ''; ?>>
-								<summary class="ccs-faq__q"><?php echo esc_html( $ccs_faq['q'] ); ?></summary>
-								<div class="ccs-faq__a"><?php echo wp_kses_post( $ccs_faq['a'] ); ?></div>
-							</details>
-						<?php endforeach; ?>
-					</div>
+				<header class="ccs-head ccs-head--center">
+					<h2 id="service-faqs-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'service_faq_title' ) ); ?></h2>
 					<?php if ( $ccs_svc_faq_page instanceof WP_Post ) : ?>
-						<p class="service-faqs__foot"><a class="ccs-text-link service-faqs__more" href="<?php echo esc_url( get_permalink( $ccs_svc_faq_page ) ); ?>"><?php echo esc_html( ccs_copy( 'service_faq_more' ) ); ?> <span aria-hidden="true">&rarr;</span></a></p>
+						<p class="ccs-lede">
+							<?php
+							printf(
+								/* translators: %s: link to the FAQs page. */
+								esc_html__( 'Can’t find the answer? %s, or ring us.', 'ccs-wp-theme' ),
+								'<a href="' . esc_url( get_permalink( $ccs_svc_faq_page ) ) . '">' . esc_html__( 'See all our questions and answers', 'ccs-wp-theme' ) . '</a>'
+							);
+							?>
+						</p>
 					<?php endif; ?>
-				</div>
+				</header>
+				<?php
+				// Full-width rows, the open one in deep plum (after the service pages the client pointed to).
+				$ccs_svc_faq_items = array();
+				foreach ( $ccs_svc_faqs as $ccs_faq ) {
+					$ccs_svc_faq_items[] = array( 'heading' => $ccs_faq['q'], 'body' => wp_kses_post( $ccs_faq['a'] ) );
+				}
+				get_template_part( 'template-parts/num-acc', null, array( 'items' => $ccs_svc_faq_items, 'name' => 'service-faq', 'class' => 'num-acc--cards' ) );
+				?>
 			</div>
 		</section>
 	<?php endif; ?>

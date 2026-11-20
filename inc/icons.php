@@ -60,6 +60,8 @@ function ccs_icon( $name, $class = '' ) {
 		'mail'     => '<rect x="3.5" y="5.5" width="17" height="13" rx="2" fill="currentColor"/><path d="m6.5 8.5 5.5 4.2 5.5-4.2" style="stroke:var(--ccs-icon-cut,#fff)"/>',
 		'pin'      => '<path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z" fill="currentColor"/><circle cx="12" cy="10" r="2.4" style="fill:var(--ccs-icon-cut,#fff);stroke:none"/>',
 		'check'    => '<path d="m5 12.5 4.2 4.2L19 7"/>',
+		// Search field: a lens, line-only like the tick.
+		'search'   => '<circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 5 5"/>',
 		// Switching provider: two arrows passing each other.
 		'switch'   => '<path d="M4 8h14"/><path d="m14.5 4.5 3.5 3.5-3.5 3.5"/><path d="M20 16H6"/><path d="m9.5 12.5-3.5 3.5 3.5 3.5"/>',
 	);

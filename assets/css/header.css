@@ -540,8 +540,10 @@ body.has-photo-hero:not(.ccs-mobile-nav-open) .site-header:not(.is-scrolled) .mo
 	z-index: var(--z-dropdown);
 }
 
+/* .is-open: opened by a tap on a wide touch screen (navigation.js). */
 .nav-desktop .menu-item:hover > .sub-menu,
-.nav-desktop .menu-item:focus-within > .sub-menu {
+.nav-desktop .menu-item:focus-within > .sub-menu,
+.nav-desktop .menu-item.is-open > .sub-menu {
 	opacity: 1;
 	visibility: visible;
 	transform: translateY(0);
@@ -966,6 +968,12 @@ body.ccs-mobile-nav-open::before {
 	text-decoration: none;
 	border-bottom: 1px solid var(--color-border);
 	transition: color var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out);
+}
+
+/* The section's own page, first inside its section (navigation.js). */
+#mobile-navigation .sub-menu .nav-overview a {
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-primary);
 }
 
 #mobile-navigation .sub-menu .menu-item:last-child a {
@@ -1669,3 +1677,20 @@ body.ccs-mobile-nav-open::before {
 }
 
 /* "Switch to us" uses the kit's sheen button (.btn-sheen, components.css). */
+
+/* The short careers menu, spaced like the main one (Nov 2026, user: "weird
+   spacing"). It had both wide link padding and a gap between links, about
+   43px between labels against about 28px in the main menu, so the same bar
+   read differently on careers pages. Now no extra gap and the main menu's
+   own rhythm. */
+@media (min-width: 1024px) {
+	.nav-desktop .nav-list:not(:has(> li:nth-child(5))) {
+		gap: 0;
+	}
+
+	.nav-desktop .nav-list:not(:has(> li:nth-child(5))) .nav-link {
+		--nav-link-pad-x: 0.875rem;
+		padding-inline: 0.875rem;
+	}
+}
+

@@ -81,7 +81,7 @@ $items = array(
 
 		<div class="home-diff__body">
 			<?php // Eyebrow added with the client's rewrite (Nov 2026): it names whose voice the heading is in. ?>
-			<p class="ccs-eyebrow"><?php echo esc_html( ccs_copy( 'diff_eyebrow' ) ); ?></p>
+			<?php // No label above this heading (client, Nov 2026: "weird eyebrow"). "Our approach" added nothing the heading does not say (rule 12). ?>
 			<h2 id="home-diff-heading" class="ccs-title">
 				<?php
 				echo ccs_copy_accent( 'diff_title' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_copy_accent().

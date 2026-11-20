@@ -2083,7 +2083,13 @@
 	bottom: 0.5rem;
 	left: 21px;
 	width: 2px;
-	border-radius: 1px;
+	border-radius: 2px;
+	/* Matches the Getting started timeline (Nov 2026, client: "much nicer! i
+	   like this styling", then asked for this one to be made like it): the
+	   line fades in at the top and out at the bottom, and the plum drawn over
+	   it is soft. */
+	-webkit-mask-image: linear-gradient(to bottom, transparent, #000 4rem, #000 calc(100% - 4rem), transparent);
+	mask-image: linear-gradient(to bottom, transparent, #000 4rem, #000 calc(100% - 4rem), transparent);
 }
 
 .journey::before {
@@ -2092,6 +2098,7 @@
 
 .journey::after {
 	background-color: var(--color-primary);
+	opacity: 0.55;
 	transform: scaleY(var(--journey-progress));
 	transform-origin: top center;
 }
@@ -2106,14 +2113,15 @@
 	--dot-x: 0px;
 	position: absolute;
 	z-index: 1;
-	top: 0.2rem;
-	left: calc(-4.25rem + 22px - 0.5625rem + var(--dot-x));
-	width: 1.125rem;
-	height: 1.125rem;
-	border: 3px solid var(--color-primary);
+	top: 0;
+	left: calc(-4.25rem + 22px - 0.75rem + var(--dot-x));
+	width: 1.5rem;
+	height: 1.5rem;
+	/* A soft white bead on the line, as on Getting started: no ring, and it
+	   no longer fills in plum as you pass it. */
 	border-radius: 50%;
-	background-color: var(--color-band-tint);
-	transition: background-color var(--duration-normal) var(--ease-out), box-shadow var(--duration-normal) var(--ease-out);
+	background-color: #fff;
+	box-shadow: var(--shadow-float);
 }
 
 /* Calm pass (user: "bit too chaotic"): the sticky column carries the one
@@ -2121,12 +2129,13 @@
    a second set of large italic numerals competing with the first. */
 .journey__year {
 	margin: 0;
-	font-size: var(--text-sm);
-	font-weight: var(--font-weight-bold);
-	letter-spacing: 0.06em;
-	line-height: 1.6;
-	color: var(--color-accent);
-	font-variant-numeric: tabular-nums;
+	/* The year in the heading face, italic plum, like the numbers on the
+	   Getting started discs. It was a small bold spaced-out label. */
+	font-family: var(--font-family-heading);
+	font-size: 1.25rem;
+	font-style: italic;
+	line-height: 1.2;
+	color: var(--color-primary);
 }
 
 /* Phones have no sticky column, so the year keeps some presence there. */
@@ -2146,9 +2155,26 @@
 	font-family: var(--font-family-heading);
 	font-size: clamp(1.375rem, 1.2rem + 0.7vw, 1.75rem);
 	font-weight: var(--font-weight-medium);
-	line-height: 1.25;
+	line-height: 1.2;
+	letter-spacing: -0.015em;
 	color: var(--color-ink);
 	text-wrap: balance;
+}
+
+/* Each milestone fades in as it arrives; nothing moves. */
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) {
+		.journey__item > :not(.journey__dot) {
+			animation: journey-arrive linear both;
+			animation-timeline: view();
+			animation-range: entry 0% entry 90%;
+		}
+	}
+}
+
+@keyframes journey-arrive {
+	from { opacity: 0.25; }
+	to { opacity: 1; }
 }
 
 .journey__text {
@@ -2164,6 +2190,12 @@
 	margin-top: var(--space-lg);
 }
 
+.journey__photo:not(.journey__photo--portrait) {
+	border-radius: var(--radius-2xl);
+	box-shadow: var(--shadow-float);
+	overflow: hidden;
+}
+
 /* A person, not a scene: a round portrait. */
 .journey__photo--portrait {
 	width: 9rem;
@@ -2177,7 +2209,7 @@
 }
 
 .journey__item--end .journey__dot {
-	background-color: var(--color-primary);
+	background-color: #fff;
 }
 
 .journey__end {
@@ -2193,12 +2225,11 @@
    milestones are no longer faded; half the column in a paler ink was part
    of what read as chaotic. */
 .journey-layout.is-enhanced .journey__item.is-in .journey__dot {
-	background-color: var(--color-primary);
+	background-color: #fff;
 }
 
 
 @media (prefers-reduced-motion: reduce) {
-	.journey__dot,
 	.journey-layout.is-enhanced .journey-aside__year {
 		transition: none;
 	}
