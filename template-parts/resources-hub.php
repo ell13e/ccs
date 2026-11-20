@@ -106,16 +106,17 @@ foreach ( $ccs_rh_groups as $ccs_rh_group ) {
  * with the photo swapping sides). Real CCS photos already in the theme, all
  * at least 1024px wide for a 520px frame, matched by what the page's
  * address is about. Which photo stands for which page is the client's call:
- * these are a first choice, changed here.
+ * these are a first choice, changed here. None is used on another page
+ * (client, Nov 2026: "make sure we arent repeating photos").
  */
 $ccs_rh_photo = static function ( $url, $n ) {
 	$map = array(
-		'faq|question' => 'site-photos/Untitled-design-4.webp',
-		'referral'     => 'site-photos/WhatsApp-Image-2021-02-10-at-15.39.32.webp',
-		'guide'        => 'site-photos/Untitled-1.webp',
-		'start'        => 'site-photos/467212766_9676172959062903_646005181027754761_n-copy.webp',
+		'faq|question' => 'site-photos/client-jigsaw.webp',
+		'referral'     => 'site-photos/WhatsApp-Image-2021-02-10-at-15.39.47.jpeg',
+		'guide'        => 'site-photos/client-cooking-hob.webp',
+		'start'        => 'site-photos/client-care-farm-chores.webp',
 		'news|blog'    => 'site-photos/IMG-20241107-WA0006.webp',
-		'cqc|regulat'  => 'site-photos/client-afternoon-tea.webp',
+		'cqc|regulat'  => 'site-photos/client-cafe-counter.webp',
 	);
 	foreach ( $map as $pattern => $photo ) {
 		if ( preg_match( '/' . $pattern . '/i', $url ) ) {

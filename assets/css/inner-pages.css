@@ -1010,7 +1010,9 @@
 	text-align: center;
 }
 
-@media (min-width: 860px) {
+/* Three across from 640px, so on a tablet the steps sit under their centred
+   heading and not in a left-hand column beside it. */
+@media (min-width: 640px) {
 	.flow-steps {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 		gap: clamp(2rem, 5vw, 4.5rem);
@@ -1115,7 +1117,7 @@
 	color: var(--color-ink-soft);
 }
 
-@media (max-width: 859px) {
+@media (max-width: 639px) {
 	.flow-steps {
 		text-align: left;
 	}
@@ -4404,5 +4406,84 @@ p + .link-line { margin-top: var(--space-2, 0.5rem); }
 
 	.svc-where__list {
 		justify-content: flex-start;
+	}
+}
+
+/* Stacked, the photo and its column fill the width in a wider frame (it was
+   capped at 30rem, so on a tablet it stopped well short of the right edge). */
+@media (max-width: 959px) {
+	.svc-intro__side,
+	.svc-intro__photo {
+		max-width: none;
+	}
+
+	.svc-intro__photo {
+		aspect-ratio: 16 / 9;
+	}
+}
+
+
+/* Careers, second pass (Nov 2026). */
+
+/* Working with us: words beside the team photo, like the other openings.
+   The photo keeps its own wide shape. */
+.careers-open__text .ccs-title {
+	margin-bottom: var(--space-md);
+}
+
+.careers-open__lede > :first-child { margin-top: 0; }
+.careers-open__lede > :last-child { margin-bottom: 0; }
+
+.careers-open__layout .hero-banner {
+	max-width: none;
+	margin: 0;
+}
+
+@media (min-width: 900px) {
+	.careers-open__layout {
+		grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+	}
+}
+
+/* A ticked list inside an accordion answer (the benefits). */
+.tick-list {
+	display: grid;
+	gap: 0.5rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.tick-list li {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.625rem;
+}
+
+.tick-list .ccs-icon {
+	flex: none;
+	width: 1.125rem;
+	height: 1.125rem;
+	margin-top: 0.3em;
+	color: currentColor;
+}
+
+.careers-benefits .num-acc {
+	margin-top: var(--space-lg);
+}
+
+/* Stacked, the benefits heading comes before the photo, not after it. */
+@media (max-width: 899px) {
+	.careers-benefits__layout > .careers-benefits__media {
+		order: 2;
+	}
+}
+
+/* Stacked, the training academy's heading and words come before its photo
+   (the photo was first, straight under the page header, with the heading
+   below it; client: "this looks weird on mobile"). */
+@media (max-width: 899px) {
+	.pd-academy__layout > .careers-benefits__media {
+		order: 2;
 	}
 }

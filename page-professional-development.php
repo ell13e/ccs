@@ -70,9 +70,10 @@ $ccs_pd_name  = trim( (string) get_theme_mod( 'ccs_copy_pd_story_name', '' ) );
 					<div class="careers-benefits__media">
 						<?php
 						ccs_section_photo(
-							'journey/cta-trainer.webp',
+							// Not the trainer at the flipchart (client, Nov 2026: "different photo pls"), and not the training room, which About uses. Which photo goes here is the client's call.
+							'careers/infant-cpr.webp',
 							array(
-								'alt'   => __( 'A Continuity Training Academy trainer presenting beside a flipchart', 'ccs-wp-theme' ),
+								'alt'   => __( 'A trainer showing infant resuscitation on a training manikin', 'ccs-wp-theme' ),
 								'sizes' => '(min-width: 900px) 480px, 92vw',
 								'class' => 'careers-benefits__photo',
 							)

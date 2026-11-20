@@ -54,6 +54,10 @@ if ( empty( $ccs_cards ) ) {
 					);
 					?>
 				</div>
+			<?php elseif ( function_exists( 'ccs_service_chosen_photo' ) && ccs_service_chosen_photo( $ccs_card->post_name ) ) : ?>
+				<div class="svc-card__media">
+					<?php echo ccs_service_card_photo( $ccs_card->post_name, '(min-width: 1280px) 400px, (min-width: 860px) 31vw, 92vw' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_service_card_photo(). ?>
+				</div>
 			<?php else : ?>
 				<?php // No photo yet: the service's icon on the tint, in the photo's place, so every card in a row is the same height. ?>
 				<div class="svc-card__media svc-card__media--icon" aria-hidden="true" data-ccs-exception="rule 1: stands in for the card's photo until one is chosen; the whole card is the link"><?php echo ccs_icon( ccs_service_icon( $ccs_card->post_name ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></div>

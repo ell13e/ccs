@@ -2953,11 +2953,6 @@
 	color: var(--color-ink-soft);
 }
 
-@media (max-width: 899px) {
-	.pd-academy__layout > .careers-benefits__media {
-		order: -1;
-	}
-}
 
 /* Next steps (vacancies): three short steps side by side in one white
    card, a hairline between. Number, title, one line. */
@@ -5001,4 +4996,38 @@ p.costs-more {
 .pd-academy__note,
 .careers-benefits__note {
 	margin: var(--space-md) 0 var(--space-lg);
+}
+
+/* "What you can expect" cards by width (Nov 2026, client: "shit on mobile and
+   tablet"). Two across with the photo down the side squeezed each card into
+   a sliver of photo and a column of three-word lines. Now:
+   - under 900px: one card per row, the photo down its left from 560px and on
+     top below that;
+   - 900px to 1199px: two per row, the photo on top in its 3:2 frame;
+   - 1200px and up: two per row, the photo down the left, as designed. */
+.feature-grid--photo {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 900px) {
+	.feature-grid--photo {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (min-width: 900px) and (max-width: 1199px) {
+	.feature-card--photo {
+		grid-template-columns: minmax(0, 1fr);
+		align-content: start;
+	}
+
+	.feature-card__photo {
+		height: auto;
+		min-height: 0;
+		aspect-ratio: 3 / 2;
+	}
+
+	.feature-card--photo .feature-card__body {
+		align-self: start;
+	}
 }
