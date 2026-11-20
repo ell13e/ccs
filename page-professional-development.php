@@ -30,21 +30,14 @@ $ccs_pd_name  = trim( (string) get_theme_mod( 'ccs_copy_pd_story_name', '' ) );
 	<?php
 	while ( have_posts() ) :
 		the_post();
+		/*
+		 * Redesigned (Nov 2026). The heading-beside-a-photo intro is gone: the
+		 * page's opening paragraph now sits under the sections' heading, and the
+		 * sections further down are the homepage's numbered accordion, in
+		 * place of the boxed one.
+		 */
+		$ccs_pd_open    = ccs_content_sections( apply_filters( 'the_content', get_the_content() ) );
 		get_template_part( 'template-parts/page-header' );
-		get_template_part(
-			'template-parts/careers/sub-page',
-			null,
-			array(
-				'id'          => 'development',
-				// Each careers page has its own photos: none is used twice across the section (user).
-				'photo'       => 'careers/child-cpr.webp',
-				'position'    => '50% 25%',
-				'alt'         => __( 'A trainer holding a child resuscitation manikin during a first aid session', 'ccs-wp-theme' ),
-				'title'       => ccs_copy( 'pd_intro_title' ),
-				'tabs_title'  => ccs_copy( 'pd_tabs_title' ),
-				'skip_topics' => true,
-			)
-		);
 
 		/*
 		 * Second pass (user: "this page could be so much better"). It was an
@@ -60,7 +53,7 @@ $ccs_pd_name  = trim( (string) get_theme_mod( 'ccs_copy_pd_story_name', '' ) );
 		$ccs_pd_badge  = array_map( 'trim', explode( '|', ccs_copy( 'pd_academy_badge' ), 3 ) );
 		?>
 
-		<section class="ccs-section ccs-section--tint pd-academy" aria-labelledby="pd-academy-heading">
+		<section class="ccs-section pd-academy" aria-labelledby="pd-academy-heading">
 			<div class="container container--lg">
 				<div class="ccs-media-split ccs-media-split--flip pd-academy__layout">
 					<div class="pd-academy__text">
@@ -92,7 +85,7 @@ $ccs_pd_name  = trim( (string) get_theme_mod( 'ccs_copy_pd_story_name', '' ) );
 		</section>
 
 		<?php if ( ! empty( $ccs_pd_rest ) ) : ?>
-			<section class="ccs-section careers-topics" aria-labelledby="development-topics-heading">
+			<section class="ccs-section ccs-section--tint careers-topics" aria-labelledby="development-topics-heading">
 				<div class="container container--lg">
 					<?php
 					get_template_part(
@@ -102,6 +95,8 @@ $ccs_pd_name  = trim( (string) get_theme_mod( 'ccs_copy_pd_story_name', '' ) );
 							'id'       => 'development',
 							'title'    => ccs_copy( 'pd_tabs_title' ),
 							'sections' => $ccs_pd_rest,
+							'numbered' => true,
+							'lede'     => $ccs_pd_open['intro'],
 						)
 					);
 					?>
@@ -144,7 +139,7 @@ $ccs_pd_name  = trim( (string) get_theme_mod( 'ccs_copy_pd_story_name', '' ) );
 		}
 		?>
 		<?php if ( '' !== $ccs_pd_story && '' !== $ccs_pd_name ) : ?>
-			<section class="ccs-section ccs-section--tint careers-story" aria-labelledby="careers-story-heading">
+			<section class="ccs-section ccs-section--flush-bottom careers-story" aria-labelledby="careers-story-heading">
 				<div class="container container--lg">
 					<figure class="careers-story__quote">
 						<h2 id="careers-story-heading" class="careers-story__label"><?php esc_html_e( 'My journey', 'ccs-wp-theme' ); ?></h2>

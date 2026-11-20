@@ -198,7 +198,7 @@ function ccs_copy_fields() {
 		'team_page_strip_title' => array( 'section' => 'p_team', 'label' => __( 'Careers prompt: heading', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'Want to work with us?', 'ccs-wp-theme' ) ),
 		'team_page_strip_text' => array( 'section' => 'p_team', 'label' => __( 'Careers prompt: text', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'We are always glad to hear from kind, reliable people who want to care well.', 'ccs-wp-theme' ) ),
 		'team_page_strip_button' => array( 'section' => 'p_team', 'label' => __( 'Careers prompt: button label', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'See careers', 'ccs-wp-theme' ) ),
-		'faqs_title' => array( 'section' => 'p_faqs', 'label' => __( 'Heading (put *asterisks* round the word to underline)', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'Questions families *ask*', 'ccs-wp-theme' ) ),
+		'faqs_title' => array( 'section' => 'p_faqs', 'label' => __( 'Heading (put *asterisks* round the word to underline)', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'Questions about care at *home*', 'ccs-wp-theme' ) ),
 		'faqs_box_title' => array( 'section' => 'p_faqs', 'label' => __( 'Help box heading', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'Question not here?', 'ccs-wp-theme' ) ),
 		'about_intro_title' => array( 'section' => 'p_about', 'label' => __( 'Heading (put *asterisks* round the word to underline)', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'Care that *fits* around your life', 'ccs-wp-theme' ) ),
 		'about_story_title' => array( 'section' => 'p_about', 'label' => __( 'Video section heading', 'ccs-wp-theme' ), 'type' => 'text', 'default' => __( 'Where it started', 'ccs-wp-theme' ) ),

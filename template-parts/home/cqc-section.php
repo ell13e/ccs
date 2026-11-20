@@ -42,7 +42,7 @@ $cqc_has_badge = file_exists( $cqc_badge );
 			 * read.
 			 */
 			?>
-			<p class="ccs-eyebrow"><?php echo esc_html( ccs_copy( 'cqc_eyebrow' ) ); ?></p>
+			<?php // No label above the heading (client, Nov 2026: the labels with a mint rule were "weird" and "ugly"; removed everywhere). ?>
 			<h2 id="home-cqc-heading" class="ccs-title">
 				<?php
 				// The word between *asterisks* gets the brush underline; ccs_copy_accent() escapes the rest.

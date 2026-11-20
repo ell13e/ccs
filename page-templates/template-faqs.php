@@ -38,62 +38,81 @@ $ccs_contact   = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' 
 		$ccs_intro = $ccs_split['intro'];
 		$ccs_faqs  = $ccs_split['sections'];
 		?>
-		<?php get_template_part( 'template-parts/page-header' ); ?>
+		<?php
+		/*
+		 * Redesigned to match the homepage (Nov 2026). The title-left split
+		 * with boxed rows was "hated". Now: the standard header, a field
+		 * that narrows the questions as you type (the help-centre pattern from
+		 * the Pinterest research), the questions as the homepage's numbered
+		 * accordion in one centred column, and "Question not here?" as the
+		 * homepage's prompt card with the phone as its button.
+		 */
+		get_template_part( 'template-parts/page-header' );
+		?>
 
-		<section class="ccs-section ccs-section--flush-bottom faq-section" aria-labelledby="faq-heading">
+		<section class="ccs-section faq-section" aria-labelledby="faq-heading">
 			<div class="container container--lg">
-				<div class="ccs-split faq-split">
-
-					<header class="ccs-head">
-						<h2 id="faq-heading" class="ccs-title">
-							<?php
-							echo ccs_copy_accent( 'faqs_title' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_copy_accent().
-							?>
-						</h2>
-						<?php if ( trim( wp_strip_all_tags( $ccs_intro ) ) !== '' ) : ?>
-							<div class="ccs-lede ccs-lede--prose"><?php echo wp_kses_post( $ccs_intro ); ?></div>
-						<?php endif; ?>
-
-						<?php if ( $ccs_phone_tel ) : ?>
-							<div class="faq-ask">
-								<span class="ccs-badge ccs-badge--sm"><?php echo ccs_icon( 'question' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
-								<div>
-									<p class="faq-ask__title"><?php echo esc_html( ccs_copy( 'faqs_box_title' ) ); ?></p>
-									<p class="faq-ask__text">
-										<?php
-										printf(
-											/* translators: 1: phone link, 2: contact page link. */
-											esc_html__( 'Call %1$s or %2$s.', 'ccs-wp-theme' ),
-											'<a href="' . esc_url( 'tel:' . $ccs_phone_tel ) . '">' . esc_html( $ccs_phone ) . '</a>',
-											'<a href="' . esc_url( $ccs_contact ) . '">' . esc_html__( 'send us a message', 'ccs-wp-theme' ) . '</a>'
-										);
-										?>
-									</p>
-								</div>
-							</div>
-						<?php endif; ?>
-					</header>
-
-					<article id="post-<?php the_ID(); ?>" <?php post_class( 'page-content' ); ?>>
-						<?php if ( ! empty( $ccs_faqs ) ) : ?>
-							<div class="ccs-faq">
-								<?php foreach ( $ccs_faqs as $ccs_i => $ccs_faq ) : ?>
-									<details class="ccs-faq__item" name="faqs"<?php echo 0 === $ccs_i ? ' open' : ''; ?>>
-										<summary class="ccs-faq__q"><?php echo esc_html( $ccs_faq['heading'] ); ?></summary>
-										<div class="ccs-faq__a"><?php echo $ccs_faq['body']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content output, printed as the_content() would. ?></div>
-									</details>
-								<?php endforeach; ?>
-							</div>
-						<?php else : ?>
-							<div class="page-body page-body--flush entry-content">
-								<?php echo $ccs_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content output, printed as the_content() would. ?>
-							</div>
-						<?php endif; ?>
-					</article>
-
-				</div>
+				<article id="post-<?php the_ID(); ?>" <?php post_class( 'page-content' ); ?>>
+					<?php if ( ! empty( $ccs_faqs ) ) : ?>
+						<header class="ccs-head ccs-head--center">
+							<h2 id="faq-heading" class="ccs-title">
+								<?php
+								echo ccs_copy_accent( 'faqs_title' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_copy_accent().
+								?>
+							</h2>
+							<?php if ( trim( wp_strip_all_tags( $ccs_intro ) ) !== '' ) : ?>
+								<div class="ccs-lede"><?php echo wp_kses_post( $ccs_intro ); ?></div>
+							<?php endif; ?>
+						</header>
+						<div class="hub__search faq-find" role="search">
+							<label class="screen-reader-text" for="faq-search"><?php esc_html_e( 'Search the questions', 'ccs-wp-theme' ); ?></label>
+							<span class="hub__search-icon" aria-hidden="true"><?php echo ccs_icon( 'search' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
+							<input type="search" id="faq-search" class="hub__search-input" placeholder="<?php esc_attr_e( 'Search the questions', 'ccs-wp-theme' ); ?>" autocomplete="off" data-ccs-filter="#faq-list">
+						</div>
+						<?php
+						$ccs_faq_items = array();
+						foreach ( $ccs_faqs as $ccs_faq_n => $ccs_faq ) {
+							// An id each, so the resources hub can link straight to a question.
+							$ccs_faq_items[] = array( 'heading' => $ccs_faq['heading'], 'body' => ccs_mark_link_lines( $ccs_faq['body'] ), 'id' => 'faq-' . ( $ccs_faq_n + 1 ) );
+						}
+						get_template_part( 'template-parts/num-acc', null, array( 'items' => $ccs_faq_items, 'name' => 'faqs', 'id' => 'faq-list', 'class' => 'num-acc--center' ) );
+						?>
+						<p class="num-acc__empty" data-ccs-filter-empty hidden><?php esc_html_e( 'No question matches that. Try another word, or ask us below.', 'ccs-wp-theme' ); ?></p>
+					<?php else : ?>
+						<h2 id="faq-heading" class="screen-reader-text"><?php echo esc_html( get_the_title() ); ?></h2>
+						<div class="page-body page-body--flush entry-content">
+							<?php echo $ccs_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content output, printed as the_content() would. ?>
+						</div>
+					<?php endif; ?>
+				</article>
 			</div>
 		</section>
+
+		<?php if ( $ccs_phone_tel ) : ?>
+			<section class="ccs-section ccs-section--sm ccs-section--tint faq-ask-section">
+				<div class="container container--lg">
+					<div class="prompt-card">
+						<span class="ccs-badge" aria-hidden="true"><?php echo ccs_icon( 'question' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
+						<div>
+							<h2 class="prompt-card__title"><?php echo esc_html( ccs_copy( 'faqs_box_title' ) ); ?></h2>
+							<p class="prompt-card__text">
+								<?php
+								printf(
+									/* translators: 1: phone link, 2: contact page link. */
+									esc_html__( 'Call %1$s or %2$s.', 'ccs-wp-theme' ),
+									'<a href="' . esc_url( 'tel:' . $ccs_phone_tel ) . '">' . esc_html( $ccs_phone ) . '</a>',
+									'<a href="' . esc_url( $ccs_contact ) . '">' . esc_html__( 'send us a message', 'ccs-wp-theme' ) . '</a>'
+								);
+								?>
+							</p>
+						</div>
+						<div class="prompt-card__actions">
+							<a class="btn btn-primary" href="<?php echo esc_url( $ccs_contact ); ?>"><?php esc_html_e( 'Book a free consultation', 'ccs-wp-theme' ); ?></a>
+						</div>
+					</div>
+				</div>
+			</section>
+		<?php endif; ?>
 		<?php
 	endwhile;
 	?>

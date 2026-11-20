@@ -35,6 +35,8 @@
 	var closeLabel = labels.closeMenu || 'Close menu';
 	var expandLabel = labels.expandSubmenu || 'Expand submenu';
 	var collapseLabel = labels.collapseSubmenu || 'Collapse submenu';
+	var overviewLabel = labels.overview || '%s overview';
+	var DESKTOP_OPEN_CLASS = 'is-open';
 
 	function isMobile() {
 		return window.innerWidth < MOBILE_BREAKPOINT;
@@ -175,6 +177,34 @@
 		setScrollLock(false);
 	});
 
+	/* Close the wide-screen panels opened by tap (all, or all but one). */
+	function closeDesktopPanels(except) {
+		var closed = false;
+		menus.forEach(function(list) {
+			Array.prototype.forEach.call(list.querySelectorAll('.menu-item.' + DESKTOP_OPEN_CLASS), function(open) {
+				if (open === except) return;
+				open.classList.remove(DESKTOP_OPEN_CLASS);
+				var a = open.querySelector(':scope > a');
+				if (a) a.removeAttribute('aria-expanded');
+				closed = true;
+			});
+		});
+		return closed;
+	}
+
+	/* A tap outside an open panel, or Escape, closes it. */
+	document.addEventListener('click', function(e) {
+		if (isMobile()) return;
+		if (e.target.closest && e.target.closest('.menu-item.' + DESKTOP_OPEN_CLASS)) return;
+		closeDesktopPanels(null);
+	});
+	document.addEventListener('keydown', function(e) {
+		if (e.key === 'Escape') closeDesktopPanels(null);
+	});
+	window.addEventListener('resize', function() {
+		if (isMobile()) closeDesktopPanels(null);
+	});
+
 	/* Submenu accordion: inject toggle buttons and bind, for every menu present */
 	var submenuIndex = 0;
 	menus.forEach(function(menu) {
@@ -210,15 +240,45 @@
 				btn.setAttribute('aria-label', expanded ? collapseLabel : expandLabel);
 			});
 
-			/* Keyboard: Enter/Space on link - on mobile, prevent default and expand if has children */
+			/*
+			 * In the drawer the whole row opens the section (Nov 2026). People tap
+			 * the name and the arrow interchangeably, and tapping the name used to
+			 * leave for the section's page instead of showing what was inside. The
+			 * section's own page is the first link inside, so it is still one tap
+			 * away once the section is open.
+			 */
+			if (menu.id === 'mobile-menu-list' && link.getAttribute('href') && link.getAttribute('href') !== '#') {
+				var overview = document.createElement('li');
+				overview.className = 'menu-item nav-overview';
+				var overviewLink = document.createElement('a');
+				overviewLink.className = link.className;
+				overviewLink.href = link.getAttribute('href');
+				overviewLink.textContent = overviewLabel.replace('%s', link.textContent.trim());
+				overview.appendChild(overviewLink);
+				sub.insertBefore(overview, sub.firstChild);
+			}
+
 			link.addEventListener('click', function(e) {
-				if (!isMobile() || !item.classList.contains('menu-item-has-children')) return;
-				if (link.getAttribute('href') === '#' || link.getAttribute('href') === '') {
+				if (isMobile()) {
 					e.preventDefault();
-					item.classList.toggle(SUBMENU_EXPANDED_CLASS);
-					var exp = item.classList.contains(SUBMENU_EXPANDED_CLASS);
+					var exp = item.classList.toggle(SUBMENU_EXPANDED_CLASS);
 					btn.setAttribute('aria-expanded', exp);
 					btn.setAttribute('aria-label', exp ? collapseLabel : expandLabel);
+					return;
+				}
+				/*
+				 * Wide screens with no mouse (a tablet on its side, a touch laptop):
+				 * the panels open on hover, which a finger cannot do. The first tap
+				 * on a name opens its panel; a second tap follows the link. Mouse
+				 * clicks are untouched: hover has already opened the panel.
+				 */
+				var byTouch = e.pointerType ? e.pointerType !== 'mouse' : (window.matchMedia && window.matchMedia('(hover: none)').matches);
+				if (!byTouch || e.detail === 0) return;
+				if (!item.classList.contains(DESKTOP_OPEN_CLASS)) {
+					e.preventDefault();
+					closeDesktopPanels(item);
+					item.classList.add(DESKTOP_OPEN_CLASS);
+					link.setAttribute('aria-expanded', 'true');
 				}
 			});
 		});

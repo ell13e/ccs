@@ -102,7 +102,7 @@ $ccs_switch_faqs = array(
 		<div class="contact-main__inner container container--lg">
 
 			<div class="contact-form-card">
-				<p class="ccs-eyebrow"><?php echo esc_html( ccs_copy( 'switch_form_eyebrow' ) ); ?></p>
+				<?php // No label above the heading (client, Nov 2026: the labels with a mint rule were "weird" and "ugly"; removed everywhere). ?>
 				<h2 id="switch-form-heading" class="contact-form-card__title"><?php echo esc_html( ccs_copy( 'switch_form_title' ) ); ?></h2>
 				<p id="switch-form-desc" class="contact-form-card__desc"><?php echo esc_html( ccs_copy( 'switch_form_text' ) ); ?></p>
 

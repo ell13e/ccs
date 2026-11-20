@@ -72,7 +72,7 @@ $ccs_links = array(
 	<div class="container container--lg">
 
 		<header class="costs-head">
-			<p class="ccs-eyebrow"><?php echo esc_html( ccs_copy( 'costs_eyebrow' ) ); ?></p>
+			<?php // No label above the heading (client, Nov 2026: the labels with a mint rule were "weird" and "ugly"; removed everywhere). ?>
 			<h2 id="home-costs-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'costs_title' ) ); ?></h2>
 			<p class="rate-note"><?php echo esc_html( ccs_copy( 'costs_quote_note' ) ); ?></p>
 		</header>

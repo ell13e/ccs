@@ -408,7 +408,11 @@ a.card {
 	position: absolute;
 	z-index: -1;
 	top: 50%;
-	right: clamp(1.5rem, 4vw, 5rem);
+	/* Its right edge is the content column's right edge (Nov 2026, client:
+	   "does it make the hero look too right sided"). It was set from the
+	   window's edge, so on wide screens it drifted out past the column and
+	   the header's buttons, and read as hanging off the side. */
+	right: max(var(--space-lg), (100% - var(--content-width-lg)) / 2 + var(--space-lg));
 	width: min(26rem, 38vw);
 	aspect-ratio: 459 / 213;
 	translate: 0 -50%;

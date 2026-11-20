@@ -1,0 +1,3155 @@
+/**
+ * Inner pages (Nov 2026 redesign of the services, resources, costs, article
+ * and careers pages).
+ *
+ * The client's standard is the pages she is happy with (About, Getting
+ * started, Switch, Areas) and the homepage. So these pages keep the standard
+ * page header and are built from the homepage's own objects, restated here
+ * so inner pages do not depend on homepage.css, one distinctive object per
+ * section and never the same one twice on a page:
+ *
+ *   .num-acc       the numbered accordion from "What we do differently"
+ *   .num-panel     numbered or icon cells in one panel, as "How care starts"
+ *   .point-cards   points as cards with a ticked badge on the top edge
+ *   .photo-acc     one photo beside text or the accordion; .photo-tab laps it
+ *   .care-grid     every service as the same card in one even grid
+ *   .cost-call     prices beside the call-back form, one card in two halves
+ *   .guides        a side menu and a grid of guides, each opening in place
+ *   .hub           a searchable, filterable list; .prompt-card a closing
+ *                  question
+ *   .rate-finder   one figure for the care, days and time chosen
+ *   .article-*     the news article
+ *
+ * Tokens only; sizes match the homepage's computed styles (measured in the
+ * browser at 1440px). Kit table: docs/BUILD-STANDARD.md section 3.
+ */
+
+/* The article's photograph laps over the foot of its header band. */
+.page-hero--article {
+	padding-bottom: clamp(6rem, 4.5rem + 5vw, 9rem);
+}
+
+.page-hero--article .page-hero__text {
+	max-width: 52rem;
+}
+
+.hero-lap {
+	position: relative;
+	z-index: 2;
+	margin-top: calc(-1 * clamp(4.5rem, 3.5rem + 4vw, 7rem));
+}
+
+/* The FAQ search: the Resources field, the width of the list it filters and
+   sitting directly on it, so heading, field and questions share one edge
+   and one rhythm (it was a narrower lilac pill floating between them). */
+.faq-find {
+	max-width: 52rem;
+	margin: 0 auto var(--space-md);
+}
+
+.faq-section .ccs-head {
+	margin-bottom: var(--space-lg);
+}
+
+/* =========================================================================
+   Numbered accordion (the homepage's "What we do differently")
+   ========================================================================= */
+.num-acc {
+	border-top: 1px solid var(--color-hairline);
+}
+
+.num-acc__item {
+	border-bottom: 1px solid var(--color-hairline);
+}
+
+.num-acc__q {
+	position: relative;
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-md);
+	padding: 1.25rem 2.75rem 1.25rem 0;
+	cursor: pointer;
+	list-style: none;
+}
+
+.num-acc__q::-webkit-details-marker {
+	display: none;
+}
+
+.num-acc__q::before,
+.num-acc__q::after {
+	content: "";
+	position: absolute;
+	right: 0.5rem;
+	top: 50%;
+	width: 0.875rem;
+	height: 1.5px;
+	background: var(--color-primary);
+	transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.num-acc__q::after {
+	transform: rotate(90deg);
+}
+
+.num-acc__item[open] > .num-acc__q::after {
+	transform: rotate(0deg);
+}
+
+.num-acc__q:focus-visible {
+	outline: var(--focus-ring);
+	outline-offset: 4px;
+	border-radius: var(--radius-sm);
+}
+
+.num-acc__num {
+	flex: none;
+	min-width: 1.75rem;
+	font-family: var(--font-family-heading);
+	font-size: 1.0625rem;
+	color: var(--color-accent);
+	font-variant-numeric: tabular-nums;
+}
+
+.num-acc__title {
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.1875rem, 1.05rem + 0.55vw, 1.5rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.3;
+	color: var(--color-ink);
+}
+
+@media (hover: hover) {
+	.num-acc__q:hover .num-acc__title {
+		color: var(--color-primary);
+	}
+}
+
+.num-acc__a {
+	padding: 0 2.75rem 1.5rem calc(1.75rem + var(--space-md));
+	font-size: var(--text-md);
+	line-height: 1.7;
+	color: var(--color-ink-soft);
+}
+
+.num-acc__a > :first-child { margin-top: 0; }
+.num-acc__a > :last-child { margin-bottom: 0; }
+
+.num-acc__a a {
+	color: var(--color-primary);
+	text-decoration: underline;
+	text-underline-offset: 0.18em;
+}
+
+@media (max-width: 599px) {
+	.num-acc__a {
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+
+/* Answers open and close smoothly, as the homepage's accordion does
+   (components.css); browsers without interpolate-size open at once. */
+.num-acc__item::details-content {
+	block-size: 0;
+	overflow: clip;
+	transition:
+		block-size 320ms var(--ease-out, ease),
+		content-visibility 320ms allow-discrete;
+}
+
+.num-acc__item[open]::details-content {
+	block-size: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.num-acc__item::details-content {
+		transition: none;
+	}
+}
+
+/* Questions as full-width rows; the open one turns deep plum. */
+.num-acc--cards {
+	max-width: 64rem;
+	margin-inline: auto;
+	border-top: 0;
+}
+
+.num-acc--cards .num-acc__item {
+	margin-bottom: 0.625rem;
+	border: 0;
+	border-radius: var(--radius-lg);
+	background: var(--color-band-tint);
+	transition: background-color var(--duration-normal) var(--ease-out);
+}
+
+.ccs-section--tint .num-acc--cards .num-acc__item {
+	background: #fff;
+}
+
+.num-acc--cards .num-acc__num {
+	display: none;
+}
+
+.num-acc--cards .num-acc__q {
+	padding: 1.125rem 3.5rem 1.125rem clamp(1.125rem, 1rem + 1vw, 1.75rem);
+}
+
+.num-acc--cards .num-acc__q::before,
+.num-acc--cards .num-acc__q::after {
+	right: 1.5rem;
+}
+
+.num-acc--cards .num-acc__a {
+	padding: 0 3.5rem 1.375rem clamp(1.125rem, 1rem + 1vw, 1.75rem);
+}
+
+.num-acc--cards .num-acc__item[open] {
+	background: var(--color-band-deepest);
+}
+
+.num-acc--cards .num-acc__item[open] .num-acc__title,
+.num-acc--cards .num-acc__item[open] .num-acc__a {
+	color: #fff;
+}
+
+.num-acc--cards .num-acc__item[open] .num-acc__a a {
+	color: var(--color-secondary);
+}
+
+.num-acc--cards .num-acc__item[open] > .num-acc__q::before,
+.num-acc--cards .num-acc__item[open] > .num-acc__q::after {
+	background: #fff;
+}
+
+.num-acc--cards .num-acc__item[open] .num-acc__q:focus-visible {
+	outline-color: var(--color-secondary);
+}
+
+.num-acc--center {
+	max-width: 52rem;
+	margin-inline: auto;
+}
+
+.num-acc__empty {
+	margin: var(--space-lg) 0 0;
+	text-align: center;
+	color: var(--color-ink-soft);
+}
+
+/* Photo beside the accordion: the homepage composition. */
+.photo-acc {
+	display: grid;
+	gap: var(--space-xl);
+	align-items: center;
+}
+
+@media (min-width: 960px) {
+	.photo-acc {
+		grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+		gap: clamp(3rem, 6vw, 5.5rem);
+	}
+
+	.photo-acc--flip > :first-child {
+		order: 2;
+	}
+}
+
+/* Beside an accordion the columns are top-aligned: centred, the whole text
+   column moved up and down as answers opened (client: "jumpy"; the homepage
+   had the same fault). Only the list's own foot moves now. */
+.photo-acc:has(.num-acc) {
+	align-items: start;
+}
+
+.photo-acc__photo {
+	position: relative;
+	margin: 0;
+	aspect-ratio: 4 / 5;
+	border-radius: var(--radius-2xl);
+	box-shadow: var(--shadow-float);
+	background: var(--color-tile-tint);
+}
+
+.photo-acc__photo img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: inherit;
+}
+
+@media (max-width: 959px) {
+	.photo-acc__photo {
+		aspect-ratio: 4 / 3;
+		max-width: 34rem;
+	}
+}
+
+.photo-acc__body > .ccs-title {
+	margin-bottom: var(--space-lg);
+}
+
+.photo-acc__body > .ccs-lede,
+.photo-acc__lede {
+	margin: calc(-1 * var(--space-sm)) 0 var(--space-lg);
+	font-size: var(--lede-size);
+	line-height: 1.7;
+	color: var(--color-ink-soft);
+}
+
+.photo-acc__lede > :first-child { margin-top: 0; }
+.photo-acc__lede > :last-child { margin-bottom: 0; }
+
+/* A tab lapping the photo's corner: a figure and what it is. */
+.photo-tab {
+	position: absolute;
+	right: -0.75rem;
+	bottom: 1.75rem;
+	display: grid;
+	grid-template-columns: auto auto;
+	align-items: center;
+	column-gap: 0.75rem;
+	margin: 0;
+	padding: 0.875rem 1.25rem;
+	border-radius: var(--radius-lg);
+	background: #fff;
+	box-shadow: var(--shadow-float);
+	color: var(--color-ink);
+}
+
+.photo-tab strong {
+	grid-row: span 2;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1;
+	color: var(--color-primary);
+}
+
+.photo-tab span {
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-semibold);
+	line-height: 1.2;
+}
+
+.photo-tab small {
+	font-size: var(--text-xs);
+	color: var(--color-ink-soft);
+	line-height: 1.2;
+}
+
+@media (max-width: 599px) {
+	.photo-tab {
+		right: 0.75rem;
+		bottom: 0.75rem;
+	}
+}
+
+/* =========================================================================
+   Numbered cells in one panel (the homepage's "How care starts")
+   ========================================================================= */
+.num-panel {
+	display: grid;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-radius: var(--radius-2xl);
+	background: var(--color-band-tint);
+	overflow: hidden;
+}
+
+.ccs-section--tint .num-panel {
+	background: #fff;
+	box-shadow: var(--shadow-float);
+}
+
+.num-panel__cell {
+	padding: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+	border-top: 1px solid var(--color-hairline);
+}
+
+.num-panel__cell:first-child {
+	border-top: 0;
+}
+
+@media (min-width: 720px) {
+	.num-panel {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1px;
+		background: var(--color-hairline-strong);
+	}
+
+	.num-panel__cell {
+		border: 0;
+		background: var(--color-band-tint);
+	}
+
+	.ccs-section--tint .num-panel__cell {
+		background: #fff;
+	}
+
+	/* An odd last cell spans the row, so the panel never ends on a hole. */
+	.num-panel__cell:last-child:nth-child(odd) {
+		grid-column: 1 / -1;
+	}
+}
+
+@media (min-width: 1024px) {
+	.num-panel--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+	.num-panel--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+	.num-panel--3 .num-panel__cell:last-child:nth-child(odd),
+	.num-panel--4 .num-panel__cell:last-child:nth-child(odd) {
+		grid-column: auto;
+	}
+}
+
+.num-panel__num,
+.num-panel__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.5rem;
+	height: 2.5rem;
+	margin-bottom: var(--space-md);
+	border-radius: 50%;
+	background: var(--color-primary);
+	color: #fff;
+	font-family: var(--font-family-heading);
+	font-size: 1.0625rem;
+}
+
+.num-panel__icon {
+	background: var(--color-badge);
+	color: var(--color-primary);
+}
+
+.ccs-section--tint .num-panel__icon {
+	background: var(--color-band-tint);
+}
+
+.num-panel__icon .ccs-icon {
+	width: 1.25rem;
+	height: 1.25rem;
+}
+
+.num-panel__title {
+	margin: 0 0 0.5rem;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.1875rem, 1.1rem + 0.4vw, 1.375rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.3;
+	color: var(--color-ink);
+}
+
+.num-panel__text {
+	margin: 0;
+	font-size: var(--text-base);
+	line-height: 1.65;
+	color: var(--color-ink-soft);
+}
+
+.num-panel__text > :first-child { margin-top: 0; }
+.num-panel__text > :last-child { margin-bottom: 0; }
+
+.num-panel__text a {
+	color: var(--color-primary);
+	text-decoration: underline;
+	text-underline-offset: 0.18em;
+}
+
+/* A panel lapping the hero keeps its own ground and gains the strip's shadow. */
+.num-panel--float {
+	box-shadow: 0 2px 4px rgba(43, 35, 71, 0.06), 0 26px 60px -28px rgba(43, 35, 71, 0.45);
+}
+
+.num-panel--float,
+.num-panel--float .num-panel__cell {
+	background: #fff;
+}
+
+@media (min-width: 720px) {
+	.num-panel--float {
+		background: var(--color-hairline-strong);
+	}
+}
+
+
+
+/* Points as cards, each with a badge lapping its top edge (the homepage's
+   service-card badge). */
+.point-cards {
+	display: grid;
+	gap: calc(var(--space-lg) + 1.25rem) var(--space-md);
+	margin: 1.75rem 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+@media (min-width: 720px) {
+	.point-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* One point on its own sits centred at reading width, not alone in a
+   two-column row beside a hole. */
+.point-cards--1 {
+	grid-template-columns: minmax(0, 40rem);
+	justify-content: center;
+}
+
+@media (min-width: 1024px) {
+	.point-cards--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+	.point-cards--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+.point-card {
+	position: relative;
+	padding: 2.75rem clamp(1.25rem, 1rem + 1vw, 1.75rem) clamp(1.5rem, 1.2rem + 1vw, 2rem);
+	border-radius: var(--radius-2xl);
+	background: var(--color-band-tint);
+}
+
+.ccs-section--tint .point-card {
+	background: #fff;
+	box-shadow: var(--shadow-float);
+}
+
+.point-card__badge {
+	position: absolute;
+	left: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+	top: -1.5rem;
+	width: 3rem;
+	height: 3rem;
+	background: var(--color-secondary);
+	color: var(--color-ink);
+}
+
+.point-card__badge .ccs-icon {
+	width: 1.25rem;
+	height: 1.25rem;
+}
+
+.point-card__title {
+	margin: 0 0 0.5rem;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.1875rem, 1.1rem + 0.4vw, 1.375rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.3;
+	color: var(--color-ink);
+}
+
+.point-card__text {
+	margin: 0;
+	font-size: var(--text-base);
+	line-height: 1.65;
+	color: var(--color-ink-soft);
+}
+
+/* Ticked points in one panel, two across. */
+.tick-panel {
+	display: grid;
+	gap: 0.875rem var(--space-xl);
+	max-width: 60rem;
+	margin: 0 auto;
+	padding: clamp(1.5rem, 1.1rem + 2vw, 2.75rem);
+	list-style: none;
+	border-radius: var(--radius-2xl);
+	background: var(--color-band-tint);
+}
+
+.ccs-section--tint .tick-panel {
+	background: #fff;
+	box-shadow: var(--shadow-float);
+}
+
+@media (min-width: 720px) {
+	.tick-panel {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.tick-panel li {
+	display: flex;
+	gap: 0.75rem;
+	align-items: flex-start;
+	font-size: var(--text-md);
+	line-height: 1.55;
+	color: var(--color-ink);
+}
+
+.tick-panel .ccs-icon {
+	flex: none;
+	width: 1.5rem;
+	height: 1.5rem;
+	margin-top: 0.1rem;
+	padding: 0.25rem;
+	border-radius: 50%;
+	background: var(--color-secondary);
+	color: var(--color-ink);
+}
+
+/* Section text set under a centred head. */
+.inner-prose {
+	max-width: 44rem;
+	margin: 0 auto var(--space-xl);
+	text-align: center;
+	font-size: var(--lede-size);
+	line-height: 1.7;
+	color: var(--color-ink-soft);
+}
+
+.inner-prose > :first-child { margin-top: 0; }
+.inner-prose > :last-child { margin-bottom: 0; }
+
+@media (max-width: 599px) {
+	.inner-prose {
+		text-align: left;
+	}
+}
+
+/* =========================================================================
+   Prompt card (the homepage's "Not sure what's right for you?")
+   ========================================================================= */
+.prompt-card {
+	display: grid;
+	gap: var(--space-md);
+	align-items: center;
+	padding: clamp(1.5rem, 1.1rem + 1.8vw, 2.25rem) var(--card-pad);
+	border-radius: var(--radius-2xl);
+	background: #fff;
+	box-shadow: var(--shadow-float);
+}
+
+.ccs-section:not(.ccs-section--tint) .prompt-card {
+	background: var(--color-band-tint);
+	box-shadow: none;
+}
+
+@media (min-width: 860px) {
+	.prompt-card {
+		grid-template-columns: auto minmax(0, 1fr) auto;
+		gap: var(--space-lg);
+	}
+}
+
+.prompt-card__title {
+	margin: 0;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.25;
+	color: var(--color-ink);
+}
+
+.prompt-card__text {
+	margin: 0.375rem 0 0;
+	font-size: var(--text-base);
+	line-height: 1.6;
+	color: var(--color-ink-soft);
+}
+
+.prompt-card__text a {
+	color: var(--color-primary);
+	font-weight: var(--font-weight-semibold);
+	text-decoration: underline;
+	text-underline-offset: 0.18em;
+}
+
+.prompt-card__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-sm);
+}
+
+.inner-gap {
+	margin-top: var(--space-2xl);
+}
+
+/* =========================================================================
+   Services hub: one even grid of cards (structure after All Care's
+   services page: photo, name, two lines, "See more")
+   ========================================================================= */
+.care-head {
+	max-width: 50rem;
+	margin-bottom: var(--space-3xl);
+}
+
+.care-head .ccs-title {
+	margin-bottom: var(--space-md);
+}
+
+.care-head__lede {
+	font-size: var(--lede-size);
+	line-height: 1.7;
+	color: var(--color-ink-soft);
+}
+
+.care-head__lede > :first-child { margin-top: 0; }
+.care-head__lede > :last-child { margin-bottom: 0; }
+
+/* A group's title: a full section heading with its count, over a rule. */
+.care-group__head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 0.25rem var(--space-md);
+	margin-bottom: var(--space-xl);
+	padding-bottom: var(--space-md);
+	border-bottom: 1px solid var(--color-hairline-strong);
+}
+
+.care-group__title {
+	margin: 0;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.875rem, 1.4rem + 2vw, 2.75rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.15;
+	letter-spacing: -0.015em;
+	color: var(--color-ink);
+	scroll-margin-top: 7rem;
+}
+
+.care-group__count {
+	margin: 0;
+	font-size: var(--text-base);
+	color: var(--color-ink-soft);
+}
+
+.care-grid {
+	display: grid;
+	gap: var(--space-lg);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+@media (min-width: 640px) {
+	.care-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (min-width: 1024px) {
+	.care-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+/* Every card the same: media on top in one ratio, then the text, and the
+   button always on the card's foot so a row of cards lines up. */
+.care-card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	border-radius: var(--radius-2xl);
+	background: #fff;
+	box-shadow: var(--shadow-float);
+	overflow: hidden;
+	transition: transform var(--duration-normal) var(--ease-out), box-shadow var(--duration-normal) var(--ease-out);
+}
+
+@media (hover: hover) {
+	.care-card:hover {
+		transform: translateY(-3px);
+		box-shadow: var(--shadow-float-hover);
+	}
+}
+
+.care-card__media {
+	aspect-ratio: 3 / 2;
+	background: var(--color-tile-tint);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--color-primary);
+}
+
+.care-card__media {
+	position: relative;
+	flex: none;
+	overflow: hidden;
+}
+
+/* Out of flow, so a tall photo cannot stretch its tile past the shared ratio. */
+.care-card__media img {
+	position: absolute;
+	inset: 0;
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.care-card__media--icon .ccs-icon {
+	width: 3.5rem;
+	height: 3.5rem;
+	opacity: 0.6;
+}
+
+.care-card__body {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: var(--card-pad-sm);
+}
+
+.care-card__title {
+	margin: 0 0 0.5rem;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.25;
+	color: var(--color-ink);
+}
+
+.care-card__link {
+	color: inherit;
+	text-decoration: none;
+}
+
+/* Whole card is the target; the title stays the accessible name. */
+.care-card__link::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+}
+
+.care-card__link:focus-visible {
+	outline: none;
+}
+
+.care-card__link:focus-visible::after {
+	outline: var(--focus-ring);
+	outline-offset: 3px;
+}
+
+.care-card__text {
+	margin: 0 0 var(--space-md);
+	font-size: var(--text-base);
+	line-height: 1.6;
+	color: var(--color-ink-soft);
+}
+
+.care-card__cue {
+	margin-top: auto;
+}
+
+/* =========================================================================
+   Single service
+   ========================================================================= */
+.svc-about__text .ccs-title {
+	margin-bottom: var(--space-md);
+	font-size: clamp(1.875rem, 1.4rem + 1.9vw, 2.625rem);
+	text-wrap: balance;
+}
+
+.svc-about__lede,
+.svc-about__text p {
+	margin: 0 0 1em;
+	font-size: var(--lede-size);
+	line-height: 1.75;
+	color: var(--color-ink-soft);
+}
+
+.svc-about__sub {
+	margin: 1.5em 0 0.5em;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+	font-weight: var(--font-weight-medium);
+	color: var(--color-ink);
+}
+
+.svc-about__text > :last-child {
+	margin-bottom: 0;
+}
+
+.svc-about--center {
+	max-width: 46rem;
+	margin-inline: auto;
+	text-align: center;
+}
+
+@media (max-width: 599px) {
+	.svc-about--center {
+		text-align: left;
+	}
+}
+
+/* Opening text beside one rounded photograph. The same on every service
+   page: heading and photo start on one line, and the photo's frame is one
+   size and shape whichever photo is in it. */
+.svc-intro {
+	display: grid;
+	gap: var(--space-xl);
+	align-items: start;
+}
+
+@media (min-width: 960px) {
+	.svc-intro:not(.svc-intro--text) {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 30rem);
+		gap: clamp(3rem, 6vw, 5.5rem);
+	}
+}
+
+.svc-intro--text {
+	max-width: 46rem;
+}
+
+.svc-intro__photo {
+	width: 100%;
+	max-width: 30rem;
+	aspect-ratio: 5 / 4;
+	margin: 0;
+	border-radius: var(--radius-2xl);
+	box-shadow: var(--shadow-float);
+	background: var(--color-tile-tint);
+	overflow: hidden;
+}
+
+.svc-intro__photo img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+/* What the care includes: soft tiles, two across, an icon beside the words. */
+.svc-help__part + .svc-help__part {
+	margin-top: var(--space-2xl);
+}
+
+.help-tiles {
+	display: grid;
+	gap: var(--space-md);
+	max-width: 68rem;
+	margin: 0 auto;
+	padding: 0;
+	list-style: none;
+}
+
+/* Two across on every page, whatever the count, each row's tiles one height;
+   an odd last tile runs the full width, so the grid's edges are always the
+   same and there is never a hole or a tile floating in the middle. */
+@media (min-width: 720px) {
+	.help-tiles {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		grid-auto-rows: 1fr;
+	}
+
+	.help-tile:last-child:nth-child(odd) {
+		grid-column: 1 / -1;
+	}
+}
+
+.help-tile {
+	display: flex;
+	gap: var(--space-md);
+	align-items: center;
+	min-height: 6.5rem;
+	padding: var(--card-pad-sm);
+	border-radius: var(--radius-2xl);
+	background: #fff;
+	box-shadow: var(--shadow-float);
+}
+
+.ccs-section:not(.ccs-section--tint) .help-tile {
+	background: var(--color-band-tint);
+	box-shadow: none;
+}
+
+.help-tile__icon {
+	flex: none;
+	width: 3rem;
+	height: 3rem;
+	background: var(--color-band-tint);
+	color: var(--color-primary);
+}
+
+.ccs-section:not(.ccs-section--tint) .help-tile__icon {
+	background: #fff;
+}
+
+.help-tile__icon .ccs-icon {
+	width: 1.375rem;
+	height: 1.375rem;
+}
+
+.help-tile__title {
+	margin: 0;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.1875rem, 1.1rem + 0.4vw, 1.375rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.3;
+	color: var(--color-ink);
+}
+
+.help-tile__text {
+	margin: 0.25rem 0 0;
+	font-size: var(--text-base);
+	line-height: 1.6;
+	color: var(--color-ink-soft);
+}
+
+/* Three steps in a row with an arrow between them. */
+.flow-steps {
+	display: grid;
+	gap: var(--space-xl);
+	max-width: 64rem;
+	margin: 0 auto;
+	padding: 0;
+	list-style: none;
+	text-align: center;
+}
+
+@media (min-width: 860px) {
+	.flow-steps {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: clamp(2rem, 5vw, 4.5rem);
+	}
+}
+
+.flow-step {
+	position: relative;
+}
+
+.flow-step__num {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 4.5rem;
+	height: 4.5rem;
+	margin-bottom: var(--space-md);
+	border-radius: 50%;
+	background: var(--color-badge);
+	font-family: var(--font-family-heading);
+	font-size: 1.75rem;
+	color: var(--color-primary);
+}
+
+.ccs-section--tint .flow-step__num {
+	background: #fff;
+}
+
+/* The arrow to the next step, on wide screens. */
+@media (min-width: 860px) {
+	.flow-step + .flow-step::before {
+		content: "\2192";
+		position: absolute;
+		top: 1.35rem;
+		left: calc(-1 * clamp(1rem, 2.5vw, 2.25rem) - 0.75rem);
+		font-size: 1.5rem;
+		line-height: 1;
+		color: var(--color-secondary-dark);
+	}
+}
+
+.flow-step__title {
+	margin: 0 0 0.5rem;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.25;
+	color: var(--color-ink);
+}
+
+.flow-step__text {
+	max-width: 22rem;
+	margin: 0 auto;
+	font-size: var(--text-base);
+	line-height: 1.6;
+	color: var(--color-ink-soft);
+}
+
+@media (max-width: 859px) {
+	.flow-steps {
+		text-align: left;
+	}
+
+	.flow-step {
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr);
+		column-gap: var(--space-md);
+		align-items: start;
+	}
+
+	.flow-step__num {
+		grid-row: span 2;
+		width: 3.25rem;
+		height: 3.25rem;
+		margin-bottom: 0;
+		font-size: 1.375rem;
+	}
+
+	.flow-step__text {
+		margin: 0;
+	}
+}
+
+/* The service photo keeps its own shape, capped at the size it stays sharp. */
+.svc-about__photo {
+	width: 100%;
+}
+
+
+/* What it costs beside the call-back form: one card in two halves. */
+.cost-call {
+	display: grid;
+	border-radius: var(--radius-3xl);
+	background: #fff;
+	box-shadow: var(--shadow-float);
+	overflow: hidden;
+}
+
+@media (min-width: 960px) {
+	.cost-call {
+		grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+	}
+}
+
+/* The first section under the page header starts closer to it on the
+   redesigned pages: the full section padding there left a wide empty band
+   before anything was said (client: "gappy"). */
+.page-hero + :is(.services-hub, .costs-rates, .svc-about, .faq-section, .careers-open, .pd-academy),
+.page-content > :is(.referral, .resources-hub):first-child,
+.page-content > .care-guide:first-child {
+	padding-top: var(--section-pad-sm);
+}
+
+/* Referral page: the same card, the page's sections numbered on the left. */
+.referral__lede {
+	align-self: stretch;
+	margin-bottom: var(--space-lg);
+	padding-bottom: var(--space-lg);
+	border-bottom: 1px solid var(--color-hairline);
+	font-size: var(--lede-size);
+	line-height: 1.65;
+	color: var(--color-ink);
+}
+
+.referral__lede > :first-child { margin-top: 0; }
+.referral__lede > :last-child { margin-bottom: 0; }
+
+.referral__steps {
+	justify-content: flex-start;
+}
+
+.refer-steps {
+	align-self: stretch;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.refer-step {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr);
+	column-gap: var(--space-md);
+	padding: var(--space-md) 0;
+	border-top: 1px solid var(--color-hairline);
+}
+
+.refer-step:first-child {
+	padding-top: 0;
+	border-top: 0;
+}
+
+.refer-step:last-child {
+	padding-bottom: 0;
+}
+
+.refer-step__num {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.75rem;
+	height: 2.75rem;
+	border-radius: 50%;
+	background: var(--color-primary);
+	color: #fff;
+	font-family: var(--font-family-heading);
+	font-size: 1.125rem;
+}
+
+.refer-step__title {
+	margin: 0.375rem 0 0.5rem;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.25;
+	color: var(--color-ink);
+}
+
+.refer-step__text {
+	font-size: var(--text-base);
+	line-height: 1.65;
+	color: var(--color-ink-soft);
+}
+
+.refer-step__text > :first-child { margin-top: 0; }
+.refer-step__text > :last-child { margin-bottom: 0; }
+
+.refer-step__text a {
+	color: var(--color-primary);
+	text-decoration: underline;
+	text-underline-offset: 0.18em;
+}
+
+.referral__email {
+	color: #fff;
+	text-decoration: underline;
+	text-underline-offset: 0.18em;
+}
+
+.referral__note {
+	margin: 0 0 var(--space-md);
+	font-size: var(--text-base);
+	line-height: 1.6;
+	color: rgba(255, 255, 255, 0.86);
+}
+
+/* On a white section the prices half takes the tint, so the card still
+   stands off its ground. */
+.ccs-section:not(.ccs-section--tint) > .container > .cost-call {
+	background: var(--color-band-tint);
+	box-shadow: none;
+}
+
+.cost-call__costs {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+}
+
+.cost-call__lines {
+	align-self: stretch;
+}
+
+.cost-call__costs,
+.cost-call__form {
+	padding: var(--card-pad);
+}
+
+.cost-call__form {
+	background: var(--color-band-deepest);
+	color: #fff;
+}
+
+.cost-call__title {
+	margin: 0 0 var(--space-sm);
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.625rem, 1.3rem + 1.4vw, 2.375rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.15;
+	letter-spacing: -0.015em;
+	color: var(--color-ink);
+}
+
+.cost-call__form .cost-call__title {
+	margin-bottom: var(--space-md);
+	color: #fff;
+}
+
+.cost-call__note {
+	margin: 0 0 var(--space-lg);
+	font-size: var(--text-base);
+	line-height: 1.65;
+	color: var(--color-ink-soft);
+}
+
+.cost-call__lines {
+	margin: 0 0 var(--space-lg);
+	padding: 0;
+	list-style: none;
+}
+
+.cost-call__lines li {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 0.25rem 1rem;
+	padding: 1rem 0;
+	font-size: var(--text-md);
+	color: var(--color-ink);
+}
+
+/* A rule between the prices only, as on the rate card (Nov 2026, client:
+   "overdoing it with the hairlines"). */
+.cost-call__lines li + li {
+	border-top: 1px solid var(--color-hairline);
+}
+
+.cost-call__amount {
+	color: var(--color-ink-soft);
+	font-size: var(--text-base);
+}
+
+.cost-call__amount strong {
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.375rem, 1.2rem + 0.7vw, 1.75rem);
+	font-weight: var(--font-weight-medium);
+	color: var(--color-primary);
+}
+
+.cost-call__phone {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.625rem;
+	margin: 0 0 0.25rem;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.5rem, 1.3rem + 0.8vw, 1.875rem);
+	color: #fff;
+	text-decoration: none;
+}
+
+.cost-call__phone .ccs-icon {
+	width: 1.375rem;
+	height: 1.375rem;
+	color: var(--color-secondary);
+}
+
+.cost-call__hours {
+	margin: 0 0 var(--space-lg);
+	font-size: var(--text-sm);
+	color: rgba(255, 255, 255, 0.78);
+}
+
+.cost-call__form .ccs-field__label,
+.cost-call__form .ccs-field__optional,
+.cost-call__form legend {
+	color: #fff;
+}
+
+.cost-call__form .ccs-field__optional {
+	opacity: 0.78;
+}
+
+.cost-call__form .ccs-field__input,
+.cost-call__form .ccs-field__select {
+	border-color: transparent;
+	background-color: #fff;
+}
+
+/* Fields stack with one steady gap, on the service pages and the referral page alike. */
+.cost-call__form .ccs-form {
+	display: grid;
+	gap: var(--space-md);
+}
+
+.cost-call__form .ccs-form .ccs-field {
+	margin: 0;
+}
+
+.cost-call__form .btn {
+	width: 100%;
+	margin-top: var(--space-xs);
+}
+
+.cost-call__form .ccs-field__error,
+.cost-call__form .ccs-form-message {
+	color: #fff;
+}
+
+.cost-call__form :focus-visible {
+	outline-color: var(--color-secondary);
+}
+
+/* =========================================================================
+   Resources hub: search, categories down the left, one list on the right
+   (structure after My Home Life's news and resources hub)
+   ========================================================================= */
+.hub__lede {
+	max-width: 46rem;
+	margin-bottom: var(--space-lg);
+	font-size: var(--lede-size);
+	line-height: 1.7;
+	color: var(--color-ink-soft);
+}
+
+.hub__lede > :first-child { margin-top: 0; }
+.hub__lede > :last-child { margin-bottom: 0; }
+
+/* The search field: a plain bordered field the width of the list. */
+.hub__search {
+	position: relative;
+	margin-bottom: var(--space-lg);
+}
+
+.hub__search-icon {
+	position: absolute;
+	left: 1.125rem;
+	top: 50%;
+	transform: translateY(-50%);
+	display: inline-flex;
+	color: var(--color-ink-soft);
+	pointer-events: none;
+}
+
+.hub__search-icon .ccs-icon {
+	width: 1.375rem;
+	height: 1.375rem;
+}
+
+.hub__search-input {
+	width: 100%;
+	min-height: 56px;
+	padding: 0 1.25rem 0 3.25rem;
+	border: 1px solid var(--color-hairline-strong);
+	border-radius: var(--radius-lg);
+	background: #fff;
+	font: inherit;
+	font-size: 1.0625rem;
+	color: var(--color-ink);
+}
+
+.hub__search-input::placeholder {
+	color: var(--color-ink-soft);
+	opacity: 1;
+}
+
+.hub__search-input:focus-visible {
+	outline: var(--focus-ring);
+	outline-offset: 2px;
+	border-color: var(--color-primary);
+}
+
+.hub__layout {
+	display: grid;
+	gap: var(--space-xl);
+	align-items: start;
+}
+
+@media (min-width: 960px) {
+	.hub__layout {
+		grid-template-columns: 17rem minmax(0, 1fr);
+		gap: clamp(2.5rem, 5vw, 5rem);
+	}
+
+	.hub__filters {
+		position: sticky;
+		top: 7rem;
+	}
+}
+
+.hub__filters {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	min-width: 0;
+}
+
+/* Without the script nothing filters, so the controls are not offered. */
+.hub:not(.is-enhanced) .hub__filters,
+.hub:not(.is-enhanced) .hub__search,
+.hub:not(.is-enhanced) .hub__count {
+	display: none;
+}
+
+.hub__filters-title {
+	margin: 0 0 var(--space-sm);
+	padding: 0;
+	font-size: var(--text-xs);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--color-ink-soft);
+}
+
+.hub__filter-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.375rem;
+}
+
+@media (min-width: 960px) {
+	.hub__filter-list {
+		flex-direction: column;
+		flex-wrap: nowrap;
+		gap: 0.25rem;
+	}
+}
+
+.hub__filter {
+	position: relative;
+	cursor: pointer;
+}
+
+.hub__filter input {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	opacity: 0;
+	cursor: pointer;
+}
+
+.hub__filter span {
+	display: flex;
+	align-items: center;
+	min-height: 48px;
+	padding: 0.5rem 1rem;
+	border-radius: var(--radius-lg);
+	background: var(--color-band-tint);
+	font-size: var(--text-base);
+	line-height: 1.3;
+	color: var(--color-ink);
+}
+
+@media (min-width: 960px) {
+	.hub__filter span {
+		background: transparent;
+	}
+
+	.hub__filter input:not(:checked):hover + span {
+		background: var(--color-band-tint);
+	}
+}
+
+.hub__filter input:checked + span {
+	background: var(--color-primary);
+	color: #fff;
+	font-weight: var(--font-weight-semibold);
+}
+
+.hub__filter input:focus-visible + span {
+	outline: var(--focus-ring);
+	outline-offset: 2px;
+}
+
+.hub__count {
+	margin: 0 0 var(--space-sm);
+	font-size: var(--text-sm);
+	color: var(--color-ink-soft);
+}
+
+.hub__list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-top: 1px solid var(--color-hairline);
+}
+
+/* Every row the same: text on the left, and on the right one fixed column
+   that holds either the thumbnail or the arrow, so the rows line up. */
+.hub-item {
+	position: relative;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 9.5rem;
+	column-gap: var(--space-lg);
+	align-items: center;
+	min-height: 8.75rem;
+	padding-block: 1.5rem;
+	border-bottom: 1px solid var(--color-hairline);
+}
+
+.hub-item[hidden] {
+	display: none;
+}
+
+/* An entry read here: the row is one <details>, opening downwards. */
+.hub-item--read {
+	display: block;
+	min-height: 0;
+	padding-block: 0;
+}
+
+.hub-read__summary {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	column-gap: var(--space-lg);
+	align-items: center;
+	padding-block: 1.5rem;
+	list-style: none;
+	cursor: pointer;
+}
+
+.hub-read__summary::-webkit-details-marker {
+	display: none;
+}
+
+/* Keyboard focus shows on the title and as a ring round the plus, not as a
+   box round the whole row: the box also appeared on a mouse click in some
+   browsers and read as a glitch. */
+.hub-read__summary:focus-visible {
+	outline: none;
+}
+
+.hub-read__summary:focus-visible .hub-read__mark {
+	outline: var(--focus-ring);
+	outline-offset: 8px;
+	border-radius: 50%;
+}
+
+.hub-read__summary:focus-visible .hub-item__title {
+	color: var(--color-primary);
+	text-decoration: underline;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 0.2em;
+}
+
+.hub-read__summary .hub-item__text,
+.hub-read__summary .hub-item__meta,
+.hub-read__summary .hub-item__title {
+	display: block;
+}
+
+/* Plus when closed, minus when open: this one opens, the arrows go to a page. */
+.hub-read__mark {
+	position: relative;
+	justify-self: end;
+	width: 1.25rem;
+	height: 1.25rem;
+}
+
+.hub-read__mark::before,
+.hub-read__mark::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 100%;
+	height: 1.5px;
+	background: var(--color-primary);
+	transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.hub-read__mark::after {
+	transform: rotate(90deg);
+}
+
+.hub-read[open] .hub-read__mark::after {
+	transform: rotate(0deg);
+}
+
+.hub-read__body {
+	max-width: 44rem;
+	padding-bottom: var(--space-lg);
+	font-size: var(--text-md);
+	line-height: 1.75;
+	color: var(--color-ink-soft);
+}
+
+.hub-read__body > :first-child { margin-top: 0; }
+.hub-read__body > :last-child { margin-bottom: 0; }
+
+.hub-read__body a {
+	color: var(--color-primary);
+	text-decoration: underline;
+	text-underline-offset: 0.18em;
+}
+
+.hub-read__body li + li {
+	margin-top: 0.4em;
+}
+
+.hub-read::details-content {
+	block-size: 0;
+	overflow: clip;
+	transition:
+		block-size 320ms var(--ease-out, ease),
+		content-visibility 320ms allow-discrete;
+}
+
+.hub-read[open]::details-content {
+	block-size: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hub-read::details-content {
+		transition: none;
+	}
+}
+
+@media (hover: hover) {
+	.hub-read__summary:hover .hub-item__title {
+		color: var(--color-primary);
+	}
+}
+
+.hub-item__meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.25rem 0.875rem;
+	margin: 0 0 0.375rem;
+	font-size: var(--text-xs);
+	color: var(--color-ink-soft);
+}
+
+.hub-item__cat {
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-primary);
+}
+
+.hub-item__title {
+	margin: 0;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.25rem, 1.15rem + 0.5vw, 1.625rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.25;
+	color: var(--color-ink);
+}
+
+.hub-item__link {
+	color: inherit;
+	text-decoration: none;
+}
+
+/* Whole entry is the target; the title stays the accessible name. */
+.hub-item__link::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+}
+
+.hub-item__link:focus-visible {
+	outline: none;
+}
+
+.hub-item__link:focus-visible::after {
+	outline: var(--focus-ring);
+	outline-offset: var(--focus-ring-offset);
+	border-radius: var(--radius-md);
+}
+
+.hub-item__line {
+	max-width: 44rem;
+	margin: 0.5rem 0 0;
+	font-size: var(--text-base);
+	line-height: 1.6;
+	color: var(--color-ink-soft);
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	overflow: hidden;
+}
+
+.hub-item__thumb {
+	width: 100%;
+	aspect-ratio: 4 / 3;
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+	background: var(--color-tile-tint);
+}
+
+.hub-item__thumb img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.hub-item__cue {
+	justify-self: end;
+	font-size: 1.25rem;
+	color: var(--color-primary);
+	transition: transform var(--duration-normal) var(--ease-out);
+}
+
+@media (hover: hover) {
+	.hub-item:hover .hub-item__title {
+		color: var(--color-primary);
+	}
+
+	.hub-item:hover .hub-item__cue {
+		transform: translateX(4px);
+	}
+}
+
+@media (max-width: 599px) {
+	.hub-item {
+		grid-template-columns: minmax(0, 1fr) 5.5rem;
+		column-gap: var(--space-md);
+		min-height: 0;
+	}
+
+	.hub-item:not(.hub-item--thumb) {
+		grid-template-columns: minmax(0, 1fr) auto;
+	}
+}
+
+.hub__empty {
+	margin: var(--space-lg) 0 0;
+	color: var(--color-ink-soft);
+}
+
+.hub__note {
+	margin-top: var(--space-xl);
+	padding: var(--card-pad-sm);
+	border-radius: var(--radius-2xl);
+	background: var(--color-band-tint);
+}
+
+.hub__note-title {
+	margin: 0 0 0.375rem;
+	font-family: var(--font-family-heading);
+	font-size: var(--text-lg);
+	font-weight: var(--font-weight-medium);
+	color: var(--color-ink);
+}
+
+.hub__note-text {
+	font-size: var(--text-base);
+	line-height: 1.65;
+	color: var(--color-ink-soft);
+}
+
+.hub__note-text > :first-child { margin-top: 0; }
+.hub__note-text > :last-child { margin-bottom: 0; }
+
+.hub__note-text a {
+	color: var(--color-primary);
+	text-decoration: underline;
+	text-underline-offset: 0.18em;
+}
+
+/* =========================================================================
+   Care guides: a side menu and a grid of guides (structure after Age UK's
+   "Home and care guides" page)
+   ========================================================================= */
+.guides {
+	display: grid;
+	gap: var(--space-xl);
+	align-items: start;
+}
+
+@media (min-width: 960px) {
+	.guides:not(.guides--full) {
+		grid-template-columns: 15rem minmax(0, 1fr);
+		gap: clamp(2.5rem, 5vw, 5rem);
+	}
+
+	.guides__nav {
+		position: sticky;
+		top: 7rem;
+	}
+}
+
+.guides__nav-title {
+	margin: 0 0 0.25rem;
+	font-family: var(--font-family-heading);
+	font-size: var(--text-lg);
+	font-weight: var(--font-weight-medium);
+}
+
+.guides__nav-title a {
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
+	color: var(--color-ink);
+	text-decoration: none;
+}
+
+.guides__nav-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-top: 1px solid var(--color-hairline);
+}
+
+.guides__nav-list li {
+	border-bottom: 1px solid var(--color-hairline);
+}
+
+.guides__nav-link {
+	display: flex;
+	align-items: center;
+	min-height: 48px;
+	padding: 0.5rem 0.875rem;
+	font-size: var(--text-base);
+	color: var(--color-ink);
+	text-decoration: none;
+	border-left: 3px solid transparent;
+}
+
+/* Plum bar: "you are here" (rule 2). */
+.guides__nav-link[aria-current="page"] {
+	border-left-color: var(--color-primary);
+	background: var(--color-band-tint);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-primary);
+}
+
+@media (hover: hover) {
+	.guides__nav-link:hover {
+		color: var(--color-primary);
+	}
+}
+
+.guides__lede {
+	max-width: 44rem;
+	margin-bottom: var(--space-2xl);
+	font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem);
+	line-height: 1.6;
+	color: var(--color-ink);
+}
+
+.guides__lede > :first-child { margin-top: 0; }
+.guides__lede > :last-child { margin-bottom: 0; }
+
+.guides__grid {
+	display: grid;
+	gap: var(--space-xl) var(--space-xl);
+	align-items: start;
+}
+
+@media (min-width: 640px) {
+	.guides__grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+/* A guide: closed, a picture over its title, a line and a link; open, it
+   widens across the grid and shows the whole guide. */
+.guide-card {
+	border-radius: var(--radius-2xl);
+	transition: background-color var(--duration-normal) var(--ease-out);
+}
+
+.guide-card[open] {
+	grid-column: 1 / -1;
+	padding: clamp(1.5rem, 1rem + 2.5vw, 3rem);
+	background: var(--color-band-tint);
+	scroll-margin-top: 7rem;
+}
+
+.guide-card__summary {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: var(--space-md);
+	list-style: none;
+	cursor: pointer;
+	border-radius: var(--radius-lg);
+}
+
+.guide-card__summary::-webkit-details-marker {
+	display: none;
+}
+
+.guide-card__summary:focus-visible {
+	outline: var(--focus-ring);
+	outline-offset: 6px;
+}
+
+.guide-card[open] > .guide-card__summary {
+	flex-direction: row;
+	align-items: center;
+}
+
+/* The guide's picture: its icon, large, on a soft round ground. */
+.guide-card__art {
+	flex: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 6.5rem;
+	height: 6.5rem;
+	border-radius: 50%;
+	background: var(--color-band-tint);
+	color: var(--color-primary);
+	transition: background-color var(--duration-normal) var(--ease-out);
+}
+
+.guide-card[open] .guide-card__art {
+	width: 4.5rem;
+	height: 4.5rem;
+	background: #fff;
+}
+
+.guide-card__art .ccs-icon {
+	width: 2.75rem;
+	height: 2.75rem;
+}
+
+.guide-card[open] .guide-card__art .ccs-icon {
+	width: 2rem;
+	height: 2rem;
+}
+
+.guide-card__head {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	min-width: 0;
+}
+
+.guide-card__title {
+	margin: 0 0 0.5rem;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.25;
+	color: var(--color-ink);
+}
+
+.guide-card[open] .guide-card__title {
+	margin-bottom: 0.25rem;
+	font-size: clamp(1.5rem, 1.3rem + 1vw, 2.125rem);
+	line-height: 1.2;
+}
+
+.guide-card__text {
+	margin: 0 0 var(--space-sm);
+	font-size: var(--text-base);
+	line-height: 1.6;
+	color: var(--color-ink-soft);
+}
+
+/* Open, the first line is in the guide itself, so the summary drops it. */
+.guide-card[open] .guide-card__text,
+.guide-card[open] .guide-card__cue-open,
+.guide-card:not([open]) .guide-card__cue-close {
+	display: none;
+}
+
+.guide-card__cue {
+	font-size: var(--text-base);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-primary);
+	text-decoration: underline;
+	text-underline-offset: 0.18em;
+}
+
+.guide-card__body {
+	max-width: 44rem;
+	margin-top: var(--space-lg);
+	font-size: var(--text-md);
+	line-height: 1.75;
+	color: var(--color-ink-soft);
+}
+
+.guide-card__body > :first-child { margin-top: 0; }
+.guide-card__body > :last-child { margin-bottom: 0; }
+
+.guide-card__body a {
+	color: var(--color-primary);
+	text-decoration: underline;
+	text-underline-offset: 0.18em;
+}
+
+.guide-card__body li + li {
+	margin-top: 0.4em;
+}
+
+@media (hover: hover) {
+	.guide-card:not([open]) .guide-card__summary:hover .guide-card__art {
+		background: var(--color-badge);
+	}
+
+	.guide-card__summary:hover .guide-card__title {
+		color: var(--color-primary);
+	}
+}
+
+/* The guide eases open, as the site's other disclosures do. */
+.guide-card::details-content {
+	block-size: 0;
+	overflow: clip;
+	transition:
+		block-size 320ms var(--ease-out, ease),
+		content-visibility 320ms allow-discrete;
+}
+
+.guide-card[open]::details-content {
+	block-size: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.guide-card::details-content {
+		transition: none;
+	}
+}
+
+/* =========================================================================
+   Reader: a long page one chapter at a time (Care guides)
+   ========================================================================= */
+.reader {
+	display: grid;
+	border-radius: var(--radius-3xl);
+	background: #fff;
+	box-shadow: 0 2px 4px rgba(43, 35, 71, 0.06), 0 26px 60px -28px rgba(43, 35, 71, 0.45);
+	overflow: hidden;
+}
+
+/* Grid children may shrink: the row of part tabs scrolls inside the rail on
+   phones instead of widening the card. */
+.reader > * {
+	min-width: 0;
+}
+
+.reader__rail {
+	padding: clamp(1.25rem, 1rem + 1.4vw, 2.25rem);
+	background: #f8f7fb;
+}
+
+.reader__rail-title {
+	margin: 0 0 var(--space-sm);
+	font-size: var(--text-xs);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--color-ink-soft);
+}
+
+.reader__tabs {
+	display: flex;
+	gap: 0.5rem;
+	overflow-x: auto;
+	margin: 0 calc(-1 * var(--space-md));
+	padding: 0.25rem var(--space-md);
+	scrollbar-width: thin;
+}
+
+.reader__tab {
+	flex: none;
+	display: flex;
+	align-items: baseline;
+	gap: 0.625rem;
+	max-width: 16rem;
+	min-height: 48px;
+	padding: 0.625rem 1rem;
+	border: 0;
+	border-radius: var(--radius-lg);
+	background: transparent;
+	font: inherit;
+	font-size: var(--text-base);
+	line-height: 1.35;
+	text-align: left;
+	color: var(--color-ink);
+	cursor: pointer;
+}
+
+.reader__tab-num {
+	font-family: var(--font-family-heading);
+	font-size: var(--text-sm);
+	color: var(--color-ink-soft);
+	font-variant-numeric: tabular-nums;
+}
+
+.reader__tab[aria-selected="true"] {
+	background: var(--color-primary);
+	color: #fff;
+}
+
+.reader__tab[aria-selected="true"] .reader__tab-num {
+	color: rgba(255, 255, 255, 0.8);
+}
+
+@media (hover: hover) {
+	.reader__tab:not([aria-selected="true"]):hover {
+		background: var(--color-badge);
+	}
+}
+
+.reader__tab:focus-visible {
+	outline: var(--focus-ring);
+	outline-offset: 2px;
+}
+
+/* Without the script every chapter is listed, so the rail is not needed. */
+.reader:not(.is-enhanced) .reader__rail {
+	display: none;
+}
+
+.care-guide__lede {
+	margin-bottom: var(--space-xl);
+}
+
+.reader__panel {
+	padding: clamp(1.5rem, 1rem + 3vw, 4rem);
+}
+
+/* The large numeral beside each part, as the Getting started stepper. */
+.reader__num {
+	display: none;
+}
+
+@media (min-width: 1100px) {
+	.reader.is-enhanced .reader__panel:not([hidden]) {
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr);
+		column-gap: clamp(1.5rem, 3vw, 3rem);
+		align-items: start;
+	}
+
+	.reader.is-enhanced .reader__num {
+		display: block;
+		font-family: var(--font-family-heading);
+		font-size: clamp(4rem, 3rem + 3vw, 6rem);
+		line-height: 0.9;
+		letter-spacing: 0.04em;
+		color: var(--color-accent);
+		font-variant-numeric: tabular-nums;
+	}
+}
+
+.reader:not(.is-enhanced) .reader__panel + .reader__panel {
+	border-top: 1px solid var(--color-hairline);
+}
+
+.reader__count {
+	margin: 0 0 0.5rem;
+	font-size: var(--text-sm);
+	color: var(--color-accent);
+}
+
+.reader__title {
+	margin: 0 0 var(--space-md);
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.75rem, 1.4rem + 1.6vw, 2.75rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.15;
+	letter-spacing: -0.015em;
+	color: var(--color-ink);
+	text-wrap: balance;
+}
+
+.reader__body {
+	max-width: 42rem;
+	font-size: var(--text-md);
+	line-height: 1.75;
+	color: var(--color-ink-soft);
+}
+
+.reader__body > :first-child { margin-top: 0; }
+
+.reader__body h3 {
+	margin: 1.75em 0 0.5em;
+	font-family: var(--font-family-heading);
+	font-size: var(--text-lg);
+	font-weight: var(--font-weight-medium);
+	color: var(--color-ink);
+}
+
+.reader__body a {
+	color: var(--color-primary);
+	text-decoration: underline;
+	text-underline-offset: 0.18em;
+}
+
+.reader__body li + li {
+	margin-top: 0.4em;
+}
+
+.reader__nav {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-sm) var(--space-md);
+	margin-top: var(--space-xl);
+}
+
+.reader__all {
+	margin-left: auto;
+}
+
+.reader--solo {
+	max-width: 60rem;
+	margin-inline: auto;
+	scroll-margin-top: 6rem;
+}
+
+.reader:not(.is-enhanced) .reader__nav {
+	display: none;
+}
+
+
+
+@media (min-width: 960px) {
+	.reader.is-enhanced:not(.reader--solo) {
+		grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
+	}
+
+	.reader__tabs {
+		flex-direction: column;
+		gap: 0.25rem;
+		overflow: visible;
+		margin: 0;
+		padding: 0;
+	}
+
+	.reader__tab {
+		max-width: none;
+		width: 100%;
+	}
+}
+
+/* =========================================================================
+   Article (news and advice)
+   ========================================================================= */
+.article-figure {
+	max-width: 64rem;
+	margin: 0 auto;
+}
+
+.article-figure__img {
+	display: block;
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+	border-radius: var(--radius-3xl);
+	box-shadow: 0 2px 4px rgba(43, 35, 71, 0.06), 0 26px 60px -28px rgba(43, 35, 71, 0.45);
+	background: var(--color-tile-tint);
+}
+
+.article-figure figcaption {
+	margin-top: var(--space-sm);
+	text-align: center;
+	font-size: var(--text-sm);
+	color: var(--color-ink-soft);
+}
+
+.article-read {
+	display: grid;
+	gap: var(--space-xl);
+	max-width: 46rem;
+	margin: 0 auto;
+}
+
+@media (min-width: 1100px) {
+	.article-read--toc {
+		grid-template-columns: 14rem minmax(0, 46rem);
+		gap: clamp(2.5rem, 5vw, 5rem);
+		max-width: none;
+		justify-content: center;
+	}
+
+	.article-read--toc .article-rail {
+		position: sticky;
+		top: 7rem;
+		align-self: start;
+	}
+}
+
+.article-rail__title {
+	margin: 0 0 var(--space-sm);
+	font-size: var(--text-xs);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--color-accent);
+}
+
+.article-rail__list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	counter-reset: rail;
+	border-top: 1px solid var(--color-hairline);
+}
+
+.article-rail__list li {
+	counter-increment: rail;
+	border-bottom: 1px solid var(--color-hairline);
+}
+
+.article-rail__list a {
+	display: flex;
+	gap: 0.75rem;
+	align-items: center;
+	min-height: 44px;
+	padding: 0.625rem 0;
+	font-size: var(--text-sm);
+	line-height: 1.4;
+	color: var(--color-ink);
+	text-decoration: none;
+}
+
+.article-rail__list a::before {
+	content: counter(rail, decimal-leading-zero);
+	font-family: var(--font-family-heading);
+	color: var(--color-accent);
+}
+
+.article-rail__list a:hover {
+	color: var(--color-primary);
+}
+
+.article-body {
+	font-size: var(--text-md);
+	line-height: 1.8;
+	color: var(--color-ink-soft);
+}
+
+.article-body > :first-child {
+	margin-top: 0;
+}
+
+/* The opening paragraph, larger: body face, soft ink (never the heading serif). */
+.article-body > p:first-of-type {
+	font-size: clamp(1.1875rem, 1.1rem + 0.45vw, 1.375rem);
+	line-height: 1.65;
+	color: var(--color-ink);
+}
+
+.article-body h2 {
+	margin: 2.25em 0 0.6em;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.625rem, 1.4rem + 1vw, 2.125rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.2;
+	letter-spacing: -0.01em;
+	color: var(--color-ink);
+	scroll-margin-top: 7rem;
+}
+
+.article-body h3 {
+	margin: 1.75em 0 0.5em;
+	font-family: var(--font-family-heading);
+	font-size: var(--text-lg);
+	font-weight: var(--font-weight-medium);
+	color: var(--color-ink);
+}
+
+.article-body a {
+	color: var(--color-primary);
+	text-decoration: underline;
+	text-underline-offset: 0.18em;
+}
+
+.article-body strong {
+	color: var(--color-ink);
+}
+
+.article-body ul,
+.article-body ol {
+	margin: 1.25em 0;
+	padding-left: 1.5rem;
+}
+
+.article-body ul.wp-block-list,
+.article-body ul {
+	list-style: none;
+}
+
+.article-body ul > li {
+	position: relative;
+}
+
+.article-body ul > li::before {
+	content: "";
+	position: absolute;
+	left: -1.5rem;
+	top: 0.72em;
+	width: 0.5rem;
+	height: 0.5rem;
+	border-radius: 50%;
+	background: var(--color-secondary-dark);
+}
+
+/* The theme's ticked-list style adds its own mark; one mark only here. */
+.article-body ul > li > svg,
+.article-body ul > li > .ccs-icon {
+	display: none;
+}
+
+.article-body li + li {
+	margin-top: 0.65em;
+}
+
+.article-body blockquote {
+	position: relative;
+	margin: 2em 0;
+	padding: 0 0 0 clamp(3rem, 2.5rem + 2vw, 4.25rem);
+	border: 0;
+	font-family: var(--font-family-heading);
+	font-style: italic;
+	font-size: clamp(1.375rem, 1.2rem + 0.9vw, 1.875rem);
+	line-height: 1.4;
+	color: var(--color-ink);
+}
+
+.article-body blockquote::before {
+	content: "\201C";
+	position: absolute;
+	left: 0;
+	top: -0.15em;
+	font-size: 4em;
+	line-height: 1;
+	font-style: normal;
+	color: var(--color-secondary-dark);
+}
+
+.article-body blockquote p {
+	margin: 0;
+}
+
+.article-body img {
+	border-radius: var(--radius-2xl);
+}
+
+.article-updated {
+	margin: var(--space-xl) 0 0;
+	padding-top: var(--space-md);
+	border-top: 1px solid var(--color-hairline);
+	font-size: var(--text-sm);
+	color: var(--color-ink-soft);
+}
+
+.article-more .post-list {
+	margin-top: 0;
+}
+
+/* =========================================================================
+   Costs and funding
+   ========================================================================= */
+
+/* The rate finder: one card. Two switches, the daytime rate large, the
+   other rates beside it, the extra charges along its foot. */
+.rate-finder {
+	max-width: 64rem;
+	margin-inline: auto;
+	border-radius: var(--radius-3xl);
+	background: #fff;
+	box-shadow: var(--shadow-float);
+	overflow: hidden;
+}
+
+.rate-finder__switches {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: var(--space-sm) var(--space-md);
+	padding: clamp(1.25rem, 1rem + 1.2vw, 2rem) var(--card-pad);
+	border-bottom: 1px solid var(--color-hairline);
+}
+
+/* Without the script the switches do nothing, so they are not shown. */
+.rate-finder:not(.is-enhanced) .rate-finder__switches {
+	display: none;
+}
+
+.rate-finder__set {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	min-width: 0;
+}
+
+/* Each switch is two pills side by side: the selected one filled, the other
+   outlined, like the header's phone and "Switch to us" buttons. They used to
+   sit inside a tinted pill-shaped track; a pill nested in a pill read as
+   mismatched corners (client, Nov 2026), so there is no track to nest in. */
+.rate-finder__options {
+	display: inline-flex;
+	gap: 0.5rem;
+}
+
+.rate-finder__option {
+	position: relative;
+	cursor: pointer;
+}
+
+.rate-finder__option input {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	opacity: 0;
+	cursor: pointer;
+}
+
+.rate-finder__option span {
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
+	padding: 0.5rem 1.25rem;
+	border: 1.5px solid var(--color-hairline-strong);
+	border-radius: 999px;
+	background: #fff;
+	font-size: var(--text-base);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-ink);
+	white-space: nowrap;
+}
+
+.rate-finder__option input:checked + span {
+	border-color: var(--color-primary);
+	background: var(--color-primary);
+	color: #fff;
+}
+
+.rate-finder__option input:focus-visible + span {
+	outline: var(--focus-ring);
+	outline-offset: 2px;
+}
+
+.rate-finder__main {
+	display: grid;
+	gap: var(--space-lg);
+	align-items: center;
+	padding: var(--card-pad);
+}
+
+@media (min-width: 860px) {
+	.rate-finder__main {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		gap: clamp(2.5rem, 5vw, 5rem);
+	}
+}
+
+/* The main rate, two lines: "7am to 10pm from", then the figure with
+   "/hour" beside it. The label and the small words are set exactly like
+   those in the rows beside it. */
+.rate-finder__when {
+	margin: 0 0 0.375rem;
+	font-size: var(--text-md);
+	color: var(--color-ink);
+}
+
+.rate-finder__from,
+.rate-finder__unit {
+	font-size: var(--text-base);
+	color: var(--color-ink-soft);
+}
+
+.rate-finder__price {
+	display: flex;
+	align-items: baseline;
+	gap: 0.375rem;
+	margin: 0;
+}
+
+.rate-finder__figure {
+	font-family: var(--font-family-heading);
+	font-size: clamp(3rem, 2.2rem + 3.6vw, 4.5rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1;
+	letter-spacing: -0.02em;
+	color: var(--color-primary);
+}
+
+/* Hairlines only between the rates (Nov 2026, client: "overdoing it with the
+   hairlines", most of all on tablet and phone). */
+.rate-finder__lines {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.rate-finder__lines li {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 0.25rem 1rem;
+	padding: 1rem 0;
+	font-size: var(--text-md);
+	color: var(--color-ink);
+}
+
+.rate-finder__lines li + li {
+	border-top: 1px solid var(--color-hairline);
+}
+
+.rate-finder__amount {
+	font-size: var(--text-base);
+	color: var(--color-ink-soft);
+}
+
+.rate-finder__amount strong {
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+	font-weight: var(--font-weight-medium);
+	color: var(--color-ink);
+}
+
+/* The charges on top of the rate, along the card's foot: one list, the
+   charge first and what it is for beside it. Two columns of rows put the
+   Christmas line on two lines beside three one-line ones (client, Nov 2026:
+   "less messy if we didn't have all the christmas day... over two lines");
+   with the full width of the card it fits on one. */
+.rate-finder__extras {
+	display: grid;
+	margin: 0;
+	padding: clamp(1rem, 0.8rem + 0.8vw, 1.5rem) var(--card-pad) 0.5rem;
+	list-style: none;
+	background: #f8f7fb;
+}
+
+/* What it is on the left, the charge at the right edge, the same shape as
+   the rate rows above, so the foot is not weighted to the left (client). */
+.rate-finder__extras li {
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: var(--space-md);
+	padding: 0.4rem 0;
+}
+
+.rate-finder__extra-price {
+	font-size: var(--text-base);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-ink);
+	text-align: right;
+	white-space: nowrap;
+}
+
+.rate-finder__extra-what {
+	font-size: var(--text-base);
+	line-height: 1.45;
+	color: var(--color-ink-soft);
+}
+
+.rate-finder__note {
+	margin: 0;
+	padding: 0.5rem var(--card-pad) clamp(1rem, 0.8rem + 0.8vw, 1.5rem);
+	background: #f8f7fb;
+	font-size: var(--text-sm);
+	line-height: 1.6;
+	color: var(--color-ink-soft);
+	font-style: italic;
+}
+
+/* The bank holiday dates, one tap away. */
+.rate-more {
+	/* Clear of the card's shadow. */
+	margin-top: var(--space-xl);
+	text-align: center;
+}
+
+.rate-more__toggle {
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
+	list-style: none;
+	cursor: pointer;
+}
+
+.rate-more__toggle::-webkit-details-marker {
+	display: none;
+}
+
+.rate-more__toggle:focus-visible {
+	outline: var(--focus-ring);
+	outline-offset: 4px;
+	border-radius: var(--radius-sm);
+}
+
+.rate-more__body {
+	margin-top: var(--space-md);
+	text-align: left;
+}
+
+.rate-dates {
+	display: grid;
+	gap: 0 var(--space-xl);
+	max-width: 56rem;
+	margin: 0 auto;
+	padding: 0;
+	list-style: none;
+}
+
+@media (min-width: 720px) {
+	.rate-dates {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.rate-dates li {
+	display: grid;
+	grid-template-columns: 6.5rem minmax(0, 1fr) auto;
+	gap: 0 1rem;
+	align-items: baseline;
+	padding: 0.75rem 0;
+	border-bottom: 1px solid var(--color-hairline);
+	font-size: var(--text-base);
+	color: var(--color-ink);
+}
+
+.rate-dates__date {
+	color: var(--color-ink-soft);
+	font-variant-numeric: tabular-nums;
+}
+
+.rate-dates__rate {
+	font-weight: var(--font-weight-semibold);
+}
+
+.photo-acc__foot {
+	margin: var(--space-lg) 0 0;
+}
+
+/* =========================================================================
+   Careers pages
+   ========================================================================= */
+.hero-banner {
+	max-width: 64rem;
+	margin: 0 auto;
+}
+
+.hero-banner img {
+	display: block;
+	width: 100%;
+	aspect-ratio: 12 / 5;
+	object-fit: cover;
+	border-radius: var(--radius-3xl);
+	box-shadow: 0 2px 4px rgba(43, 35, 71, 0.06), 0 26px 60px -28px rgba(43, 35, 71, 0.45);
+}
+
+@media (max-width: 599px) {
+	.hero-banner img {
+		aspect-ratio: 3 / 2;
+	}
+}
+
+.hero-banner__lede {
+	max-width: 44rem;
+	margin: var(--space-xl) auto 0;
+	text-align: center;
+	font-size: var(--lede-size);
+	line-height: 1.75;
+	color: var(--color-ink-soft);
+}
+
+.hero-banner__lede > :first-child { margin-top: 0; }
+.hero-banner__lede > :last-child { margin-bottom: 0; }
+
+@media (max-width: 599px) {
+	.hero-banner__lede {
+		text-align: left;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hub-item__cue,
+	.care-card,
+	.num-acc__q::before,
+	.num-acc__q::after {
+		transition: none;
+	}
+}
+
+/* =========================================================================
+   Stepper card, tightened (Getting started)
+   The card had a display numeral in its own column, the text in a narrow
+   one, and a third of the card and its foot left empty (client: "I hate
+   this"). The numeral is gone (the rail above already numbers the steps);
+   the step's name and its Next button sit on the left and the text fills
+   the right, so the text fills the card. The card stays one height across
+   the steps (sections.css), so nothing below it moves as you step through.
+   ========================================================================= */
+.ccs-stepper.is-enhanced .ccs-stepper__num {
+	display: none;
+}
+
+.ccs-stepper.is-enhanced .ccs-stepper__panel {
+	display: block;
+	min-height: 0;
+	padding: clamp(1.5rem, 1rem + 2.5vw, 3rem) clamp(1.25rem, 0.5rem + 3.5vw, 3.5rem) clamp(1.75rem, 1rem + 3vw, 3.25rem);
+}
+
+@media (min-width: 900px) {
+	.ccs-stepper.is-enhanced .ccs-stepper__text {
+		display: grid;
+		grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+		grid-template-rows: auto auto 1fr;
+		column-gap: clamp(2.5rem, 5vw, 5rem);
+		align-items: start;
+	}
+
+	.ccs-stepper.is-enhanced .ccs-stepper__count { grid-column: 1; grid-row: 1; }
+	.ccs-stepper.is-enhanced .ccs-stepper__title { grid-column: 1; grid-row: 2; }
+	.ccs-stepper.is-enhanced .ccs-stepper__nav { grid-column: 1; grid-row: 3; align-self: start; margin-top: var(--space-sm); }
+
+	.ccs-stepper.is-enhanced .ccs-stepper__body {
+		grid-column: 2;
+		grid-row: 1 / -1;
+		max-width: none;
+	}
+}
+
+
+/* A paragraph that is only a link (the NHS, council and CQC links under the
+   FAQ answers, Nov 2026): a line of its own, 44px tall to tap (rule 14), and
+   two in a row sit together as a pair. */
+.link-line { margin-block: 0; }
+p + .link-line { margin-top: var(--space-2, 0.5rem); }
+.link-line a {
+	display: inline-flex;
+	align-items: center;
+	min-height: 2.75rem;
+	font-weight: 600;
+}
+
+/* =========================================================================
+   Resources as a signpost page (Nov 2026): one section per page it points
+   to. A photograph in one fixed frame, and beside it the page's name, a
+   line about it and its button. The photo swaps sides from one section to
+   the next; every frame and every text column is the same size, so the
+   edges line up all the way down.
+   ========================================================================= */
+.signpost__row {
+	display: grid;
+	gap: var(--space-lg);
+	align-items: center;
+}
+
+.signpost__photo {
+	width: 100%;
+	aspect-ratio: 3 / 2;
+	margin: 0;
+	border-radius: var(--radius-2xl);
+	background: var(--color-tile-tint);
+	overflow: hidden;
+}
+
+.signpost__photo img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: 50% 30%;
+}
+
+.signpost__title {
+	margin: 0 0 var(--space-md);
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.75rem, 1.35rem + 1.6vw, 2.5rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.15;
+	letter-spacing: -0.015em;
+	color: var(--color-ink);
+}
+
+.signpost__text {
+	margin: 0 0 var(--space-lg);
+	max-width: 32rem;
+	font-size: var(--lede-size);
+	line-height: 1.7;
+	color: var(--color-ink-soft);
+}
+
+.signpost__lede {
+	margin-bottom: var(--space-xl);
+}
+
+.signpost .hub__note {
+	margin-top: var(--space-xl);
+}
+
+@media (min-width: 48rem) {
+	.signpost__row {
+		grid-template-columns: minmax(0, 32.5rem) minmax(0, 1fr);
+		column-gap: clamp(2rem, 6vw, 5rem);
+	}
+
+	.signpost__row--flip {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 32.5rem);
+	}
+
+	.signpost__row--flip .signpost__photo {
+		order: 2;
+	}
+}
+
+/* Care guides on its own page: one reading column of rows that open. */
+.guides-read {
+	max-width: 52rem;
+	margin-inline: auto;
+}
+
+/* =========================================================================
+   Steps as an alternating timeline (Getting started, Nov 2026). A centre
+   line joins the numbered discs; each step has its text on one side of the
+   line and a photograph on the other, and the sides swap from step to step.
+   On phones the line runs down the left with everything to its right.
+   ========================================================================= */
+.gs-path {
+	position: relative;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	--gs-path-disc: 3rem;
+}
+
+/* One continuous line behind all six discs, fading in at the top and out
+   at the bottom, with the same line in plum drawn smoothly over it as the
+   page scrolls. Nothing pops, fills or jumps (client, Nov 2026: discs that
+   filled and a line drawn in separate pieces were "too intense and kind of
+   glitchy"; it should be "flowy and seamless and blended"). */
+.gs-path::before,
+.gs-path::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: calc(var(--gs-path-disc) / 2 - 1px);
+	width: 2px;
+	border-radius: 2px;
+	-webkit-mask-image: linear-gradient(to bottom, transparent, #000 5rem, #000 calc(100% - 5rem), transparent);
+	mask-image: linear-gradient(to bottom, transparent, #000 5rem, #000 calc(100% - 5rem), transparent);
+}
+
+.gs-path::before {
+	background: var(--color-hairline-strong);
+}
+
+.gs-path::after {
+	display: none;
+	background: var(--color-primary);
+	opacity: 0.55;
+	transform-origin: top;
+}
+
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) {
+		.gs-path::after {
+			display: block;
+			animation: gs-path-draw linear both;
+			animation-timeline: view();
+			animation-range: cover 25% cover 75%;
+		}
+
+		/* The words and the photograph fade in as they arrive; nothing moves. */
+		.gs-path__text,
+		.gs-path__photo {
+			animation: gs-path-arrive linear both;
+			animation-timeline: view();
+			animation-range: entry 0% entry 90%;
+		}
+	}
+}
+
+@keyframes gs-path-draw {
+	from { transform: scaleY(0); }
+	to { transform: scaleY(1); }
+}
+
+@keyframes gs-path-arrive {
+	from { opacity: 0.25; }
+	to { opacity: 1; }
+}
+
+.gs-path__step {
+	position: relative;
+	display: grid;
+	grid-template-columns: var(--gs-path-disc) minmax(0, 1fr);
+	column-gap: var(--space-md);
+	row-gap: var(--space-md);
+	padding-bottom: var(--space-2xl);
+}
+
+.gs-path__step:last-child {
+	padding-bottom: 0;
+}
+
+.gs-path__num {
+	position: relative;
+	z-index: 1;
+	display: grid;
+	place-items: center;
+	width: var(--gs-path-disc);
+	height: var(--gs-path-disc);
+	border-radius: 50%;
+	/* A soft white disc with the number in plum: it sits on the line like a
+	   bead, with no ring and no fill to compete with the photographs. */
+	background: #fff;
+	box-shadow: var(--shadow-float);
+	font-family: var(--font-family-heading);
+	font-size: 1.25rem;
+	font-style: italic;
+	line-height: 1;
+	color: var(--color-primary);
+}
+
+.gs-path__text,
+.gs-path__photo {
+	grid-column: 2;
+}
+
+.gs-path__title {
+	margin: 0 0 var(--space-sm);
+	padding-top: 0.4rem;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.5rem, 1.25rem + 1.2vw, 2.125rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.15;
+	letter-spacing: -0.015em;
+	color: var(--color-ink);
+}
+
+.gs-path__body {
+	line-height: 1.7;
+	color: var(--color-ink-soft);
+}
+
+.gs-path__body > :first-child {
+	margin-top: 0;
+	color: var(--color-ink);
+}
+
+.gs-path__body > :last-child { margin-bottom: 0; }
+
+.gs-path__photo {
+	width: 100%;
+	max-width: none;
+	aspect-ratio: 3 / 2;
+	margin: 0;
+	border-radius: var(--radius-2xl);
+	box-shadow: var(--shadow-float);
+	background: var(--color-tile-tint);
+	overflow: hidden;
+}
+
+.gs-path__photo img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+@media (min-width: 56rem) {
+	.gs-path {
+		--gs-path-disc: 3.5rem;
+	}
+
+	.gs-path::before,
+	.gs-path::after {
+		left: calc(50% - 1px);
+	}
+
+	.gs-path__step {
+		grid-template-columns: minmax(0, 1fr) var(--gs-path-disc) minmax(0, 1fr);
+		column-gap: clamp(1.5rem, 4vw, 3.5rem);
+		align-items: center;
+		padding-bottom: var(--space-3xl);
+	}
+
+	.gs-path__num {
+		grid-column: 2;
+		grid-row: 1;
+		font-size: 1.5rem;
+	}
+
+	.gs-path__text {
+		grid-column: 1;
+		grid-row: 1;
+	}
+
+	.gs-path__photo {
+		grid-column: 3;
+		grid-row: 1;
+	}
+
+	.gs-path__step:nth-child(even) .gs-path__text {
+		grid-column: 3;
+	}
+
+	.gs-path__step:nth-child(even) .gs-path__photo {
+		grid-column: 1;
+	}
+
+	.gs-path__title {
+		padding-top: 0;
+	}
+}

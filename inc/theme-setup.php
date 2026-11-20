@@ -379,6 +379,25 @@ function ccs_theme_scripts() {
 	);
 	wp_style_add_data( 'ccs-theme-style', 'rtl', 'replace' );
 
+	// Inner pages in the homepage's language (Nov 2026): the centred hero,
+	// the strip lapping its foot, the numbered accordion and panels. One file
+	// for every page but the homepage, which has its own.
+	if ( ! is_page_template( 'page-templates/template-homepage.php' ) ) {
+		wp_enqueue_style(
+			'ccs-inner-pages',
+			$theme_uri . '/assets/css/inner-pages.css',
+			array( 'ccs-design-system', 'ccs-components', 'ccs-sections' ),
+			$version
+		);
+		wp_enqueue_script(
+			'ccs-inner-pages',
+			$theme_uri . '/assets/js/inner-pages.js',
+			array(),
+			$version,
+			true
+		);
+	}
+
 	if ( is_page_template( 'page-templates/template-homepage.php' ) ) {
 		wp_enqueue_style(
 			'ccs-homepage',
@@ -439,7 +458,7 @@ function ccs_theme_scripts() {
 
 	// Stepper (Getting started, the About journey) and the partner-logo
 	// marquee's pause button (homepage). One small file; without it both show as plain, complete content.
-	if ( is_page_template( 'page-templates/template-homepage.php' ) || is_page_template( 'page-templates/template-getting-started.php' ) || is_page_template( 'page-templates/template-about.php' ) || is_page_template( 'page-templates/template-current-vacancies.php' ) || is_page( array( 'working-for-us', 'professional-development' ) ) || is_singular( 'service' ) ) {
+	if ( is_page_template( 'page-templates/template-homepage.php' ) || is_page_template( 'page-templates/template-getting-started.php' ) || is_page_template( 'page-templates/template-about.php' ) || is_page_template( 'page-templates/template-current-vacancies.php' ) || is_page( array( 'working-for-us', 'professional-development' ) ) || is_singular( 'service' ) || is_page_template( 'page-templates/template-care-guides.php' ) ) {
 		wp_enqueue_script(
 			'ccs-interactive',
 			$theme_uri . '/assets/js/interactive.js',
@@ -473,6 +492,8 @@ function ccs_theme_scripts() {
 			'closeMenu'      => __( 'Close menu', 'ccs-wp-theme' ),
 			'expandSubmenu'  => __( 'Expand submenu', 'ccs-wp-theme' ),
 			'collapseSubmenu' => __( 'Collapse submenu', 'ccs-wp-theme' ),
+			/* translators: %s: a menu section's name, e.g. "Our services". */
+			'overview'       => __( '%s overview', 'ccs-wp-theme' ),
 		)
 	);
 

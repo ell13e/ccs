@@ -105,39 +105,66 @@ get_header();
 
 			<?php
 			/*
-			 * The steps as a stepper (Nov 2026). Two earlier layouts were rejected:
-			 * hairline rows (client: "awful") and rows in one white panel with the
-			 * second paragraph behind "More" (user: "still very blocky text, why
-			 * is there no interactivity or visual interest"). Now one step is on
-			 * screen at a time: a rail of numbered tabs with a line that fills as
-			 * you go, the step's number large, its full text, and previous/next.
-			 * Without JS (assets/js/interactive.js) all six steps list in order.
+			 * The steps as a timeline (Nov 2026, fourth form). Rejected before:
+			 * hairline rows (client: "awful"), rows in a panel with the second
+			 * paragraph behind "More" ("very blocky text"), and a stepper card
+			 * showing one step at a time ("i hate this", twice: an empty corner
+			 * under the title and a Next button doing the work of scrolling).
+			 * The client then asked for Pinterest and Dribbble research on
+			 * process sections and picked the vertical timeline from three
+			 * sketches. Built first as one white card with a line joining the
+			 * discs; that became the sections below. Every step shows; nothing
+			 * opens, closes or moves.
 			 */
+			?>
+			<?php
+			/*
+			 * The steps as an alternating timeline (same day, fifth form). One
+			 * card was "too much text", one band per step "too visually
+			 * repetitive", and two shapes of band still lacked "visual
+			 * interest". So each step now has a photograph, the steps swap
+			 * sides down a centre line that joins their numbered discs, and
+			 * the line fills as the page scrolls (CSS only, and only where the
+			 * visitor has not asked for reduced motion). The photographs break
+			 * up the text; the line makes six steps one journey.
+			 *
+			 * The photos are real CCS photos already in the theme, a first
+			 * choice for the client to change: one per step, in order.
+			 */
+			$ccs_gs_photos = array(
+				array( 'site-photos/Untitled-1.webp', '50% 30%' ),
+				array( 'site-photos/client-afternoon-tea.webp', '50% 25%' ),
+				array( 'site-photos/IMG-20241017-WA0005-edited-scaled.jpg', '50% 45%' ),
+				array( 'site-photos/467212766_9676172959062903_646005181027754761_n-copy.webp', '50% 30%' ),
+				array( 'site-photos/Untitled-design-4.webp', '50% 30%' ),
+				array( 'site-photos/client-activity-laughing.webp', '50% 30%' ),
+			);
 			?>
 			<section class="ccs-section ccs-section--tint gs-steps" aria-labelledby="gs-stepper-heading">
 				<div class="container container--lg">
 					<h2 id="gs-stepper-heading" class="screen-reader-text"><?php esc_html_e( 'The steps, in order', 'ccs-wp-theme' ); ?></h2>
-					<?php
-					$ccs_gs_items = array();
-					foreach ( $ccs_gs_steps as $ccs_gs_step ) {
-						$ccs_gs_items[] = array(
-							'tab'   => $ccs_gs_step['num'],
-							'name'  => $ccs_gs_step['title'],
-							'num'   => str_pad( $ccs_gs_step['num'], 2, '0', STR_PAD_LEFT ),
-							'title' => $ccs_gs_step['title'],
-							'body'  => $ccs_gs_step['body'],
-						);
-					}
-					get_template_part(
-						'template-parts/stepper',
-						null,
-						array(
-							'id'         => 'gs',
-							'labelledby' => 'gs-stepper-heading',
-							'items'      => $ccs_gs_items,
-						)
-					);
-					?>
+					<ol class="gs-path" role="list">
+						<?php foreach ( $ccs_gs_steps as $ccs_gs_n => $ccs_gs_step ) : ?>
+							<?php $ccs_gs_photo = $ccs_gs_photos[ $ccs_gs_n % count( $ccs_gs_photos ) ]; ?>
+							<li class="gs-path__step">
+								<span class="gs-path__num" aria-hidden="true"><?php echo esc_html( $ccs_gs_step['num'] ); ?></span>
+								<div class="gs-path__text">
+									<h3 class="gs-path__title"><span class="screen-reader-text"><?php echo esc_html( sprintf( /* translators: %s: step number. */ __( 'Step %s:', 'ccs-wp-theme' ), $ccs_gs_step['num'] ) ); ?> </span><?php echo esc_html( $ccs_gs_step['title'] ); ?></h3>
+									<div class="gs-path__body entry-content"><?php echo wp_kses_post( $ccs_gs_step['body'] ); ?></div>
+								</div>
+								<figure class="gs-path__photo" data-ccs-exception="rule 15: one photograph in its frame">
+									<?php
+									printf(
+										'<img src="%1$s" alt="" loading="lazy" decoding="async" style="object-position:%2$s"%3$s>',
+										esc_url( get_template_directory_uri() . '/assets/images/' . $ccs_gs_photo[0] ),
+										esc_attr( $ccs_gs_photo[1] ),
+										ccs_theme_image_srcset( $ccs_gs_photo[0], '(min-width: 900px) 460px, 80vw' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset().
+									);
+									?>
+								</figure>
+							</li>
+						<?php endforeach; ?>
+					</ol>
 				</div>
 			</section>
 

@@ -50,6 +50,19 @@ function ccs_content_sections( $html ) {
 }
 
 /**
+ * Mark a paragraph that is nothing but a link ("Read the NHS guide to home
+ * care") so it can be styled as a line of its own with a full-size touch
+ * target, rather than as a 22px inline link (rule 14). The page's own text
+ * is not changed; only a class is added on the way out.
+ *
+ * @param string $html Answer HTML.
+ * @return string
+ */
+function ccs_mark_link_lines( $html ) {
+	return (string) preg_replace( '#<p>\s*(<a\s[^>]*>(?:(?!</a>).)*</a>)\s*</p>#is', '<p class="link-line">$1</p>', (string) $html );
+}
+
+/**
  * Published services in the site's reading order: everyday care first, the
  * most specialist last (the homepage order). menu_order is 0 on every seeded
  * service, so ordering by it alone fell back to alphabetical and opened on

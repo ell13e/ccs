@@ -29,7 +29,7 @@ get_header();
 $ccs_phone     = get_theme_mod( 'ccs_phone', '01622 809 881' );
 $ccs_phone_tel = $ccs_phone ? preg_replace( '/\s+/', '', $ccs_phone ) : '';
 $ccs_hours     = get_theme_mod( 'ccs_office_hours', 'Mon–Fri 9am–5pm' );
-$ccs_email     = get_theme_mod( 'ccs_contact_email', get_option( 'admin_email' ) );
+$ccs_email     = function_exists( 'ccs_contact_email' ) ? ccs_contact_email() : 'office@continuitycareservices.co.uk'; // Never the WordPress admin address (it showed admin@localhost.com).
 /*
  * Same fallback as footer.php. This defaulted to '' here, so out of the box the
  * footer printed the office address while the contact page, the one place
@@ -130,7 +130,7 @@ $ccs_next_steps = apply_filters(
 		<div class="contact-main__inner container container--lg">
 
 			<div class="contact-form-card">
-				<p class="ccs-eyebrow"><?php echo esc_html( ccs_copy( 'contact_form_eyebrow' ) ); ?></p>
+				<?php // No label above the heading (client, Nov 2026: "ugly eyebrow"). ?>
 				<h2 id="contact-form-heading" class="contact-form-card__title"><?php echo esc_html( ccs_copy( 'contact_form_title' ) ); ?></h2>
 				<p id="contact-form-desc" class="contact-form-card__desc">
 					<?php esc_html_e( 'Your name and a phone number are all we need. We will call you back to arrange a conversation or a visit.', 'ccs-wp-theme' ); ?>

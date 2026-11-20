@@ -38,7 +38,14 @@ function ccs_apply_content_updates() {
 	// 11d (Nov 2026, client): the FAQ's "How quickly can care start?" answer now
 	// says "often starts within a month", matching the homepage steps intro.
 	// 11e: the same sentence, shortened after the client's copy review.
-	$updates = array( 'copy-update-2026-11', 'copy-update-2026-11b', 'copy-update-2026-11c', 'copy-update-2026-11d', 'copy-update-2026-11e' );
+	// 11f (Nov 2026, client): the FAQ page's seven questions replaced by the
+	// client's fourteen "Questions about care at home", each with its NHS,
+	// council or CQC link.
+	// 11g (Nov 2026, client: "why is getting started signposted in resources"):
+	// the Resources page no longer lists Getting started, which is a step in
+	// arranging care and sits under About, and its line about the common
+	// questions names what the new questions cover.
+	$updates = array( 'copy-update-2026-11', 'copy-update-2026-11b', 'copy-update-2026-11c', 'copy-update-2026-11d', 'copy-update-2026-11e', 'copy-update-2026-11f', 'copy-update-2026-11g' );
 	$home    = untrailingslashit( home_url() );
 	// The site the first file was made on; its links carry this address.
 	$tok   = static function ( $s ) use ( $home ) {

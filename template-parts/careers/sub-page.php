@@ -20,6 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $ccs_sp_content = ccs_content_sections( apply_filters( 'the_content', get_the_content() ) );
 $ccs_sp_id      = isset( $args['id'] ) ? sanitize_html_class( $args['id'] ) : 'careers-page';
 ?>
+<?php if ( empty( $args['skip_intro'] ) ) : // A page that opens with the homepage-style hero prints its own intro. ?>
 <section class="ccs-section careers-intro-split" aria-labelledby="<?php echo esc_attr( $ccs_sp_id ); ?>-intro-heading">
 	<div class="container container--lg">
 		<div class="ccs-media-split">
@@ -43,6 +44,7 @@ $ccs_sp_id      = isset( $args['id'] ) ? sanitize_html_class( $args['id'] ) : 'c
 		</div>
 	</div>
 </section>
+<?php endif; ?>
 
 <?php // A page that lays its sections out itself passes skip_topics. ?>
 <?php if ( empty( $args['skip_topics'] ) && ! empty( $ccs_sp_content['sections'] ) ) : ?>
@@ -56,6 +58,7 @@ $ccs_sp_id      = isset( $args['id'] ) ? sanitize_html_class( $args['id'] ) : 'c
 					'id'       => $ccs_sp_id,
 					'title'    => $args['tabs_title'],
 					'sections' => $ccs_sp_content['sections'],
+					'numbered' => ! empty( $args['numbered'] ),
 				)
 			);
 			?>
