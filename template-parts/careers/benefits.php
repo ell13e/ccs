@@ -49,50 +49,34 @@ $ccs_ben_count    = count( $ccs_ben_groups );
 		<div class="ccs-media-split careers-benefits__layout">
 			<div class="careers-benefits__text">
 				<h2 id="careers-benefits-heading" class="ccs-title"><?php echo ccs_copy_accent( 'careers_benefits_title' ); ?></h2>
-				<?php // A drawing with a note, as on the care side; the note is two of the listed benefits. ?>
-				<?php echo ccs_doodle_note( 'gift', __( "flexible hours,\nlocal work", 'ccs-wp-theme' ), 'careers-benefits__note' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle_note(). ?>
-
-				<div class="quote-rotator benefit-rotator" data-ccs-stepper>
-					<div class="quote-rotator__panels">
-						<?php foreach ( $ccs_ben_groups as $ccs_ben_i => $ccs_ben_group ) : ?>
-							<div class="quote-rotator__panel benefit-rotator__panel" role="tabpanel" id="benefit-panel-<?php echo (int) $ccs_ben_i; ?>" aria-labelledby="benefit-dot-<?php echo (int) $ccs_ben_i; ?>">
-								<div class="benefit-rotator__head">
-									<h3 class="benefit-rotator__title"><?php echo esc_html( $ccs_ben_group[0] ); ?></h3>
-								</div>
-								<ul class="benefit-rotator__list" role="list">
-									<?php foreach ( $ccs_ben_group[1] as $ccs_ben_item ) : ?>
-										<li><?php echo ccs_icon( 'check' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?><span><?php echo esc_html( $ccs_ben_item ); ?></span></li>
-									<?php endforeach; ?>
-								</ul>
-							</div>
-						<?php endforeach; ?>
-					</div>
-					<?php if ( $ccs_ben_count > 1 ) : ?>
-						<div class="quote-rotator__controls">
-							<button type="button" class="quote-rotator__arrow" data-ccs-step-prev aria-label="<?php esc_attr_e( 'Previous group of benefits', 'ccs-wp-theme' ); ?>"><span aria-hidden="true">&larr;</span></button>
-							<div class="quote-rotator__dots" role="tablist" aria-label="<?php esc_attr_e( 'Groups of benefits', 'ccs-wp-theme' ); ?>">
-								<?php foreach ( $ccs_ben_groups as $ccs_ben_i => $ccs_ben_group ) : ?>
-									<button type="button" class="quote-rotator__dot" role="tab" id="benefit-dot-<?php echo (int) $ccs_ben_i; ?>" aria-controls="benefit-panel-<?php echo (int) $ccs_ben_i; ?>" aria-selected="<?php echo 0 === $ccs_ben_i ? 'true' : 'false'; ?>">
-										<span class="screen-reader-text"><?php echo esc_html( $ccs_ben_group[0] ); ?></span>
-									</button>
-								<?php endforeach; ?>
-							</div>
-							<button type="button" class="quote-rotator__arrow" data-ccs-step-next aria-label="<?php esc_attr_e( 'Next group of benefits', 'ccs-wp-theme' ); ?>"><span aria-hidden="true">&rarr;</span></button>
-						</div>
-					<?php endif; ?>
-				</div>
+				<?php
+				/*
+				 * The groups of benefits in the site's one accordion (Nov 2026,
+				 * careers second pass). They were a carousel: one group showing,
+				 * four behind arrows and dots. Now every group's name is on the
+				 * page, the first open, each benefit ticked.
+				 */
+				$ccs_ben_items = array();
+				foreach ( $ccs_ben_groups as $ccs_ben_group ) {
+					$ccs_ben_body = '<ul class="tick-list" role="list">';
+					foreach ( $ccs_ben_group[1] as $ccs_ben_item ) {
+						$ccs_ben_body .= '<li>' . ccs_icon( 'check' ) . '<span>' . esc_html( $ccs_ben_item ) . '</span></li>';
+					}
+					$ccs_ben_items[] = array( 'heading' => $ccs_ben_group[0], 'body' => $ccs_ben_body . '</ul>' );
+				}
+				get_template_part( 'template-parts/num-acc', null, array( 'items' => $ccs_ben_items, 'name' => 'benefits' ) );
+				?>
 			</div>
 			<div class="careers-benefits__media">
 				<?php
-				// A carer with a client, not another shot from the training-room session: the same few faces were on every careers page (user).
+				// A carer with a client, not another shot from the training-room session: the same few faces were on every careers page (user). Used on no other page.
 				ccs_section_photo(
-					'site-photos/467212766_9676172959062903_646005181027754761_n-copy.webp',
+					'site-photos/carer-and-client-selfie.webp',
 					array(
-						'alt'   => __( 'A carer and a client smiling together', 'ccs-wp-theme' ),
+						'alt'   => __( 'Two women smiling together for a selfie', 'ccs-wp-theme' ),
 						'sizes' => '(min-width: 900px) 480px, 92vw',
 						'class' => 'careers-benefits__photo',
-						// Keeps the carer's face in frame; the centre crop cut it at the edge.
-						'position' => '0% 35%',
+												'position' => '50% 35%',
 					)
 				);
 				?>

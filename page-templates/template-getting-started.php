@@ -126,13 +126,14 @@ get_header();
 				'5' => 'speech-bubble',
 				'6' => 'journal',
 			);
+			// Photos used nowhere else on the site (client, Nov 2026: "make sure we arent repeating photos"). Which photo sits with which step is the client's call.
 			$ccs_gs_photos = array(
-				array( 'site-photos/Untitled-1.webp', '50% 30%' ),
-				array( 'site-photos/client-afternoon-tea.webp', '50% 25%' ),
+				array( 'site-photos/client-baking-together.webp', '50% 35%' ),
+				array( 'site-photos/client-sewing.webp', '50% 30%' ),
 				array( 'site-photos/IMG-20241017-WA0005-edited-scaled.jpg', '50% 45%' ),
 				array( 'site-photos/467212766_9676172959062903_646005181027754761_n-copy.webp', '50% 30%' ),
-				array( 'site-photos/Untitled-design-4.webp', '50% 30%' ),
-				array( 'site-photos/client-activity-laughing.webp', '50% 30%' ),
+				array( 'site-photos/client-cooking-prep.webp', '50% 45%' ),
+				array( 'site-photos/client-thank-you-flowers.webp', '50% 30%' ),
 			);
 			?>
 			<?php

@@ -143,6 +143,10 @@ $ccs_services = ccs_ordered_services();
 									<div class="care-card__media">
 										<?php echo wp_get_attachment_image( get_post_thumbnail_id( $ccs_hub_svc ), 'large', false, array( 'alt' => '', 'loading' => 'lazy', 'sizes' => '(min-width: 1024px) 400px, (min-width: 640px) 46vw, 92vw' ) ); ?>
 									</div>
+								<?php elseif ( function_exists( 'ccs_service_chosen_photo' ) && ccs_service_chosen_photo( $ccs_hub_svc->post_name ) ) : ?>
+									<div class="care-card__media">
+										<?php echo ccs_service_card_photo( $ccs_hub_svc->post_name, '(min-width: 1024px) 400px, (min-width: 640px) 46vw, 92vw' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_service_card_photo(). ?>
+									</div>
 								<?php else : ?>
 									<div class="care-card__media care-card__media--icon" aria-hidden="true" data-ccs-exception="rule 1: stands in for the card's photo until one is chosen; the whole card is the link"><?php echo ccs_icon( function_exists( 'ccs_service_icon' ) ? ccs_service_icon( $ccs_hub_svc->post_name ) : 'heart' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></div>
 								<?php endif; ?>

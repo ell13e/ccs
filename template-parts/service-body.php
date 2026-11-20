@@ -169,9 +169,9 @@ $ccs_sb_photo = has_post_thumbnail( $ccs_sb_id );
  */
 $ccs_sb_stand_ins = array(
 	array( 'careers/hoist-practice.webp', __( 'Two members of the team practising with a hoist in the training room', 'ccs-wp-theme' ) ),
-	array( 'careers/training-room.webp', __( 'Carers around a table during a training session', 'ccs-wp-theme' ) ),
-	array( 'careers/trainer-with-learner.webp', __( 'A trainer talking something through with a carer', 'ccs-wp-theme' ) ),
-	array( 'journey/cta-training-room.webp', __( 'Members of the team in the training room', 'ccs-wp-theme' ) ),
+	// Only photos the careers and About pages do not use (client, Nov 2026: no repeated photos across pages).
+	array( 'careers/flipchart.webp', __( 'A trainer writing on a flipchart during a session', 'ccs-wp-theme' ) ),
+	array( 'careers/notes-cpr.webp', __( 'A learner taking notes during first aid training', 'ccs-wp-theme' ) ),
 	array( 'careers/sling-practice.webp', __( 'A carer trying a sling during moving and handling training', 'ccs-wp-theme' ) ),
 );
 $ccs_sb_stand_ins = array_values(
@@ -183,6 +183,11 @@ $ccs_sb_stand_ins = array_values(
 	)
 );
 $ccs_sb_stand_in = ( ! $ccs_sb_photo && $ccs_sb_stand_ins ) ? $ccs_sb_stand_ins[ abs( crc32( (string) $ccs_sb_slug ) ) % count( $ccs_sb_stand_ins ) ] : null;
+
+// A photo the client chose for this service (see ccs_service_chosen_photo()); the training photo above is only the fallback.
+if ( ! $ccs_sb_photo && function_exists( 'ccs_service_chosen_photo' ) && ccs_service_chosen_photo( $ccs_sb_slug ) ) {
+	$ccs_sb_stand_in = ccs_service_chosen_photo( $ccs_sb_slug );
+}
 
 // An icon for each "can help with" tile, chosen by what its words are about.
 $ccs_sb_tile_icon = static function ( $text ) {
@@ -338,10 +343,11 @@ if ( ! $ccs_sb_lines ) {
 				<figure class="svc-intro__photo" data-ccs-exception="rule 15: one photograph in its frame">
 					<?php
 					printf(
-						'<img src="%1$s" alt="%2$s" loading="eager" decoding="async"%3$s>',
+						'<img src="%1$s" alt="%2$s" loading="eager" decoding="async"%3$s%4$s>',
 						esc_url( get_template_directory_uri() . '/assets/images/' . $ccs_sb_stand_in[0] ),
 						esc_attr( $ccs_sb_stand_in[1] ),
-						ccs_theme_image_srcset( $ccs_sb_stand_in[0], '(min-width: 960px) 480px, 92vw' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset().
+						ccs_theme_image_srcset( $ccs_sb_stand_in[0], '(min-width: 960px) 480px, 92vw' ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset().
+						isset( $ccs_sb_stand_in[2] ) ? ' style="object-position:' . esc_attr( $ccs_sb_stand_in[2] ) . '"' : ''
 					);
 					?>
 				</figure>

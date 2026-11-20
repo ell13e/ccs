@@ -34,22 +34,32 @@ get_header();
 		?>
 		<section class="ccs-section careers-open" aria-labelledby="working-intro-heading">
 			<div class="container container--lg">
-				<header class="ccs-head ccs-head--center">
-					<h2 id="working-intro-heading" class="ccs-title"><?php echo ccs_copy_accent( 'working_intro_title' ); ?></h2>
-				</header>
-				<figure class="hero-banner">
-					<?php
-					printf(
-						'<img src="%1$s" alt="%2$s" width="1200" height="500" fetchpriority="high" decoding="async"%3$s>',
-						esc_url( get_template_directory_uri() . '/assets/images/' . $ccs_wf_photo ),
-						esc_attr__( 'Six members of the Continuity Care Services team together at the office', 'ccs-wp-theme' ),
-						ccs_theme_image_srcset( $ccs_wf_photo, '(min-width: 1100px) 1024px, 92vw' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset().
-					);
-					?>
-				</figure>
-				<?php if ( '' !== trim( wp_strip_all_tags( $ccs_wf_content['intro'] ) ) ) : ?>
-					<div class="hero-banner__lede"><?php echo wp_kses_post( $ccs_wf_content['intro'] ); ?></div>
-				<?php endif; ?>
+				<?php
+				/*
+				 * Words beside the photo, as the other careers pages and the care
+				 * pages open (client, Nov 2026: a centred heading over a banner
+				 * photo "sticks out like a sore thumb"). The photo keeps its own
+				 * wide shape, so all six people stay in it.
+				 */
+				?>
+				<div class="ccs-media-split careers-open__layout">
+					<header class="careers-open__text">
+						<h2 id="working-intro-heading" class="ccs-title"><?php echo ccs_copy_accent( 'working_intro_title' ); ?></h2>
+						<?php if ( '' !== trim( wp_strip_all_tags( $ccs_wf_content['intro'] ) ) ) : ?>
+							<div class="ccs-lede careers-open__lede"><?php echo wp_kses_post( $ccs_wf_content['intro'] ); ?></div>
+						<?php endif; ?>
+					</header>
+					<figure class="hero-banner">
+						<?php
+						printf(
+							'<img src="%1$s" alt="%2$s" width="1200" height="500" fetchpriority="high" decoding="async"%3$s>',
+							esc_url( get_template_directory_uri() . '/assets/images/' . $ccs_wf_photo ),
+							esc_attr__( 'Six members of the Continuity Care Services team together at the office', 'ccs-wp-theme' ),
+							ccs_theme_image_srcset( $ccs_wf_photo, '(min-width: 1100px) 1024px, 92vw' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset().
+						);
+						?>
+					</figure>
+				</div>
 			</div>
 		</section>
 		<?php

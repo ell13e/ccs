@@ -150,3 +150,74 @@ function ccs_section_photo( $rel, $args = array() ) {
 	</figure>
 	<?php
 }
+
+/**
+ * The photo chosen for a service that has no featured image of its own.
+ *
+ * Client, Nov 2026: "make sure we arent repeating photos", then picked these
+ * from her Envato Elements subscription (no uniforms). Models, not CCS
+ * clients or staff, so the alt text describes the scene and names no one.
+ * The files are licensed for the site and kept out of the public repository
+ * (.gitignore), so a missing file returns null and the caller falls back.
+ * Used by the service page's opening and by every service card, so a card
+ * and the page it leads to show the same picture.
+ *
+ * @param string $slug Service slug.
+ * @return array|null File (relative to assets/images), alt text, object-position.
+ */
+function ccs_service_chosen_photo( $slug ) {
+	$chosen = array(
+		'companionship-care' => array( 'stock/tea-outside.webp', __( 'An older woman smiling as tea is poured at a garden table', 'ccs-wp-theme' ), '30% 40%' ),
+		'elderly-care'       => array( 'stock/stroll-in-the-park.webp', __( 'An older woman with a walker and a younger woman walking together in a park', 'ccs-wp-theme' ), '50% 50%' ),
+		'dementia-care'      => array( 'stock/baking-together.webp', __( 'Two women laughing as they fill cake cases at a kitchen worktop', 'ccs-wp-theme' ), '50% 8%' ),
+		'long-term-care'     => array( 'stock/wheelchair-and-chess.webp', __( 'A man leaning in to help an older gentleman in a wheelchair beside an outdoor chess table', 'ccs-wp-theme' ), '50% 60%' ),
+		'cancer-care'        => array( 'stock/woman-with-her-dog.webp', __( 'A woman in a headscarf on her sofa, stroking a black dog resting on her lap', 'ccs-wp-theme' ), '35% 40%' ),
+		'stroke-care'        => array( 'stock/mother-and-daughter-walk.webp', __( 'A younger woman with her hands on the shoulders of a smiling older woman on a woodland path', 'ccs-wp-theme' ), '50% 35%' ),
+		'nursing-care'       => array( 'stock/help-with-tablets.webp', __( 'A woman sitting beside an older woman in an armchair as she takes her tablets with a glass of water', 'ccs-wp-theme' ), '50% 10%' ),
+		'personal-care'      => array( 'stock/at-the-dressing-table.webp', __( 'A woman leaning in beside an older woman at her dressing table, both smiling', 'ccs-wp-theme' ), '35% 40%' ),
+		'continuous-care'    => array( 'stock/guitar-at-home.webp', __( 'An older man laughing on his sofa as a younger man plays the guitar', 'ccs-wp-theme' ), '50% 40%' ),
+		'palliative-care'    => array( 'stock/bedside-visit.webp', __( 'An older woman resting in bed with someone sitting close beside her', 'ccs-wp-theme' ), '50% 40%' ),
+		'spinal-injury-care' => array( 'stock/laughing-on-the-patio.webp', __( 'A man in a wheelchair laughing with a woman on a sunny patio', 'ccs-wp-theme' ), '50% 40%' ),
+		'cerebral-palsy-care' => array( 'stock/laughing-in-the-park.webp', __( 'A man in a wheelchair laughing as the man with him points something out on a path through a park', 'ccs-wp-theme' ), '35% 35%' ),
+		'overnight-care'     => array( 'stock/settling-in-for-the-night.webp', __( 'A woman straightening the pillows behind an older woman sitting up in bed', 'ccs-wp-theme' ), '50% 28%' ),
+		'disability-care'    => array( 'stock/watering-the-plants.webp', __( 'A man in a wheelchair watering a houseplant on a shelf at home', 'ccs-wp-theme' ), '60% 40%' ),
+		'younger-adults-care' => array( 'stock/baking-at-the-table.webp', __( 'A woman and a young man laughing as they bake at a kitchen table', 'ccs-wp-theme' ), '55% 40%' ),
+		// The client's pick; which page it belongs on was a guess (Nov 2026), so check with her.
+		'brain-injury-care'  => array( 'stock/unpacking-the-shopping.webp', __( 'A woman unpacking shopping at the kitchen table with an older man in a wheelchair', 'ccs-wp-theme' ), '40% 40%' ),
+		'parkinsons-care'    => array( 'stock/walking-frame-in-the-park.webp', __( 'A young woman walking beside an older woman who is using a walking frame in a park', 'ccs-wp-theme' ), '50% 35%' ),
+	);
+	if ( ! isset( $chosen[ $slug ] ) || ! file_exists( get_template_directory() . '/assets/images/' . $chosen[ $slug ][0] ) ) {
+		return null;
+	}
+	return $chosen[ $slug ];
+}
+
+/**
+ * Whether a service has a photograph for its card: a featured image or a chosen photo.
+ *
+ * @param WP_Post $service Service post.
+ * @return bool
+ */
+function ccs_service_has_photo( $service ) {
+	return has_post_thumbnail( $service ) || null !== ccs_service_chosen_photo( $service->post_name );
+}
+
+/**
+ * The chosen photo as a card image (decorative: the card's title is the link).
+ *
+ * @param string $slug  Service slug.
+ * @param string $sizes The sizes attribute for the card's slot.
+ * @return string Escaped img tag, or an empty string.
+ */
+function ccs_service_card_photo( $slug, $sizes ) {
+	$photo = ccs_service_chosen_photo( $slug );
+	if ( ! $photo ) {
+		return '';
+	}
+	return sprintf(
+		'<img src="%1$s" alt="" loading="lazy" decoding="async"%2$s style="object-position:%3$s">',
+		esc_url( get_template_directory_uri() . '/assets/images/' . $photo[0] ),
+		ccs_theme_image_srcset( $photo[0], $sizes ),
+		esc_attr( $photo[2] )
+	);
+}

@@ -23,9 +23,10 @@ $items = array(
 		'body'  => __( "Practical training, a team you can rely on, and a manager who means it when they ask how you're doing.", 'ccs-wp-theme' ),
 	),
 	array(
-		'photo' => 'site-photos/WhatsApp-Image-2025-05-23-at-13.39.58.webp',
-		'pos'   => '50% 70%',
-		'alt'   => __( 'A person in a wheelchair looking out over the beach and pier on a day out', 'ccs-wp-theme' ),
+		// Not the pier photo: the homepage uses it (client, Nov 2026: no repeated photos).
+		'photo' => 'site-photos/client-picking-flowers.webp',
+		'pos'   => '50% 25%',
+		'alt'   => __( 'Someone sitting in a meadow picking buttercups on a day out', 'ccs-wp-theme' ),
 		'title' => __( 'Hours that fit your life', 'ccs-wp-theme' ),
 		'body'  => __( 'School hours, overnight shifts or steady full-time work. We build the rota around you.', 'ccs-wp-theme' ),
 	),

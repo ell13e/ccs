@@ -385,10 +385,10 @@ while ( have_posts() ) :
 				 * different?", of one card with an icon tile and no price beside
 				 * two with a photo and a price). When at least two other services
 				 * have a photograph, only those are shown, and the last place is
-				 * the link to every service. Seventeen services have no photo yet:
-				 * as each gets one it joins the row.
+				 * the link to every service. A chosen photo counts as well as a
+				 * featured image (ccs_service_has_photo()).
 				 */
-				$ccs_related_photo = array_values( array_filter( $ccs_related_shown, 'has_post_thumbnail' ) );
+				$ccs_related_photo = array_values( array_filter( $ccs_related_shown, 'ccs_service_has_photo' ) );
 				if ( count( $ccs_related_photo ) >= 2 ) {
 					$ccs_related_shown = $ccs_related_photo;
 				}
@@ -410,6 +410,10 @@ while ( have_posts() ) :
 										)
 									);
 									?>
+								</div>
+							<?php elseif ( ccs_service_chosen_photo( $rel->post_name ) ) : ?>
+								<div class="svc-card__media">
+									<?php echo ccs_service_card_photo( $rel->post_name, '(min-width: 1280px) 400px, (min-width: 860px) 31vw, 92vw' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_service_card_photo(). ?>
 								</div>
 							<?php else : ?>
 								<?php // No photo yet: the service's icon tile in the photo's place, as template-parts/service-cards.php. Without it the panel's overlap pulled the card up over the heading. ?>
