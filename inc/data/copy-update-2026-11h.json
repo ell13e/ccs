@@ -1,0 +1,58 @@
+[
+ {
+  "slug": "companionship-care",
+  "type": "service",
+  "old_content": "",
+  "new_content": "",
+  "old_excerpt": "Meaningful companionship brightens days and creates genuine connection, with every visit shaped around your interests and personality.",
+  "new_excerpt": "A regular visit from a carer you get to know, for a cup of tea and a chat, a walk or a trip out, and help with shopping and appointments."
+ },
+ {
+  "slug": "overnight-care",
+  "type": "service",
+  "old_content": "",
+  "new_content": "",
+  "old_excerpt": "Discreet, compassionate support through the night, so you and your loved ones can rest peacefully.",
+  "new_excerpt": "A carer in your home through the night. They can sleep there and get up when you need them, or stay awake all night to help with the toilet, turning or medication."
+ },
+ {
+  "slug": "continuous-care",
+  "type": "service",
+  "old_content": "",
+  "new_content": "",
+  "old_excerpt": "Reassurance and assistance day and night, from a small, dedicated team working carefully managed shifts.",
+  "new_excerpt": "Care around the clock, where overnight care covers the night alone. A small team of carers takes it in shifts, so someone is with you day and night."
+ },
+ {
+  "slug": "disability-care",
+  "type": "service",
+  "old_content": "",
+  "new_content": "",
+  "old_excerpt": "Respectful, client-centred support for children and adults with physical disabilities, learning disabilities or autism spectrum conditions.",
+  "new_excerpt": "Support for children and adults with a physical disability, a learning disability or autism: personal care, help with moving and equipment, daily routines and getting out."
+ },
+ {
+  "slug": "palliative-care",
+  "type": "service",
+  "old_content": "",
+  "new_content": "",
+  "old_excerpt": "When you or a loved one faces a life-limiting illness, our palliative and end-of-life care focuses on comfort, pain relief and support for the whole family.",
+  "new_excerpt": "Care at home for someone with a life-limiting illness: help with washing, moving and staying comfortable, alongside your nurses and doctors, and support for the family."
+ },
+ {
+  "slug": "parkinsons-care",
+  "type": "service",
+  "old_content": "",
+  "new_content": "",
+  "old_excerpt": "Care at home for people living with Parkinson’s, with medication on time and help that changes as the condition does.",
+  "new_excerpt": "Care at home for people living with Parkinson’s, with help to take medication at the times prescribed and support that changes as the condition does."
+ },
+ {
+  "slug": "respite-care",
+  "type": "service",
+  "old_content": "",
+  "new_content": "",
+  "old_excerpt": "Respite care in Maidstone and across Kent, for a few hours or a few days. A carer who's already met the person you care for steps in, so you can rest.",
+  "new_excerpt": "Respite care in Maidstone and across Kent, for a few hours or a few days. A carer steps in so you can rest, and meets the person you care for beforehand wherever possible."
+ }
+]

@@ -146,6 +146,7 @@ while ( have_posts() ) :
 			$ccs_svc_faqs[] = array( 'q' => $ccs_faq['q'], 'a' => wpautop( esc_html( $ccs_faq['a'] ) ) );
 		}
 	}
+	$ccs_svc_topic = function_exists( 'ccs_more_faqs_for_service' ) ? ccs_more_faqs_for_service( get_post_field( 'post_name', $post_id ) ) : null;
 	foreach ( array( 'faqs', 'resources/faqs' ) as $ccs_path ) {
 		$ccs_svc_faq_page = $ccs_svc_faq_page ? $ccs_svc_faq_page : get_page_by_path( $ccs_path );
 	}
@@ -311,7 +312,10 @@ while ( have_posts() ) :
 							printf(
 								/* translators: %s: link to the FAQs page. */
 								esc_html__( 'Can’t find the answer? %s, or ring us.', 'ccs-wp-theme' ),
-								'<a href="' . esc_url( get_permalink( $ccs_svc_faq_page ) ) . '">' . esc_html__( 'See all our questions and answers', 'ccs-wp-theme' ) . '</a>'
+								// Straight to this service's own topic on the FAQs page where there is one; the page opens it.
+								$ccs_svc_topic
+									? '<a href="' . esc_url( get_permalink( $ccs_svc_faq_page ) . '#' . $ccs_svc_topic['id'] ) . '">' . esc_html__( 'See more questions about this kind of care', 'ccs-wp-theme' ) . '</a>'
+									: '<a href="' . esc_url( get_permalink( $ccs_svc_faq_page ) ) . '">' . esc_html__( 'See all our questions and answers', 'ccs-wp-theme' ) . '</a>'
 							);
 							?>
 						</p>

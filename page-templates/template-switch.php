@@ -66,7 +66,8 @@ $ccs_switch_faqs = array(
 	<section class="ccs-section switch-steps" aria-labelledby="switch-steps-heading">
 		<div class="container container--lg">
 			<header class="ccs-head ccs-head--center">
-				<h2 id="switch-steps-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'switch_steps_title' ) ); ?></h2>
+				<?php echo ccs_doodle( 'handshake', 'doodle--above' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle(). ?>
+				<h2 id="switch-steps-heading" class="ccs-title"><?php echo ccs_copy_accent( 'switch_steps_title' ); ?></h2>
 			</header>
 			<ol class="ccs-steps ccs-steps--panel" role="list" data-ccs-exception="rule 1: one soft panel holding the sequence, as on the homepage">
 				<?php foreach ( $ccs_switch_steps as $ccs_i => $ccs_step ) : ?>
@@ -84,7 +85,7 @@ $ccs_switch_faqs = array(
 		<div class="container container--lg">
 			<div class="ccs-split">
 				<header class="ccs-head">
-					<h2 id="switch-faqs-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'switch_faqs_title' ) ); ?></h2>
+					<h2 id="switch-faqs-heading" class="ccs-title"><?php echo ccs_copy_accent( 'switch_faqs_title' ); ?></h2>
 				</header>
 				<div class="ccs-faq">
 					<?php foreach ( $ccs_switch_faqs as $ccs_i => $ccs_faq ) : ?>
@@ -103,7 +104,7 @@ $ccs_switch_faqs = array(
 
 			<div class="contact-form-card">
 				<?php // No label above the heading (client, Nov 2026: the labels with a mint rule were "weird" and "ugly"; removed everywhere). ?>
-				<h2 id="switch-form-heading" class="contact-form-card__title"><?php echo esc_html( ccs_copy( 'switch_form_title' ) ); ?></h2>
+				<h2 id="switch-form-heading" class="contact-form-card__title"><?php echo ccs_copy_accent( 'switch_form_title' ); ?></h2>
 				<p id="switch-form-desc" class="contact-form-card__desc"><?php echo esc_html( ccs_copy( 'switch_form_text' ) ); ?></p>
 
 				<form class="contact-form ccs-form" data-ccs-action="submit_enquiry" data-ccs-context="referrer" method="post" action="" novalidate aria-describedby="switch-form-desc switch-form-message">
@@ -195,7 +196,7 @@ $ccs_switch_faqs = array(
 			<aside class="contact-aside" aria-label="<?php esc_attr_e( 'Talk to us instead', 'ccs-wp-theme' ); ?>">
 				<?php if ( ! empty( $ccs_contact['phone'] ) ) : ?>
 					<div class="contact-call ccs-on-dark">
-						<h2 class="contact-call__title"><?php echo esc_html( ccs_copy( 'contact_talk_title' ) ); ?></h2>
+						<h2 class="contact-call__title"><?php echo ccs_copy_accent( 'contact_talk_title' ); ?></h2>
 						<p class="contact-call__text"><?php echo esc_html( ccs_copy( 'switch_call_text' ) ); ?></p>
 						<a class="contact-call__phone" href="<?php echo esc_url( $ccs_contact['phone_link'] ); ?>">
 							<?php echo ccs_icon( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?>

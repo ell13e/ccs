@@ -126,6 +126,7 @@ while ( have_posts() ) :
 			<div class="location-about__grid">
 				<div class="location-about__main">
 					<header class="ccs-head">
+						<?php echo ccs_doodle( 'bird-house', 'doodle--above' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle(). ?>
 						<h2 id="location-about-heading" class="ccs-title">
 							<?php
 							/* translators: %s: town name, drawn with a brush underline. */
@@ -258,7 +259,7 @@ while ( have_posts() ) :
 				<h2 id="location-services-heading" class="ccs-title">
 					<?php
 					/* translators: %s: town name. */
-					echo esc_html( sprintf( __( 'Care we provide in %s', 'ccs-wp-theme' ), $town ) );
+					echo ccs_accent_text( sprintf( __( 'Care we *provide* in %s', 'ccs-wp-theme' ), $town ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_accent_text().
 					?>
 				</h2>
 			</header>
@@ -348,7 +349,7 @@ while ( have_posts() ) :
 					<h2 id="location-map-heading" class="ccs-title">
 						<?php
 						/* translators: %s: town name. */
-						echo esc_html( sprintf( __( 'Where we visit around %s', 'ccs-wp-theme' ), $town ) );
+						echo ccs_accent_text( sprintf( __( 'Where we *visit* around %s', 'ccs-wp-theme' ), $town ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_accent_text().
 						?>
 					</h2>
 				</header>

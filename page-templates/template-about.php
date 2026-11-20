@@ -35,6 +35,7 @@ get_header();
 			<div class="container container--lg">
 				<div class="ccs-media-split">
 					<article id="post-<?php the_ID(); ?>" <?php post_class( 'page-content about-intro__text' ); ?>>
+						<?php echo ccs_doodle( 'heart-hand', 'doodle--above' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle(). ?>
 						<h2 id="about-intro-heading" class="ccs-title">
 							<?php
 							echo ccs_copy_accent( 'about_intro_title' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_copy_accent().
@@ -111,7 +112,7 @@ get_header();
 				<div class="container container--lg">
 					<div class="journey-layout" data-ccs-journey>
 						<header class="journey-aside">
-							<h2 id="about-journey-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'about_journey_title' ) ); ?></h2>
+							<h2 id="about-journey-heading" class="ccs-title"><?php echo ccs_copy_accent( 'about_journey_title' ); ?></h2>
 							<p class="journey-aside__range"><?php echo esc_html( $ccs_journey_first ); ?> <span aria-hidden="true">&rarr;</span><span class="screen-reader-text"><?php esc_html_e( 'to', 'ccs-wp-theme' ); ?></span> <?php echo esc_html( $ccs_journey_last ); ?></p>
 							<p class="journey-aside__year" aria-hidden="true" data-ccs-journey-year><?php echo esc_html( $ccs_journey_first ); ?></p>
 						</header>
@@ -153,7 +154,7 @@ get_header();
 					<header class="ccs-head">
 						<h2 id="about-story-heading" class="ccs-title">
 							<?php
-							echo esc_html( ccs_copy( 'about_story_title' ) );
+							echo ccs_copy_accent( 'about_story_title' );
 							?>
 						</h2>
 						<p class="ccs-lede">
@@ -222,7 +223,7 @@ get_header();
 		<section class="ccs-section about-family" aria-labelledby="about-family-heading">
 			<div class="container container--lg">
 				<header class="ccs-head ccs-head--center">
-					<h2 id="about-family-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'about_family_title' ) ); ?></h2>
+					<h2 id="about-family-heading" class="ccs-title"><?php echo ccs_copy_accent( 'about_family_title' ); ?></h2>
 				</header>
 				<?php foreach ( $ccs_family as $ccs_family_i => $ccs_family_item ) : ?>
 					<div class="ccs-media-split family-feature<?php echo 1 === $ccs_family_i % 2 ? ' ccs-media-split--flip' : ''; ?>">

@@ -36,7 +36,7 @@ function ccs_more_services_2026_11() {
 			'title'   => 'Companionship Care',
 			'icon'    => 'people',
 			'desc'    => 'Company, outings and a chat',
-			'excerpt' => 'Meaningful companionship brightens days and creates genuine connection, with every visit shaped around your interests and personality.',
+			'excerpt' => 'A regular visit from a carer you get to know, for a cup of tea and a chat, a walk or a trip out, and help with shopping and appointments.',
 			'content' => "<p>Meaningful companionship brightens days and creates genuine connection. Whether you’d like to explore the local park, dive into a craft project, or simply share stories over tea, our carers adapt each visit to your interests and personality.</p>
 <p>Every visit is shaped around interests and personality. Perhaps you’d like to revisit old photo albums, try a gentle walk in the local park, tackle a puzzle, or even explore a new café in Maidstone. Our carers take time to understand what brings you joy and create experiences that uplift your spirits.</p>
 <h2>What’s included</h2>
@@ -52,7 +52,7 @@ function ccs_more_services_2026_11() {
 			'title'   => 'Palliative Care',
 			'icon'    => 'heart',
 			'desc'    => 'Comfort and support at home',
-			'excerpt' => 'When you or a loved one faces a life-limiting illness, our palliative and end-of-life care focuses on comfort, pain relief and support for the whole family.',
+			'excerpt' => 'Care at home for someone with a life-limiting illness: help with washing, moving and staying comfortable, alongside your nurses and doctors, and support for the family.',
 			'content' => "<p>When you or a loved one faces a life-limiting illness, our palliative and end-of-life care focuses on alleviating symptoms, managing pain and providing emotional and physical support. We collaborate closely with your hospice team, GP and family to deliver a bespoke care plan that honours personal wishes and maximises quality of life.</p>
 <p>From medication management and symptom relief to heartfelt companionship and family liaison, our compassionate carers and nurses are available around the clock. Whether it’s helping you remain at home or providing respite for family members, we’re here to ensure every moment is as peaceful and meaningful as possible.</p>
 <h2>What’s included</h2>
@@ -68,8 +68,8 @@ function ccs_more_services_2026_11() {
 			'title'   => 'Overnight Care',
 			'icon'    => 'moon',
 			'desc'    => 'Someone there through the night',
-			'excerpt' => 'Discreet, compassionate support through the night, so you and your loved ones can rest peacefully.',
-			'content' => "<p>Even when the world is quiet, our night care staff remain attentive, providing discreet and compassionate support so you and your loved ones can rest peacefully. Whether it’s a midnight check-in, help with toileting, or administering medication, our night-care team is trained to respond swiftly and respectfully.</p>
+			'excerpt' => 'A carer in your home through the night. They can sleep there and get up when you need them, or stay awake all night to help with the toilet, turning or medication.',
+			'content' => "<p>Even when the world is quiet, our night care staff remain attentive, there to help when you need it, so family at home can sleep too. Whether it’s a midnight check-in, help with toileting, or administering medication, our night-care team is trained to respond swiftly and respectfully.</p>
 <p>Every night visit is tailored to individual needs. Experienced staff can gently reposition you to enhance your comfort, monitor any changes in your health, and communicate with family or healthcare professionals. By providing continuity of care 24/7, you’ll wake in the morning knowing someone reliable was by your side all night.</p>
 <h2>What’s included</h2>
 <ul>
@@ -84,7 +84,7 @@ function ccs_more_services_2026_11() {
 			'title'   => 'Continuous Care',
 			'icon'    => 'clock',
 			'desc'    => 'Care around the clock',
-			'excerpt' => 'Reassurance and assistance day and night, from a small, dedicated team working carefully managed shifts.',
+			'excerpt' => 'Care around the clock, where overnight care covers the night alone. A small team of carers takes it in shifts, so someone is with you day and night.',
 			'content' => "<p>When your loved one needs reassurance and assistance day and night, our home care services are available round the clock through carefully managed shift patterns.</p>
 <p>You’ll have a small, dedicated team of carers, each enhanced DBS-checked and trained by us, who know your routines and preferences inside out. With weekly rota planning and regular care-plan reviews, you can rest assured that care is never interrupted, and your family always stays in the loop.</p>
 <h2>What’s included</h2>
@@ -100,7 +100,7 @@ function ccs_more_services_2026_11() {
 			'title'   => 'Disability Care',
 			'icon'    => 'shield',
 			'desc'    => 'Support for children and adults',
-			'excerpt' => 'Respectful, client-centred support for children and adults with physical disabilities, learning disabilities or autism spectrum conditions.',
+			'excerpt' => 'Support for children and adults with a physical disability, a learning disability or autism: personal care, help with moving and equipment, daily routines and getting out.',
 			'content' => "<p>We take pride in offering respectful, client-centred support for children and adults with physical disabilities, learning disabilities, or autism spectrum conditions. Our caring and experienced team works closely with you and your family to help develop essential life skills, encourage independence, and engage in fun social, educational, and recreational activities.</p>
 <p>Each care plan is thoughtfully tailored to help you meet your personal goals, whether that’s exploring sensory-friendly hobbies or joining community groups. We also provide any necessary clinical or nursing support, such as catheter care or PEG feeding, ensuring you feel safe and respected every step of the way.</p>
 <h2>What’s included</h2>

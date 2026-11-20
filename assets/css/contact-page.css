@@ -500,3 +500,15 @@
 	gap: 1.75rem;
 	padding: var(--space-sm) 0 var(--space-xl);
 }
+
+/* The office email is long (36 characters): at the card's width it broke
+   after ".co.u", leaving a lone "k" on a second line. It is set a little
+   smaller and may break after the "@" only (a <wbr> in the template). */
+.contact-way__link[href^="mailto:"] {
+	display: inline-block;
+	padding-block: 0.5rem;
+	font-size: 0.9375rem;
+	line-height: 1.4;
+	overflow-wrap: normal;
+	word-break: normal;
+}

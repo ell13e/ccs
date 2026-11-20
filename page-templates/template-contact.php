@@ -103,7 +103,11 @@ $ccs_next_steps = apply_filters(
 					<li class="contact-way">
 						<span class="ccs-badge"><?php echo ccs_icon( 'mail' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
 						<h3 class="contact-way__title"><?php esc_html_e( 'Email us', 'ccs-wp-theme' ); ?></h3>
-						<a class="contact-way__link" href="<?php echo esc_url( 'mailto:' . antispambot( $ccs_email ) ); ?>" data-ccs-preview="contact_email"><?php echo esc_html( antispambot( $ccs_email ) ); ?></a>
+						<a class="contact-way__link" href="<?php echo esc_url( 'mailto:' . antispambot( $ccs_email ) ); ?>" data-ccs-preview="contact_email"><?php
+						// A break is allowed after the "@" only, so a long address splits into its two halves and never mid-word.
+						$ccs_email_parts = explode( '@', $ccs_email, 2 );
+						echo esc_html( antispambot( $ccs_email_parts[0] . '@' ) ) . '<wbr>' . esc_html( antispambot( isset( $ccs_email_parts[1] ) ? $ccs_email_parts[1] : '' ) );
+						?></a>
 						<p class="contact-way__meta"><?php echo esc_html( ccs_copy( 'contact_email_note' ) ); ?></p>
 					</li>
 				<?php endif; ?>
@@ -131,7 +135,8 @@ $ccs_next_steps = apply_filters(
 
 			<div class="contact-form-card">
 				<?php // No label above the heading (client, Nov 2026: "ugly eyebrow"). ?>
-				<h2 id="contact-form-heading" class="contact-form-card__title"><?php echo esc_html( ccs_copy( 'contact_form_title' ) ); ?></h2>
+				<?php echo ccs_doodle( 'envelope', 'doodle--above' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle(). ?>
+				<h2 id="contact-form-heading" class="contact-form-card__title"><?php echo ccs_copy_accent( 'contact_form_title' ); ?></h2>
 				<p id="contact-form-desc" class="contact-form-card__desc">
 					<?php esc_html_e( 'Your name and a phone number are all we need. We will call you back to arrange a conversation or a visit.', 'ccs-wp-theme' ); ?>
 				</p>
@@ -255,7 +260,7 @@ $ccs_next_steps = apply_filters(
 
 				<?php if ( $ccs_phone_tel ) : ?>
 					<div class="contact-call ccs-on-dark">
-						<h2 class="contact-call__title"><?php echo esc_html( ccs_copy( 'contact_talk_title' ) ); ?></h2>
+						<h2 class="contact-call__title"><?php echo ccs_copy_accent( 'contact_talk_title' ); ?></h2>
 						<p class="contact-call__text"><?php esc_html_e( "If a form feels like too much right now, ring our office team and we'll talk it through.", 'ccs-wp-theme' ); ?></p>
 						<?php
 						/*
@@ -279,7 +284,7 @@ $ccs_next_steps = apply_filters(
 
 				<?php if ( ! empty( $ccs_next_steps ) ) : ?>
 					<div class="contact-next">
-						<h2 class="contact-next__title"><?php echo esc_html( ccs_copy( 'contact_next_title' ) ); ?></h2>
+						<h2 class="contact-next__title"><?php echo ccs_copy_accent( 'contact_next_title' ); ?></h2>
 						<ol class="contact-next__list" role="list">
 							<?php foreach ( $ccs_next_steps as $ccs_i => $ccs_step ) : ?>
 								<li class="contact-next__item">

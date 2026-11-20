@@ -35,7 +35,7 @@ get_header();
 		<section class="ccs-section careers-open" aria-labelledby="working-intro-heading">
 			<div class="container container--lg">
 				<header class="ccs-head ccs-head--center">
-					<h2 id="working-intro-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'working_intro_title' ) ); ?></h2>
+					<h2 id="working-intro-heading" class="ccs-title"><?php echo ccs_copy_accent( 'working_intro_title' ); ?></h2>
 				</header>
 				<figure class="hero-banner">
 					<?php

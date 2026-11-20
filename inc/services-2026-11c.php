@@ -85,7 +85,7 @@ function ccs_more_services_2026_11c() {
 			'title'   => 'Parkinson’s Care',
 			'group'   => 'condition',
 			'icon'    => 'shield',
-			'excerpt' => 'Care at home for people living with Parkinson’s, with medication on time and help that changes as the condition does.',
+			'excerpt' => 'Care at home for people living with Parkinson’s, with help to take medication at the times prescribed and support that changes as the condition does.',
 			'content' => "<p>Parkinson’s affects people differently, and from one day to the next. Good care is flexible, unhurried, and careful about medication times, which matter a great deal with this condition.</p>\n" . $list( array( 'Medication given on time', 'Help with washing, dressing and moving safely', 'Meals and help with eating', 'Support on good days and difficult ones', 'Company and help to stay active' ) ),
 		),
 		'cancer-care'          => array(
@@ -97,7 +97,7 @@ function ccs_more_services_2026_11c() {
 		),
 		'nursing-care'         => array(
 			'title'   => 'Nursing Care',
-			'group'   => 'condition',
+			'group'   => 'everyday',
 			'icon'    => 'badge',
 			'excerpt' => 'Clinical care at home, planned and overseen by nurses, for people whose health needs go beyond everyday support.',
 			'content' => "<p>Nursing care is for health needs that call for clinical skill. It is planned and overseen by nurses, given at home, and works alongside your GP, district nurses and hospital teams.</p>\n" . $list( array( 'Clinical tasks set out in the care plan', 'Medication administration and monitoring', 'Wound, catheter and stoma care', 'Observations and reporting changes', 'Personal care with dignity' ) ),
@@ -130,14 +130,18 @@ function ccs_more_services_2026_11c() {
  * Which group a service belongs to.
  *
  * @param string $slug Service slug.
- * @return string 'everyday' or 'condition'.
+ * Nov 2026 (client): the groups are by kind of support and then by
+ * condition, so complex care and nursing care sit with the kinds of support.
+ * The keys are unchanged (they are the page anchors and menu classes).
+ *
+ * @return string 'everyday' (types of care) or 'condition' (conditions we support).
  */
 function ccs_service_group( $slug ) {
 	$more = ccs_more_services_2026_11c();
 	if ( isset( $more[ $slug ] ) ) {
 		return $more[ $slug ]['group'];
 	}
-	return in_array( $slug, array( 'complex-care', 'disability-care' ), true ) ? 'condition' : 'everyday';
+	return 'disability-care' === $slug ? 'condition' : 'everyday';
 }
 
 /**
@@ -147,8 +151,8 @@ function ccs_service_group( $slug ) {
  */
 function ccs_service_groups() {
 	return array(
-		'everyday'  => __( 'Everyday care', 'ccs-wp-theme' ),
-		'condition' => __( 'Condition-led care', 'ccs-wp-theme' ),
+		'everyday'  => __( 'Types of care', 'ccs-wp-theme' ),
+		'condition' => __( 'Conditions we support', 'ccs-wp-theme' ),
 	);
 }
 
@@ -307,6 +311,106 @@ function ccs_group_services_menu_2026_11c() {
 	}
 }
 add_action( 'init', 'ccs_group_services_menu_2026_11c', 48 );
+
+/**
+ * Bring an existing menu in line with the regrouping (Nov 2026, client: the
+ * labels "Everyday care" and "Condition-led care" did not fit what sat under
+ * them). Once: the two headings are renamed, and the services are put back
+ * under them in order, so complex care and nursing care move to the first
+ * group. A heading the client has renamed is left alone. A menu built after
+ * this change is already right, and nothing moves.
+ */
+function ccs_regroup_services_menu_2026_11h() {
+	if ( get_option( 'ccs_services_menu_groups_2026_11h' ) || ! get_option( 'ccs_services_menu_groups_2026_11c' ) || ! function_exists( 'ccs_menu_find' ) ) {
+		return;
+	}
+	$locations = get_nav_menu_locations();
+	$menu_id   = isset( $locations['primary'] ) ? (int) $locations['primary'] : 0;
+	$items     = $menu_id ? wp_get_nav_menu_items( $menu_id ) : array();
+	if ( ! $menu_id || ! is_array( $items ) ) {
+		return;
+	}
+	update_option( 'ccs_services_menu_groups_2026_11h', 1, false );
+
+	$old      = array( 'everyday' => 'Everyday care', 'condition' => 'Condition-led care' );
+	$headings = array();
+	foreach ( $items as $item ) {
+		foreach ( $old as $group => $was ) {
+			if ( in_array( 'nav-heading--' . $group, (array) $item->classes, true ) ) {
+				$headings[ $group ] = $item;
+			}
+		}
+	}
+	if ( count( $headings ) < 2 || (int) $headings['everyday']->menu_item_parent !== (int) $headings['condition']->menu_item_parent ) {
+		return;
+	}
+	$parent = (int) $headings['everyday']->menu_item_parent;
+	$labels = ccs_service_groups();
+	foreach ( $headings as $group => $item ) {
+		if ( $item->title === $old[ $group ] ) {
+			wp_update_post( array( 'ID' => (int) $item->ID, 'post_title' => $labels[ $group ] ) );
+		}
+	}
+
+	// The dropdown's rows as they stand, and the menu positions they hold.
+	$slots    = array();
+	$services = array();
+	$other    = array();
+	foreach ( $items as $item ) {
+		if ( (int) $item->menu_item_parent !== $parent ) {
+			continue;
+		}
+		$slots[] = (int) $item->menu_order;
+		if ( 'service' === $item->object ) {
+			$services[ get_post_field( 'post_name', (int) $item->object_id ) ] = (int) $item->ID;
+		} elseif ( (int) $item->ID !== (int) $headings['everyday']->ID && (int) $item->ID !== (int) $headings['condition']->ID ) {
+			$other[] = (int) $item->ID;
+		}
+	}
+	sort( $slots );
+
+	// The same rows in the new order: each heading, then its services in two columns.
+	$rank  = array_flip( ccs_service_order() );
+	$order = array();
+	foreach ( array_keys( $labels ) as $group ) {
+		$order[] = (int) $headings[ $group ]->ID;
+		$in      = array();
+		foreach ( $services as $slug => $item_id ) {
+			if ( ccs_service_group( $slug ) === $group ) {
+				$in[ $slug ] = $item_id;
+			}
+		}
+		uksort(
+			$in,
+			static function ( $a, $b ) use ( $rank ) {
+				return ( $rank[ $a ] ?? PHP_INT_MAX ) <=> ( $rank[ $b ] ?? PHP_INT_MAX );
+			}
+		);
+		$half = (int) ceil( count( $in ) / 2 );
+		$n    = 0;
+		foreach ( $in as $item_id ) {
+			$classes   = array_filter( (array) get_post_meta( $item_id, '_menu_item_classes', true ) );
+			$classes   = array_values(
+				array_filter(
+					$classes,
+					static function ( $c ) {
+						return 0 !== strpos( (string) $c, 'nav-col-' );
+					}
+				)
+			);
+			$classes[] = 'nav-col-' . ( ( 'everyday' === $group ? 1 : 3 ) + ( $n >= $half ? 1 : 0 ) );
+			update_post_meta( $item_id, '_menu_item_classes', $classes );
+			$order[] = $item_id;
+			++$n;
+		}
+	}
+	foreach ( array_merge( $order, $other ) as $i => $item_id ) {
+		if ( isset( $slots[ $i ] ) ) {
+			wp_update_post( array( 'ID' => $item_id, 'menu_order' => $slots[ $i ] ) );
+		}
+	}
+}
+add_action( 'init', 'ccs_regroup_services_menu_2026_11h', 49 );
 
 /**
  * Emergency care is not provided (client, Nov 2026: "we dont do emergency

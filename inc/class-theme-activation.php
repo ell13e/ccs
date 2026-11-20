@@ -199,7 +199,7 @@ class CCS_Theme_Activation {
 			'respite-care' => array(
 				'title'   => 'Respite Care',
 				'image'   => 'assets/images/site-photos/ccs-respite-care-guitar-1.webp',
-				'excerpt' => "Respite care in Maidstone and across Kent, for a few hours or a few days. A carer who's already met the person you care for steps in, so you can properly rest.",
+				'excerpt' => "Respite care in Maidstone and across Kent, for a few hours or a few days. A carer steps in so you can rest, and meets the person you care for beforehand wherever possible.",
 				'content' => "<p>Caring for someone you love is rewarding, and it's also exhausting. Everyone needs a break. Continuity of Care Services provides respite care in Maidstone and throughout Kent, giving family carers the time they need to rest, recharge, or simply take care of themselves.</p>
 <h2>Flexible Respite Options:</h2>
 <ul>
@@ -637,23 +637,23 @@ class CCS_Theme_Activation {
 <p>We believe that the best care doesn\'t stop when the to-do list is ticked; it carries on in how our carers show up: familiar, unhurried and glad to see you. <strong>Learn more about the home care services we offer in Maidstone &amp; Kent.</strong></p>',
 			// The service list itself is rendered as a card grid by
 			// page-templates/template-services.php, so this intro no longer repeats it.
-			'home-care-services-kent' => '<p class="lead">We provide home care across Maidstone and the surrounding Kent towns. Most people start with one kind of care and move between them as things change.</p>
+			'home-care-services-kent' => '<p class="lead">We provide home care across Maidstone and the surrounding Kent towns.</p>
 
 <h2>Who we support</h2>
 <p>Adults and children living at home, including people with dementia, Parkinson\'s, MS, acquired brain injury, epilepsy, stroke, and those needing PEG feeding, catheter care or overnight support. We work with people funding their own care, people funded by Kent County Council, and people receiving NHS Continuing Healthcare.</p>
 
 <h2>The part that does not change</h2>
 <p>Whichever service you use, the way we staff it is the same. You get a small named team rather than whoever the rota produces. They meet you before they start. They keep working with you as your needs change, so a move from an hour a day to overnight support does not mean explaining yourself to a new set of faces.</p>
-<p>That continuity is not just about comfort. A carer who was there last week is the one who notices the new bruise, the untouched shopping, the change in breathing — the early signs that keep people out of hospital.</p>
+<p>That continuity is not just about comfort. A carer who was there last week is the one who notices the new bruise, the untouched shopping, the change in breathing: the early signs that keep people out of hospital.</p>
 
 <h2>Coordinating with everyone else involved</h2>
-<p>Care at home rarely involves only us. We work alongside district nurses, GPs, occupational therapists, social workers, case managers and hospital discharge teams, and we will talk to them directly rather than leaving families to relay messages. If you are coming out of hospital, we work to the discharge date and take a handover from the ward.</p>
+<p>Care at home rarely involves only us. We work alongside district nurses, GPs, occupational therapists, social workers, case managers and hospital discharge teams, and we will talk to them directly rather than leaving families to relay messages. If you are coming out of hospital, we will do our best to have care ready for the day you come home, and we take a handover from the ward.</p>
 
 <h2>Choosing between them</h2>
-<p>If you are not sure which service fits, you do not need to decide before calling. The assessment visit exists to work that out, and it is common to start with less support than you expected to need — or more, for a short while, and then step down.</p>
+<p>If you already know what kind of care you need, that\'s great. If you don\'t, please don\'t worry. Tell us what\'s been feeling hard lately, and we\'ll work out the rest together.</p>
 
 <h2>Areas we cover</h2>
-<p>Maidstone and the villages around it, plus Aylesford, Snodland, West Malling, Tonbridge and Tunbridge Wells. If you are just outside, ring and ask — the honest answer depends on whether we can staff it consistently, and consistency is the thing we will not compromise on.</p>
+<p>Maidstone and the villages around it, plus Aylesford, Snodland, West Malling, Tonbridge and Tunbridge Wells. If you are just outside, ring and ask. The honest answer depends on whether we can staff it consistently, and consistency is the thing we will not compromise on.</p>
 
 <h2>What it costs</h2>
 <p>Our hourly rate and what it includes are published in full, along with what is charged extra and when. There are no assessment fees and no minimum contract. See ' . '<a href="' . esc_url( home_url( '/resources/faqs/' ) ) . '">common questions</a>' . ' for the detail, or ' . '<a href="' . esc_url( home_url( '/contact-us/' ) ) . '">get in touch</a>' . ' and we will talk it through.</p>',

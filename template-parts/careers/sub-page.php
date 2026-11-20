@@ -25,7 +25,7 @@ $ccs_sp_id      = isset( $args['id'] ) ? sanitize_html_class( $args['id'] ) : 'c
 	<div class="container container--lg">
 		<div class="ccs-media-split">
 			<div class="careers-intro-split__text">
-				<h2 id="<?php echo esc_attr( $ccs_sp_id ); ?>-intro-heading" class="ccs-title"><?php echo esc_html( $args['title'] ); ?></h2>
+				<h2 id="<?php echo esc_attr( $ccs_sp_id ); ?>-intro-heading" class="ccs-title"><?php echo ccs_accent_text( $args['title'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_accent_text(). ?></h2>
 				<?php if ( '' !== trim( wp_strip_all_tags( $ccs_sp_content['intro'] ) ) ) : ?>
 					<div class="ccs-lede ccs-lede--large"><?php echo $ccs_sp_content['intro']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content output, printed as the_content() would. ?></div>
 				<?php endif; ?>

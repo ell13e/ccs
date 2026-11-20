@@ -9,7 +9,8 @@
  *
  * Args: items (each: heading, body as HTML), name (the details group),
  * id (optional, for the filter field), class (optional), open (index to
- * open, default 0; -1 for none).
+ * open, default 0; -1 for none), exclusive (default true; false lets several
+ * rows stay open).
  *
  * @package CCS_WP_Theme
  */
@@ -24,10 +25,12 @@ if ( ! $ccs_na_items ) {
 }
 $ccs_na_name = isset( $args['name'] ) ? sanitize_html_class( $args['name'] ) : 'num-acc';
 $ccs_na_open = isset( $args['open'] ) ? (int) $args['open'] : 0;
+// exclusive => false: opening one row does not close another (no shared name).
+$ccs_na_excl = ! isset( $args['exclusive'] ) || $args['exclusive'];
 ?>
 <div class="num-acc<?php echo ! empty( $args['class'] ) ? ' ' . esc_attr( $args['class'] ) : ''; ?>"<?php echo ! empty( $args['id'] ) ? ' id="' . esc_attr( $args['id'] ) . '"' : ''; ?>>
 	<?php foreach ( $ccs_na_items as $ccs_na_i => $ccs_na_item ) : ?>
-		<details class="num-acc__item" name="<?php echo esc_attr( $ccs_na_name ); ?>"<?php echo $ccs_na_open === $ccs_na_i ? ' open' : ''; ?><?php echo ! empty( $ccs_na_item['id'] ) ? ' id="' . esc_attr( $ccs_na_item['id'] ) . '"' : ''; ?>>
+		<details class="num-acc__item"<?php echo $ccs_na_excl ? ' name="' . esc_attr( $ccs_na_name ) . '"' : ''; ?><?php echo $ccs_na_open === $ccs_na_i ? ' open' : ''; ?><?php echo ! empty( $ccs_na_item['id'] ) ? ' id="' . esc_attr( $ccs_na_item['id'] ) . '"' : ''; ?>>
 			<summary class="num-acc__q">
 				<span class="num-acc__num" aria-hidden="true"><?php echo esc_html( str_pad( (string) ( $ccs_na_i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
 				<span class="num-acc__title"><?php echo esc_html( $ccs_na_item['heading'] ); ?></span>

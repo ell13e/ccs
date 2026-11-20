@@ -74,3 +74,10 @@ coverage/
 # Optional: ignore generated assets during dev (uncomment if using build step)
 # /assets/css/*.css
 # /assets/js/*.js
+
+# Envato Elements files (the client's subscription): licensed for use on the
+# website, not for redistribution, and this repository is public. They go to
+# the live site with the theme upload. Remove these lines if the repository
+# is made private.
+/assets/fonts/sketchbook-doodle.woff2
+/assets/images/doodles/*.webp

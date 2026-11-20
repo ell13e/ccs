@@ -50,6 +50,42 @@ function ccs_content_sections( $html ) {
 }
 
 /**
+ * The second set of questions on the FAQs page (Nov 2026): a hundred
+ * questions the client wrote, in topics that match the services, each topic
+ * with its further reading. Kept as data (inc/data/more-faqs.json) because
+ * they are shown in two places: in full on the FAQs page, and as a link from
+ * each service page to its own topic. To change a question, edit that file.
+ *
+ * @return array { title, intro, groups: [ heading, id, service, items: [ n, q, a ], links: [ label, url ] ] }
+ */
+function ccs_more_faqs() {
+	static $data = null;
+	if ( null === $data ) {
+		$file = get_template_directory() . '/inc/data/more-faqs.json';
+		$data = file_exists( $file ) ? json_decode( (string) file_get_contents( $file ), true ) : array();
+		if ( ! is_array( $data ) || empty( $data['groups'] ) ) {
+			$data = array( 'title' => '', 'intro' => '', 'groups' => array() );
+		}
+	}
+	return $data;
+}
+
+/**
+ * The topic of extra questions that belongs to one service, if there is one.
+ *
+ * @param string $slug Service slug.
+ * @return array|null
+ */
+function ccs_more_faqs_for_service( $slug ) {
+	foreach ( ccs_more_faqs()['groups'] as $group ) {
+		if ( '' !== $group['service'] && $group['service'] === $slug ) {
+			return $group;
+		}
+	}
+	return null;
+}
+
+/**
  * Mark a paragraph that is nothing but a link ("Read the NHS guide to home
  * care") so it can be styled as a line of its own with a full-size touch
  * target, rather than as a 22px inline link (rule 14). The page's own text

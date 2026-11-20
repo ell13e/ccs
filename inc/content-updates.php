@@ -45,7 +45,20 @@ function ccs_apply_content_updates() {
 	// the Resources page no longer lists Getting started, which is a step in
 	// arranging care and sits under About, and its line about the common
 	// questions names what the new questions cover.
-	$updates = array( 'copy-update-2026-11', 'copy-update-2026-11b', 'copy-update-2026-11c', 'copy-update-2026-11d', 'copy-update-2026-11e', 'copy-update-2026-11f', 'copy-update-2026-11g' );
+	// 11i (Nov 2026, the client's review of Getting started, "a light edit, not a
+	// rewrite"): four passages replaced with her wording (no "sales call", no
+	// "being processed", no suggestion that the plan starts out wrong); the first
+	// call and the assessment visit are each said to be free; the on-call number
+	// is said not to be an emergency service.
+	// 11j (Nov 2026, client's text): the Getting started lead paragraph.
+	// 11k (Nov 2026, client: "dont promise a team of two to four carers, or that
+	// we will working to the hospital discharge date, but that we wil try"):
+	// Getting started no longer gives a team size, and says we will do our best
+	// to have care ready for the day someone comes home.
+	// 11h (Nov 2026, client's notes on the services wording): seven service
+	// descriptions say what the carer does. Overnight and continuous care are told
+	// apart; "pain relief", "rest peacefully" and "medication on time" are gone.
+	$updates = array( 'copy-update-2026-11', 'copy-update-2026-11b', 'copy-update-2026-11c', 'copy-update-2026-11d', 'copy-update-2026-11e', 'copy-update-2026-11f', 'copy-update-2026-11g', 'copy-update-2026-11h', 'copy-update-2026-11i', 'copy-update-2026-11j', 'copy-update-2026-11k' );
 	$home    = untrailingslashit( home_url() );
 	// The site the first file was made on; its links carry this address.
 	$tok   = static function ( $s ) use ( $home ) {
@@ -343,6 +356,61 @@ function ccs_apply_services_intro_reword() {
 	update_option( 'ccs_services_intro_reword_2026_11', 1, false );
 }
 add_action( 'admin_init', 'ccs_apply_services_intro_reword' );
+
+/**
+ * The client's notes on the services wording (Nov 2026). Once, and each
+ * sentence only while it still reads as shipped, so anything edited since is
+ * left alone. WordPress keeps a revision.
+ *   - "Most people start with one kind of care and move between them as
+ *     things change" goes from the services page intro (it read as if moving
+ *     between services were the norm).
+ *   - "Choosing between them" keeps its reassurance and drops the guess at
+ *     how much support people end up needing.
+ *   - Two sentences on that page lose their dashes (house style).
+ *   - The services page says we will do our best to have care ready for a
+ *     hospital discharge, in place of "we work to the discharge date".
+ *   - Overnight care no longer promises that anyone will "rest peacefully".
+ */
+function ccs_apply_services_wording_2026_11h() {
+	if ( get_option( 'ccs_services_wording_2026_11m' ) ) {
+		return;
+	}
+	$edit = static function ( $slug, $type, $swaps ) {
+		$found = get_posts( array( 'name' => $slug, 'post_type' => $type, 'post_status' => 'any', 'numberposts' => 1, 'suppress_filters' => true ) );
+		if ( $found ) {
+			$content = strtr( $found[0]->post_content, $swaps );
+			if ( $content !== $found[0]->post_content ) {
+				wp_update_post( wp_slash( array( 'ID' => $found[0]->ID, 'post_content' => $content ) ) );
+			}
+		}
+	};
+	$edit(
+		'home-care-services-kent',
+		'page',
+		array(
+			' Most people start with one kind of care and move between them as things change.' => '',
+			'If you are not sure which service fits, you do not need to decide before calling. The assessment visit exists to work that out with you.' => 'If you already know what kind of care you need, that’s great. If you don’t, please don’t worry. Tell us what’s been feeling hard lately, and we’ll work out the rest together.',
+			'Not sure which kind of care is right? That’s fine. You don’t need to know before you call. We’ll come and see you, and work it out together.' => 'If you already know what kind of care you need, that’s great. If you don’t, please don’t worry. Tell us what’s been feeling hard lately, and we’ll work out the rest together.',
+			'You don’t have to know what kind of care you need. Tell us what’s been feeling hard lately, and when we come to see you we’ll work out the rest together.' => 'If you already know what kind of care you need, that’s great. If you don’t, please don’t worry. Tell us what’s been feeling hard lately, and we’ll work out the rest together.',
+			// A promise softened to what can be kept (client: say that we will try).
+			'If you are coming out of hospital, we work to the discharge date and take a handover from the ward.' => 'If you are coming out of hospital, we will do our best to have care ready for the day you come home, and we take a handover from the ward.',
+			// The reassurance stays; the guess at how much support people end up needing goes (client's review), and the wording is softer (client: "friendlier, softer").
+			'If you are not sure which service fits, you do not need to decide before calling. The assessment visit exists to work that out, and it is common to start with less support than you expected to need — or more, for a short while, and then step down.' => 'If you already know what kind of care you need, that’s great. If you don’t, please don’t worry. Tell us what’s been feeling hard lately, and we’ll work out the rest together.',
+			'If you are not sure which service fits, you do not need to decide before calling. The assessment visit exists to work that out, and it is common to start with less support than you expected to need, or with more for a short while and then step down.' => 'If you already know what kind of care you need, that’s great. If you don’t, please don’t worry. Tell us what’s been feeling hard lately, and we’ll work out the rest together.',
+			'the change in breathing — the early signs that keep people out of hospital.' => 'the change in breathing: the early signs that keep people out of hospital.',
+			'ring and ask — the honest answer depends' => 'ring and ask. The honest answer depends',
+		)
+	);
+	$edit(
+		'overnight-care',
+		'service',
+		array(
+			'providing discreet and compassionate support so you and your loved ones can rest peacefully.' => 'there to help when you need it, so family at home can sleep too.',
+		)
+	);
+	update_option( 'ccs_services_wording_2026_11m', 1, false );
+}
+add_action( 'admin_init', 'ccs_apply_services_wording_2026_11h' );
 
 /**
  * Shorter heading on the careers hub (Nov 2026, user: "too long"). The

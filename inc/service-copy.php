@@ -580,7 +580,7 @@ function ccs_service_copy( $slug ) {
 				'faqs' => array(
 					array(
 						'Can care start the day my loved one leaves hospital?',
-						'Yes. We liaise directly with hospital discharge coordinators so support is waiting at home.',
+						'We will do our best to make that happen. We speak to the hospital discharge coordinators directly, so that support can be ready at home.',
 					),
 					array(
 						'Can we reduce care hours as recovery progresses?',
@@ -600,7 +600,7 @@ function ccs_service_copy( $slug ) {
 						'items' => array(
 							array(
 								'Time-critical medication support',
-								'We understand that getting Parkinson’s medication on time, every time, is essential for managing on/off periods and mobility.',
+								'Parkinson’s medication works best taken at the times prescribed, so visits are planned around those times.',
 							),
 							array(
 								'Fall prevention and mobility',

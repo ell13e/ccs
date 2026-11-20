@@ -48,7 +48,8 @@ $ccs_ben_count    = count( $ccs_ben_groups );
 	<div class="container container--lg">
 		<div class="ccs-media-split careers-benefits__layout">
 			<div class="careers-benefits__text">
-				<h2 id="careers-benefits-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'careers_benefits_title' ) ); ?></h2>
+				<?php echo ccs_doodle( 'gift', 'doodle--above' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle(). ?>
+				<h2 id="careers-benefits-heading" class="ccs-title"><?php echo ccs_copy_accent( 'careers_benefits_title' ); ?></h2>
 
 				<div class="quote-rotator benefit-rotator" data-ccs-stepper>
 					<div class="quote-rotator__panels">
