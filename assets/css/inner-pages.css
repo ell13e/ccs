@@ -43,8 +43,11 @@
    sitting directly on it, so heading, field and questions share one edge
    and one rhythm (it was a narrower lilac pill floating between them). */
 .faq-find {
-	max-width: 52rem;
-	margin: 0 auto var(--space-md);
+	margin: 0 0 var(--space-xl);
+}
+
+.faq-head {
+	max-width: 46rem;
 }
 
 .faq-section .ccs-head {
@@ -52,14 +55,33 @@
 }
 
 /* =========================================================================
-   Numbered accordion (the homepage's "What we do differently")
+   The site's one accordion (Nov 2026, client: "i like this styling of
+   accordian, make this is the default styling", then "delete the old
+   styling"). Soft lilac rows (white on a lilac section), no outline, the
+   open one deep plum with white text, a chevron that turns. Used by
+   template-parts/num-acc.php, and matched by .ccs-faq (components.css) and
+   the homepage's .diff-item (homepage.css). The numbered, hairline version
+   with a plus and minus is gone.
    ========================================================================= */
 .num-acc {
-	border-top: 1px solid var(--color-hairline);
+	max-width: 64rem;
+	margin-inline: auto;
 }
 
 .num-acc__item {
-	border-bottom: 1px solid var(--color-hairline);
+	margin-bottom: 0.625rem;
+	border-radius: var(--radius-lg);
+	background: var(--color-band-tint);
+	transition: background-color var(--duration-normal) var(--ease-out);
+}
+
+.ccs-section--tint .num-acc__item {
+	background: #fff;
+}
+
+.num-acc__item[open],
+.ccs-section--tint .num-acc__item[open] {
+	background: var(--color-band-deepest);
 }
 
 .num-acc__q {
@@ -67,7 +89,7 @@
 	display: flex;
 	align-items: baseline;
 	gap: var(--space-md);
-	padding: 1.25rem 2.75rem 1.25rem 0;
+	padding: 1.125rem 3.5rem 1.125rem clamp(1.125rem, 1rem + 1vw, 1.75rem);
 	cursor: pointer;
 	list-style: none;
 }
@@ -76,24 +98,25 @@
 	display: none;
 }
 
-.num-acc__q::before,
-.num-acc__q::after {
+.num-acc__q::before {
 	content: "";
 	position: absolute;
-	right: 0.5rem;
+	right: 1.5rem;
 	top: 50%;
-	width: 0.875rem;
-	height: 1.5px;
-	background: var(--color-primary);
+	width: 0.625rem;
+	height: 0.625rem;
+	margin-top: -0.5rem;
+	border-right: 2px solid var(--color-primary);
+	border-bottom: 2px solid var(--color-primary);
+	border-radius: 1px;
+	transform: rotate(45deg);
 	transition: transform var(--duration-normal) var(--ease-out);
 }
 
-.num-acc__q::after {
-	transform: rotate(90deg);
-}
-
-.num-acc__item[open] > .num-acc__q::after {
-	transform: rotate(0deg);
+.num-acc__item[open] > .num-acc__q::before {
+	margin-top: -0.125rem;
+	border-color: #fff;
+	transform: rotate(225deg);
 }
 
 .num-acc__q:focus-visible {
@@ -102,13 +125,8 @@
 	border-radius: var(--radius-sm);
 }
 
-.num-acc__num {
-	flex: none;
-	min-width: 1.75rem;
-	font-family: var(--font-family-heading);
-	font-size: 1.0625rem;
-	color: var(--color-accent);
-	font-variant-numeric: tabular-nums;
+.num-acc__item[open] .num-acc__q:focus-visible {
+	outline-color: var(--color-secondary);
 }
 
 .num-acc__title {
@@ -120,13 +138,13 @@
 }
 
 @media (hover: hover) {
-	.num-acc__q:hover .num-acc__title {
+	.num-acc__item:not([open]) .num-acc__q:hover .num-acc__title {
 		color: var(--color-primary);
 	}
 }
 
 .num-acc__a {
-	padding: 0 2.75rem 1.5rem calc(1.75rem + var(--space-md));
+	padding: 0 3.5rem 1.375rem clamp(1.125rem, 1rem + 1vw, 1.75rem);
 	font-size: var(--text-md);
 	line-height: 1.7;
 	color: var(--color-ink-soft);
@@ -141,11 +159,13 @@
 	text-underline-offset: 0.18em;
 }
 
-@media (max-width: 599px) {
-	.num-acc__a {
-		padding-left: 0;
-		padding-right: 0;
-	}
+.num-acc__item[open] .num-acc__title,
+.num-acc__item[open] .num-acc__a {
+	color: #fff;
+}
+
+.num-acc__item[open] .num-acc__a a {
+	color: var(--color-secondary);
 }
 
 /* Answers open and close smoothly, as the homepage's accordion does
@@ -166,64 +186,6 @@
 	.num-acc__item::details-content {
 		transition: none;
 	}
-}
-
-/* Questions as full-width rows; the open one turns deep plum. */
-.num-acc--cards {
-	max-width: 64rem;
-	margin-inline: auto;
-	border-top: 0;
-}
-
-.num-acc--cards .num-acc__item {
-	margin-bottom: 0.625rem;
-	border: 0;
-	border-radius: var(--radius-lg);
-	background: var(--color-band-tint);
-	transition: background-color var(--duration-normal) var(--ease-out);
-}
-
-.ccs-section--tint .num-acc--cards .num-acc__item {
-	background: #fff;
-}
-
-.num-acc--cards .num-acc__num {
-	display: none;
-}
-
-.num-acc--cards .num-acc__q {
-	padding: 1.125rem 3.5rem 1.125rem clamp(1.125rem, 1rem + 1vw, 1.75rem);
-}
-
-.num-acc--cards .num-acc__q::before,
-.num-acc--cards .num-acc__q::after {
-	right: 1.5rem;
-}
-
-.num-acc--cards .num-acc__a {
-	padding: 0 3.5rem 1.375rem clamp(1.125rem, 1rem + 1vw, 1.75rem);
-}
-
-.num-acc--cards .num-acc__item[open] {
-	background: var(--color-band-deepest);
-}
-
-.num-acc--cards .num-acc__item[open] .num-acc__title,
-.num-acc--cards .num-acc__item[open] .num-acc__a {
-	color: #fff;
-}
-
-.num-acc--cards .num-acc__item[open] .num-acc__a a {
-	color: var(--color-secondary);
-}
-
-.num-acc--cards .num-acc__item[open] > .num-acc__q::before,
-.num-acc--cards .num-acc__item[open] > .num-acc__q::after {
-	background: #fff;
-}
-
-.num-acc--cards .num-acc__item[open] .num-acc__q:focus-visible {
-	outline-color: var(--color-secondary);
 }
 
 .num-acc--center {
@@ -280,9 +242,10 @@
 }
 
 @media (max-width: 959px) {
+	/* Stacked, the photo fills the column like the cards under it (it was
+	   capped at 34rem, so on a tablet it stopped 145px short of the edge). */
 	.photo-acc__photo {
-		aspect-ratio: 4 / 3;
-		max-width: 34rem;
+		aspect-ratio: 3 / 2;
 	}
 }
 
@@ -626,10 +589,29 @@
 	box-shadow: none;
 }
 
-@media (min-width: 860px) {
+/* Narrow: the badge sits beside the words, and the button under the words on
+   their left edge. It was three stacked rows (badge, words, button) at the
+   left of a wide card with the rest empty (client: "its the layout"). */
+.prompt-card {
+	grid-template-columns: auto minmax(0, 1fr);
+	column-gap: var(--space-md);
+	align-items: start;
+}
+
+.prompt-card > .prompt-card__actions {
+	grid-column: 2;
+}
+
+/* From 600px there is room for one row: badge, words, button. */
+@media (min-width: 600px) {
 	.prompt-card {
 		grid-template-columns: auto minmax(0, 1fr) auto;
 		gap: var(--space-lg);
+		align-items: center;
+	}
+
+	.prompt-card > .prompt-card__actions {
+		grid-column: auto;
 	}
 }
 
@@ -738,11 +720,21 @@
 	position: relative;
 	display: flex;
 	flex-direction: column;
+	/* The site's two card edges (Nov 2026, client: "make sure the styling of
+	   the cards is consistent"). A white card on a white ground has a hairline
+	   and the close shadow; on the tint it has no line and the floating
+	   shadow, because the ground itself draws its edge. */
+	border: 1px solid var(--color-hairline);
 	border-radius: var(--radius-2xl);
 	background: #fff;
-	box-shadow: var(--shadow-float);
+	box-shadow: var(--shadow-card);
 	overflow: hidden;
 	transition: transform var(--duration-normal) var(--ease-out), box-shadow var(--duration-normal) var(--ease-out);
+}
+
+.ccs-section--tint .care-card {
+	border-color: transparent;
+	box-shadow: var(--shadow-float);
 }
 
 @media (hover: hover) {
@@ -887,11 +879,29 @@
 	.svc-intro:not(.svc-intro--text) {
 		grid-template-columns: minmax(0, 1fr) minmax(0, 30rem);
 		gap: clamp(3rem, 6vw, 5.5rem);
+		/* The words sit centred against the photo, so a short introduction
+		   does not leave an empty block under it (client: "looks strange"). */
+		align-items: center;
 	}
 }
 
 .svc-intro--text {
 	max-width: 46rem;
+}
+
+/* The first paragraph in the darker ink, and the drawing with its note under
+   the words. */
+.svc-about__text > p:first-of-type {
+	color: var(--color-ink);
+}
+
+.svc-intro__side {
+	width: 100%;
+	max-width: 30rem;
+}
+
+.svc-intro__note {
+	margin: var(--space-lg) 0 0;
 }
 
 .svc-intro__photo {
@@ -1029,16 +1039,61 @@
 	background: #fff;
 }
 
-/* The arrow to the next step, on wide screens. */
+/* A drawing over each step and a hand-drawn arrow between them, both from
+   the client's packs; the number is a small italic figure over the name. */
+.flow-step__art {
+	display: grid;
+	place-items: center;
+	height: 6.5rem;
+	margin-bottom: var(--space-sm);
+}
+
+.flow-step__doodle {
+	--doodle-w: 6rem;
+	max-height: 6.5rem;
+	width: auto;
+	max-width: 7rem;
+	rotate: -4deg;
+}
+
+.flow-step__num,
+.ccs-section--tint .flow-step__num {
+	display: block;
+	width: auto;
+	height: auto;
+	margin: 0 0 0.125rem;
+	border-radius: 0;
+	background: none;
+	font-family: var(--font-family-heading);
+	font-size: 1.25rem;
+	font-style: italic;
+	line-height: 1.2;
+	color: var(--color-primary);
+}
+
+/* (.flow-step in front, so the drawings' own display rule does not win.) */
+.flow-step .flow-step__arrow {
+	display: none;
+}
+
 @media (min-width: 860px) {
-	.flow-step + .flow-step::before {
-		content: "\2192";
+	.flow-step .flow-step__arrow {
+		display: block;
 		position: absolute;
-		top: 1.35rem;
-		left: calc(-1 * clamp(1rem, 2.5vw, 2.25rem) - 0.75rem);
-		font-size: 1.5rem;
-		line-height: 1;
-		color: var(--color-secondary-dark);
+		top: 2.25rem;
+		left: calc(-1 * clamp(1rem, 2.5vw, 2.25rem) - 2.5rem);
+		--doodle-w: 5rem;
+		/* The pack's arrow points left; mirrored, it points on to the next step. */
+		scale: -1 -1;
+		rotate: 0deg;
+		opacity: 0.55;
+	}
+
+	/* The second arrow is the first turned over, so the pair mirror each
+	   other: the first loops above the line, the next below (client: "these arrows
+	   need to be opposite flips", then swapped which is which). */
+	.flow-step:nth-child(3) .flow-step__arrow {
+		scale: -1 1;
 	}
 }
 
@@ -1052,7 +1107,8 @@
 }
 
 .flow-step__text {
-	max-width: 22rem;
+	max-width: 24rem;
+	text-wrap: balance;
 	margin: 0 auto;
 	font-size: var(--text-base);
 	line-height: 1.6;
@@ -1071,12 +1127,26 @@
 		align-items: start;
 	}
 
-	.flow-step__num {
-		grid-row: span 2;
-		width: 3.25rem;
-		height: 3.25rem;
-		margin-bottom: 0;
-		font-size: 1.375rem;
+	/* The drawing at the left, the number, name and text beside it. */
+	.flow-step__art {
+		grid-column: 1;
+		grid-row: 1 / span 3;
+		width: 4.5rem;
+		height: auto;
+		margin: 0;
+		align-self: start;
+	}
+
+	.flow-step__doodle {
+		--doodle-w: 4.5rem;
+		max-width: 4.5rem;
+		max-height: 5rem;
+	}
+
+	.flow-step__num,
+	.flow-step__title,
+	.flow-step__text {
+		grid-column: 2;
 	}
 
 	.flow-step__text {
@@ -1091,17 +1161,82 @@
 
 
 /* What it costs beside the call-back form: one card in two halves. */
+/* Two separate cards (Nov 2026, the client's pick from three sketches): a
+   white rate card and the plum call-back form, side by side, each only as
+   tall as it needs. As one card in two halves, the short costs side always
+   had a hole in it beside the taller form, however it was spaced. */
 .cost-call {
 	display: grid;
-	border-radius: var(--radius-3xl);
-	background: #fff;
-	box-shadow: var(--shadow-float);
-	overflow: hidden;
+	gap: var(--space-lg);
+	align-items: start;
 }
 
-@media (min-width: 960px) {
+.cost-call__costs,
+.cost-call__form {
+	border-radius: var(--radius-3xl);
+}
+
+.cost-call__costs {
+	background: #fff;
+	box-shadow: var(--shadow-float);
+}
+
+.ccs-section:not(.ccs-section--tint) .cost-call__costs {
+	border: 1px solid var(--color-hairline);
+	box-shadow: var(--shadow-card);
+}
+
+/* Side by side the two cards come out about the same height on their own,
+   so neither has to be stretched (client, in turn: "the uneveness looks
+   bad"; a stretched rate card "looks stupidly stretched"; a short form with
+   a blank foot "looks stupid"). The form's fields sit two to a row, which
+   makes it about as tall as the rate card with its rates on one line each.
+   The few pixels left over are shared between each card's three parts
+   (heading, middle, button), so the two buttons sit level and no gap stands
+   out. */
+/* Stacked on a tablet, the form still has room for two fields to a row. */
+@media (min-width: 600px) and (max-width: 1139px) {
+	.cost-call__form .ccs-form {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		align-items: end;
+	}
+
+	.cost-call__form .ccs-form > :not(.ccs-field) {
+		grid-column: 1 / -1;
+	}
+}
+
+/* Only from 1140px: below that the rate card's text wraps and it grows well
+   past the form, so the two stack, each at its own height. */
+@media (min-width: 1140px) {
 	.cost-call {
-		grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		gap: var(--space-xl);
+		align-items: stretch;
+	}
+
+	.cost-call__costs {
+		justify-content: space-between;
+	}
+
+	.cost-call__costs .cost-call__lines {
+		margin-bottom: 0;
+	}
+
+	.cost-call__form {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.cost-call__form .ccs-form {
+		flex: 1;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		align-content: space-between;
+		align-items: end;
+	}
+
+	.cost-call__form .ccs-form > :not(.ccs-field) {
+		grid-column: 1 / -1;
 	}
 }
 
@@ -1206,18 +1341,19 @@
 	color: rgba(255, 255, 255, 0.86);
 }
 
-/* On a white section the prices half takes the tint, so the card still
-   stands off its ground. */
-.ccs-section:not(.ccs-section--tint) > .container > .cost-call {
-	background: var(--color-band-tint);
-	box-shadow: none;
-}
 
 .cost-call__costs {
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	align-items: flex-start;
+}
+
+.cost-call__costs .cost-call__lines {
+	margin-bottom: var(--space-lg);
+}
+
+.cost-call__costs .cost-call__amount strong {
+	font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem);
 }
 
 .cost-call__lines {
@@ -2501,9 +2637,15 @@
 .rate-finder {
 	max-width: 64rem;
 	margin-inline: auto;
+	/* A white card on a white ground: the hairline edge and close shadow of
+	   the contact form card. The borderless floating shadow is for white
+	   cards on the tint; here it left the card with no edge at the top and
+	   sides and only a fading shadow below (client: "it just having the
+	   gradient looks so strange"). */
+	border: 1px solid var(--color-hairline);
 	border-radius: var(--radius-3xl);
 	background: #fff;
-	box-shadow: var(--shadow-float);
+	box-shadow: var(--shadow-card);
 	overflow: hidden;
 }
 
@@ -2934,18 +3076,67 @@ p + .link-line { margin-top: var(--space-2, 0.5rem); }
 
 @media (min-width: 48rem) {
 	.signpost__row {
-		grid-template-columns: minmax(0, 32.5rem) minmax(0, 1fr);
+		/* The words keep 18rem: at tablet width the photo gives way first, so
+		   the button no longer pushed the page sideways. */
+		grid-template-columns: minmax(0, 32.5rem) minmax(18rem, 1fr);
 		column-gap: clamp(2rem, 6vw, 5rem);
 	}
 
 	.signpost__row--flip {
-		grid-template-columns: minmax(0, 1fr) minmax(0, 32.5rem);
+		grid-template-columns: minmax(18rem, 1fr) minmax(0, 32.5rem);
 	}
 
 	.signpost__row--flip .signpost__photo {
 		order: 2;
 	}
 }
+
+/* Care guides (fifth form): the guides as the site's cards, a drawing on each
+   tile, and one guide set out on its own when its card is chosen. */
+.guides-intro {
+	max-width: 46rem;
+	margin-bottom: var(--space-xl);
+}
+
+/* Named .guide-tile: .guide-card is an older design's name, still styled. */
+.guide-tile__art {
+	display: grid;
+	place-items: center;
+	flex: none;
+	aspect-ratio: 16 / 9;
+	background: var(--color-band-tint);
+}
+
+.guide-tile__doodle {
+	--doodle-w: 6.5rem;
+	rotate: -4deg;
+}
+
+.guide-read {
+	max-width: 46rem;
+	margin-inline: auto;
+}
+
+.guide-read__back {
+	margin: 0 0 var(--space-lg);
+}
+
+.guide-read__back--end {
+	margin: var(--space-xl) 0 0;
+}
+
+.guide-read__title {
+	margin-bottom: var(--space-lg);
+}
+
+.guide-read__body {
+	font-size: var(--text-md);
+	line-height: 1.7;
+	color: var(--color-ink-soft);
+}
+
+.guide-read__body > :first-child { margin-top: 0; }
+.guide-read__body > :last-child { margin-bottom: 0; }
 
 /* Care guides on its own page: one reading column of rows that open. */
 .guides-read {
@@ -2991,9 +3182,8 @@ p + .link-line { margin-top: var(--space-2, 0.5rem); }
 
 .gs-path::after {
 	display: none;
-	background: var(--color-primary);
+	background: linear-gradient(to bottom, var(--color-primary) calc(var(--gs-reach) - 4rem), transparent var(--gs-reach));
 	opacity: 0.55;
-	transform-origin: top;
 }
 
 @supports (animation-timeline: view()) {
@@ -3002,7 +3192,9 @@ p + .link-line { margin-top: var(--space-2, 0.5rem); }
 			display: block;
 			animation: gs-path-draw linear both;
 			animation-timeline: view();
-			animation-range: cover 25% cover 75%;
+			/* Set from the viewport, so the plum's end sits a little below the
+			   middle of the screen the whole way down, at every width. */
+			animation-range: cover 45vh cover calc(100% - 55vh);
 		}
 
 		/* The words and the photograph fade in as they arrive; nothing moves. */
@@ -3015,9 +3207,20 @@ p + .link-line { margin-top: var(--space-2, 0.5rem); }
 	}
 }
 
+/* How far down the plum has reached, as a share of the line. The line is
+   not scaled: scaling squashed its fade-in with it, so the plum began as a
+   hard block and only softened once it had grown (client: "the gradient gets
+   better as you scroll but its so blocky at first"). The plum is a gradient
+   that ends in a soft tail at this point, over a line whose fades stay put. */
+@property --gs-reach {
+	syntax: "<percentage>";
+	inherits: false;
+	initial-value: 100%;
+}
+
 @keyframes gs-path-draw {
-	from { transform: scaleY(0); }
-	to { transform: scaleY(1); }
+	from { --gs-reach: 0%; }
+	to { --gs-reach: 100%; }
 }
 
 @keyframes gs-path-arrive {
@@ -3055,6 +3258,12 @@ p + .link-line { margin-top: var(--space-2, 0.5rem); }
 	font-style: italic;
 	line-height: 1;
 	color: var(--color-primary);
+}
+
+/* On a white ground a white bead all but vanished: it takes the lilac. */
+.ccs-section:not(.ccs-section--tint) .gs-path__num {
+	background: var(--color-band-tint);
+	box-shadow: 0 0 0 0.375rem #fff;
 }
 
 .gs-path__text,
@@ -3742,6 +3951,29 @@ p + .link-line { margin-top: var(--space-2, 0.5rem); }
 
 /* A doodle sitting just above a section's heading: on the heading's left
    edge, or centred where the heading is. */
+/* A drawing with its jotted note (ccs_doodle_note()). */
+.doodle-note {
+	display: flex;
+	align-items: center;
+	gap: 0.875rem;
+	margin: var(--space-md) 0 var(--space-lg);
+}
+
+.doodle-note__doodle {
+	flex: none;
+	--doodle-w: 3.25rem;
+}
+
+@media (max-width: 34rem) {
+	.doodle-note {
+		gap: 0.625rem;
+	}
+
+	.doodle-note__doodle {
+		--doodle-w: 2.75rem;
+	}
+}
+
 .doodle--above {
 	--doodle-w: 4.75rem;
 	margin-bottom: var(--space-md);
@@ -3776,6 +4008,14 @@ p + .link-line { margin-top: var(--space-2, 0.5rem); }
 
 .ccs-section--tint .hand-note {
 	--hand-edge: var(--color-band-tint);
+}
+
+/* A note on two lines: each line is a note with its own pen line. */
+.hand-note-stack {
+	display: inline-flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.7rem;
 }
 
 .hand-note__line {
@@ -3815,37 +4055,8 @@ p + .link-line { margin-top: var(--space-2, 0.5rem); }
 
 /* Getting started, "Good to know": the questions sit together in one soft
    lilac card instead of four separate white boxes. */
-.gs-more .ccs-faq {
-	gap: 0;
-	padding: calc(var(--card-pad) - 1rem) var(--card-pad);
-	border-radius: var(--radius-2xl);
-	background: var(--color-band-tint);
-}
-
-.gs-more .ccs-faq__item,
-.gs-more .ccs-faq__item[open] {
-	border: 0;
-	border-radius: 0;
-	background: none;
-	box-shadow: none;
-}
-
-.gs-more .ccs-faq__q {
-	padding-inline: 0;
-}
-
-.gs-more .ccs-faq__a {
-	padding-inline: 0;
-}
-
-.gs-more .ccs-faq__q {
-	padding-right: 2.5rem;
-}
-
-.gs-more .ccs-faq__q::before,
-.gs-more .ccs-faq__q::after {
-	right: 0.25rem;
-}
+/* ("Good to know" now uses the site's one accordion style, with no card
+   of its own round the rows.) */
 
 /* =========================================================================
    FAQs: topics down the left, that topic's questions on the right (Nov 2026,
@@ -3878,6 +4089,17 @@ p + .link-line { margin-top: var(--space-2, 0.5rem); }
 	color: var(--color-ink-soft);
 	text-decoration: none;
 	transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* The menu's two group names, over their topics. */
+.faq-rail__group {
+	margin: var(--space-md) 0 0.25rem;
+	padding-inline: 1rem;
+	font-family: var(--font-family-heading);
+	font-size: 1.125rem;
+	font-weight: var(--font-weight-medium);
+	line-height: 1.3;
+	color: var(--color-ink);
 }
 
 .faq-rail__link:hover {
@@ -4022,3 +4244,165 @@ p + .link-line { margin-top: var(--space-2, 0.5rem); }
 	text-underline-offset: 0.18em;
 }
 
+
+/* Service page, "Why choose": words beside the bead card, centred on it. */
+@media (min-width: 900px) {
+	.svc-help .ccs-split {
+		align-items: center;
+	}
+}
+
+.svc-help__part + .svc-help__part {
+	margin-top: var(--space-3xl);
+}
+
+.svc-help__action {
+	margin: var(--space-lg) 0 0;
+}
+
+.cqc-checks__mark .ccs-icon {
+	width: 1.25rem;
+	height: 1.25rem;
+}
+
+/* Rows that open (.hub-read) take the accordion's chevron, not a plus that
+   becomes a minus (client, Nov 2026: "i dont like these plus and minuses"). */
+.hub-read__mark::after {
+	display: none;
+}
+
+.hub-read__mark::before {
+	width: 0.625rem;
+	height: 0.625rem;
+	margin-top: -0.5rem;
+	border-right: 2px solid var(--color-primary);
+	border-bottom: 2px solid var(--color-primary);
+	border-radius: 1px;
+	background: none;
+	transform: rotate(45deg);
+}
+
+.hub-read__mark::before {
+	left: 50%;
+	margin-left: -0.3125rem;
+}
+
+.hub-read[open] .hub-read__mark::before,
+.faq-group[open] > .faq-group__head .hub-read__mark::before {
+	margin-top: -0.125rem;
+	transform: rotate(225deg);
+}
+
+/* "How care starts": the lead runs wide, on two lines, over the three steps
+   (client: "this text needs to either be shorter or wider"). */
+.svc-steps .ccs-head--center {
+	max-width: 58rem;
+}
+
+.svc-steps .ccs-head--center .ccs-lede {
+	max-width: 52rem;
+}
+
+/* Service page questions: the "Can’t find the answer?" line has room for one
+   line under the heading (client: "wider a bit"). */
+.service-faqs .ccs-head--center {
+	max-width: 52rem;
+}
+
+.service-faqs .ccs-head--center .ccs-lede {
+	max-width: 46rem;
+}
+
+/* Service page: a plain list (skills, tasks) as a checklist. A centred
+   heading, then one white card with the lines ticked in two columns. */
+/* The lead under a checklist heading runs wide, on two or three lines, not
+   a narrow column of four (client: "needs to be able to be wider"). */
+.svc-help__part--list .ccs-head {
+	max-width: 58rem;
+	margin-bottom: var(--space-xl);
+}
+
+.svc-help__part--list .ccs-head .ccs-lede {
+	max-width: 52rem;
+}
+
+.svc-help__part--list .svc-help__action {
+	margin-top: var(--space-md);
+}
+
+.svc-ticks {
+	display: grid;
+	gap: var(--space-md) var(--space-xl);
+	max-width: 62rem;
+	margin: 0 auto;
+	padding: var(--card-pad);
+	list-style: none;
+	border-radius: var(--radius-2xl);
+	background: #fff;
+	box-shadow: var(--shadow-float);
+}
+
+@media (min-width: 720px) {
+	.svc-ticks {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.svc-ticks__item {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.875rem;
+	font-size: var(--text-md);
+	line-height: 1.5;
+	color: var(--color-ink);
+}
+
+.svc-ticks__mark {
+	display: grid;
+	flex: none;
+	place-items: center;
+	width: 1.75rem;
+	height: 1.75rem;
+	border-radius: 50%;
+	background: var(--color-band-tint);
+	color: var(--color-primary);
+}
+
+.svc-ticks__mark .ccs-icon {
+	width: 1rem;
+	height: 1rem;
+}
+
+/* Service page: the towns this care is provided in, as a quiet row of links. */
+.svc-where {
+	text-align: center;
+}
+
+.svc-where__title {
+	margin: 0 0 var(--space-md);
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.375rem, 1.2rem + 0.8vw, 1.75rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.25;
+	color: var(--color-ink);
+}
+
+.svc-where__list {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: var(--space-sm);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+@media (max-width: 47.99rem) {
+	.svc-where {
+		text-align: left;
+	}
+
+	.svc-where__list {
+		justify-content: flex-start;
+	}
+}

@@ -135,11 +135,12 @@ $ccs_next_steps = apply_filters(
 
 			<div class="contact-form-card">
 				<?php // No label above the heading (client, Nov 2026: "ugly eyebrow"). ?>
-				<?php echo ccs_doodle( 'envelope', 'doodle--above' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle(). ?>
 				<h2 id="contact-form-heading" class="contact-form-card__title"><?php echo ccs_copy_accent( 'contact_form_title' ); ?></h2>
 				<p id="contact-form-desc" class="contact-form-card__desc">
 					<?php esc_html_e( 'Your name and a phone number are all we need. We will call you back to arrange a conversation or a visit.', 'ccs-wp-theme' ); ?>
 				</p>
+				<?php // The envelope sits with a note under the lead, as the drawings on Getting started do (client: its place alone above the heading "isnt great"). The note repeats the lead. ?>
+				<?php echo ccs_doodle_note( 'envelope', __( 'we’ll call you back', 'ccs-wp-theme' ), 'contact-form-card__note' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle_note(). ?>
 
 				<form id="contact-form" class="contact-form ccs-form" data-ccs-action="submit_enquiry" data-ccs-context="referrer" method="post" action="" novalidate aria-describedby="contact-form-desc contact-form-message">
 					<div class="contact-form__grid">

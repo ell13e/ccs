@@ -56,6 +56,7 @@ require_once THEME_DIR . '/inc/service-guides.php';
 require_once THEME_DIR . '/inc/service-copy.php';
 require_once THEME_DIR . '/inc/locations-2026-11.php';
 require_once THEME_DIR . '/inc/location-services.php';
+require_once THEME_DIR . '/inc/internal-links.php';
 require_once THEME_DIR . '/inc/forms.php';
 require_once THEME_DIR . '/inc/content-updates.php';
 require_once THEME_DIR . '/inc/content-sections.php';

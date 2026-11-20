@@ -247,11 +247,19 @@
 			 * section's own page is the first link inside, so it is still one tap
 			 * away once the section is open.
 			 */
-			if (menu.id === 'mobile-menu-list' && link.getAttribute('href') && link.getAttribute('href') !== '#') {
+			/*
+			 * Wide screens too (client, Nov 2026: people may not realise the
+			 * name on the bar is itself a link to a page). Each dropdown opens
+			 * with that page as its first row. The services panel is left out:
+			 * its photo panel already says "See all our services".
+			 */
+			var inDrawer = menu.id === 'mobile-menu-list';
+			var isServicesPanel = item.classList.contains('nav-mega--services');
+			if ((inDrawer || !isServicesPanel) && link.getAttribute('href') && link.getAttribute('href') !== '#') {
 				var overview = document.createElement('li');
 				overview.className = 'menu-item nav-overview';
 				var overviewLink = document.createElement('a');
-				overviewLink.className = link.className;
+				overviewLink.className = inDrawer ? link.className : '';
 				overviewLink.href = link.getAttribute('href');
 				overviewLink.textContent = overviewLabel.replace('%s', link.textContent.trim());
 				overview.appendChild(overviewLink);

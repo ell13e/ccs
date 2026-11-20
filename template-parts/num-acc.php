@@ -1,9 +1,8 @@
 <?php
 /**
- * The numbered accordion from the homepage's "What we do differently", for
- * any list of a heading and its text (Nov 2026): a number, the heading in
- * the heading face, a plus that turns to a minus, hairlines between, the
- * first one open. Native <details name>, so it works by keyboard and without
+ * The site's one accordion, for any list of a heading and its text (Nov
+ * 2026): soft rows, the heading in the heading face, a chevron that turns,
+ * the open row deep plum, the first one open. Native <details name>, so it works by keyboard and without
  * script. It replaces the boxed .ccs-faq rows on the pages redesigned to
  * match the homepage.
  *
@@ -32,7 +31,6 @@ $ccs_na_excl = ! isset( $args['exclusive'] ) || $args['exclusive'];
 	<?php foreach ( $ccs_na_items as $ccs_na_i => $ccs_na_item ) : ?>
 		<details class="num-acc__item"<?php echo $ccs_na_excl ? ' name="' . esc_attr( $ccs_na_name ) . '"' : ''; ?><?php echo $ccs_na_open === $ccs_na_i ? ' open' : ''; ?><?php echo ! empty( $ccs_na_item['id'] ) ? ' id="' . esc_attr( $ccs_na_item['id'] ) . '"' : ''; ?>>
 			<summary class="num-acc__q">
-				<span class="num-acc__num" aria-hidden="true"><?php echo esc_html( str_pad( (string) ( $ccs_na_i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
 				<span class="num-acc__title"><?php echo esc_html( $ccs_na_item['heading'] ); ?></span>
 			</summary>
 			<div class="num-acc__a"><?php echo $ccs_na_item['body']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content output or markup built and escaped by the caller. ?></div>

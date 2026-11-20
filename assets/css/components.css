@@ -857,12 +857,20 @@ a.card {
 	display: flex;
 	flex-direction: column;
 	background: var(--color-background);
-	border: 1px solid var(--color-border);
-	border-radius: var(--card-radius);
+	/* The site's card edges: hairline and close shadow on white, no line and
+	   the floating shadow on the tint; the same corner as every other card. */
+	border: 1px solid var(--color-hairline);
+	border-radius: var(--radius-2xl);
+	box-shadow: var(--shadow-card);
 	overflow: hidden;
 	transition:
 		transform var(--duration-normal) var(--ease-out),
 		box-shadow var(--duration-normal) var(--ease-out);
+}
+
+.ccs-section--tint .post-card {
+	border-color: transparent;
+	box-shadow: var(--shadow-float);
 }
 
 .post-card:hover {
@@ -1639,7 +1647,10 @@ a.card {
 
 .ccs-accent {
 	position: relative;
-	white-space: nowrap;
+	/* No white-space: nowrap here. It was for the pen underline, which is
+	   gone, and it threw off text-wrap: balance on every heading with an
+	   accent: "Care that / fits around your life" where "Care that fits /
+	   around your life" fits (client, Nov 2026). */
 }
 
 .ccs-accent::after {
@@ -2195,22 +2206,27 @@ a.card {
 	pointer-events: none;
 }
 
-/* ---- FAQ: native <details>, exclusive by shared name -------------------- */
+/* ---- FAQ: native <details>, exclusive by shared name. The same look as
+   the site's one accordion (.num-acc in inner-pages.css): soft rows, the
+   open one deep plum, a chevron that turns. ------------------------------ */
 .ccs-faq {
 	display: grid;
-	gap: var(--space-sm);
+	gap: 0.625rem;
 }
 
 .ccs-faq__item {
-	border: 1px solid var(--color-hairline);
 	border-radius: var(--radius-lg);
-	background-color: var(--color-background);
-	transition: box-shadow var(--duration-normal) var(--ease-out), border-color var(--duration-normal) var(--ease-out);
+	background-color: var(--color-band-tint);
+	transition: background-color var(--duration-normal) var(--ease-out);
 }
 
-.ccs-faq__item[open] {
-	border-color: var(--color-hairline-strong);
-	box-shadow: var(--shadow-card);
+.ccs-section--tint .ccs-faq__item {
+	background-color: #fff;
+}
+
+.ccs-faq__item[open],
+.ccs-section--tint .ccs-faq__item[open] {
+	background-color: var(--color-band-deepest);
 }
 
 .ccs-faq__q {
@@ -2219,7 +2235,7 @@ a.card {
 	align-items: center;
 	gap: var(--space-md);
 	min-height: 3.5rem;
-	padding: 1rem 3.75rem 1rem 1.25rem;
+	padding: 1.125rem 3.5rem 1.125rem clamp(1.125rem, 1rem + 1vw, 1.75rem);
 	font-family: var(--font-family-heading);
 	font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem);
 	font-weight: var(--font-weight-medium);
@@ -2233,26 +2249,25 @@ a.card {
 	display: none;
 }
 
-/* Plus that turns into a minus: two bars, the vertical one collapsing. */
-.ccs-faq__q::before,
-.ccs-faq__q::after {
+.ccs-faq__q::before {
 	content: "";
 	position: absolute;
 	top: 50%;
-	right: 1.4rem;
-	width: 0.9rem;
-	height: 2px;
-	border-radius: 2px;
-	background-color: var(--color-primary);
+	right: 1.5rem;
+	width: 0.625rem;
+	height: 0.625rem;
+	margin-top: -0.5rem;
+	border-right: 2px solid var(--color-primary);
+	border-bottom: 2px solid var(--color-primary);
+	border-radius: 1px;
+	transform: rotate(45deg);
 	transition: transform var(--duration-normal) var(--ease-out);
 }
 
-.ccs-faq__q::after {
-	transform: rotate(90deg);
-}
-
-.ccs-faq__item[open] > .ccs-faq__q::after {
-	transform: rotate(0deg);
+.ccs-faq__item[open] > .ccs-faq__q::before {
+	margin-top: -0.125rem;
+	border-color: #fff;
+	transform: rotate(225deg);
 }
 
 .ccs-faq__q:focus-visible {
@@ -2262,7 +2277,7 @@ a.card {
 }
 
 .ccs-faq__a {
-	padding: 0 1.25rem 1.25rem;
+	padding: 0 3.5rem 1.375rem clamp(1.125rem, 1rem + 1vw, 1.75rem);
 	font-size: var(--text-base);
 	line-height: 1.7;
 	color: var(--color-ink-soft);
@@ -2274,6 +2289,15 @@ a.card {
 
 .ccs-faq__a > :last-child {
 	margin-bottom: 0;
+}
+
+.ccs-faq__item[open] .ccs-faq__q,
+.ccs-faq__item[open] .ccs-faq__a {
+	color: #fff;
+}
+
+.ccs-faq__item[open] .ccs-faq__a a {
+	color: var(--color-secondary);
 }
 
 /* Smooth open/close where supported; elsewhere the answer simply appears. */
@@ -2295,7 +2319,6 @@ a.card {
 
 @media (prefers-reduced-motion: reduce) {
 	.ccs-faq__q::before,
-	.ccs-faq__q::after,
 	.ccs-faq__item,
 	.ccs-faq__item::details-content {
 		transition: none;
@@ -2363,7 +2386,6 @@ a.card {
 	font-style: italic;
 	font-weight: var(--font-weight-normal);
 	color: var(--color-primary);
-	white-space: nowrap;
 }
 
 .ccs-accent::after {
@@ -2724,4 +2746,85 @@ a.card {
 	.btn.btn-sheen:focus-visible {
 		animation: none;
 	}
+}
+
+/* Paragraphs avoid a single-word last line (client, Nov 2026). */
+.entry-content p,
+.ccs-lede {
+	text-wrap: pretty;
+}
+
+/* News cards tidied to match the service and guide cards (Nov 2026, client:
+   "these cards need tidying"). The label and the date always share one line,
+   the label at the left and the date at the right in ordinary case (the date
+   used to drop to a second line on some cards and not others). The heading
+   takes the cards' own size, weight and ink; the summary is the quieter ink
+   and stops at four lines so a row of cards lines up; "Read more" is the same
+   quiet button as on the other cards. */
+.post-card__body {
+	padding: var(--card-pad-sm);
+}
+
+.post-card__meta {
+	flex-wrap: nowrap;
+	justify-content: space-between;
+	gap: var(--space-sm);
+	margin-bottom: var(--space-sm);
+}
+
+.post-card__meta > * + * {
+	margin-left: 0;
+}
+
+.post-card__category {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.post-card__meta time {
+	flex: none;
+	font-weight: var(--font-weight-normal);
+	letter-spacing: 0;
+	text-transform: none;
+	font-size: var(--text-sm);
+	color: var(--color-ink-soft);
+}
+
+.post-card__title {
+	margin-bottom: 0.5rem;
+	font-size: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.25;
+}
+
+.post-card__title a,
+.post-card__title a:hover {
+	color: var(--color-ink);
+}
+
+.post-card__excerpt {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 4;
+	line-clamp: 4;
+	overflow: hidden;
+	line-height: 1.6;
+	color: var(--color-ink-soft);
+}
+
+.post-card--featured .post-card__excerpt {
+	-webkit-line-clamp: 6;
+	line-clamp: 6;
+}
+
+.post-card__link.btn {
+	align-self: flex-start;
+}
+
+/* A centred lead wraps evenly, so a word or two never sits alone under it
+   (client: "weird width", of "…, or / ring us."). */
+.ccs-head--center .ccs-lede {
+	text-wrap: balance;
 }

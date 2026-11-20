@@ -144,8 +144,11 @@ get_header();
 			 * and the timeline runs down out of them.
 			 */
 			?>
-			<section class="ccs-section ccs-section--tint gs-steps" aria-labelledby="gs-steps-heading">
+			<?php // The steps are on white (client: "maybe not a purple background?"), so "Good to know" below takes the tint and the grounds still alternate. ?>
+			<section class="ccs-section gs-steps" aria-labelledby="gs-steps-heading">
 				<div class="container container--lg">
+					<?php // One wrapper round the heading and the steps: on narrow screens it carries the line, so the line (and its plum progress) runs from the heading down without a join. ?>
+					<div class="gs-journey">
 					<header class="ccs-head ccs-head--center gs-intro">
 						<h2 id="gs-steps-heading" class="ccs-title"><?php echo ccs_accent_text( __( 'From first call to *first visit*', 'ccs-wp-theme' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_accent_text(). ?></h2>
 						<?php if ( '' !== trim( wp_strip_all_tags( $ccs_gs['intro'] ) ) ) : ?>
@@ -180,11 +183,12 @@ get_header();
 							</li>
 						<?php endforeach; ?>
 					</ol>
+					</div>
 				</div>
 			</section>
 
 			<?php if ( ! empty( $ccs_gs_more ) ) : ?>
-				<section class="ccs-section ccs-section--flush-bottom gs-more" aria-labelledby="gs-more-heading">
+				<section class="ccs-section ccs-section--tint gs-more" aria-labelledby="gs-more-heading">
 					<div class="container container--lg">
 						<div class="ccs-split">
 							<header class="ccs-head">

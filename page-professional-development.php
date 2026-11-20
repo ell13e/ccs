@@ -57,9 +57,10 @@ $ccs_pd_name  = trim( (string) get_theme_mod( 'ccs_copy_pd_story_name', '' ) );
 			<div class="container container--lg">
 				<div class="ccs-media-split ccs-media-split--flip pd-academy__layout">
 					<div class="pd-academy__text">
-						<?php echo ccs_doodle( 'open-book-pages', 'doodle--above' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle(). ?>
 						<h2 id="pd-academy-heading" class="ccs-title"><?php echo ccs_copy_accent( 'pd_academy_title' ); ?></h2>
 						<p class="pd-academy__lede"><?php echo esc_html( ccs_copy( 'pd_academy_text' ) ); ?></p>
+						<?php // A drawing with a note, as on the care side; the note repeats the line above ("fully funded and paid"). ?>
+						<?php echo ccs_doodle_note( 'open-book-pages', __( "funded and paid,\nin working hours", 'ccs-wp-theme' ), 'pd-academy__note' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle_note(). ?>
 						<a class="btn btn-quiet" href="https://www.continuitytrainingacademy.co.uk/" target="_blank" rel="noopener noreferrer">
 							<?php esc_html_e( 'Visit the Training Academy', 'ccs-wp-theme' ); ?>
 							<span aria-hidden="true">&nearr;</span>

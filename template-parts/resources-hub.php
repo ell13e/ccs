@@ -82,6 +82,21 @@ foreach ( $ccs_rh_groups as $ccs_rh_group ) {
 		$ccs_rh_rows[] = $ccs_rh_row;
 	}
 	if ( ! $ccs_rh_group['rows'] && '' !== $ccs_rh_group['prose'] ) {
+		/*
+		 * A section whose text points to one page ("Our regulator", with its
+		 * link to CQC and our care) is a signpost like the rest: its heading,
+		 * its text, and a button to that page. As a loose heading and
+		 * paragraph under the last row it "looks a bit random" (client).
+		 */
+		if ( 1 === preg_match_all( '#<a\s[^>]*href="([^"]+)"[^>]*>(.*?)</a>#is', $ccs_rh_group['prose'], $ccs_rh_links ) ) {
+			$ccs_rh_rows[] = array(
+				'url'   => $ccs_rh_links[1][0],
+				'title' => $ccs_rh_group['heading'],
+				'line'  => trim( preg_replace( '/\s+/', ' ', wp_strip_all_tags( $ccs_rh_group['prose'] ) ) ),
+				'go'    => trim( wp_strip_all_tags( $ccs_rh_links[2][0] ) ),
+			);
+			continue;
+		}
 		$ccs_rh_notes[] = $ccs_rh_group;
 	}
 }
@@ -100,6 +115,7 @@ $ccs_rh_photo = static function ( $url, $n ) {
 		'guide'        => 'site-photos/Untitled-1.webp',
 		'start'        => 'site-photos/467212766_9676172959062903_646005181027754761_n-copy.webp',
 		'news|blog'    => 'site-photos/IMG-20241107-WA0006.webp',
+		'cqc|regulat'  => 'site-photos/client-afternoon-tea.webp',
 	);
 	foreach ( $map as $pattern => $photo ) {
 		if ( preg_match( '/' . $pattern . '/i', $url ) ) {
@@ -138,7 +154,7 @@ $ccs_rh_last = count( $ccs_rh_rows ) - 1;
 					<a class="btn btn-primary signpost__go" href="<?php echo esc_url( $ccs_rh_row['url'] ); ?>">
 						<?php
 						/* translators: %s: the page's name, e.g. "care guides". */
-						printf( esc_html__( 'Go to %s', 'ccs-wp-theme' ), esc_html( $ccs_rh_lower( $ccs_rh_row['title'] ) ) );
+						printf( esc_html__( 'Go to %s', 'ccs-wp-theme' ), esc_html( isset( $ccs_rh_row['go'] ) ? $ccs_rh_row['go'] : $ccs_rh_lower( $ccs_rh_row['title'] ) ) );
 						?>
 					</a>
 				</div>

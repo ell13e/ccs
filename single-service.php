@@ -327,8 +327,34 @@ while ( have_posts() ) :
 				foreach ( $ccs_svc_faqs as $ccs_faq ) {
 					$ccs_svc_faq_items[] = array( 'heading' => $ccs_faq['q'], 'body' => wp_kses_post( $ccs_faq['a'] ) );
 				}
-				get_template_part( 'template-parts/num-acc', null, array( 'items' => $ccs_svc_faq_items, 'name' => 'service-faq', 'class' => 'num-acc--cards' ) );
+				get_template_part( 'template-parts/num-acc', null, array( 'items' => $ccs_svc_faq_items, 'name' => 'service-faq' ) );
 				?>
+			</div>
+		</section>
+	<?php endif; ?>
+
+	<?php
+	/*
+	 * Where this service is provided: a line of town links (Nov 2026). No
+	 * service page linked to a town before. The towns come from the same
+	 * setting the area pages read, so none is claimed that does not get it.
+	 */
+	$ccs_svc_towns = function_exists( 'ccs_service_areas' ) ? ccs_service_areas( get_post_field( 'post_name', $post_id ) ) : array();
+	?>
+	<?php if ( $ccs_svc_towns ) : ?>
+		<section class="ccs-section ccs-section--sm svc-where" aria-labelledby="svc-where-heading">
+			<div class="container container--lg">
+				<h2 id="svc-where-heading" class="svc-where__title">
+					<?php
+					/* translators: %s: service name in lower case. */
+					echo esc_html( sprintf( __( 'Where we provide %s', 'ccs-wp-theme' ), function_exists( 'ccs_service_menu_label' ) ? strtolower( ccs_service_menu_label( get_the_title( $post_id ) ) ) : strtolower( get_the_title( $post_id ) ) ) );
+					?>
+				</h2>
+				<ul class="svc-where__list" role="list">
+					<?php foreach ( $ccs_svc_towns as $ccs_svc_town ) : ?>
+						<li><a class="btn btn-quiet" href="<?php echo esc_url( get_permalink( $ccs_svc_town ) ); ?>"><?php echo esc_html( preg_replace( '/^(Home care in |Care in )|,\s*Kent$|:.*$/i', '', get_the_title( $ccs_svc_town ) ) ); ?></a></li>
+					<?php endforeach; ?>
+				</ul>
 			</div>
 		</section>
 	<?php endif; ?>
@@ -354,6 +380,18 @@ while ( have_posts() ) :
 				 * to the services hub instead of a hole in the grid.
 				 */
 				$ccs_related_shown = array_slice( $related, 0, 3 );
+				/*
+				 * A row of like cards (client, Nov 2026: "companionship looks so
+				 * different?", of one card with an icon tile and no price beside
+				 * two with a photo and a price). When at least two other services
+				 * have a photograph, only those are shown, and the last place is
+				 * the link to every service. Seventeen services have no photo yet:
+				 * as each gets one it joins the row.
+				 */
+				$ccs_related_photo = array_values( array_filter( $ccs_related_shown, 'has_post_thumbnail' ) );
+				if ( count( $ccs_related_photo ) >= 2 ) {
+					$ccs_related_shown = $ccs_related_photo;
+				}
 				?>
 				<ul class="svc-grid ccs-swipe" role="list">
 					<?php foreach ( $ccs_related_shown as $rel ) : ?>

@@ -35,7 +35,16 @@ get_header();
 		$ccs_cg         = trim( get_the_content() ) !== '' ? ccs_content_sections( apply_filters( 'the_content', get_the_content() ) ) : array( 'intro' => '', 'sections' => array() );
 		$ccs_cg_reader  = count( $ccs_cg['sections'] ) >= 3;
 		$ccs_cg_count   = count( $ccs_cg['sections'] );
-		get_template_part( 'template-parts/page-header' );
+		// The page's own opening sentence is the header's line, as on Resources.
+		// As a loose paragraph above the cards it "looks a bit random" (client).
+		// When a single guide is open the header keeps its usual line.
+		$ccs_cg_head = array();
+		$ccs_cg_lead = trim( wp_strip_all_tags( $ccs_cg['intro'] ) );
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only.
+		if ( $ccs_cg_reader && '' !== $ccs_cg_lead && empty( $_GET['guide'] ) && preg_match( '/^.+?[.!?](?=\s|$)/u', $ccs_cg_lead, $ccs_cg_lead_m ) ) {
+			$ccs_cg_head['intro'] = $ccs_cg_lead_m[0];
+		}
+		get_template_part( 'template-parts/page-header', null, $ccs_cg_head );
 
 		// The side menu: this page's parent and the pages beside it.
 		$ccs_cg_parent = wp_get_post_parent_id( get_the_ID() );
@@ -67,36 +76,75 @@ get_header();
 					<div class="container container--lg">
 						<?php
 						/*
-						 * Fourth form (Nov 2026). The guides were folded into the
-						 * Resources hub, then given this page back when the client
-						 * made Resources a signpost page. The cards that widened
-						 * across a grid had a "weird looking jump", so each guide is
-						 * now a full-width row that opens downwards: its heading
-						 * never changes, nothing above it moves, and opening one
-						 * does not close another.
+						 * Fifth form (Nov 2026). The client disliked the rows that
+						 * opened and sent a reference: a grid of resource cards, each
+						 * a picture tile over a title, a line and a link. So the
+						 * guides are the site's own cards (.care-card, as on the
+						 * services page), each with a drawing from the client's packs
+						 * on its tile, its heading, its opening sentence and "Read
+						 * the guide". A card leads to that guide set out on its own
+						 * (this page with ?guide=its-name): a real address, nothing
+						 * opens or jumps, and "All care guides" leads back.
+						 *
+						 * Still one page of editor content: every h2 is a guide.
 						 */
+						$ccs_cg_art = static function ( $heading, $n ) {
+							$map = array(
+								'pay|cost|fund'       => 'folder',
+								'hospital|discharge'  => 'stethoscope',
+								'wrong|complain'      => 'umbrella',
+								'plan'                => 'checklist',
+								'question|ask'        => 'speech-bubble',
+								'kind|type|available' => 'armchair',
+								'help|need|sign'      => 'lightbulb',
+							);
+							foreach ( $map as $pattern => $doodle ) {
+								if ( preg_match( '/' . $pattern . '/i', $heading ) ) {
+									return $doodle;
+								}
+							}
+							$spare = array( 'books', 'tea-cup', 'notebook', 'letter' );
+							return $spare[ $n % count( $spare ) ];
+						};
+						$ccs_cg_guides = array();
+						foreach ( $ccs_cg['sections'] as $ccs_cg_i => $ccs_cg_section ) {
+							$ccs_cg_plain = trim( preg_replace( '/\s+/', ' ', wp_strip_all_tags( $ccs_cg_section['body'] ) ) );
+							// The guide's opening sentence, or its first 150 characters.
+							// It stops at a colon too (a sentence that introduces a list), which then ends in a full stop.
+							$ccs_cg_first = preg_match( '/^(.{40,170}?)([.?!:])(\s|$)/u', $ccs_cg_plain, $ccs_cg_m ) ? $ccs_cg_m[1] . ( ':' === $ccs_cg_m[2] ? '.' : $ccs_cg_m[2] ) : wp_html_excerpt( $ccs_cg_plain, 150, '…' );
+							$ccs_cg_guides[ sanitize_title( $ccs_cg_section['heading'] ) ] = array(
+								'heading' => $ccs_cg_section['heading'],
+								'body'    => $ccs_cg_section['body'],
+								'first'   => $ccs_cg_first,
+								'art'     => $ccs_cg_art( $ccs_cg_section['heading'], $ccs_cg_i ),
+							);
+						}
+						// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- a read-only choice of which guide to show.
+						$ccs_cg_slug  = isset( $_GET['guide'] ) ? sanitize_title( wp_unslash( $_GET['guide'] ) ) : '';
+						$ccs_cg_open  = isset( $ccs_cg_guides[ $ccs_cg_slug ] ) ? $ccs_cg_guides[ $ccs_cg_slug ] : null;
+						$ccs_cg_index = get_permalink() . '#guides';
 						?>
-						<div class="guides-read has-doodle">
-							<?php echo ccs_doodle( 'books', 'doodle--beside' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle(). ?>
-							<?php if ( '' !== trim( wp_strip_all_tags( $ccs_cg['intro'] ) ) ) : ?>
-								<div class="hub__lede"><?php echo wp_kses_post( $ccs_cg['intro'] ); ?></div>
-							<?php endif; ?>
-							<ul class="hub__list" role="list">
-								<?php foreach ( $ccs_cg['sections'] as $ccs_cg_i => $ccs_cg_section ) : ?>
-									<li class="hub-item hub-item--read">
-										<details class="hub-read" id="care-guide-panel-<?php echo (int) $ccs_cg_i; ?>">
-											<summary class="hub-read__summary">
-												<span class="hub-item__text">
-													<span class="hub-item__title" role="heading" aria-level="2"><?php echo esc_html( $ccs_cg_section['heading'] ); ?></span>
-												</span>
-												<span class="hub-read__mark" aria-hidden="true"></span>
-											</summary>
-											<div class="hub-read__body entry-content"><?php echo wp_kses_post( ccs_mark_link_lines( $ccs_cg_section['body'] ) ); ?></div>
-										</details>
+						<?php if ( $ccs_cg_open ) : ?>
+							<div class="guide-read">
+								<p class="guide-read__back"><a class="btn btn-quiet" href="<?php echo esc_url( $ccs_cg_index ); ?>"><span aria-hidden="true">&larr;</span> <?php esc_html_e( 'All care guides', 'ccs-wp-theme' ); ?></a></p>
+								<h2 class="ccs-title guide-read__title"><?php echo esc_html( $ccs_cg_open['heading'] ); ?></h2>
+								<div class="guide-read__body entry-content"><?php echo wp_kses_post( ccs_mark_link_lines( $ccs_cg_open['body'] ) ); ?></div>
+								<p class="guide-read__back guide-read__back--end"><a class="btn btn-quiet" href="<?php echo esc_url( $ccs_cg_index ); ?>"><span aria-hidden="true">&larr;</span> <?php esc_html_e( 'All care guides', 'ccs-wp-theme' ); ?></a></p>
+							</div>
+						<?php else : ?>
+							<ul class="care-grid guide-grid" role="list">
+								<?php foreach ( $ccs_cg_guides as $ccs_cg_key => $ccs_cg_guide ) : ?>
+									<li class="care-card guide-tile">
+										<div class="guide-tile__art" aria-hidden="true" data-ccs-exception="rule 1: the card's picture; the whole card is the link"><?php echo ccs_doodle( $ccs_cg_guide['art'], 'guide-tile__doodle' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle(). ?></div>
+										<div class="care-card__body">
+											<h2 class="care-card__title"><a class="care-card__link" href="<?php echo esc_url( add_query_arg( 'guide', $ccs_cg_key, get_permalink() ) . '#guides' ); ?>"><?php echo esc_html( $ccs_cg_guide['heading'] ); ?></a></h2>
+											<p class="care-card__text"><?php echo esc_html( $ccs_cg_guide['first'] ); ?></p>
+											<span class="btn btn-quiet care-card__cue" aria-hidden="true"><?php esc_html_e( 'Read the guide', 'ccs-wp-theme' ); ?> <span>&rarr;</span></span>
+										</div>
 									</li>
 								<?php endforeach; ?>
 							</ul>
-						</div>
+						<?php endif; ?>
 					</div>
 				</div>
 			<?php elseif ( trim( get_the_content() ) !== '' ) : ?>

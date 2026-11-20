@@ -65,7 +65,7 @@ $ccs_op_lead = ! empty( $ccs_op_stats ) ? array_shift( $ccs_op_stats ) : null;
 	<div class="container container--lg">
 		<div class="ccs-media-split ccs-media-split--flip careers-proof__layout">
 			<div class="careers-proof__text">
-				<h2 id="careers-proof-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'careers_proof_title' ) ); ?></h2>
+				<h2 id="careers-proof-heading" class="ccs-title"><?php echo ccs_copy_accent( 'careers_proof_title' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_copy_accent(). ?></h2>
 
 				<?php if ( ! empty( $ccs_op_quotes ) ) : ?>
 					<div class="quote-rotator" data-ccs-stepper>

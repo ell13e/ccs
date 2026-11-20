@@ -430,7 +430,8 @@ function ccs_service_copy( $slug ) {
 				),
 				'sections' => array(
 					array(
-						'heading' => 'Complex Care Competencies',
+						// Was "Complex Care Competencies": training language, and it read as a claim about staff sign-off (client agreed the change, Nov 2026).
+						'heading' => 'Complex Care We Provide',
 						'paras' => array(),
 						'items' => array(
 							array(

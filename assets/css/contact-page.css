@@ -42,7 +42,7 @@
 	border: 1px solid var(--color-hairline);
 	border-radius: var(--radius-2xl);
 	background-color: var(--color-background);
-	box-shadow: var(--shadow-float);
+	box-shadow: var(--shadow-card);
 }
 
 .contact-way .ccs-badge {
@@ -139,6 +139,10 @@
 }
 
 @media (min-width: 1000px) {
+	.contact-form-card {
+		max-width: 44rem;
+	}
+
 	.contact-main__inner {
 		grid-template-columns: minmax(0, 1fr) minmax(0, 24rem);
 		align-items: start;
@@ -152,7 +156,9 @@
 
 .contact-form-card {
 	container-type: inline-size;
-	max-width: 44rem;
+	/* Capped only beside the aside. Stacked, it fills the column so its
+	   edges line up with the cards under it (it stopped 16px short). */
+	max-width: none;
 	min-width: 0;
 	padding: var(--card-pad);
 	border: 1px solid var(--color-hairline);
