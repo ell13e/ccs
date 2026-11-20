@@ -76,33 +76,6 @@ get_header();
 			 * 3. "Good to know" moves to white so the grounds still alternate.
 			 */
 			?>
-			<section class="ccs-section gs-intro-section" aria-labelledby="gs-steps-heading">
-				<div class="container container--lg">
-					<div class="ccs-media-split">
-						<header class="gs-intro">
-							<h2 id="gs-steps-heading" class="ccs-title"><?php echo ccs_accent_text( __( 'From first call to *first visit*', 'ccs-wp-theme' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_accent_text(). ?></h2>
-							<?php if ( '' !== trim( wp_strip_all_tags( $ccs_gs['intro'] ) ) ) : ?>
-								<div class="ccs-lede ccs-lede--large gs-intro__lede">
-									<?php echo wp_kses_post( $ccs_gs['intro'] ); ?>
-								</div>
-							<?php endif; ?>
-							<?php echo ccs_doodle( 'teapot', 'doodle--after' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle(). ?>
-						</header>
-						<?php
-						ccs_section_photo(
-							'site-photos/WhatsApp-Image-2021-02-10-at-15.39.32.webp',
-							array(
-								'alt'      => __( 'Members of the Continuity Care Services team talking through care notes together', 'ccs-wp-theme' ),
-								'sizes'    => '(min-width: 900px) 520px, 92vw',
-								// Keeps the three faces and crops the right-hand edge, where the
-								// photographer's mark sits.
-								'position' => '0% 50%',
-							)
-						);
-						?>
-					</div>
-				</div>
-			</section>
 
 			<?php
 			/*
@@ -162,9 +135,25 @@ get_header();
 				array( 'site-photos/client-activity-laughing.webp', '50% 30%' ),
 			);
 			?>
-			<section class="ccs-section ccs-section--tint gs-steps" aria-labelledby="gs-stepper-heading">
+			<?php
+			/*
+			 * No separate introduction (Nov 2026). Two were disliked: the heading
+			 * and lead at the left beside a photo, then centred in a band of their
+			 * own. The client picked this from three sketches: the heading and her
+			 * lead sit at the top of the steps themselves, centred over the line,
+			 * and the timeline runs down out of them.
+			 */
+			?>
+			<section class="ccs-section ccs-section--tint gs-steps" aria-labelledby="gs-steps-heading">
 				<div class="container container--lg">
-					<h2 id="gs-stepper-heading" class="screen-reader-text"><?php esc_html_e( 'The steps, in order', 'ccs-wp-theme' ); ?></h2>
+					<header class="ccs-head ccs-head--center gs-intro">
+						<h2 id="gs-steps-heading" class="ccs-title"><?php echo ccs_accent_text( __( 'From first call to *first visit*', 'ccs-wp-theme' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_accent_text(). ?></h2>
+						<?php if ( '' !== trim( wp_strip_all_tags( $ccs_gs['intro'] ) ) ) : ?>
+							<div class="ccs-lede gs-intro__lede">
+								<?php echo wp_kses_post( $ccs_gs['intro'] ); ?>
+							</div>
+						<?php endif; ?>
+					</header>
 					<ol class="gs-path" role="list">
 						<?php foreach ( $ccs_gs_steps as $ccs_gs_n => $ccs_gs_step ) : ?>
 							<?php $ccs_gs_photo = $ccs_gs_photos[ $ccs_gs_n % count( $ccs_gs_photos ) ]; ?>
