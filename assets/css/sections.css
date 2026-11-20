@@ -1686,8 +1686,8 @@
 }
 
 /* =========================================================================
-   GETTING STARTED (page-templates/template-getting-started.php). Intro
-   beside a photo on white; the steps as a stepper on the tint; reference
+   GETTING STARTED (page-templates/template-getting-started.php). A short
+   centred intro on white; the steps as a stepper on the tint; reference
    sections in a "Good to know" accordion on white.
    ========================================================================= */
 .gs-intro .ccs-title {
@@ -1700,6 +1700,68 @@
 
 .gs-intro__lede p + p {
 	margin-top: var(--space-sm);
+}
+
+/* The heading and lead sit on top of the timeline, centred over its line
+   (Nov 2026, the client's pick), and the line runs down out of them. */
+.gs-intro.ccs-head {
+	max-width: 46rem;
+	margin-inline: auto;
+	margin-bottom: var(--space-lg);
+}
+
+.gs-intro .gs-intro__lede {
+	margin-inline: auto;
+}
+
+/* Below the alternating layout the line runs down the left with each step's
+   words to its right. The heading and lead take that same left edge, so
+   they read as the start of the journey (client: "should it not be the same
+   alignment as the other parts of the journey"). The numbers match
+   .gs-path: its disc (3rem) plus its column gap. */
+@media (max-width: 55.99rem) {
+	.gs-intro.ccs-head {
+		max-width: none;
+		margin-inline: 0;
+		padding-left: calc(3rem + var(--space-md));
+		text-align: left;
+	}
+
+	.gs-intro .gs-intro__lede {
+		margin-inline: 0;
+	}
+
+	/* The line starts beside the heading and runs on into the steps, so the
+	   heading is the first stop on it and the line does not begin in mid-air
+	   under the lead. It fades in at the top; the steps' own line then
+	   starts solid where this one ends. */
+	.gs-intro.ccs-head {
+		position: relative;
+	}
+
+	.gs-intro.ccs-head::before {
+		content: "";
+		position: absolute;
+		top: 0.5rem;
+		bottom: calc(var(--space-lg) * -1);
+		left: calc(1.5rem - 1px);
+		width: 2px;
+		border-radius: 2px;
+		background: var(--color-hairline-strong);
+		-webkit-mask-image: linear-gradient(to bottom, transparent, #000 4rem);
+		mask-image: linear-gradient(to bottom, transparent, #000 4rem);
+	}
+
+	.gs-intro + .gs-path::before,
+	.gs-intro + .gs-path::after {
+		-webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 5rem), transparent);
+		mask-image: linear-gradient(to bottom, #000 calc(100% - 5rem), transparent);
+	}
+}
+
+/* Room for the line to fade in under the lead before the first step. */
+.gs-intro + .gs-path {
+	padding-top: var(--space-2xl);
 }
 
 /* =========================================================================
