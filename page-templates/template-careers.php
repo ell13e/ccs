@@ -70,12 +70,15 @@ foreach ( $ccs_careers_meta as $ccs_slug => $ccs_meta ) {
 						<h2 id="careers-intro-heading" class="ccs-title">
 							<?php
 							if ( $ccs_lead ) {
-								echo esc_html( $ccs_lead['heading'] );
+								// The heading's last word takes the accent, as the service pages' intros do.
+								echo ccs_accent_text( preg_replace( '/(\S+?)([.?!]*)$/u', '*$1*$2', trim( $ccs_lead['heading'] ), 1 ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_accent_text().
 							} else {
 								echo ccs_copy_accent( 'careers_expect_title' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_copy_accent().
 							}
 							?>
 						</h2>
+						<?php // The careers pages take the care side's treatment (client, Nov 2026): a drawing with a note under the heading. The note is the promise the paragraph beside it quotes. ?>
+						<?php echo ccs_doodle_note( 'handshake', __( "your time, your team,\nyour life", 'ccs-wp-theme' ), 'careers-intro__note' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle_note(). ?>
 					</header>
 					<article id="post-<?php the_ID(); ?>" <?php post_class( 'page-content' ); ?>>
 						<div class="page-body page-body--flush entry-content">
@@ -103,7 +106,6 @@ foreach ( $ccs_careers_meta as $ccs_slug => $ccs_meta ) {
 			<section class="ccs-section ccs-section--sm ccs-section--flush-bottom careers-explore" aria-labelledby="careers-explore-heading">
 				<div class="container container--lg">
 					<header class="ccs-head ccs-head--center">
-						<?php echo ccs_doodle( 'paper-plane', 'doodle--above' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle(). ?>
 						<h2 id="careers-explore-heading" class="ccs-title">
 							<?php
 							echo ccs_copy_accent( 'careers_ways_title' );

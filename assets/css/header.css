@@ -588,6 +588,24 @@ body.has-photo-hero:not(.ccs-mobile-nav-open) .site-header:not(.is-scrolled) .mo
    .header-actions container is hidden too — otherwise it survives as an empty
    flex child and .header-inner-wrapper's space-between still reserves room
    for it, leaving the menu toggle stranded away from the true right edge. */
+/* Tablet: logo at the left, then the phone and the menu button together at
+   the right, in that order (client, Nov 2026: with three things spread
+   evenly the menu button sat alone in the middle, "uneven and messy"). */
+@media (min-width: 768px) and (max-width: 1023px) {
+	.header-inner-wrapper {
+		justify-content: flex-start;
+		gap: var(--space-sm);
+	}
+
+	.header-actions {
+		margin-left: auto;
+	}
+
+	.mobile-menu-btn {
+		order: 3;
+	}
+}
+
 @media (max-width: 767px) {
 	.header-actions {
 		display: none;
@@ -669,6 +687,26 @@ body.has-photo-hero:not(.ccs-mobile-nav-open) .site-header:not(.is-scrolled) .mo
 
 .mobile-menu-btn:hover {
 	background: var(--color-background-grey);
+}
+
+/* The button says what it does (client, Nov 2026: "how do you close the nav
+   menu on tablet and phone"). The three bars turning into a cross was the
+   only sign; the word beside it now reads "Menu", then "Close". */
+.mobile-menu-btn {
+	width: auto;
+	gap: 0.5rem;
+	padding-inline: 0.625rem;
+	font-size: 0.9375rem;
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-ink);
+}
+
+.mobile-menu-btn::after {
+	content: "Menu";
+}
+
+.mobile-menu-btn[aria-expanded="true"]::after {
+	content: "Close";
 }
 
 .mobile-menu-btn:focus-visible {
@@ -1073,11 +1111,26 @@ body.ccs-mobile-nav-open::before {
 	display: none;
 }
 
+/* Even padding, and the hours and address start on the number's own left
+   edge, not under the badge (client: "this looks ugly"). */
 .mobile-menu__contact {
 	margin-top: auto;
-	padding: var(--space-lg) var(--space-md) var(--space-md);
+	padding: var(--card-pad-sm);
 	border-radius: var(--radius-2xl);
 	background-color: var(--color-band-tint);
+}
+
+.mobile-menu__contact .mobile-menu__hours,
+.mobile-menu__contact .mobile-menu__address {
+	padding-left: calc(2.75rem + var(--space-sm));
+}
+
+.mobile-menu__contact .mobile-menu__hours {
+	margin-top: 0;
+}
+
+.mobile-menu__contact .mobile-menu__address {
+	margin-top: 0.125rem;
 }
 
 .mobile-menu__actions {
@@ -1146,8 +1199,12 @@ body.ccs-mobile-nav-open::before {
 	min-height: 2.75rem;
 	padding: 0 0.9rem;
 	border-radius: 0.85rem;
-	font-size: var(--text-sm);
-	font-weight: var(--font-weight-semibold);
+	/* One size and weight for every link in every dropdown (client, Nov 2026:
+	   "why are there different fonts and sizes across the drop down menus").
+	   The services list was 16px regular while Areas, About and Resources
+	   were 14px semibold. */
+	font-size: var(--text-base);
+	font-weight: var(--font-weight-normal);
 	line-height: 1.3;
 	white-space: nowrap;
 	color: var(--color-ink);
@@ -1396,6 +1453,42 @@ body.ccs-mobile-nav-open::before {
 
 .header-container {
 	position: relative;
+}
+
+/* The section's own page, first in its dropdown: plum with an arrow, over a
+   hairline, and never underlined (client, Nov 2026: liked it set apart like
+   this, "but without the styling" of an underlined text link). Where the
+   panel has columns it takes a row of its own. */
+.nav-desktop .sub-menu > .nav-overview {
+	grid-column: 1 / -1;
+	margin-bottom: 0.4rem;
+	padding-bottom: 0.4rem;
+	border-bottom: 1px solid var(--color-hairline);
+}
+
+.nav-desktop .sub-menu > .nav-overview > a,
+.nav-desktop .sub-menu > .nav-overview > a:hover,
+.nav-desktop .sub-menu > .nav-overview > a:focus-visible {
+	color: var(--color-primary);
+	text-decoration: none;
+}
+
+.nav-desktop .sub-menu > .nav-overview > a::after {
+	content: "\2192";
+	margin-left: 0.4rem;
+}
+
+/* Every dropdown opens at the same height as the services panel: just under
+   the header, not from the bottom of its own label (client, Nov 2026). The
+   label is centred in the header, so the gap is half the difference between
+   the two heights; the hover bridge above the panel covers it. */
+.nav-desktop > .nav-list > .menu-item:not(.nav-mega--services) > .sub-menu {
+	top: calc(100% + (var(--ccs-header-h, 6rem) - 100%) / 2);
+}
+
+.nav-desktop > .nav-list > .menu-item:not(.nav-mega--services) > .sub-menu::before {
+	inset: -2rem 0 auto;
+	height: 2rem;
 }
 
 .nav-desktop > .nav-list > .nav-mega--services > .sub-menu {

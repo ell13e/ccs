@@ -634,7 +634,7 @@ class CCS_Theme_Activation {
 		$content = array(
 			'about-home-care-maidstone' => '<p>Reliably supporting adults and children across Maidstone and Kent, we\'re here to provide care that fits your life, day or night. <strong>Our local team supports families right across Kent.</strong></p>
 <p>We don\'t rush or rotate staff every other week. Instead, we take the time to get to know each person, not just their care plan. Our staff commit to discovering the quirks of every client, from how they like their toast to what puts them at ease on a tough day.</p>
-<p>We believe that the best care doesn\'t stop when the to-do list is ticked; it carries on in how our carers show up: familiar, unhurried and glad to see you. <strong>Learn more about the home care services we offer in Maidstone &amp; Kent.</strong></p>',
+<p>We believe that the best care doesn\'t stop when the to-do list is ticked; it carries on in how our carers show up: familiar, unhurried and glad to see you. <strong>Learn more about our home care services</strong></p>',
 			// The service list itself is rendered as a card grid by
 			// page-templates/template-services.php, so this intro no longer repeats it.
 			'home-care-services-kent' => '<p class="lead">We provide home care across Maidstone and the surrounding Kent towns.</p>

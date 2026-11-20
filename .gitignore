@@ -81,3 +81,4 @@ coverage/
 # is made private.
 /assets/fonts/sketchbook-doodle.woff2
 /assets/images/doodles/*.webp
+/docs/arrow-options.png

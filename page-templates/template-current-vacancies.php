@@ -74,15 +74,27 @@ $ccs_vac_steps   = array(
 		<section class="ccs-section ccs-section--tint vac-after" aria-labelledby="vac-after-heading">
 			<div class="container container--lg">
 				<header class="ccs-head ccs-head--center">
-					<h2 id="vac-after-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'vac_steps_title' ) ); ?></h2>
+					<h2 id="vac-after-heading" class="ccs-title"><?php echo ccs_copy_accent( 'vac_steps_title' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_copy_accent(). ?></h2>
 				</header>
-				<?php // Three one-line steps side by side in one card. The stepper (rail, big number, "Step 1 of 3", Next button) was far too much for three sentences (user: "too busy"). ?>
-				<ol class="next-steps" role="list" data-ccs-exception="rule 1: one card holding the three steps, as on the homepage">
+				<?php
+				/*
+				 * The same steps pattern as "How care starts" on the service pages
+				 * (client, Nov 2026: the careers side to match the care side): a
+				 * drawing from the client's packs over each step and a hand-drawn
+				 * arrow between them. It replaced three numbered cells in one card.
+				 */
+				$ccs_vac_art = array( 'letter', 'coffee-cup', 'checklist' );
+				?>
+				<ol class="flow-steps" role="list">
 					<?php foreach ( $ccs_vac_steps as $ccs_vac_i => $ccs_vac_step ) : ?>
-						<li class="next-steps__item">
-							<span class="next-steps__num" aria-hidden="true"><?php echo (int) $ccs_vac_i + 1; ?></span>
-							<h3 class="next-steps__title"><?php echo esc_html( $ccs_vac_step['title'] ); ?></h3>
-							<p class="next-steps__text"><?php echo esc_html( $ccs_vac_step['text'] ); ?></p>
+						<li class="flow-step">
+							<?php if ( $ccs_vac_i > 0 ) : ?>
+								<?php echo ccs_doodle( 'arrow-14', 'flow-step__arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle(). ?>
+							<?php endif; ?>
+							<span class="flow-step__art"><?php echo ccs_doodle( $ccs_vac_art[ $ccs_vac_i % count( $ccs_vac_art ) ], 'flow-step__doodle' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle(). ?></span>
+							<span class="flow-step__num" aria-hidden="true"><?php echo (int) $ccs_vac_i + 1; ?></span>
+							<h3 class="flow-step__title"><?php echo esc_html( $ccs_vac_step['title'] ); ?></h3>
+							<p class="flow-step__text"><?php echo esc_html( $ccs_vac_step['text'] ); ?></p>
 						</li>
 					<?php endforeach; ?>
 				</ol>

@@ -54,7 +54,8 @@ $ccs_contact   = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' 
 			<div class="container container--lg">
 				<article id="post-<?php the_ID(); ?>" <?php post_class( 'page-content' ); ?>>
 					<?php if ( ! empty( $ccs_faqs ) ) : ?>
-						<header class="ccs-head ccs-head--center">
+						<?php // Left-aligned, on the page's own left edge, like the topics and questions under it (client: centred over a two-column layout, with a search box lined up with neither, "looks a bit weird"). ?>
+						<header class="ccs-head faq-head">
 							<h2 id="faq-heading" class="ccs-title">
 								<?php
 								echo ccs_copy_accent( 'faqs_title' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_copy_accent().
@@ -64,11 +65,6 @@ $ccs_contact   = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' 
 								<div class="ccs-lede"><?php echo wp_kses_post( $ccs_intro ); ?></div>
 							<?php endif; ?>
 						</header>
-						<div class="hub__search faq-find" role="search">
-							<label class="screen-reader-text" for="faq-search"><?php esc_html_e( 'Search the questions', 'ccs-wp-theme' ); ?></label>
-							<span class="hub__search-icon" aria-hidden="true"><?php echo ccs_icon( 'search' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
-							<input type="search" id="faq-search" class="hub__search-input" placeholder="<?php esc_attr_e( 'Search the questions', 'ccs-wp-theme' ); ?>" autocomplete="off" data-ccs-faq-search>
-						</div>
 						<?php
 						/*
 						 * Topics down the left, that topic's questions on the right
@@ -100,7 +96,42 @@ $ccs_contact   = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' 
 									'id'      => 'faq-more-' . (int) $ccs_more_item['n'],
 								);
 							}
-							$ccs_topics[] = array( 'id' => $ccs_more_group['id'], 'label' => $ccs_more_group['heading'], 'items' => $ccs_more_items, 'links' => isset( $ccs_more_group['links'] ) ? $ccs_more_group['links'] : array(), 'list_id' => '' );
+							// Which of the menu's two groups the topic belongs to; a topic with no service of its own is about conditions in general.
+							$ccs_more_set = '' !== $ccs_more_group['service'] && function_exists( 'ccs_service_group' ) ? ccs_service_group( $ccs_more_group['service'] ) : 'condition';
+							$ccs_topics[] = array( 'id' => $ccs_more_group['id'], 'label' => $ccs_more_group['heading'], 'items' => $ccs_more_items, 'links' => isset( $ccs_more_group['links'] ) ? $ccs_more_group['links'] : array(), 'list_id' => '', 'set' => $ccs_more_set, 'general' => '' === $ccs_more_group['service'] );
+						}
+						/*
+						 * The same order as the menu (client, Nov 2026: "alphabetical
+						 * within each group"): the most asked, then the types of care
+						 * A to Z, then the conditions A to Z with the general topic
+						 * first. The two groups are named in the rail and the menu.
+						 */
+						$ccs_topic_sets = array( 'most' => array( '', array( $ccs_topics[0] ) ) );
+						foreach ( function_exists( 'ccs_service_groups' ) ? ccs_service_groups() : array( 'everyday' => '', 'condition' => '' ) as $ccs_set_key => $ccs_set_label ) {
+							$ccs_set_topics = array_values(
+								array_filter(
+									array_slice( $ccs_topics, 1 ),
+									static function ( $topic ) use ( $ccs_set_key ) {
+										return $topic['set'] === $ccs_set_key;
+									}
+								)
+							);
+							usort(
+								$ccs_set_topics,
+								static function ( $a, $b ) {
+									if ( $a['general'] !== $b['general'] ) {
+										return $a['general'] ? -1 : 1;
+									}
+									return strcasecmp( $a['label'], $b['label'] );
+								}
+							);
+							if ( $ccs_set_topics ) {
+								$ccs_topic_sets[ $ccs_set_key ] = array( $ccs_set_label, $ccs_set_topics );
+							}
+						}
+						$ccs_topics = array();
+						foreach ( $ccs_topic_sets as $ccs_topic_set ) {
+							$ccs_topics = array_merge( $ccs_topics, $ccs_topic_set[1] );
 						}
 						?>
 						<div class="faq-browse" data-ccs-faq-browse>
@@ -108,18 +139,37 @@ $ccs_contact   = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' 
 								<div class="faq-rail__pick">
 									<label class="faq-rail__pick-label" for="faq-topic"><?php esc_html_e( 'Topic', 'ccs-wp-theme' ); ?></label>
 									<select id="faq-topic" class="faq-rail__select" data-ccs-faq-pick>
-										<?php foreach ( $ccs_topics as $ccs_topic ) : ?>
-											<option value="<?php echo esc_attr( $ccs_topic['id'] ); ?>"><?php echo esc_html( $ccs_topic['label'] ); ?></option>
+										<?php foreach ( $ccs_topic_sets as $ccs_topic_set ) : ?>
+											<?php if ( '' !== $ccs_topic_set[0] ) : ?>
+												<optgroup label="<?php echo esc_attr( $ccs_topic_set[0] ); ?>">
+											<?php endif; ?>
+											<?php foreach ( $ccs_topic_set[1] as $ccs_topic ) : ?>
+												<option value="<?php echo esc_attr( $ccs_topic['id'] ); ?>"><?php echo esc_html( $ccs_topic['label'] ); ?></option>
+											<?php endforeach; ?>
+											<?php if ( '' !== $ccs_topic_set[0] ) : ?>
+												</optgroup>
+											<?php endif; ?>
 										<?php endforeach; ?>
 									</select>
 								</div>
 								<ul class="faq-rail__list" role="list">
-									<?php foreach ( $ccs_topics as $ccs_topic_n => $ccs_topic ) : ?>
-										<li><a class="faq-rail__link" href="#<?php echo esc_attr( $ccs_topic['id'] ); ?>"<?php echo 0 === $ccs_topic_n ? ' aria-current="true"' : ''; ?>><?php echo esc_html( $ccs_topic['label'] ); ?></a></li>
+									<?php foreach ( $ccs_topic_sets as $ccs_set_key => $ccs_topic_set ) : ?>
+										<?php if ( '' !== $ccs_topic_set[0] ) : ?>
+											<li class="faq-rail__group"><?php echo esc_html( $ccs_topic_set[0] ); ?></li>
+										<?php endif; ?>
+										<?php foreach ( $ccs_topic_set[1] as $ccs_topic ) : ?>
+											<li><a class="faq-rail__link" href="#<?php echo esc_attr( $ccs_topic['id'] ); ?>"<?php echo 'most' === $ccs_set_key ? ' aria-current="true"' : ''; ?>><?php echo esc_html( $ccs_topic['label'] ); ?></a></li>
+										<?php endforeach; ?>
 									<?php endforeach; ?>
 								</ul>
 							</nav>
 							<div class="faq-panels" id="faq-panels">
+								<?php // The search sits over the questions it searches, at their width. ?>
+								<div class="hub__search faq-find" role="search">
+									<label class="screen-reader-text" for="faq-search"><?php esc_html_e( 'Search the questions', 'ccs-wp-theme' ); ?></label>
+									<span class="hub__search-icon" aria-hidden="true"><?php echo ccs_icon( 'search' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
+									<input type="search" id="faq-search" class="hub__search-input" placeholder="<?php esc_attr_e( 'Search the questions', 'ccs-wp-theme' ); ?>" autocomplete="off" data-ccs-faq-search>
+								</div>
 								<?php foreach ( $ccs_topics as $ccs_topic_n => $ccs_topic ) : ?>
 									<section class="faq-panel<?php echo 0 === $ccs_topic_n ? ' is-current' : ''; ?>" id="<?php echo esc_attr( $ccs_topic['id'] ); ?>" aria-labelledby="<?php echo esc_attr( $ccs_topic['id'] ); ?>-title">
 										<h3 class="faq-panel__title" id="<?php echo esc_attr( $ccs_topic['id'] ); ?>-title"><?php echo esc_html( $ccs_topic['label'] ); ?></h3>

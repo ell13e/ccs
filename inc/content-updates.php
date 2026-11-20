@@ -413,6 +413,32 @@ function ccs_apply_services_wording_2026_11h() {
 add_action( 'admin_init', 'ccs_apply_services_wording_2026_11h' );
 
 /**
+ * The About page's closing link, shortened to fit one line (Nov 2026, client:
+ * its last two words sat alone on a second line, and split evenly over two
+ * lines it "looks worse"). Once, and only while it still reads as shipped.
+ */
+function ccs_apply_about_link_shorten_2026_11() {
+	if ( get_option( 'ccs_about_link_shortened_2026_11' ) ) {
+		return;
+	}
+	$found = get_posts( array( 'name' => 'about-home-care-maidstone', 'post_type' => 'page', 'post_status' => 'any', 'numberposts' => 1, 'suppress_filters' => true ) );
+	if ( $found ) {
+		$content = strtr(
+			$found[0]->post_content,
+			array(
+				'Learn more about the home care services we offer in Maidstone &amp; Kent.' => 'Learn more about our home care services',
+				'Learn more about the home care services we offer in Maidstone & Kent.' => 'Learn more about our home care services',
+			)
+		);
+		if ( $content !== $found[0]->post_content ) {
+			wp_update_post( wp_slash( array( 'ID' => $found[0]->ID, 'post_content' => $content ) ) );
+		}
+	}
+	update_option( 'ccs_about_link_shortened_2026_11', 1, false );
+}
+add_action( 'admin_init', 'ccs_apply_about_link_shorten_2026_11' );
+
+/**
  * Shorter heading on the careers hub (Nov 2026, user: "too long"). The
  * heading is the page's own first h2, so it is changed once in the page,
  * and only while it still reads exactly as shipped.

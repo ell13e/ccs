@@ -102,15 +102,14 @@ $ccs_services = ccs_ordered_services();
 		?>
 		<?php foreach ( $ccs_hub_sets as $ccs_hub_key => $ccs_hub_set ) : ?>
 			<?php
-			// Services with a photograph lead their group.
-			$ccs_hub_list = array_merge(
-				array_filter( $ccs_hub_set[1], 'has_post_thumbnail' ),
-				array_filter(
-					$ccs_hub_set[1],
-					static function ( $svc ) {
-						return ! has_post_thumbnail( $svc );
-					}
-				)
+			// A to Z by name within the group (client, Nov 2026: "alphabetical
+			// within each group"). Services with a photograph used to come first.
+			$ccs_hub_list = $ccs_hub_set[1];
+			usort(
+				$ccs_hub_list,
+				static function ( $a, $b ) {
+					return strcasecmp( get_the_title( $a ), get_the_title( $b ) );
+				}
 			);
 			$ccs_hub_count = count( $ccs_hub_list );
 			?>

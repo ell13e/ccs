@@ -413,6 +413,98 @@ function ccs_regroup_services_menu_2026_11h() {
 add_action( 'init', 'ccs_regroup_services_menu_2026_11h', 49 );
 
 /**
+ * Alphabetical within each group (Nov 2026, client: asked how the lists were
+ * ordered, which was the order the services had been added in, and chose
+ * "alphabetical within each group"). Once: the services under each heading in
+ * the menu are put in A to Z order by the name shown, in two columns. The
+ * services page and the FAQ topics sort the same way in their templates.
+ */
+function ccs_alphabetise_services_menu_2026_11n() {
+	if ( get_option( 'ccs_services_menu_alpha_2026_11n' ) || ! get_option( 'ccs_services_menu_groups_2026_11c' ) ) {
+		return;
+	}
+	$locations = get_nav_menu_locations();
+	$menu_id   = isset( $locations['primary'] ) ? (int) $locations['primary'] : 0;
+	$items     = $menu_id ? wp_get_nav_menu_items( $menu_id ) : array();
+	if ( ! $menu_id || ! is_array( $items ) ) {
+		return;
+	}
+	$headings = array();
+	foreach ( $items as $item ) {
+		foreach ( array_keys( ccs_service_groups() ) as $group ) {
+			if ( in_array( 'nav-heading--' . $group, (array) $item->classes, true ) ) {
+				$headings[ $group ] = $item;
+			}
+		}
+	}
+	if ( count( $headings ) < 2 || (int) $headings['everyday']->menu_item_parent !== (int) $headings['condition']->menu_item_parent ) {
+		return;
+	}
+	update_option( 'ccs_services_menu_alpha_2026_11n', 1, false );
+	$parent = (int) $headings['everyday']->menu_item_parent;
+
+	$slots    = array();
+	$services = array();
+	$other    = array();
+	foreach ( $items as $item ) {
+		if ( (int) $item->menu_item_parent !== $parent ) {
+			continue;
+		}
+		$slots[] = (int) $item->menu_order;
+		if ( 'service' === $item->object ) {
+			$services[] = array(
+				'id'    => (int) $item->ID,
+				'title' => (string) $item->title,
+				'group' => ccs_service_group( get_post_field( 'post_name', (int) $item->object_id ) ),
+			);
+		} elseif ( (int) $item->ID !== (int) $headings['everyday']->ID && (int) $item->ID !== (int) $headings['condition']->ID ) {
+			$other[] = (int) $item->ID;
+		}
+	}
+	sort( $slots );
+	usort(
+		$services,
+		static function ( $a, $b ) {
+			return strcasecmp( $a['title'], $b['title'] );
+		}
+	);
+
+	$order = array();
+	foreach ( array_keys( ccs_service_groups() ) as $group ) {
+		$order[] = (int) $headings[ $group ]->ID;
+		$in      = array_values(
+			array_filter(
+				$services,
+				static function ( $service ) use ( $group ) {
+					return $service['group'] === $group;
+				}
+			)
+		);
+		$half = (int) ceil( count( $in ) / 2 );
+		foreach ( $in as $n => $service ) {
+			$classes   = array_filter( (array) get_post_meta( $service['id'], '_menu_item_classes', true ) );
+			$classes   = array_values(
+				array_filter(
+					$classes,
+					static function ( $c ) {
+						return 0 !== strpos( (string) $c, 'nav-col-' );
+					}
+				)
+			);
+			$classes[] = 'nav-col-' . ( ( 'everyday' === $group ? 1 : 3 ) + ( $n >= $half ? 1 : 0 ) );
+			update_post_meta( $service['id'], '_menu_item_classes', $classes );
+			$order[] = $service['id'];
+		}
+	}
+	foreach ( array_merge( $order, $other ) as $i => $item_id ) {
+		if ( isset( $slots[ $i ] ) ) {
+			wp_update_post( array( 'ID' => $item_id, 'menu_order' => $slots[ $i ] ) );
+		}
+	}
+}
+add_action( 'init', 'ccs_alphabetise_services_menu_2026_11n', 50 );
+
+/**
  * Emergency care is not provided (client, Nov 2026: "we dont do emergency
  * care"). It was one of the thirteen pages added from the Helping Hands
  * menu. Once: its page goes to the bin (recoverable there) and its menu

@@ -207,6 +207,13 @@
 	padding-top: 1.75rem;
 }
 
+/* On a white ground the body takes the hairline and close shadow, as every
+   white card on white does (see .care-card). */
+.ccs-section:not(.ccs-section--tint) .svc-card__body {
+	border: 1px solid var(--color-hairline);
+	box-shadow: var(--shadow-card);
+}
+
 .svc-card__media--icon .ccs-icon {
 	width: 4.5rem;
 	height: 4.5rem;
@@ -726,6 +733,11 @@
 	border: 1px solid var(--color-hairline);
 	border-radius: var(--radius-2xl);
 	background-color: var(--color-band-cream);
+}
+
+/* A tinted strip on a white ground needs no line: the tint is its edge. */
+.ccs-section:not(.ccs-section--tint) .ccs-strip {
+	border-color: transparent;
 }
 
 .ccs-strip__title {
@@ -1731,33 +1743,59 @@
 		margin-inline: 0;
 	}
 
-	/* The line starts beside the heading and runs on into the steps, so the
-	   heading is the first stop on it and the line does not begin in mid-air
-	   under the lead. It fades in at the top; the steps' own line then
-	   starts solid where this one ends. */
-	.gs-intro.ccs-head {
+	/* One line for the heading and the steps together, carried by their
+	   wrapper, so it starts beside the heading and its plum progress has no
+	   join where the steps begin (client: "why the weird ass sudden", of
+	   plum starting hard at step 1 under a grey stretch). The steps' own
+	   line is switched off at these widths. */
+	.gs-journey {
 		position: relative;
 	}
 
-	.gs-intro.ccs-head::before {
+	.gs-journey::before,
+	.gs-journey::after {
 		content: "";
 		position: absolute;
 		top: 0.5rem;
-		bottom: calc(var(--space-lg) * -1);
+		bottom: 0;
 		left: calc(1.5rem - 1px);
 		width: 2px;
 		border-radius: 2px;
-		background: var(--color-hairline-strong);
-		-webkit-mask-image: linear-gradient(to bottom, transparent, #000 4rem);
-		mask-image: linear-gradient(to bottom, transparent, #000 4rem);
+		-webkit-mask-image: linear-gradient(to bottom, transparent, #000 4rem, #000 calc(100% - 5rem), transparent);
+		mask-image: linear-gradient(to bottom, transparent, #000 4rem, #000 calc(100% - 5rem), transparent);
 	}
 
-	.gs-intro + .gs-path::before,
-	.gs-intro + .gs-path::after {
-		-webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 5rem), transparent);
-		mask-image: linear-gradient(to bottom, #000 calc(100% - 5rem), transparent);
+	.gs-journey::before {
+		background: var(--color-hairline-strong);
+	}
+
+	.gs-journey::after {
+		display: none;
+		/* --gs-reach and its soft tail: see .gs-path in inner-pages.css. */
+		background: linear-gradient(to bottom, var(--color-primary) calc(var(--gs-reach) - 4rem), transparent var(--gs-reach));
+		opacity: 0.55;
+	}
+
+	.gs-journey .gs-path::before,
+	.gs-journey .gs-path::after {
+		display: none;
 	}
 }
+
+/* The plum line keeps pace with the screen: its end sits a little below the
+   middle all the way down (a range given as a share of the list's height ran
+   ahead of or behind what was being read on a tall, narrow page). */
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) and (max-width: 55.99rem) {
+		.gs-journey::after {
+			display: block;
+			animation: gs-path-draw linear both;
+			animation-timeline: view();
+			animation-range: cover 45vh cover calc(100% - 55vh);
+		}
+	}
+}
+
 
 /* Room for the line to fade in under the lead before the first step. */
 .gs-intro + .gs-path {
@@ -2158,11 +2196,54 @@
 	background-color: var(--color-hairline-strong);
 }
 
+/* As on Getting started: the plum is a wash that reaches a point on the line
+   and ends in a soft tail. It is not a scaled copy of the line (scaling
+   squashed the fade at its top, so it began as a hard block). */
 .journey::after {
-	background-color: var(--color-primary);
+	background: linear-gradient(to bottom, var(--color-primary) calc(var(--journey-progress) * 100% - 4rem), transparent calc(var(--journey-progress) * 100%));
 	opacity: 0.55;
-	transform: scaleY(var(--journey-progress));
-	transform-origin: top center;
+}
+
+/* Narrow screens, as on Getting started: the heading takes the milestones'
+   left edge and the line starts beside it, one unbroken line (and one plum
+   wash) from the heading to the last milestone. */
+@media (max-width: 899px) {
+	.journey-layout {
+		--journey-progress-all: 1;
+		position: relative;
+		gap: var(--space-lg);
+	}
+
+	.journey-aside {
+		padding-left: 4.25rem;
+	}
+
+	.journey-layout::before,
+	.journey-layout::after {
+		content: "";
+		position: absolute;
+		top: 0.5rem;
+		bottom: 0.5rem;
+		left: 21px;
+		width: 2px;
+		border-radius: 2px;
+		-webkit-mask-image: linear-gradient(to bottom, transparent, #000 4rem, #000 calc(100% - 4rem), transparent);
+		mask-image: linear-gradient(to bottom, transparent, #000 4rem, #000 calc(100% - 4rem), transparent);
+	}
+
+	.journey-layout::before {
+		background-color: var(--color-hairline-strong);
+	}
+
+	.journey-layout::after {
+		background: linear-gradient(to bottom, var(--color-primary) calc(var(--journey-progress-all) * 100% - 4rem), transparent calc(var(--journey-progress-all) * 100%));
+		opacity: 0.55;
+	}
+
+	.journey-layout .journey::before,
+	.journey-layout .journey::after {
+		display: none;
+	}
 }
 
 .journey__item {
@@ -2403,6 +2484,11 @@
 
 .about-intro__text .ccs-title {
 	margin-bottom: var(--space-lg);
+}
+
+.about-intro__note {
+	justify-content: flex-end;
+	margin: var(--space-md) 0 0;
 }
 
 /* The careers pages' accordion: centred under its heading at reading width. */
@@ -4890,4 +4976,29 @@ p.costs-more {
 	text-decoration: underline;
 	text-decoration-thickness: 2px;
 	text-underline-offset: 0.2em;
+}
+
+/* Careers pages, in the care side's manner (Nov 2026). The hub's opening:
+   the heading with its drawing and note sits centred against the words. */
+@media (min-width: 900px) {
+	.careers-intro .ccs-split {
+		align-items: center;
+	}
+
+	.careers-intro .ccs-split > .ccs-head {
+		position: static;
+	}
+}
+
+.careers-intro__note {
+	margin: var(--space-lg) 0 0;
+}
+
+.careers-intro .entry-content > p:first-child {
+	color: var(--color-ink);
+}
+
+.pd-academy__note,
+.careers-benefits__note {
+	margin: var(--space-md) 0 var(--space-lg);
 }

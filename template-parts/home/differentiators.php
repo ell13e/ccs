@@ -92,7 +92,6 @@ $items = array(
 				<?php foreach ( $items as $i => $item ) : ?>
 					<details class="diff-item" name="differentiators"<?php echo 0 === $i ? ' open' : ''; ?>>
 						<summary class="diff-item__summary">
-							<span class="diff-item__num" aria-hidden="true"><?php echo esc_html( str_pad( (string) ( (int) $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
 							<span class="diff-item__title"><?php echo esc_html( $item['title'] ); ?></span>
 						</summary>
 						<p class="diff-item__text"><?php echo esc_html( $item['desc'] ); ?></p>

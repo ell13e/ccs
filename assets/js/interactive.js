@@ -116,6 +116,10 @@
 			var line = window.innerHeight * 0.55;
 			var current = items[ 0 ];
 			list.style.setProperty( '--journey-progress', Math.max( 0, Math.min( 1, ( line - box.top ) / box.height ) ).toFixed( 4 ) );
+			// The same measure for the whole block: on narrow screens the line is
+			// drawn on the block, so it starts beside the heading.
+			var all = root.getBoundingClientRect();
+			root.style.setProperty( '--journey-progress-all', Math.max( 0, Math.min( 1, ( line - all.top ) / all.height ) ).toFixed( 4 ) );
 			items.forEach( function ( item ) {
 				var reached = item.getBoundingClientRect().top <= line;
 				item.classList.toggle( 'is-in', reached );

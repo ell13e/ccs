@@ -35,7 +35,6 @@ get_header();
 			<div class="container container--lg">
 				<div class="ccs-media-split">
 					<article id="post-<?php the_ID(); ?>" <?php post_class( 'page-content about-intro__text' ); ?>>
-						<?php echo ccs_doodle( 'heart-hand', 'doodle--above' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle(). ?>
 						<h2 id="about-intro-heading" class="ccs-title">
 							<?php
 							echo ccs_copy_accent( 'about_intro_title' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_copy_accent().
@@ -45,15 +44,19 @@ get_header();
 							<?php the_content(); ?>
 						</div>
 					</article>
-					<?php
-					ccs_section_photo(
-						'site-photos/Untitled-1.webp',
-						array(
-							'alt'   => __( 'Two women smiling over tea and cake, one wearing a hat decorated with ribbons', 'ccs-wp-theme' ),
-							'sizes' => '(min-width: 900px) 520px, 92vw',
-						)
-					);
-					?>
+					<?php // The drawing and its note sit under the photo, so the right side carries some of the weight (client: "too left side heavy", with the drawing, heading, two paragraphs and link all at the left). The note's words are the client's own. ?>
+					<div class="about-intro__side">
+						<?php
+						ccs_section_photo(
+							'site-photos/Untitled-1.webp',
+							array(
+								'alt'   => __( 'Two women smiling over tea and cake, one wearing a hat decorated with ribbons', 'ccs-wp-theme' ),
+								'sizes' => '(min-width: 900px) 520px, 92vw',
+							)
+						);
+						?>
+						<?php echo ccs_doodle_note( 'heart-hand', __( "your preference,\nour priority", 'ccs-wp-theme' ), 'about-intro__note' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle_note(). ?>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -123,7 +126,7 @@ get_header();
 									<span class="journey__dot" aria-hidden="true"></span>
 									<p class="journey__year"><?php echo esc_html( $ccs_journey_item[0] ); ?></p>
 									<h3 class="journey__title"><?php echo esc_html( $ccs_journey_item[1] ); ?></h3>
-									<p class="journey__text"><?php echo esc_html( $ccs_journey_item[2] ); ?></p>
+									<p class="journey__text"><?php echo function_exists( 'ccs_link_mentions' ) ? ccs_link_mentions( esc_html( $ccs_journey_item[2] ), 1 ) : esc_html( $ccs_journey_item[2] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped, then links to known pages added. ?></p>
 									<?php
 									if ( $ccs_journey_photo ) {
 										ccs_section_photo(

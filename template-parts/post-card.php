@@ -63,7 +63,7 @@ $ccs_classes  = $ccs_featured ? 'post-card post-card--featured' : 'post-card';
 		<p class="post-card__excerpt">
 			<?php echo esc_html( wp_trim_words( get_the_excerpt(), $ccs_featured ? 46 : 28 ) ); ?>
 		</p>
-		<span class="post-card__link" aria-hidden="true">
+		<span class="post-card__link btn btn-quiet" aria-hidden="true">
 			<?php esc_html_e( 'Read more', 'ccs-wp-theme' ); ?> <span>&rarr;</span>
 		</span>
 	</div>

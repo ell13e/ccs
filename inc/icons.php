@@ -123,6 +123,30 @@ function ccs_doodle( $name, $class = '' ) {
  * @return string HTML.
  */
 function ccs_hand_note( $text, $class = '' ) {
-	return '<span class="' . esc_attr( trim( 'hand-note ' . $class ) ) . '">' . esc_html( $text )
-		. '<svg class="hand-note__line" viewBox="0 0 100 12" preserveAspectRatio="none" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true" focusable="false"><path vector-effect="non-scaling-stroke" d="M3 7.5C18 3.5 33 9 50 5.5S82 4 97 6.5"/></svg></span>';
+	$line = '<svg class="hand-note__line" viewBox="0 0 100 12" preserveAspectRatio="none" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true" focusable="false"><path vector-effect="non-scaling-stroke" d="M3 7.5C18 3.5 33 9 50 5.5S82 4 97 6.5"/></svg>';
+	$rows = array_values( array_filter( array_map( 'trim', preg_split( '/\R/', (string) $text ) ), 'strlen' ) );
+	// One line: the note with its pen line. Several (a line break in the text): each line is its own note with its own pen line, stacked (client, Nov 2026: "underline each line").
+	if ( count( $rows ) < 2 ) {
+		return '<span class="' . esc_attr( trim( 'hand-note ' . $class ) ) . '">' . esc_html( $rows ? $rows[0] : '' ) . $line . '</span>';
+	}
+	$html = '<span class="' . esc_attr( trim( 'hand-note-stack ' . $class ) ) . '">';
+	foreach ( $rows as $row ) {
+		$html .= '<span class="hand-note">' . esc_html( $row ) . $line . '</span>';
+	}
+	return $html . '</span>';
+}
+
+/**
+ * A drawing with its jotted note: the pair the client settled on (Nov 2026).
+ * A drawing or a note on its own read as "added on" wherever it was put;
+ * together, under the text they belong to, they were liked. The note should
+ * repeat a fact from the text beside it, never add a claim.
+ *
+ * @param string $doodle Drawing name (assets/images/doodles).
+ * @param string $text   A few words.
+ * @param string $class  Extra class for the wrapper.
+ * @return string HTML.
+ */
+function ccs_doodle_note( $doodle, $text, $class = '' ) {
+	return '<p class="' . esc_attr( trim( 'doodle-note ' . $class ) ) . '">' . ccs_doodle( $doodle, 'doodle-note__doodle' ) . ccs_hand_note( $text ) . '</p>';
 }
