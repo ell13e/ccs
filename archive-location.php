@@ -175,7 +175,7 @@ $ccs_areas = get_posts(
 				<div class="ccs-strip areas-hub__strip">
 					<span class="ccs-badge"><?php echo ccs_icon( 'question' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
 					<div class="ccs-strip__text">
-						<h2 id="areas-ask-heading" class="ccs-strip__title"><?php echo esc_html( ccs_copy( 'areas_strip_title' ) ); ?></h2>
+						<h2 id="areas-ask-heading" class="ccs-strip__title"><?php echo ccs_copy_accent( 'areas_strip_title' ); ?></h2>
 						<p class="ccs-strip__lede"><?php echo esc_html( ccs_copy( 'areas_strip_text' ) ); ?></p>
 					</div>
 					<a class="btn btn-quiet ccs-strip__action" href="<?php echo esc_url( 'tel:' . $ccs_phone_tel ); ?>">

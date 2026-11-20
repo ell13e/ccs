@@ -30,7 +30,7 @@ if ( empty( $ccs_tp_sections ) ) {
 $ccs_tp_id = isset( $args['id'] ) ? sanitize_html_class( $args['id'] ) : 'topics';
 ?>
 <header class="ccs-head ccs-head--center">
-	<h2 id="<?php echo esc_attr( $ccs_tp_id ); ?>-topics-heading" class="ccs-title"><?php echo esc_html( $args['title'] ); ?></h2>
+	<h2 id="<?php echo esc_attr( $ccs_tp_id ); ?>-topics-heading" class="ccs-title"><?php echo ccs_accent_text( $args['title'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_accent_text(). ?></h2>
 	<?php if ( ! empty( $args['lede'] ) && '' !== trim( wp_strip_all_tags( $args['lede'] ) ) ) : ?>
 		<div class="ccs-lede"><?php echo wp_kses_post( $args['lede'] ); ?></div>
 	<?php endif; ?>

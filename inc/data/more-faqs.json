@@ -1,0 +1,923 @@
+{
+ "title": "More questions about care at home",
+ "intro": "These answers provide general information. Support should always follow the person’s assessed needs, preferences and individual care plan.",
+ "groups": [
+  {
+   "heading": "Domiciliary care",
+   "items": [
+    {
+     "n": 1,
+     "q": "How long should a home-care visit last?",
+     "a": "Long enough to provide the agreed support without rushing you or compromising your dignity. The right length depends on what you need help with. NICE recommends that visits shorter than 30 minutes are used only in specific circumstances, not as the default."
+    },
+    {
+     "n": 2,
+     "q": "Can care visits fit around my usual routine?",
+     "a": "Your routine should be part of planning your care, particularly where meals, medicines or getting ready for the day are time-sensitive. Ask which visit times can be agreed and how much flexibility there may be."
+    },
+    {
+     "n": 3,
+     "q": "What should happen if a carer is late or misses a visit?",
+     "a": "Your provider should have a clear plan for contacting you and arranging support if a visit is delayed or missed. Ask who to call and how essential needs, such as medicines or help getting out of bed, will be covered."
+    },
+    {
+     "n": 4,
+     "q": "What should I tell a provider before my first visit?",
+     "a": "Explain what you want help with, what you prefer to do yourself and anything that helps you feel comfortable. Include communication preferences, relevant health information, medicines support, access arrangements and the routines you want carers to respect."
+    },
+    {
+     "n": 5,
+     "q": "How can carers enter my home safely?",
+     "a": "Agree access arrangements in advance, including what should happen if you cannot answer the door. Carers should identify themselves, respect your home and keep entry codes confidential. Any key or key-safe arrangements should be recorded and handled securely."
+    }
+   ],
+   "links": [
+    {
+     "label": "NICE guidance on home care",
+     "url": "https://www.nice.org.uk/guidance/ng21/chapter/recommendations"
+    },
+    {
+     "label": "NHS guide to home care",
+     "url": "https://www.nhs.uk/social-care-and-support/care-services-equipment-and-care-homes/homecare/"
+    }
+   ],
+   "service": "domiciliary-care",
+   "id": "domiciliary-care"
+  },
+  {
+   "heading": "Respite care",
+   "items": [
+    {
+     "n": 6,
+     "q": "Can respite care be a regular arrangement?",
+     "a": "Yes. Respite does not have to mean a holiday or a one-off break. Regular support can give family carers time for appointments, interests, work or rest. The arrangement should reflect both the person’s care needs and the break their carer needs."
+    },
+    {
+     "n": 7,
+     "q": "Is it reasonable to ask for respite before I feel overwhelmed?",
+     "a": "Yes. You do not have to wait for a crisis to discuss support. A carer’s assessment can explore how caring affects your life and what would help you continue, including opportunities for a break."
+    },
+    {
+     "n": 8,
+     "q": "How can we make a respite arrangement feel more familiar?",
+     "a": "Share information about the person’s routines, communication, interests and preferences. Ask whether introductions or a shorter initial arrangement are possible. Explain what reassures the person and what may make unfamiliar situations harder for them."
+    },
+    {
+     "n": 9,
+     "q": "Can someone with dementia or complex needs have respite care?",
+     "a": "Potentially, but the arrangement must be able to meet their individual needs safely. Ask about relevant experience, training, equipment and any clinical involvement required. A service being described as respite does not mean it can provide every kind of support."
+    },
+    {
+     "n": 10,
+     "q": "What if a family carer suddenly becomes ill?",
+     "a": "A contingency plan can identify who to contact and what support the person would need if their usual carer became unavailable. Discuss this before an emergency where possible. Urgent availability varies, so do not assume an existing provider can automatically supply immediate cover."
+    }
+   ],
+   "links": [
+    {
+     "label": "NHS guidance on respite care",
+     "url": "https://www.nhs.uk/social-care-and-support/support-and-benefits-for-carers/carer-breaks-and-respite-care/"
+    },
+    {
+     "label": "NHS guide to carer’s assessments",
+     "url": "https://www.nhs.uk/social-care-and-support/support-and-benefits-for-carers/carer-assessments/"
+    }
+   ],
+   "service": "respite-care",
+   "id": "respite-care"
+  },
+  {
+   "heading": "Companionship care",
+   "items": [
+    {
+     "n": 11,
+     "q": "How is companionship different from personal care?",
+     "a": "Companionship focuses on social contact and support with activities that matter to you. Personal care includes tasks such as washing, dressing and using the toilet. An arrangement may include both, but responsibilities should be clearly agreed."
+    },
+    {
+     "n": 12,
+     "q": "Can companionship include going out?",
+     "a": "It may include shopping, visiting familiar places or taking part in community activities. Discuss accessibility, mobility, transport, any additional costs and the support needed while out. These arrangements should be agreed rather than assumed."
+    },
+    {
+     "n": 13,
+     "q": "What if I don’t want organised activities?",
+     "a": "Companionship should reflect your interests, not a fixed programme. A conversation, looking through photographs, preparing lunch together or spending time in the garden may be more meaningful than an outing. Your preferences should guide the support."
+    },
+    {
+     "n": 14,
+     "q": "Can companionship help someone feel less isolated?",
+     "a": "Regular social contact and support to maintain relationships can be valuable. The aim should be connection that feels meaningful to the person, rather than simply filling time. Companionship should complement, not unnecessarily replace, existing friendships and community links."
+    },
+    {
+     "n": 15,
+     "q": "Can companionship be useful if I already live with family?",
+     "a": "Living with family does not remove the need for your own interests, relationships and choices. Discuss what you would like more opportunity to do and whether companionship could help you take part in activities that matter to you."
+    }
+   ],
+   "links": [
+    {
+     "label": "NICE guidance on person-centred home care and social participation",
+     "url": "https://www.nice.org.uk/guidance/ng21/chapter/recommendations"
+    },
+    {
+     "label": "Age UK: finding help at home",
+     "url": "https://www.ageuk.org.uk/siteassets/documents/factsheets/large-print-factsheets/fs06-lp-finding-help-at-home.pdf"
+    }
+   ],
+   "service": "companionship-care",
+   "id": "companionship-care"
+  },
+  {
+   "heading": "Overnight care",
+   "items": [
+    {
+     "n": 16,
+     "q": "What is the difference between a sleeping night and a waking night?",
+     "a": "During a sleeping night, a carer stays overnight but is expected to sleep, with occasional assistance if agreed. During a waking night, the carer remains awake throughout the agreed hours. Ask how the provider defines each arrangement."
+    },
+    {
+     "n": 17,
+     "q": "How do we decide which overnight arrangement is suitable?",
+     "a": "Consider how often help is needed, how long it takes and how quickly someone must respond. Regular or unpredictable needs may require waking-night support. An arrangement should be reviewed if the person’s night-time needs increase."
+    },
+    {
+     "n": 18,
+     "q": "Does an overnight carer need a separate bedroom?",
+     "a": "A sleeping-night or live-in arrangement needs suitable sleeping facilities and appropriate rest arrangements. Waking-night requirements are different. Ask the provider to assess your home and explain what space and facilities are needed before agreeing care."
+    },
+    {
+     "n": 19,
+     "q": "Can an alarm replace an overnight carer?",
+     "a": "An alarm may help someone request assistance, but it does not provide hands-on support. Consider whether the person can use it, who responds and how quickly help can arrive. Technology should not replace care that an assessment shows is needed."
+    },
+    {
+     "n": 20,
+     "q": "What if someone starts needing much more help at night?",
+     "a": "Ask for a review rather than expecting the existing arrangement to stretch indefinitely. Changes may require a different staffing pattern or clinical assessment. New pain, breathing difficulties or other symptoms should be discussed with the appropriate healthcare professional."
+    }
+   ],
+   "links": [
+    {
+     "label": "Kent County Council’s specification covering sleep-night and waking-night support",
+     "url": "https://www.kent.gov.uk/__data/assets/pdf_file/0018/120843/CSiH-Supported-Living-Specification-and-Terms-and-Conditions-for-WEBSITE-002.pdf"
+    },
+    {
+     "label": "Scope guidance on home technology",
+     "url": "https://www.scope.org.uk/advice-and-support/smart-home-technology-for-disabled-people"
+    }
+   ],
+   "service": "overnight-care",
+   "id": "overnight-care"
+  },
+  {
+   "heading": "Continuous care",
+   "items": [
+    {
+     "n": 21,
+     "q": "What does continuous care mean?",
+     "a": "Providers may use the term differently. Ask whether it means live-in support, care delivered across several shifts or another arrangement. The written plan should explain exactly when someone is present, what they provide and how breaks and absences are covered."
+    },
+    {
+     "n": 22,
+     "q": "Is live-in care the same as having someone awake 24 hours a day?",
+     "a": "No. A live-in carer needs rest and breaks. If someone needs an awake worker available throughout the day and night, a planned rota or additional staff may be necessary. Confirm the actual coverage rather than relying on the service name."
+    },
+    {
+     "n": 23,
+     "q": "Can continuous care involve two carers at the same time?",
+     "a": "Yes, if an assessment identifies tasks requiring two people. This might relate to particular moving-and-handling needs or other risks. The staffing level should follow the individual assessment and equipment instructions, not simply the number of hours purchased."
+    },
+    {
+     "n": 24,
+     "q": "How should information be shared between carers working different shifts?",
+     "a": "A clear handover should cover relevant changes, support provided, medicines records and outstanding concerns. Written records help maintain consistency. Information should be shared securely and only with people who need it for the person’s care."
+    },
+    {
+     "n": 25,
+     "q": "Can continuous support help someone remain involved in everyday decisions?",
+     "a": "It should. Having extensive support does not mean losing your say over meals, clothing, routines, relationships or activities. Care planning should distinguish the assistance you need from the choices you can and want to make yourself."
+    }
+   ],
+   "links": [
+    {
+     "label": "Age UK: finding help at home",
+     "url": "https://www.ageuk.org.uk/siteassets/documents/factsheets/large-print-factsheets/fs06-lp-finding-help-at-home.pdf"
+    },
+    {
+     "label": "HSE guidance on moving-and-handling assessments",
+     "url": "https://www.hse.gov.uk/healthServices/moving-handling/manage-the-risk.htm"
+    },
+    {
+     "label": "NICE home-care recommendations",
+     "url": "https://www.nice.org.uk/guidance/ng21/chapter/recommendations"
+    }
+   ],
+   "service": "continuous-care",
+   "id": "continuous-care"
+  },
+  {
+   "heading": "Palliative care",
+   "items": [
+    {
+     "n": 26,
+     "q": "Does palliative care mean someone is in their last days?",
+     "a": "No. Palliative care can begin much earlier and may continue for a considerable time. It focuses on comfort, symptoms, emotional wellbeing and practical support. End-of-life care is part of palliative care, but the terms do not mean exactly the same thing."
+    },
+    {
+     "n": 27,
+     "q": "Can palliative care continue alongside treatment?",
+     "a": "Yes. Palliative care can be provided alongside treatments intended to control an illness. Receiving it does not automatically mean stopping treatment or seeing specialists. The clinical team can explain how the different parts of someone’s care work together."
+    },
+    {
+     "n": 28,
+     "q": "Who may be involved in palliative care at home?",
+     "a": "Support may involve the GP, community nurses, specialist palliative-care professionals and care workers. Each has a different role. What is available depends on the person’s needs and local services, so ask who coordinates the plan and who to contact."
+    },
+    {
+     "n": 29,
+     "q": "What should we do if symptoms become difficult to manage at home?",
+     "a": "Use the contact arrangements agreed with the GP or palliative-care team, including overnight and weekend numbers. Do not change medicines without clinical advice. Seek urgent help for severe symptoms, following any individual emergency plan."
+    },
+    {
+     "n": 30,
+     "q": "Can someone record where and how they would like to be cared for?",
+     "a": "Yes. Discussing and recording wishes can help those involved understand what matters to the person. Preferences can be reviewed as circumstances change. Ask the care team about advance care planning and any separate documents needed for particular decisions."
+    }
+   ],
+   "links": [
+    {
+     "label": "Marie Curie: understanding palliative care",
+     "url": "https://www.mariecurie.org.uk/information/getting-care/palliative-care"
+    },
+    {
+     "label": "Marie Curie: professionals involved in palliative care",
+     "url": "https://www.mariecurie.org.uk/information/getting-care/palliative-care-team"
+    }
+   ],
+   "service": "palliative-care",
+   "id": "palliative-care"
+  },
+  {
+   "heading": "Personal care",
+   "items": [
+    {
+     "n": 31,
+     "q": "What if I feel embarrassed about accepting help with washing or dressing?",
+     "a": "You can explain what feels uncomfortable and how you would prefer support to be given. Care should protect your privacy, involve your consent and allow you to do what you can yourself. Preferences should be recorded in your plan."
+    },
+    {
+     "n": 32,
+     "q": "Can I express a preference about who provides intimate care?",
+     "a": "Yes. Tell the provider about preferences linked to gender, culture, religion, language or previous experiences. Ask what they can accommodate and how this will be recorded. A preference should be discussed honestly rather than treated as a guaranteed staffing arrangement."
+    },
+    {
+     "n": 33,
+     "q": "Can personal care include continence support?",
+     "a": "It can include agreed help with using the toilet, changing continence products and maintaining personal hygiene. New or worsening continence problems also deserve clinical advice. Support should be discreet, respectful and based on the person’s needs."
+    },
+    {
+     "n": 34,
+     "q": "What if I need a hoist or other equipment?",
+     "a": "A suitable moving-and-handling assessment should identify the equipment, techniques and number of workers required. Carers should follow the individual plan and be trained to use the equipment. Do not improvise a transfer if the agreed arrangements are unavailable."
+    },
+    {
+     "n": 35,
+     "q": "Can I keep doing parts of my personal care myself?",
+     "a": "Yes. The plan should recognise your abilities as well as where you need help. Support may involve setting things up, giving time or assisting with only part of a task, rather than automatically taking over."
+    }
+   ],
+   "links": [
+    {
+     "label": "NICE guidance on dignity and person-centred care",
+     "url": "https://www.nice.org.uk/guidance/ng21/chapter/recommendations"
+    },
+    {
+     "label": "NHS advice on moving and handling",
+     "url": "https://www.nhs.uk/social-care-and-support/practical-tips-if-you-care-for-someone/how-to-move-lift-and-handle-someone-else/"
+    },
+    {
+     "label": "HSE guidance on handling equipment",
+     "url": "https://www.hse.gov.uk/healthservices/moving-handling/moving-handling-equipment.htm"
+    }
+   ],
+   "service": "personal-care",
+   "id": "personal-care"
+  },
+  {
+   "heading": "Support in later life: elderly care",
+   "items": [
+    {
+     "n": 36,
+     "q": "Can home care help reduce falls risks?",
+     "a": "Carers can follow an agreed plan, support assessed mobility needs and report changes or hazards. A person who is falling may also need a clinical falls assessment. Home care cannot guarantee that falls will not happen."
+    },
+    {
+     "n": 37,
+     "q": "What if an older person is eating or drinking less?",
+     "a": "Notice and report changes rather than assuming they are simply part of ageing. Practical help with shopping, meals and drinks may be useful, but reduced intake, weight loss or swallowing difficulties may need assessment by a healthcare professional."
+    },
+    {
+     "n": 38,
+     "q": "Is sudden confusion a normal part of getting older?",
+     "a": "No. Sudden confusion can have an urgent medical cause. NHS advice is to go to A&E or call 999 if someone suddenly becomes confused. Do not assume it is dementia or wait for a routine care review."
+    },
+    {
+     "n": 39,
+     "q": "Should care focus on safety or independence?",
+     "a": "Both matter. Planning should consider risks while respecting the person’s wishes, abilities and quality of life. Avoiding every possible risk can also restrict meaningful activities, so decisions should be individual rather than based on age alone."
+    },
+    {
+     "n": 40,
+     "q": "How can care adapt to hearing or sight loss?",
+     "a": "Record what helps the person communicate and move around comfortably. This may include appropriate lighting, accessible information, reducing background noise and supporting use of existing aids. New or worsening sensory difficulties should be raised with the relevant healthcare professional."
+    }
+   ],
+   "links": [
+    {
+     "label": "NICE guidance on support for older people at home",
+     "url": "https://www.nice.org.uk/guidance/ng21/chapter/recommendations"
+    },
+    {
+     "label": "NHS advice on sudden confusion",
+     "url": "https://www.nhs.uk/symptoms/confusion/"
+    }
+   ],
+   "service": "elderly-care",
+   "id": "elderly-care"
+  },
+  {
+   "heading": "Long-term care",
+   "items": [
+    {
+     "n": 41,
+     "q": "How often should a long-term care plan be reviewed?",
+     "a": "Regularly, and whenever needs or circumstances change. Do not wait for a scheduled review if the current plan is no longer working. NICE’s older-people home-care guidance recommends an initial review within six weeks, followed by regular reviews at least annually."
+    },
+    {
+     "n": 42,
+     "q": "Can care increase or reduce over time?",
+     "a": "It can be reassessed as needs change. Someone recovering from illness may need less assistance, while another person may need more. Any change should consider safety, preferences, staffing and funding rather than happen informally without an updated agreement."
+    },
+    {
+     "n": 43,
+     "q": "What records should be kept about ongoing care?",
+     "a": "Records should show the agreed plan, care delivered and relevant changes or concerns. Medicines support needs its own appropriate documentation. Ask how you can access your information and how accuracy, confidentiality and updates are managed."
+    },
+    {
+     "n": 44,
+     "q": "What is the difference between reablement and long-term home care?",
+     "a": "Reablement is short-term support aimed at helping someone regain skills and independence, often after illness or hospital treatment. Long-term care provides ongoing assistance. An assessment should establish which approach, or combination, suits the person’s needs."
+    },
+    {
+     "n": 45,
+     "q": "Can technology be part of a long-term care plan?",
+     "a": "Yes. Alarms, reminders, sensors or accessible smart-home devices may support particular goals. Suitability depends on the person, their consent, accessibility and who responds when help is needed. Technology should be reviewed alongside the rest of the care plan."
+    }
+   ],
+   "links": [
+    {
+     "label": "NICE home-care recommendations",
+     "url": "https://www.nice.org.uk/guidance/ng21/chapter/recommendations"
+    },
+    {
+     "label": "NHS guidance on intermediate care and reablement",
+     "url": "https://www.nhs.uk/social-care-and-support/care-after-a-hospital-stay/care-to-support-recovery-after-leaving-hospital-or-after-a-fall-injury-or-illness/"
+    },
+    {
+     "label": "Scope: smart-home technology",
+     "url": "https://www.scope.org.uk/advice-and-support/smart-home-technology-for-disabled-people"
+    }
+   ],
+   "service": "long-term-care",
+   "id": "long-term-care"
+  },
+  {
+   "heading": "Support for younger adults",
+   "items": [
+    {
+     "n": 46,
+     "q": "Can support be planned around work or study?",
+     "a": "Your goals for work, education and training should be part of the conversation. Discuss the practical assistance and timing you need. Support with everyday living and support specifically for doing a job may involve different arrangements or funding routes."
+    },
+    {
+     "n": 47,
+     "q": "When should planning for adult services begin?",
+     "a": "It should start well before children’s services end. NHS guidance says planning should begin by Year 9 at the latest. The process should involve the young person and consider health, social care, education, housing and their goals for adult life."
+    },
+    {
+     "n": 48,
+     "q": "Can younger adults have privacy from family members involved in their care?",
+     "a": "An adult’s privacy and confidentiality should be respected. Discuss what information can be shared and with whom, subject to legal duties and any relevant decision-making arrangements. Family involvement should support the person, not automatically replace their own voice."
+    },
+    {
+     "n": 49,
+     "q": "Can support include building a social life outside the family home?",
+     "a": "A needs assessment can consider relationships, community activities, education, work and volunteering, as well as personal care. Explain the outcomes that matter to you so planning is not limited to washing, dressing and meals."
+    },
+    {
+     "n": 50,
+     "q": "What if my needs vary from one day to another?",
+     "a": "Describe both easier and harder days, including how often needs change and what assistance is required. A plan based only on a good day may miss important support. Agree how changes will be communicated and reviewed."
+    }
+   ],
+   "links": [
+    {
+     "label": "Scope: social care assessments",
+     "url": "https://www.scope.org.uk/advice-and-support/getting-a-social-care-assessment"
+    },
+    {
+     "label": "NHS guidance on moving to adult social care",
+     "url": "https://www.nhs.uk/social-care-and-support/caring-for-children-and-young-people/moving-from-childrens-social-care-to-adults-social-care/"
+    },
+    {
+     "label": "NHS: work and disability",
+     "url": "https://www.nhs.uk/social-care-and-support/money-work-and-benefits/work-and-disability/"
+    }
+   ],
+   "service": "younger-adults-care",
+   "id": "younger-adults-care"
+  },
+  {
+   "heading": "Condition-led care",
+   "items": [
+    {
+     "n": 51,
+     "q": "Does everyone with the same condition need the same care?",
+     "a": "No. A diagnosis does not explain someone’s abilities, routines, preferences or the way symptoms affect daily life. Planning should consider the individual, including other health conditions and what they want support to help them do."
+    },
+    {
+     "n": 52,
+     "q": "How should care be planned when someone has several conditions?",
+     "a": "The plan needs to consider how needs interact, rather than treating each diagnosis separately. Relevant professionals should clarify priorities, responsibilities, medicines support and what to do if symptoms change. Conflicting advice should be checked with the clinical team."
+    },
+    {
+     "n": 53,
+     "q": "What information helps carers understand a condition?",
+     "a": "Useful information includes how the condition affects this person, their usual presentation, communication needs, prescribed support and warning signs requiring help. Clinical instructions should come from the appropriate healthcare professional and be kept up to date."
+    },
+    {
+     "n": 54,
+     "q": "Should the care plan change after a treatment or medicine change?",
+     "a": "It may need to. Changes can affect routines, monitoring, side effects or the help someone requires. Tell the provider and ensure current instructions are confirmed by the relevant professional, rather than relying on an old plan."
+    },
+    {
+     "n": 55,
+     "q": "Can carers help put professional advice into an everyday routine?",
+     "a": "They may support agreed practical steps within their role and competence. This could include reminders, recording observations or supporting a therapist’s agreed programme. Carers should not independently alter treatment or replace specialist clinical assessment."
+    }
+   ],
+   "links": [
+    {
+     "label": "NICE guidance on personalised home-care planning",
+     "url": "https://www.nice.org.uk/guidance/ng21/chapter/recommendations"
+    },
+    {
+     "label": "NICE guidance on medicines support in the community",
+     "url": "https://www.nice.org.uk/guidance/ng67/resources/managing-medicines-for-adults-receiving-social-care-in-the-community-pdf-1837578800581"
+    }
+   ],
+   "service": "",
+   "id": "condition-led-care"
+  },
+  {
+   "heading": "Complex care",
+   "items": [
+    {
+     "n": 56,
+     "q": "What makes a care arrangement complex?",
+     "a": "The term often describes support involving several interacting needs, specialist equipment or particular healthcare tasks. It is not a single standard package. Ask a provider to explain exactly which needs it can meet and what clinical involvement is required."
+    },
+    {
+     "n": 57,
+     "q": "Can a care worker support someone with a feeding tube?",
+     "a": "Some defined tasks may be delegated by an appropriate healthcare professional following individual assessment. The worker needs task-specific training, assessed competence and clear instructions. Having completed general training does not mean they can undertake every feeding-tube task."
+    },
+    {
+     "n": 58,
+     "q": "Can support at home include tracheostomy care?",
+     "a": "Some people receive defined tracheostomy support at home, but arrangements require specialist assessment and oversight. Tasks, staff competence, equipment and emergency procedures must be clearly established. Not every task is suitable for delegation or every provider able to deliver it."
+    },
+    {
+     "n": 59,
+     "q": "What should an emergency plan for complex care include?",
+     "a": "It should identify relevant warning signs, agreed actions, emergency contacts, equipment arrangements and each person’s responsibilities. Instructions must come from the appropriate clinical team and be accessible to those delivering support, including replacement staff."
+    },
+    {
+     "n": 60,
+     "q": "How should competence be checked for specialist tasks?",
+     "a": "Training should be followed by an assessment showing that the worker can perform the specific task safely for that person. Review, supervision and escalation arrangements also matter. A course certificate alone does not establish competence for every situation."
+    }
+   ],
+   "links": [
+    {
+     "label": "NHS England guidance on delegating healthcare tasks",
+     "url": "https://www.england.nhs.uk/long-read/personal-health-budgets-delegation-of-healthcare-tasks-to-personal-assistants-march-2023/"
+    },
+    {
+     "label": "Skills for Care’s delegated healthcare activities guidance",
+     "url": "https://www.skillsforcare.org.uk/resources/documents/Developing-your-workforce/Care-topics/Delegated-healthcare-interventions/Delegated-healthcare-activities-Guiding-principles.pdf"
+    }
+   ],
+   "service": "complex-care",
+   "id": "complex-care"
+  },
+  {
+   "heading": "Disability care",
+   "items": [
+    {
+     "n": 61,
+     "q": "Should disability support focus only on physical assistance?",
+     "a": "No. Planning should consider the person’s goals and barriers to everyday life. Communication, relationships, community access, education and work may matter as much as physical tasks. The right support depends on the individual, not assumptions about disability."
+    },
+    {
+     "n": 62,
+     "q": "How can someone who does not use speech direct their care?",
+     "a": "They may communicate through gestures, writing, signs, communication aids or other established methods. Staff should learn and use the person’s preferred approach, allow enough time and seek specialist communication advice where needed."
+    },
+    {
+     "n": 63,
+     "q": "Does needing extensive assistance mean someone cannot live independently?",
+     "a": "Not necessarily. Independence can include choosing how your life is organised and directing the support you receive, even when substantial hands-on assistance is needed. Planning should explore the person’s goals, environment, equipment and support options."
+    },
+    {
+     "n": 64,
+     "q": "How can support account for fatigue?",
+     "a": "Identify which tasks use the most energy and when assistance is most helpful. Pacing, planned breaks and practical support may make activities more manageable. New or worsening fatigue should also be discussed with a healthcare professional."
+    },
+    {
+     "n": 65,
+     "q": "What if the way a service communicates makes it difficult to use?",
+     "a": "Explain the format, communication method or adjustments you need. Information and care planning should be accessible to the person receiving support. Record agreed arrangements so they do not have to explain their communication needs at every visit."
+    }
+   ],
+   "links": [
+    {
+     "label": "Scope: getting a social care assessment",
+     "url": "https://www.scope.org.uk/advice-and-support/getting-a-social-care-assessment"
+    },
+    {
+     "label": "NICE guidance on accessible transition planning",
+     "url": "https://www.nice.org.uk/guidance/ng43/chapter/recommendations"
+    },
+    {
+     "label": "Scope guidance on fatigue",
+     "url": "https://www.scope.org.uk/advice-and-support/cerebral-palsy-fatigue"
+    }
+   ],
+   "service": "disability-care",
+   "id": "disability-care"
+  },
+  {
+   "heading": "Dementia care",
+   "items": [
+    {
+     "n": 66,
+     "q": "How should carers respond to repeated questions?",
+     "a": "Respond calmly, allow time and consider whether the person needs reassurance rather than more information. Short, clear explanations and a familiar approach may help. Arguing or repeatedly testing someone’s memory can make the interaction more difficult."
+    },
+    {
+     "n": 67,
+     "q": "What can distress or agitation tell us?",
+     "a": "It may reflect pain, discomfort, fear, tiredness, an unmet need or an overwhelming environment. Try to understand what the person is communicating rather than labelling the behaviour as difficult. New or significant changes may need medical assessment."
+    },
+    {
+     "n": 68,
+     "q": "What if eating and drinking become harder?",
+     "a": "Look for practical difficulties and seek professional advice about reduced intake, weight loss or swallowing concerns. A speech and language therapist may need to assess swallowing. Do not independently change food textures or add thickener without appropriate advice."
+    },
+    {
+     "n": 69,
+     "q": "Why might a person with dementia walk about repeatedly?",
+     "a": "They may be following a familiar habit, looking for something, feeling uncomfortable or needing movement. Try to understand the reason and support safe activity. Restrictions should not be the automatic response to walking."
+    },
+    {
+     "n": 70,
+     "q": "Can changes around the home make daily life easier?",
+     "a": "Appropriate lighting, clear routes and familiar items may help. Signs or pictures can sometimes make important places easier to identify. Adaptations should suit the person and be reviewed, rather than changing everything at once without considering how they respond."
+    }
+   ],
+   "links": [
+    {
+     "label": "NHS guidance on dementia communication",
+     "url": "https://www.nhs.uk/conditions/dementia/living-with-dementia/communication/"
+    },
+    {
+     "label": "Dementia UK: coping with distress",
+     "url": "https://www.dementiauk.org/information-and-support/health-advice/coping-with-distress/"
+    },
+    {
+     "label": "Dementia UK: eating and drinking",
+     "url": "https://www.dementiauk.org/information-and-support/health-advice/eating-and-drinking/"
+    },
+    {
+     "label": "Alzheimer’s Society: walking about",
+     "url": "https://www.alzheimers.org.uk/about-dementia/stages-and-symptoms/dementia-symptoms/dementia-walking-about"
+    }
+   ],
+   "service": "dementia-care",
+   "id": "dementia-care"
+  },
+  {
+   "heading": "Stroke care",
+   "items": [
+    {
+     "n": 71,
+     "q": "What should be arranged before someone returns home after a stroke?",
+     "a": "The discharge plan should address everyday support, equipment, medicines, rehabilitation and follow-up contacts. Ask what needs to be in place from the first day home and which team to contact if an arrangement is missing or no longer suitable."
+    },
+    {
+     "n": 72,
+     "q": "How long does stroke recovery take?",
+     "a": "There is no single timetable. Some people recover quickly, while others continue recovering over months or years and may need lasting support. Care should reflect progress and current needs rather than assume recovery stops at a fixed point."
+    },
+    {
+     "n": 73,
+     "q": "How can support account for post-stroke fatigue?",
+     "a": "Plan tasks around the person’s energy, allow breaks and avoid interpreting fatigue as a lack of effort. Rehabilitation and daily activities may need pacing. Severe or worsening fatigue should be discussed with the stroke team or GP."
+    },
+    {
+     "n": 74,
+     "q": "How can carers support someone with communication difficulties after a stroke?",
+     "a": "Allow time, reduce distractions and follow advice from the speech and language therapist. Gestures, pictures or writing may help. Speak directly to the person and do not assume difficulty speaking means difficulty understanding or making decisions."
+    },
+    {
+     "n": 75,
+     "q": "What if someone has swallowing difficulties after a stroke?",
+     "a": "Support must follow their assessed swallowing plan, including any prescribed food textures, drinks and positioning advice. Staff need to understand the instructions. New difficulties or concerns should be raised with the stroke team or GP rather than managed by guesswork."
+    }
+   ],
+   "links": [
+    {
+     "label": "NHS guidance on stroke recovery",
+     "url": "https://www.nhs.uk/conditions/stroke/recovery/"
+    },
+    {
+     "label": "NICE stroke rehabilitation recommendations",
+     "url": "https://www.nice.org.uk/guidance/ng236/chapter/Recommendations"
+    }
+   ],
+   "service": "stroke-care",
+   "id": "stroke-care"
+  },
+  {
+   "heading": "Parkinson’s care",
+   "items": [
+    {
+     "n": 76,
+     "q": "Why do Parkinson’s medicine timings matter so much?",
+     "a": "Parkinson’s medicines can be time-critical. Delays may affect movement, swallowing and other symptoms. Support should follow the person’s exact prescribed schedule, with clear recording and a plan for seeking advice about missed or delayed doses."
+    },
+    {
+     "n": 77,
+     "q": "What is freezing in Parkinson’s?",
+     "a": "Freezing is when someone temporarily cannot start or continue a movement, often described as their feet feeling stuck. It can increase falls risk. Allow time and follow strategies recommended by their physiotherapist or Parkinson’s team rather than rushing them."
+    },
+    {
+     "n": 78,
+     "q": "Can Parkinson’s support needs change during the day?",
+     "a": "Yes. Symptoms and movement may fluctuate, including in relation to medicines. Record relevant patterns and plan support around the individual. Changes should be discussed with their specialist team; carers should not alter medicine doses themselves."
+    },
+    {
+     "n": 79,
+     "q": "What if swallowing tablets becomes difficult?",
+     "a": "Contact the pharmacist, prescriber or Parkinson’s team promptly. Do not crush tablets, open capsules or change formulations without checking the specific medicine. Some preparations must not be altered, and missing Parkinson’s medicines can be serious."
+    },
+    {
+     "n": 80,
+     "q": "What should we do about new hallucinations?",
+     "a": "Tell the Parkinson’s specialist or nurse, who can consider medicines and other possible causes. Do not stop treatment independently. If the person suddenly becomes confused, seek emergency assessment in line with NHS advice rather than assuming Parkinson’s is the cause."
+    }
+   ],
+   "links": [
+    {
+     "label": "Parkinson’s UK: freezing",
+     "url": "https://www.parkinsons.org.uk/information/symptoms/motor/freezing"
+    },
+    {
+     "label": "NHS Specialist Pharmacy Service: Parkinson’s medicines and swallowing",
+     "url": "https://sps.nhs.uk/articles/parkinsons-disease-medicines-in-swallowing-difficulties/"
+    },
+    {
+     "label": "Parkinson’s UK: hallucinations and delusions",
+     "url": "https://www.parkinsons.org.uk/information/drugs/side-effects/hallucinations-delusions"
+    },
+    {
+     "label": "NHS advice on sudden confusion",
+     "url": "https://www.nhs.uk/symptoms/confusion/"
+    }
+   ],
+   "service": "parkinsons-care",
+   "id": "parkinsons-care"
+  },
+  {
+   "heading": "Cancer care",
+   "items": [
+    {
+     "n": 81,
+     "q": "Can practical home support continue during cancer treatment?",
+     "a": "It may help with washing, dressing, meals and everyday routines while the clinical team manages treatment. Discuss expected side effects, relevant precautions and who to contact about changes. Practical care should complement, not replace, oncology advice."
+    },
+    {
+     "n": 82,
+     "q": "How can carers help with cancer-related fatigue?",
+     "a": "Support with demanding tasks can leave more energy for the activities the person values. Pace the day and allow rest without assuming complete inactivity is always best. New, severe or worsening fatigue should be reported to the cancer team."
+    },
+    {
+     "n": 83,
+     "q": "What if treatment affects appetite or makes eating difficult?",
+     "a": "Tell the cancer team, especially if intake is falling or there is weight loss. Practical help can follow individual dietary advice and food preferences. Do not assume supplements, restrictive diets or a particular eating plan are suitable for everyone."
+    },
+    {
+     "n": 84,
+     "q": "What if someone receiving chemotherapy develops signs of infection?",
+     "a": "Contact their cancer team immediately using the emergency number provided, following their temperature and symptom instructions. Feeling suddenly unwell can be important even with a normal temperature. Do not wait for the next care visit; call 999 for a life-threatening emergency."
+    }
+   ],
+   "links": [
+    {
+     "label": "Macmillan: practical support for carers",
+     "url": "https://www.macmillan.org.uk/cancer-information-and-support/supporting-someone/practical-support-for-carers/getting-support-as-a-carer"
+    },
+    {
+     "label": "Cancer Research UK: everyday life during chemotherapy",
+     "url": "https://www.cancerresearchuk.org/about-cancer/treatment/chemotherapy/living-with/everyday-life"
+    },
+    {
+     "label": "Macmillan: infection during cancer treatment",
+     "url": "https://www.macmillan.org.uk/cancer-information-and-support/impacts-of-cancer/infection"
+    }
+   ],
+   "service": "cancer-care",
+   "id": "cancer-care"
+  },
+  {
+   "heading": "Nursing care",
+   "items": [
+    {
+     "n": 85,
+     "q": "How is nursing care different from support from a care worker?",
+     "a": "Registered nurses assess and deliver nursing care within their professional responsibilities. Care workers provide agreed support within their role and competence. Some defined healthcare tasks may be delegated, but that does not make the worker a registered nurse."
+    },
+    {
+     "n": 86,
+     "q": "How do I ask about community nursing at home?",
+     "a": "Contact the GP surgery, hospital team or local community nursing service. Referral routes and eligibility vary. Home visits are commonly intended for people whose needs make clinic attendance unsuitable, so nursing at home is not automatically available on request."
+    },
+    {
+     "n": 87,
+     "q": "Can a home-care worker change a wound dressing?",
+     "a": "Do not assume this is included in ordinary personal care. Wounds need appropriate clinical assessment, and any task must be allocated safely. A worker should only undertake an agreed activity with the necessary training, competence and professional oversight."
+    },
+    {
+     "n": 88,
+     "q": "How should families and paid carers share medicines responsibilities?",
+     "a": "Agree who does what and record it clearly to reduce the risk of missed or duplicated doses. Carers should document the support they provide and follow instructions for concerns. No one should change a prescription without appropriate clinical advice."
+    }
+   ],
+   "links": [
+    {
+     "label": "NHS district nursing information",
+     "url": "https://www.swbh.nhs.uk/services/district-nursing/"
+    },
+    {
+     "label": "NHS England guidance on delegated healthcare tasks",
+     "url": "https://www.england.nhs.uk/long-read/personal-health-budgets-delegation-of-healthcare-tasks-to-personal-assistants-march-2023/"
+    },
+    {
+     "label": "NICE guidance on medicines support",
+     "url": "https://www.nice.org.uk/guidance/ng67/resources/managing-medicines-for-adults-receiving-social-care-in-the-community-pdf-1837578800581"
+    }
+   ],
+   "service": "nursing-care",
+   "id": "nursing-care"
+  },
+  {
+   "heading": "Cerebral palsy care",
+   "items": [
+    {
+     "n": 89,
+     "q": "Can an adult with cerebral palsy develop different support needs over time?",
+     "a": "Yes. Pain, fatigue, mobility, communication and life circumstances can change. New difficulties should be assessed rather than automatically accepted as unavoidable. NICE recommends specialist review when an adult’s ability to manage usual activities deteriorates."
+    },
+    {
+     "n": 90,
+     "q": "How can pain be recognised if someone finds it difficult to describe?",
+     "a": "Use the person’s established communication methods and any agreed pain-assessment tools. Changes in expression, movement or behaviour may be relevant but should not be interpreted in isolation. Record concerns and involve the appropriate clinician."
+    },
+    {
+     "n": 91,
+     "q": "Can communication aids be part of cerebral palsy support?",
+     "a": "Yes. A speech and language therapist can assess whether communication aids or other approaches would help. Staff and other regular communication partners may need training. Difficulty speaking should not lead to assumptions about someone’s understanding or preferences."
+    },
+    {
+     "n": 92,
+     "q": "What support can help an adult with cerebral palsy live more independently?",
+     "a": "Depending on their goals, options may include occupational therapy, equipment, home adaptations, communication technology and personal assistance. Planning should include participation in work, relationships and leisure, not only physical care tasks."
+    }
+   ],
+   "links": [
+    {
+     "label": "NICE recommendations on cerebral palsy in adults",
+     "url": "https://www.nice.org.uk/guidance/ng119/chapter/recommendations"
+    },
+    {
+     "label": "Scope guidance on cerebral palsy and fatigue",
+     "url": "https://www.scope.org.uk/advice-and-support/cerebral-palsy-fatigue"
+    }
+   ],
+   "service": "cerebral-palsy-care",
+   "id": "cerebral-palsy-care"
+  },
+  {
+   "heading": "Spinal injury care",
+   "items": [
+    {
+     "n": 93,
+     "q": "Why is skin care important after a spinal cord injury?",
+     "a": "Changes in sensation and mobility can make pressure damage harder to notice or avoid. Support should follow an individual skin and pressure-care plan, including appropriate equipment and repositioning assistance. Report new skin damage promptly to the relevant healthcare professional."
+    },
+    {
+     "n": 94,
+     "q": "Why must bladder and bowel routines be followed carefully?",
+     "a": "These routines can be essential to health and comfort after spinal cord injury. Delayed or unsuitable care can cause serious complications. Follow the spinal team’s individual plan, with appropriately trained staff and clear arrangements for clinical advice."
+    },
+    {
+     "n": 95,
+     "q": "What is autonomic dysreflexia?",
+     "a": "It is a potentially life-threatening rise in blood pressure that can affect people with certain spinal cord injuries, particularly at or above T6. Warning signs may include a severe headache and sweating. Follow the emergency plan and seek immediate help; call 999 if symptoms persist or the cause is unclear."
+    },
+    {
+     "n": 96,
+     "q": "What needs checking before someone with a spinal injury returns home?",
+     "a": "Confirm the individual care plan, trained staffing, equipment, moving-and-handling arrangements, bladder and bowel support, skin care and emergency contacts. Relevant specialist instructions should be available before support begins, not left to carers to work out after discharge."
+    }
+   ],
+   "links": [
+    {
+     "label": "Spinal Injuries Association: autonomic dysreflexia",
+     "url": "https://www.spinal.co.uk/get-support/body-matters/autonomic-dysreflexia/"
+    },
+    {
+     "label": "NHS England safety guidance on essential bowel care",
+     "url": "https://www.england.nhs.uk/2018/07/patients-at-risk-of-autonomic-dysreflexia/"
+    },
+    {
+     "label": "NICE guidance on repositioning",
+     "url": "https://www.nice.org.uk/guidance/qs89/chapter/quality-statement-6-help-with-repositioning"
+    },
+    {
+     "label": "NICE guidance on hospital-to-home transitions",
+     "url": "https://www.nice.org.uk/guidance/ng27/chapter/recommendations"
+    }
+   ],
+   "service": "spinal-injury-care",
+   "id": "spinal-injury-care"
+  },
+  {
+   "heading": "Brain injury care",
+   "items": [
+    {
+     "n": 97,
+     "q": "Why might someone who looks well still need support after a brain injury?",
+     "a": "Effects such as fatigue, memory difficulties and problems planning tasks may not be visible. Needs can fluctuate and become more noticeable when the person is tired. Support should be based on everyday difficulties, not appearance alone."
+    },
+    {
+     "n": 98,
+     "q": "What practical support can help with memory difficulties?",
+     "a": "Consistent routines, calendars, reminders and keeping important items in agreed places may help. Introduce strategies that suit the person rather than overwhelming them with several systems. An occupational therapist or neurorehabilitation team can advise on individual approaches."
+    },
+    {
+     "n": 99,
+     "q": "Can a brain injury affect emotions or behaviour?",
+     "a": "Yes. Some people experience changes in emotional control, motivation or behaviour, which may become harder to manage with fatigue or overload. Support should seek to understand the difficulties without blame. Significant concerns should be discussed with the relevant clinical team."
+    },
+    {
+     "n": 100,
+     "q": "How can home support work alongside brain injury rehabilitation?",
+     "a": "Carers may help someone practise agreed everyday strategies and activities within a rehabilitation plan. Goals and methods should come from the relevant professionals. Home support complements rehabilitation; it does not replace specialist assessment, therapy or review."
+    }
+   ],
+   "links": [
+    {
+     "label": "Headway: fatigue after brain injury",
+     "url": "https://www.headway.org.uk/about-brain-injury/living-with-brain-injury/fatigue/"
+    },
+    {
+     "label": "Headway: coping with memory problems",
+     "url": "https://www.headway.org.uk/about-brain-injury/individuals/brain-injury-and-me/how-to-cope-with-memory-problems-after-brain-injury/"
+    },
+    {
+     "label": "Headway: executive dysfunction",
+     "url": "https://www.headway.org.uk/about-brain-injury/living-with-brain-injury/executive-dysfunction/"
+    },
+    {
+     "label": "Headway: ongoing care and rehabilitation",
+     "url": "https://www.headway.org.uk/about-brain-injury/treatment-and-rehabilitation/ongoing-care/"
+    }
+   ],
+   "service": "brain-injury-care",
+   "id": "brain-injury-care"
+  }
+ ]
+}

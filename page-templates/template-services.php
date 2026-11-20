@@ -46,6 +46,21 @@ $ccs_services = ccs_ordered_services();
 		foreach ( $ccs_services as $ccs_hub_svc ) {
 			$ccs_hub_by[ function_exists( 'ccs_service_group' ) ? ccs_service_group( $ccs_hub_svc->post_name ) : 'everyday' ][] = $ccs_hub_svc;
 		}
+		/*
+		 * "Choosing between them" comes before the lists (Nov 2026, client:
+		 * someone unsure which service fits should be told they need not
+		 * decide before they have to read twenty of them). It is still the
+		 * editor's own section, found by its heading and lifted out of the
+		 * closing accordion; with the heading renamed it stays where it was.
+		 */
+		$ccs_hub_choose = null;
+		foreach ( $ccs_content['sections'] as $ccs_hub_i => $ccs_hub_section ) {
+			if ( false !== stripos( $ccs_hub_section['heading'], 'choosing' ) ) {
+				$ccs_hub_choose = $ccs_hub_section;
+				unset( $ccs_content['sections'][ $ccs_hub_i ] );
+				break;
+			}
+		}
 		get_template_part( 'template-parts/page-header' );
 		?>
 
@@ -101,19 +116,6 @@ $ccs_services = ccs_ordered_services();
 			?>
 			<section class="ccs-section<?php echo 1 === $ccs_hub_n % 2 ? ' ccs-section--tint' : ''; ?> services-hub" id="<?php echo esc_attr( $ccs_hub_key ); ?>" aria-labelledby="care-group-<?php echo esc_attr( $ccs_hub_key ); ?>">
 				<div class="container container--lg">
-					<?php if ( 0 === $ccs_hub_n ) : ?>
-						<header class="care-head">
-							<h2 id="services-hub-heading" class="ccs-title">
-								<?php
-								echo ccs_copy_accent( 'services_page_title' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_copy_accent().
-								?>
-							</h2>
-							<?php if ( trim( wp_strip_all_tags( $ccs_intro ) ) !== '' ) : ?>
-								<div class="care-head__lede"><?php echo wp_kses_post( $ccs_intro ); ?></div>
-							<?php endif; ?>
-						</header>
-					<?php endif; ?>
-
 					<header class="care-group__head">
 						<h2 class="care-group__title" id="care-group-<?php echo esc_attr( $ccs_hub_key ); ?>"><?php echo esc_html( '' !== $ccs_hub_set[0] ? $ccs_hub_set[0] : __( 'All our services', 'ccs-wp-theme' ) ); ?></h2>
 						<p class="care-group__count">
@@ -123,6 +125,18 @@ $ccs_services = ccs_ordered_services();
 							?>
 						</p>
 					</header>
+					<?php
+					/*
+					 * No opening section (client, Nov 2026: three forms of one were
+					 * disliked, and the sketches after them). As on the Areas page,
+					 * the lists start straight under the page header, which already
+					 * says what the page is. "Choosing between them" is the editor's
+					 * own paragraph, as the lead under the first list's heading.
+					 */
+					?>
+					<?php if ( 0 === $ccs_hub_n && $ccs_hub_choose ) : ?>
+						<div class="care-group__lede"><?php echo wp_kses_post( $ccs_hub_choose['body'] ); ?></div>
+					<?php endif; ?>
 					<ul class="care-grid" role="list">
 						<?php foreach ( $ccs_hub_list as $ccs_hub_svc ) : ?>
 							<li class="care-card">
@@ -164,7 +178,7 @@ $ccs_services = ccs_ordered_services();
 							?>
 						</figure>
 						<article id="post-<?php the_ID(); ?>" <?php post_class( 'photo-acc__body page-content' ); ?>>
-							<h2 id="services-how-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'services_page_promise_title' ) ); ?></h2>
+							<h2 id="services-how-heading" class="ccs-title"><?php echo ccs_copy_accent( 'services_page_promise_title' ); ?></h2>
 							<?php if ( empty( $ccs_services ) ) : ?>
 								<div class="photo-acc__lede entry-content"><?php echo wp_kses_post( $ccs_intro ); ?></div>
 							<?php endif; ?>

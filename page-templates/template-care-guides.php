@@ -76,7 +76,8 @@ get_header();
 						 * does not close another.
 						 */
 						?>
-						<div class="guides-read">
+						<div class="guides-read has-doodle">
+							<?php echo ccs_doodle( 'books', 'doodle--beside' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle(). ?>
 							<?php if ( '' !== trim( wp_strip_all_tags( $ccs_cg['intro'] ) ) ) : ?>
 								<div class="hub__lede"><?php echo wp_kses_post( $ccs_cg['intro'] ); ?></div>
 							<?php endif; ?>

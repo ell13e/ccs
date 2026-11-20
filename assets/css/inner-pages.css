@@ -670,23 +670,18 @@
    Services hub: one even grid of cards (structure after All Care's
    services page: photo, name, two lines, "See more")
    ========================================================================= */
-.care-head {
-	max-width: 50rem;
-	margin-bottom: var(--space-3xl);
-}
-
-.care-head .ccs-title {
-	margin-bottom: var(--space-md);
-}
-
-.care-head__lede {
+/* "Choosing between them": the lead under the first list's heading. */
+.care-group__lede {
+	/* Wider than reading text on purpose (client: "maybe wider?"): two lines under a full-width rule. */
+	max-width: 64rem;
+	text-wrap: pretty;
+	margin: calc(var(--space-md) * -1) 0 var(--space-xl);
 	font-size: var(--lede-size);
 	line-height: 1.7;
 	color: var(--color-ink-soft);
 }
 
-.care-head__lede > :first-child { margin-top: 0; }
-.care-head__lede > :last-child { margin-bottom: 0; }
+.care-group__lede > * { margin: 0; }
 
 /* A group's title: a full section heading with its count, over a rule. */
 .care-group__head {
@@ -3153,3 +3148,877 @@ p + .link-line { margin-top: var(--space-2, 0.5rem); }
 		padding-top: 0;
 	}
 }
+
+/* =========================================================================
+   CQC and our care (Nov 2026). Set in the manner of the timelines the client
+   liked ("flowy and seamless and blended", "minimalist, but just prettier"):
+   soft white beads, italic plum for what matters, gentle fades, and no box
+   inside a box.
+   - .cqc-scale   the regulator's four ratings as beads on one soft line,
+                  the service's own bead filled.
+   - .cqc-five    the five questions as tiles, each with its rating in
+                  italic plum beside the question's name.
+   - .cqc-checks  four things to look for in a report, numbered beads.
+   ========================================================================= */
+.cqc-scale {
+	position: relative;
+	display: grid;
+	gap: var(--space-lg);
+	margin: 0;
+	padding: var(--card-pad);
+	list-style: none;
+	border-radius: var(--radius-2xl);
+	background: #fff;
+	box-shadow: var(--shadow-float);
+}
+
+.cqc-scale__row {
+	position: relative;
+	display: grid;
+	grid-template-columns: 1.5rem minmax(0, 1fr);
+	column-gap: var(--space-md);
+	align-items: start;
+}
+
+/* The line the beads sit on: from each bead down to the next. */
+.cqc-scale__row:not(:last-child)::before {
+	content: "";
+	position: absolute;
+	top: 1.5rem;
+	bottom: calc(-1 * var(--space-lg));
+	left: calc(0.75rem - 1px);
+	width: 2px;
+	border-radius: 2px;
+	background: var(--color-band-tint);
+}
+
+.cqc-scale__bead {
+	position: relative;
+	z-index: 1;
+	width: 1.5rem;
+	height: 1.5rem;
+	margin-top: 0.1rem;
+	border: 2px solid var(--color-band-tint);
+	border-radius: 50%;
+	background: #fff;
+}
+
+/* The service's own rating: the one bead that is filled. */
+.cqc-scale__row.is-ours .cqc-scale__bead {
+	border-color: var(--color-primary);
+	background: var(--color-primary);
+	box-shadow: 0 0 0 5px var(--color-band-tint);
+}
+
+.cqc-scale__name {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.125rem 0.625rem;
+	margin: 0;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.25rem, 1.15rem + 0.4vw, 1.5rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.25;
+	color: var(--color-ink);
+}
+
+.cqc-scale__row:not(.is-ours) .cqc-scale__name {
+	color: var(--color-ink-soft);
+}
+
+.cqc-scale__ours {
+	display: inline-flex;
+	align-items: center;
+	/* Taller than the rating's own line, so it is pulled out of the line's
+	   height: "Good" then sits level with its bead like the other ratings. */
+	align-self: center;
+	margin-block: -1rem;
+	font-family: var(--font-family-hand);
+	font-size: 1.3125rem;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 1;
+	color: var(--color-primary);
+}
+
+/* The looped arrow from the client's pack, pointing at the rating. */
+.cqc-scale__arrow {
+	flex: none;
+	width: 4.25rem;
+	height: auto;
+	margin: 0 0.25rem 0 -0.3rem;
+	/* Turned over, so the loop sits above the line, and tipped up at the
+	   same angle as the note, so the arrow's tail runs into the words and
+	   the two read as one stroke (client, Nov 2026). */
+	scale: 1 -1;
+	/* Pivots on the arrowhead, which stays level with the middle of the
+	   rating's name; only the tail lifts. */
+	transform-origin: 6% 64%;
+	rotate: -4deg;
+	translate: 0 -0.95rem;
+}
+
+/* The note: handwritten, tilted as if jotted on, with a pen underline. */
+.cqc-scale__note {
+	position: relative;
+	isolation: isolate;
+	/* A white edge round each letter, painted under the plum. */
+	-webkit-text-stroke: 0.125rem #fff;
+	paint-order: stroke fill;
+	rotate: -4deg;
+	translate: 0 -1.02rem;
+	white-space: nowrap;
+}
+
+/* A loose pen underline beneath the words, in mint. */
+.cqc-scale__underline {
+	position: absolute;
+	/* Runs the full length of the words, behind them. The lettering has a
+	   white edge (below), so the line breaks cleanly round the tail of the
+	   "g" instead of crossing it (client, Nov 2026). */
+	z-index: -1;
+	left: -0.15rem;
+	bottom: -0.45rem;
+	width: calc(100% + 0.3rem);
+	height: 0.5rem;
+	color: var(--color-secondary-dark, #85c4b8);
+	overflow: visible;
+}
+
+.cqc-scale__meaning {
+	margin: 0.25rem 0 0;
+	font-size: var(--text-base);
+	line-height: 1.55;
+	color: var(--color-ink-soft);
+}
+
+/* The five questions: five beads in one row joined by a soft line (three
+   over two was tried and disliked; five narrow columns were "very cramped
+   for the amount of text"). The row uses the full width of the page and
+   the text fills its column, so the longest description is three lines.
+   Below a wide screen there is no room for five, so it becomes a list
+   with the bead at the left. */
+.cqc-five__row {
+	display: grid;
+	gap: var(--space-lg);
+	max-width: 36rem;
+	margin: var(--space-2xl) auto 0;
+	padding: 0;
+	list-style: none;
+}
+
+.cqc-five__item {
+	position: relative;
+	display: flex;
+	gap: var(--space-md);
+	align-items: flex-start;
+}
+
+@media (min-width: 72rem) {
+	.cqc-five__row {
+		grid-template-columns: repeat(5, minmax(0, 1fr));
+		gap: var(--space-md);
+		max-width: none;
+	}
+
+	.cqc-five__item {
+		display: block;
+		text-align: center;
+	}
+
+	/* The line from one bead to the next. */
+	.cqc-five__item:not(:last-child)::after {
+		content: "";
+		position: absolute;
+		top: calc(2.25rem - 1px);
+		left: calc(50% + 3rem);
+		width: calc(100% + var(--space-md) - 6rem);
+		height: 2px;
+		border-radius: 2px;
+		background: var(--color-hairline-strong);
+	}
+}
+
+/* The bead: lilac, so it shows on the white ground. */
+.cqc-five__mark {
+	flex: none;
+	width: 3.25rem;
+	height: 3.25rem;
+	background: var(--color-band-tint);
+	color: var(--color-primary);
+}
+
+.cqc-five__mark .ccs-icon {
+	width: 1.5rem;
+	height: 1.5rem;
+}
+
+.cqc-five__name {
+	margin: 0;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.3125rem, 1.2rem + 0.5vw, 1.5rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.2;
+	color: var(--color-ink);
+}
+
+/* Room above stops the word looking squeezed under the name (client, Nov 2026: "why
+   does the good look squished" on small screens). The same tilt at every
+   width, pivoting on its left edge so it stays under the name. */
+.cqc-five__rating {
+	margin: 0.5rem 0 0;
+	font-family: var(--font-family-hand);
+	font-size: 1.5rem;
+	line-height: 1.1;
+	color: var(--color-primary);
+	rotate: -3deg;
+	transform-origin: left center;
+}
+
+/* The rating, underlined in pen like "our rating" above. */
+.cqc-five__word {
+	position: relative;
+	display: inline-block;
+	isolation: isolate;
+}
+
+.cqc-five__word .cqc-scale__underline {
+	bottom: -0.3rem;
+}
+
+.cqc-five__text {
+	margin: 0.875rem 0 0;
+	font-size: var(--text-base);
+	line-height: 1.55;
+	color: var(--color-ink-soft);
+}
+
+@media (min-width: 72rem) {
+	.cqc-five__mark {
+		width: 4.5rem;
+		height: 4.5rem;
+		margin: 0 auto var(--space-md);
+	}
+
+	.cqc-five__mark .ccs-icon {
+		width: 1.875rem;
+		height: 1.875rem;
+	}
+
+	.cqc-five__rating {
+		transform-origin: center;
+	}
+
+	.cqc-five__text {
+		margin-top: 1rem;
+		text-wrap: pretty;
+	}
+}
+
+.cqc-five__more {
+	margin: var(--space-xl) 0 0;
+	text-align: center;
+}
+
+.cqc-five .ccs-head .ccs-lede {
+	max-width: 46rem;
+}
+
+/* Four checks: a white card, numbered beads on one soft line, the same
+   object as the ratings scale above, on the other side of its section. */
+.cqc-checks {
+	display: grid;
+	gap: var(--space-lg);
+	margin: 0;
+	padding: var(--card-pad);
+	list-style: none;
+	border-radius: var(--radius-2xl);
+	background: #fff;
+	box-shadow: var(--shadow-float);
+}
+
+.cqc-checks__item {
+	position: relative;
+	display: flex;
+	gap: var(--space-md);
+	align-items: flex-start;
+}
+
+/* The line from each bead down to the next. */
+.cqc-checks__item:not(:last-child)::before {
+	content: "";
+	position: absolute;
+	top: 2.75rem;
+	bottom: calc(-1 * var(--space-lg));
+	left: calc(1.375rem - 1px);
+	width: 2px;
+	border-radius: 2px;
+	background: var(--color-band-tint);
+}
+
+.cqc-checks__mark {
+	position: relative;
+	z-index: 1;
+	display: grid;
+	flex: none;
+	place-items: center;
+	width: 2.75rem;
+	height: 2.75rem;
+	border-radius: 50%;
+	background: var(--color-band-tint);
+	font-family: var(--font-family-heading);
+	font-size: 1.1875rem;
+	font-style: italic;
+	line-height: 1;
+	color: var(--color-primary);
+}
+
+.cqc-checks__title {
+	margin: 0.3rem 0 0;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.25rem, 1.15rem + 0.4vw, 1.5rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.25;
+	color: var(--color-ink);
+}
+
+.cqc-checks__text {
+	margin: 0.25rem 0 0;
+	font-size: var(--text-base);
+	line-height: 1.55;
+	color: var(--color-ink-soft);
+}
+
+/* The card on the left here, the words on the right: the mirror of "What
+   the CQC does". */
+@media (min-width: 60rem) {
+	.cqc-use .ccs-split {
+		grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+	}
+
+	.cqc-use .ccs-split > .cqc-checks {
+		order: -1;
+	}
+}
+
+
+/* Each piece fades in as it arrives; nothing moves. */
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) {
+		.cqc-scale__row,
+		.cqc-five__item,
+		.cqc-checks__item {
+			animation: gs-path-arrive linear both;
+			animation-timeline: view();
+			animation-range: entry 0% entry 90%;
+		}
+	}
+}
+
+
+/* Phones: a smaller arrow and note, so they stay on the line with the
+   rating they point at. */
+@media (max-width: 479px) {
+	.cqc-scale__arrow {
+		width: 2.75rem;
+		margin-inline: 0.125rem 0.375rem;
+	}
+
+	.cqc-scale__ours {
+		font-size: 1.1875rem;
+	}
+
+}
+
+/* =========================================================================
+   Doodles (Nov 2026): one small hand-drawn picture on a page, beside a
+   heading or on the corner of a card (ccs_doodle() in inc/icons.php). Plum,
+   tilted a little, never in the way of text: where there is no room beside
+   the words (phones, mostly) the doodle is not shown.
+   ========================================================================= */
+.doodle {
+	display: block;
+	width: var(--doodle-w, 5.5rem);
+	height: auto;
+	rotate: -6deg;
+	pointer-events: none;
+	user-select: none;
+}
+
+.has-doodle {
+	position: relative;
+}
+
+/* Under a block of text, at its left edge. */
+.doodle--after {
+	--doodle-w: 6.5rem;
+	margin-top: var(--space-lg);
+}
+
+/* Lapping the top right corner of a card. */
+.doodle--corner {
+	--doodle-w: 4.5rem;
+	position: absolute;
+	top: -2.6rem;
+	right: clamp(1rem, 4vw, 2.5rem);
+	rotate: 8deg;
+}
+
+/* In the space to the right of a narrow column of text. */
+.doodle--beside,
+.doodle--outside,
+.doodle--by-centre {
+	display: none;
+	position: absolute;
+}
+
+@media (min-width: 60rem) {
+	.doodle--beside {
+		display: block;
+		--doodle-w: 6rem;
+		top: -0.75rem;
+		right: -1.5rem;
+		rotate: 7deg;
+	}
+
+	.doodle--outside {
+		display: block;
+		--doodle-w: 7.5rem;
+		top: 0.25rem;
+		left: calc(100% + 3rem);
+		rotate: 8deg;
+	}
+
+	/* Beside a centred heading. */
+	.doodle--by-centre {
+		display: block;
+		--doodle-w: 5.5rem;
+		top: -1.25rem;
+		left: calc(50% + 13.5rem);
+		rotate: 7deg;
+	}
+}
+
+/* "What the CQC does": the text column sits level with the middle of the
+   scale beside it, so there is no empty space under it, and the line that
+   leads into the scale has the inspector's clipboard beside it. */
+@media (min-width: 60rem) {
+	.cqc-about .ccs-split,
+	.cqc-use .ccs-split {
+		align-items: center;
+	}
+}
+
+.cqc-about__lead-in {
+	display: flex;
+	align-items: center;
+	gap: var(--space-md);
+	max-width: 26rem;
+	margin: var(--space-lg) 0 0;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem);
+	font-style: italic;
+	line-height: 1.4;
+	color: var(--color-primary);
+}
+
+.cqc-about__doodle {
+	flex: none;
+	--doodle-w: 4.5rem;
+}
+
+/* The opening section: the button sits close under the text, and the
+   sourced note has a doodle beside it. */
+.cqc-feature__report {
+	margin-top: var(--space-md);
+}
+
+.cqc-feature__note {
+	display: flex;
+	align-items: center;
+	gap: var(--space-md);
+	max-width: 34rem;
+	margin-top: var(--space-xl);
+	/* Plain body text beside the doodle: four lines of plum italic here was
+	   too much of it (client, Nov 2026). Only the link is plum. */
+	font-size: var(--text-base);
+	line-height: 1.6;
+	color: var(--color-ink-soft);
+}
+
+.cqc-feature__doodle {
+	flex: none;
+	--doodle-w: 3.75rem;
+}
+
+/* The "worried" card and the closing band are both on white: a short gap
+   between them, not two full section paddings. */
+.cqc-worried {
+	padding-bottom: var(--space-md);
+}
+
+/* Tablet and phone: the CQC photo sits on the same left edge as the text
+   under it (it was centred above left-aligned text). Its width is still
+   capped, because the file is only 550px wide. */
+@media (max-width: 899px) {
+	.cqc-feature > .cqc-feature__media {
+		justify-self: start;
+	}
+}
+
+/* =========================================================================
+   The CQC page's manner, carried to other pages (Nov 2026, client: "make
+   sure the other pages are this good"). Fewer boxes; soft beads; one line
+   joining a numbered list; plum italic numerals.
+   ========================================================================= */
+
+/* Service pages, "what this care includes": the boxed tiles become a
+   two-column list, each with a soft white bead, its name and its line.
+   Boxed tiles in a grid were what "needs restyling" on the CQC page. */
+.svc-help .help-tiles {
+	gap: var(--space-xl) clamp(2rem, 5vw, 4.5rem);
+	max-width: 62rem;
+}
+
+.svc-help .help-tile {
+	align-items: flex-start;
+	min-height: 0;
+	padding: 0;
+	border-radius: 0;
+	background: none;
+	box-shadow: none;
+}
+
+.svc-help .help-tile__icon {
+	width: 3.5rem;
+	height: 3.5rem;
+	background: #fff;
+	box-shadow: var(--shadow-float);
+}
+
+.svc-help .help-tile__title {
+	margin-top: 0.35rem;
+}
+
+@media (min-width: 720px) {
+	.svc-help .help-tile:last-child:nth-child(odd) {
+		grid-column: auto;
+	}
+}
+
+/* Referral information: the numbered sections as beads on one soft line,
+   with no rules between them. */
+.refer-step {
+	position: relative;
+	padding: 0 0 var(--space-lg);
+	border-top: 0;
+}
+
+.refer-step:last-child {
+	padding-bottom: 0;
+}
+
+.refer-step:not(:last-child)::before {
+	content: "";
+	position: absolute;
+	top: 2.75rem;
+	bottom: 0;
+	left: calc(1.375rem - 1px);
+	width: 2px;
+	border-radius: 2px;
+	background: var(--color-hairline-strong);
+}
+
+/* White beads: this half of the card is lilac. */
+.refer-step__num {
+	position: relative;
+	z-index: 1;
+	background: #fff;
+	box-shadow: var(--shadow-float);
+	font-style: italic;
+	color: var(--color-primary);
+}
+
+/* A doodle sitting just above a section's heading: on the heading's left
+   edge, or centred where the heading is. */
+.doodle--above {
+	--doodle-w: 4.75rem;
+	margin-bottom: var(--space-md);
+}
+
+.ccs-head--center > .doodle--above,
+.doodle--above:has(+ .ccs-title[style*="center"]) {
+	margin-inline: auto;
+}
+
+/* =========================================================================
+   A jotted note (ccs_hand_note() in inc/icons.php): a few handwritten words
+   with a pen underline behind them. --hand-edge is the colour of the ground
+   it sits on, so the underline breaks round the letters.
+   ========================================================================= */
+.hand-note {
+	--hand-edge: #fff;
+	position: relative;
+	isolation: isolate;
+	display: inline-block;
+	font-family: var(--font-family-hand);
+	font-size: 1.3125rem;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 1.1;
+	color: var(--color-primary);
+	-webkit-text-stroke: 0.125rem var(--hand-edge);
+	paint-order: stroke fill;
+	rotate: -3deg;
+	white-space: nowrap;
+}
+
+.ccs-section--tint .hand-note {
+	--hand-edge: var(--color-band-tint);
+}
+
+.hand-note__line {
+	position: absolute;
+	z-index: -1;
+	left: -0.15rem;
+	bottom: -0.4rem;
+	width: calc(100% + 0.3rem);
+	height: 0.5rem;
+	color: var(--color-secondary-dark, #85c4b8);
+	overflow: visible;
+}
+
+/* Getting started: the note sits between a step's name and its text. */
+.gs-path__note {
+	display: flex;
+	align-items: center;
+	gap: 0.875rem;
+	margin: var(--space-lg) 0 var(--space-sm);
+}
+
+.gs-path__note-doodle {
+	flex: none;
+	--doodle-w: 3.25rem;
+}
+
+@media (max-width: 34rem) {
+	.gs-path__note {
+		gap: 0.625rem;
+	}
+
+	.gs-path__note-doodle {
+		--doodle-w: 2.75rem;
+	}
+}
+
+
+/* Getting started, "Good to know": the questions sit together in one soft
+   lilac card instead of four separate white boxes. */
+.gs-more .ccs-faq {
+	gap: 0;
+	padding: calc(var(--card-pad) - 1rem) var(--card-pad);
+	border-radius: var(--radius-2xl);
+	background: var(--color-band-tint);
+}
+
+.gs-more .ccs-faq__item,
+.gs-more .ccs-faq__item[open] {
+	border: 0;
+	border-radius: 0;
+	background: none;
+	box-shadow: none;
+}
+
+.gs-more .ccs-faq__q {
+	padding-inline: 0;
+}
+
+.gs-more .ccs-faq__a {
+	padding-inline: 0;
+}
+
+.gs-more .ccs-faq__q {
+	padding-right: 2.5rem;
+}
+
+.gs-more .ccs-faq__q::before,
+.gs-more .ccs-faq__q::after {
+	right: 0.25rem;
+}
+
+/* =========================================================================
+   FAQs: topics down the left, that topic's questions on the right (Nov 2026,
+   from a reference the client sent). The rail is plain names; the one being
+   read is a soft pill. The questions stay in view while the rail is read.
+   On narrow screens the rail is one "Topic" menu.
+   ========================================================================= */
+.faq-browse {
+	display: grid;
+	gap: var(--space-lg);
+	margin-top: var(--space-2xl);
+}
+
+.faq-rail__list {
+	display: grid;
+	gap: 0.125rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.faq-rail__link {
+	display: flex;
+	align-items: center;
+	min-height: 2.5rem;
+	padding: 0.375rem 1rem;
+	border-radius: var(--radius-pill, 999px);
+	font-size: var(--text-base);
+	line-height: 1.3;
+	color: var(--color-ink-soft);
+	text-decoration: none;
+	transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.faq-rail__link:hover {
+	color: var(--color-primary);
+}
+
+.faq-rail__link[aria-current="true"] {
+	background: var(--color-band-tint);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-primary);
+}
+
+.faq-rail__link:focus-visible {
+	outline: var(--focus-ring);
+	outline-offset: 2px;
+}
+
+.faq-rail__pick {
+	display: none;
+}
+
+.faq-rail__pick-label {
+	display: block;
+	margin-bottom: 0.375rem;
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-ink);
+}
+
+.faq-rail__select {
+	width: 100%;
+	min-height: 56px;
+	padding: 0 1rem;
+	border: 1px solid var(--color-hairline-strong);
+	border-radius: var(--radius-lg);
+	background-color: #fff;
+	font: inherit;
+	color: var(--color-ink);
+}
+
+.faq-panel {
+	scroll-margin-top: 7rem;
+}
+
+.faq-panel + .faq-panel {
+	margin-top: var(--space-2xl);
+}
+
+.faq-panel[hidden] {
+	display: none;
+}
+
+.faq-panel__title {
+	margin: 0 0 var(--space-md);
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.5rem, 1.3rem + 0.9vw, 2rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.2;
+	color: var(--color-ink);
+}
+
+.faq-panels__note {
+	margin: var(--space-lg) 0 0;
+	font-size: var(--text-sm);
+	font-style: italic;
+	line-height: 1.6;
+	color: var(--color-ink-soft);
+}
+
+/* With script: one topic at a time, or every match while searching. */
+.faq-browse.is-enhanced:not(.is-searching) .faq-panel:not(.is-current) {
+	display: none;
+}
+
+.faq-browse.is-enhanced .faq-panel + .faq-panel {
+	margin-top: 0;
+}
+
+.faq-browse.is-enhanced.is-searching .faq-panel:not([hidden]) ~ .faq-panel:not([hidden]) {
+	margin-top: var(--space-2xl);
+}
+
+.faq-browse.is-searching .faq-rail__link[aria-current="true"] {
+	background: none;
+	font-weight: inherit;
+	color: var(--color-ink-soft);
+}
+
+@media (max-width: 56.24rem) {
+	.faq-browse.is-enhanced .faq-rail__pick {
+		display: block;
+	}
+
+	.faq-browse.is-enhanced .faq-rail__list {
+		display: none;
+	}
+
+	.faq-rail__list {
+		grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+	}
+}
+
+@media (min-width: 56.25rem) {
+	.faq-browse {
+		grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+		column-gap: clamp(2rem, 1rem + 4vw, 5rem);
+		align-items: start;
+	}
+
+	.faq-browse.is-enhanced .faq-panels {
+		position: sticky;
+		top: 7rem;
+	}
+}
+
+.faq-group__links {
+	margin-top: var(--space-md);
+	padding-inline: var(--card-pad-sm);
+}
+
+.faq-group__links-title {
+	margin: 0 0 0.25rem;
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-ink);
+}
+
+.faq-group__links ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.faq-group__links a {
+	display: inline-flex;
+	align-items: center;
+	min-height: 2.75rem;
+	font-size: var(--text-base);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-primary);
+	text-decoration: underline;
+	text-underline-offset: 0.18em;
+}
+

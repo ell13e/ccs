@@ -83,9 +83,10 @@ $ccs_cta_photo     = ! $ccs_is_careers && file_exists( get_template_directory() 
 				<h2 id="cta-band-heading" class="ccs-title ccs-title--on-dark">
 					<?php echo esc_html( $ccs_cta_heading ); ?>
 				</h2>
-				<p class="ccs-lede ccs-lede--on-dark">
-					<?php echo esc_html( $ccs_cta_text ); ?>
-				</p>
+				<?php // A blank line in the text starts a new paragraph (the client's Nov 2026 wording runs to two). ?>
+				<?php foreach ( array_filter( array_map( 'trim', preg_split( '/\R\s*\R/', (string) $ccs_cta_text ) ) ) as $ccs_cta_para ) : ?>
+					<p class="ccs-lede ccs-lede--on-dark"><?php echo esc_html( $ccs_cta_para ); ?></p>
+				<?php endforeach; ?>
 				<div class="ccs-actions cta-card__actions">
 					<a href="<?php echo esc_url( $ccs_cta_url ); ?>" class="btn btn-accent">
 						<?php echo esc_html( $ccs_cta_label ); ?>

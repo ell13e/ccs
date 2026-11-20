@@ -39,6 +39,7 @@ $ccs_careers  = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'careers' ) : 
 				<div class="container container--lg">
 					<div class="ccs-split">
 						<header class="ccs-head">
+							<?php echo ccs_doodle( 'two-mugs', 'doodle--above' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle(). ?>
 							<h2 id="team-intro-heading" class="ccs-title">
 								<?php
 								echo ccs_copy_accent( 'team_page_intro_title' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_copy_accent().
@@ -65,7 +66,7 @@ $ccs_careers  = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'careers' ) : 
 					<?php // The "Management and office" eyebrow went (Nov 2026 eyebrow review): the paragraph above already says who is shown. ?>
 					<h2 id="team-heading" class="ccs-title">
 						<?php
-						echo esc_html( ccs_copy( 'team_page_title' ) );
+						echo ccs_copy_accent( 'team_page_title' );
 						?>
 					</h2>
 				</header>
@@ -83,7 +84,7 @@ $ccs_careers  = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'careers' ) : 
 			<div class="ccs-strip">
 				<span class="ccs-badge"><?php echo ccs_icon( 'people' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
 				<div class="ccs-strip__text">
-					<h2 id="team-join-heading" class="ccs-strip__title"><?php echo esc_html( ccs_copy( 'team_page_strip_title' ) ); ?></h2>
+					<h2 id="team-join-heading" class="ccs-strip__title"><?php echo ccs_copy_accent( 'team_page_strip_title' ); ?></h2>
 					<p class="ccs-strip__lede"><?php echo esc_html( ccs_copy( 'team_page_strip_text' ) ); ?></p>
 				</div>
 				<a class="btn btn-quiet ccs-strip__action" href="<?php echo esc_url( $ccs_careers ); ?>"><?php echo esc_html( ccs_copy( 'team_page_strip_button' ) ); ?></a>

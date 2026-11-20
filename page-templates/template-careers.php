@@ -103,9 +103,10 @@ foreach ( $ccs_careers_meta as $ccs_slug => $ccs_meta ) {
 			<section class="ccs-section ccs-section--sm ccs-section--flush-bottom careers-explore" aria-labelledby="careers-explore-heading">
 				<div class="container container--lg">
 					<header class="ccs-head ccs-head--center">
+						<?php echo ccs_doodle( 'paper-plane', 'doodle--above' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle(). ?>
 						<h2 id="careers-explore-heading" class="ccs-title">
 							<?php
-							echo esc_html( ccs_copy( 'careers_ways_title' ) );
+							echo ccs_copy_accent( 'careers_ways_title' );
 							?>
 						</h2>
 					</header>

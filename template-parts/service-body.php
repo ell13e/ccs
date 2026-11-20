@@ -344,7 +344,8 @@ $ccs_sb_contact = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us'
 ?>
 <section class="ccs-section<?php echo $ccs_sb_tint ? ' ccs-section--tint' : ''; ?> svc-steps" aria-labelledby="svc-steps-heading">
 	<div class="container container--lg">
-		<header class="ccs-head ccs-head--center">
+		<header class="ccs-head ccs-head--center has-doodle">
+			<?php echo ccs_doodle( 'armchair', 'doodle--by-centre' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle(). ?>
 			<h2 id="svc-steps-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'steps_title' ) ); ?></h2>
 			<p class="ccs-lede"><?php echo esc_html( ccs_copy( 'steps_lede' ) ); ?></p>
 		</header>

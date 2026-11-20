@@ -119,7 +119,7 @@ $ccs_pay_ways = array(
 		<section class="ccs-section costs-rates" aria-labelledby="costs-rates-heading">
 			<div class="container container--lg">
 				<header class="ccs-head ccs-head--center">
-					<h2 id="costs-rates-heading" class="ccs-title"><?php esc_html_e( 'Our rates', 'ccs-wp-theme' ); ?></h2>
+					<h2 id="costs-rates-heading" class="ccs-title"><?php echo ccs_accent_text( __( 'Our *rates*', 'ccs-wp-theme' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_accent_text(). ?></h2>
 				</header>
 
 				<?php
@@ -235,7 +235,7 @@ $ccs_pay_ways = array(
 					?>
 				</figure>
 				<div class="photo-acc__body">
-					<h2 id="costs-pay-heading" class="ccs-title"><?php esc_html_e( 'Ways to pay', 'ccs-wp-theme' ); ?></h2>
+					<h2 id="costs-pay-heading" class="ccs-title"><?php echo ccs_accent_text( __( 'Ways to *pay*', 'ccs-wp-theme' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_accent_text(). ?></h2>
 					<p class="photo-acc__lede"><?php echo esc_html( ccs_copy( 'costs_funding' ) ); ?></p>
 					<?php
 					$ccs_pay_items = array();

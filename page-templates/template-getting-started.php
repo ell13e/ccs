@@ -80,12 +80,13 @@ get_header();
 				<div class="container container--lg">
 					<div class="ccs-media-split">
 						<header class="gs-intro">
-							<h2 id="gs-steps-heading" class="ccs-title"><?php esc_html_e( 'From first call to first visit', 'ccs-wp-theme' ); ?></h2>
+							<h2 id="gs-steps-heading" class="ccs-title"><?php echo ccs_accent_text( __( 'From first call to *first visit*', 'ccs-wp-theme' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_accent_text(). ?></h2>
 							<?php if ( '' !== trim( wp_strip_all_tags( $ccs_gs['intro'] ) ) ) : ?>
 								<div class="ccs-lede ccs-lede--large gs-intro__lede">
 									<?php echo wp_kses_post( $ccs_gs['intro'] ); ?>
 								</div>
 							<?php endif; ?>
+							<?php echo ccs_doodle( 'teapot', 'doodle--after' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle(). ?>
 						</header>
 						<?php
 						ccs_section_photo(
@@ -131,6 +132,27 @@ get_header();
 			 * The photos are real CCS photos already in the theme, a first
 			 * choice for the client to change: one per step, in order.
 			 */
+			// One jotted fact beside the first two steps, each taken from that
+			// step's own text ("Expect about twenty minutes", "usually within a
+			// few days"). If the client rewrites those steps, change or remove
+			// the note for that step number here.
+			$ccs_gs_notes = array(
+				'1' => __( 'about 20 minutes', 'ccs-wp-theme' ),
+				'2' => __( 'within a few days', 'ccs-wp-theme' ),
+				'3' => __( 'you keep a copy', 'ccs-wp-theme' ),
+				'4' => __( 'you meet them first', 'ccs-wp-theme' ),
+				'5' => __( 'a call after week one', 'ccs-wp-theme' ),
+				'6' => __( 'every visit is logged', 'ccs-wp-theme' ),
+			);
+			// The drawing that sits with each note, from the client's packs (client: liked the first two, "there might need to be some on the others too"). Each note repeats a fact from its step's own text.
+			$ccs_gs_note_doodles = array(
+				'1' => 'alarm-clock',
+				'2' => 'calendar',
+				'3' => 'clipboard',
+				'4' => 'two-mugs',
+				'5' => 'speech-bubble',
+				'6' => 'journal',
+			);
 			$ccs_gs_photos = array(
 				array( 'site-photos/Untitled-1.webp', '50% 30%' ),
 				array( 'site-photos/client-afternoon-tea.webp', '50% 25%' ),
@@ -151,6 +173,10 @@ get_header();
 								<div class="gs-path__text">
 									<h3 class="gs-path__title"><span class="screen-reader-text"><?php echo esc_html( sprintf( /* translators: %s: step number. */ __( 'Step %s:', 'ccs-wp-theme' ), $ccs_gs_step['num'] ) ); ?> </span><?php echo esc_html( $ccs_gs_step['title'] ); ?></h3>
 									<div class="gs-path__body entry-content"><?php echo wp_kses_post( $ccs_gs_step['body'] ); ?></div>
+									<?php // The jotted note closes the step, under its text (client's pick from four sketched placements, after the note read as "added on" under and then beside the title). A drawing from her packs sits with it, as on the CQC page: a note on its own had nothing to belong to. ?>
+									<?php if ( isset( $ccs_gs_notes[ (string) $ccs_gs_step['num'] ] ) ) : ?>
+										<p class="gs-path__note"><?php echo ccs_doodle( isset( $ccs_gs_note_doodles[ (string) $ccs_gs_step['num'] ] ) ? $ccs_gs_note_doodles[ (string) $ccs_gs_step['num'] ] : 'heart-doodle', 'gs-path__note-doodle' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle(). ?><?php echo ccs_hand_note( $ccs_gs_notes[ (string) $ccs_gs_step['num'] ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_hand_note(). ?></p>
+									<?php endif; ?>
 								</div>
 								<figure class="gs-path__photo" data-ccs-exception="rule 15: one photograph in its frame">
 									<?php
@@ -173,7 +199,7 @@ get_header();
 					<div class="container container--lg">
 						<div class="ccs-split">
 							<header class="ccs-head">
-								<h2 id="gs-more-heading" class="ccs-title"><?php esc_html_e( 'Good to know', 'ccs-wp-theme' ); ?></h2>
+								<h2 id="gs-more-heading" class="ccs-title"><?php echo ccs_accent_text( __( '*Good* to know', 'ccs-wp-theme' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_accent_text(). ?></h2>
 							</header>
 							<div class="ccs-faq">
 								<?php foreach ( $ccs_gs_more as $ccs_gs_i => $ccs_gs_item ) : ?>

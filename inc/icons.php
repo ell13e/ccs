@@ -74,3 +74,55 @@ function ccs_icon( $name, $class = '' ) {
 
 	return '<svg class="' . esc_attr( $classes ) . '" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' . $paths[ $name ] . '</svg>';
 }
+
+/**
+ * A hand-drawn doodle (Nov 2026). The client sent reference sites where a few
+ * loose pen drawings beside clean type "just makes it look more friendly",
+ * and supplied licensed doodle packs. Each one here is a single drawing from
+ * those packs, recoloured to the brand plum and saved in assets/images/doodles.
+ *
+ * Use sparingly: at most one on a page, beside a heading or on the corner of
+ * a card, never in a row and never on the homepage hero. They are decoration,
+ * so they carry no alt text and are hidden from assistive technology.
+ *
+ * @param string $name  File name without extension, e.g. 'teapot'.
+ * @param string $class Extra classes for placement.
+ * @return string An <img>, or '' if the file is missing.
+ */
+function ccs_doodle( $name, $class = '' ) {
+	static $sizes = array();
+	$name = sanitize_key( $name );
+	if ( ! isset( $sizes[ $name ] ) ) {
+		// The whole library is in assets/images/doodles (see its README.md for
+		// what each drawing is and which pack it came from).
+		$file           = get_template_directory() . '/assets/images/doodles/' . $name . '.webp';
+		$size           = file_exists( $file ) ? getimagesize( $file ) : false;
+		$sizes[ $name ] = $size ? array( (int) $size[0], (int) $size[1] ) : false;
+	}
+	if ( ! $sizes[ $name ] ) {
+		return '';
+	}
+	return sprintf(
+		'<img class="%1$s" src="%2$s" width="%3$d" height="%4$d" alt="" aria-hidden="true" loading="lazy" decoding="async">',
+		esc_attr( trim( 'doodle ' . $class ) ),
+		esc_url( get_template_directory_uri() . '/assets/images/doodles/' . $name . '.webp' ),
+		$sizes[ $name ][0],
+		$sizes[ $name ][1]
+	);
+}
+
+/**
+ * A jotted note (Nov 2026): a few words in the handwriting face, tilted a
+ * little, with one loose pen underline in mint. For a single fact worth
+ * pointing at ("about 20 minutes", "our rating"), never for a sentence.
+ * The underline runs behind the words, whose letters carry an edge in the
+ * ground's colour so the line breaks cleanly round a descender.
+ *
+ * @param string $text  The note, a few words.
+ * @param string $class Extra classes.
+ * @return string HTML.
+ */
+function ccs_hand_note( $text, $class = '' ) {
+	return '<span class="' . esc_attr( trim( 'hand-note ' . $class ) ) . '">' . esc_html( $text )
+		. '<svg class="hand-note__line" viewBox="0 0 100 12" preserveAspectRatio="none" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true" focusable="false"><path vector-effect="non-scaling-stroke" d="M3 7.5C18 3.5 33 9 50 5.5S82 4 97 6.5"/></svg></span>';
+}

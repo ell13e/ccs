@@ -67,17 +67,81 @@ $ccs_contact   = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' 
 						<div class="hub__search faq-find" role="search">
 							<label class="screen-reader-text" for="faq-search"><?php esc_html_e( 'Search the questions', 'ccs-wp-theme' ); ?></label>
 							<span class="hub__search-icon" aria-hidden="true"><?php echo ccs_icon( 'search' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
-							<input type="search" id="faq-search" class="hub__search-input" placeholder="<?php esc_attr_e( 'Search the questions', 'ccs-wp-theme' ); ?>" autocomplete="off" data-ccs-filter="#faq-list">
+							<input type="search" id="faq-search" class="hub__search-input" placeholder="<?php esc_attr_e( 'Search the questions', 'ccs-wp-theme' ); ?>" autocomplete="off" data-ccs-faq-search>
 						</div>
 						<?php
+						/*
+						 * Topics down the left, that topic's questions on the right
+						 * (Nov 2026, from a reference the client sent: a rail of
+						 * categories beside one accordion). The page's own fourteen
+						 * questions are the first topic; the hundred more
+						 * (inc/data/more-faqs.json, the client's text) follow, one
+						 * topic per kind of care. On a phone the rail is a single
+						 * "Topic" menu. Without script every topic shows in turn
+						 * under its name and the rail is a list of links to them.
+						 * The search looks through every topic. Each service page
+						 * links to its own topic here by its id.
+						 */
 						$ccs_faq_items = array();
 						foreach ( $ccs_faqs as $ccs_faq_n => $ccs_faq ) {
-							// An id each, so the resources hub can link straight to a question.
+							// An id each, so another page can link straight to a question.
 							$ccs_faq_items[] = array( 'heading' => $ccs_faq['heading'], 'body' => ccs_mark_link_lines( $ccs_faq['body'] ), 'id' => 'faq-' . ( $ccs_faq_n + 1 ) );
 						}
-						get_template_part( 'template-parts/num-acc', null, array( 'items' => $ccs_faq_items, 'name' => 'faqs', 'id' => 'faq-list', 'class' => 'num-acc--center' ) );
+						$ccs_topics = array(
+							array( 'id' => 'most-asked', 'label' => __( 'Most asked', 'ccs-wp-theme' ), 'items' => $ccs_faq_items, 'links' => array(), 'list_id' => 'faq-list' ),
+						);
+						$ccs_more   = function_exists( 'ccs_more_faqs' ) ? ccs_more_faqs() : array( 'groups' => array() );
+						foreach ( $ccs_more['groups'] as $ccs_more_group ) {
+							$ccs_more_items = array();
+							foreach ( $ccs_more_group['items'] as $ccs_more_item ) {
+								$ccs_more_items[] = array(
+									'heading' => $ccs_more_item['q'],
+									'body'    => '<p>' . esc_html( $ccs_more_item['a'] ) . '</p>',
+									'id'      => 'faq-more-' . (int) $ccs_more_item['n'],
+								);
+							}
+							$ccs_topics[] = array( 'id' => $ccs_more_group['id'], 'label' => $ccs_more_group['heading'], 'items' => $ccs_more_items, 'links' => isset( $ccs_more_group['links'] ) ? $ccs_more_group['links'] : array(), 'list_id' => '' );
+						}
 						?>
-						<p class="num-acc__empty" data-ccs-filter-empty hidden><?php esc_html_e( 'No question matches that. Try another word, or ask us below.', 'ccs-wp-theme' ); ?></p>
+						<div class="faq-browse" data-ccs-faq-browse>
+							<nav class="faq-rail" aria-label="<?php esc_attr_e( 'Question topics', 'ccs-wp-theme' ); ?>">
+								<div class="faq-rail__pick">
+									<label class="faq-rail__pick-label" for="faq-topic"><?php esc_html_e( 'Topic', 'ccs-wp-theme' ); ?></label>
+									<select id="faq-topic" class="faq-rail__select" data-ccs-faq-pick>
+										<?php foreach ( $ccs_topics as $ccs_topic ) : ?>
+											<option value="<?php echo esc_attr( $ccs_topic['id'] ); ?>"><?php echo esc_html( $ccs_topic['label'] ); ?></option>
+										<?php endforeach; ?>
+									</select>
+								</div>
+								<ul class="faq-rail__list" role="list">
+									<?php foreach ( $ccs_topics as $ccs_topic_n => $ccs_topic ) : ?>
+										<li><a class="faq-rail__link" href="#<?php echo esc_attr( $ccs_topic['id'] ); ?>"<?php echo 0 === $ccs_topic_n ? ' aria-current="true"' : ''; ?>><?php echo esc_html( $ccs_topic['label'] ); ?></a></li>
+									<?php endforeach; ?>
+								</ul>
+							</nav>
+							<div class="faq-panels" id="faq-panels">
+								<?php foreach ( $ccs_topics as $ccs_topic_n => $ccs_topic ) : ?>
+									<section class="faq-panel<?php echo 0 === $ccs_topic_n ? ' is-current' : ''; ?>" id="<?php echo esc_attr( $ccs_topic['id'] ); ?>" aria-labelledby="<?php echo esc_attr( $ccs_topic['id'] ); ?>-title">
+										<h3 class="faq-panel__title" id="<?php echo esc_attr( $ccs_topic['id'] ); ?>-title"><?php echo esc_html( $ccs_topic['label'] ); ?></h3>
+										<?php get_template_part( 'template-parts/num-acc', null, array( 'items' => $ccs_topic['items'], 'name' => 'faqs-' . $ccs_topic['id'], 'id' => $ccs_topic['list_id'] ) ); ?>
+										<?php if ( $ccs_topic['links'] ) : ?>
+											<div class="faq-group__links">
+												<p class="faq-group__links-title"><?php esc_html_e( 'Further reading', 'ccs-wp-theme' ); ?></p>
+												<ul role="list">
+													<?php foreach ( $ccs_topic['links'] as $ccs_more_link ) : ?>
+														<li><a href="<?php echo esc_url( $ccs_more_link['url'] ); ?>"><?php echo esc_html( $ccs_more_link['label'] ); ?></a></li>
+													<?php endforeach; ?>
+												</ul>
+											</div>
+										<?php endif; ?>
+									</section>
+								<?php endforeach; ?>
+								<?php if ( ! empty( $ccs_more['intro'] ) ) : ?>
+									<p class="faq-panels__note"><?php echo esc_html( $ccs_more['intro'] ); ?></p>
+								<?php endif; ?>
+							</div>
+						</div>
+						<p class="num-acc__empty" data-ccs-faq-empty hidden><?php esc_html_e( 'No question matches that. Try another word, or ask us below.', 'ccs-wp-theme' ); ?></p>
 					<?php else : ?>
 						<h2 id="faq-heading" class="screen-reader-text"><?php echo esc_html( get_the_title() ); ?></h2>
 						<div class="page-body page-body--flush entry-content">
@@ -91,7 +155,8 @@ $ccs_contact   = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' 
 		<?php if ( $ccs_phone_tel ) : ?>
 			<section class="ccs-section ccs-section--sm ccs-section--tint faq-ask-section">
 				<div class="container container--lg">
-					<div class="prompt-card">
+					<div class="prompt-card has-doodle">
+						<?php echo ccs_doodle( 'speech-bubble', 'doodle--corner' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle(). ?>
 						<span class="ccs-badge" aria-hidden="true"><?php echo ccs_icon( 'question' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
 						<div>
 							<h2 class="prompt-card__title"><?php echo esc_html( ccs_copy( 'faqs_box_title' ) ); ?></h2>

@@ -758,6 +758,22 @@ class CCS_Structured_Data {
 			);
 		}
 
+		// The hundred topic questions shown on the same page (inc/data/more-faqs.json).
+		if ( function_exists( 'ccs_more_faqs' ) ) {
+			foreach ( ccs_more_faqs()['groups'] as $group ) {
+				foreach ( $group['items'] as $item ) {
+					$questions[] = array(
+						'@type'          => 'Question',
+						'name'           => $item['q'],
+						'acceptedAnswer' => array(
+							'@type' => 'Answer',
+							'text'  => $item['a'],
+						),
+					);
+				}
+			}
+		}
+
 		if ( empty( $questions ) ) {
 			return array();
 		}
