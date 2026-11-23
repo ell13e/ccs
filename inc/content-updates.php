@@ -527,21 +527,7 @@ function ccs_working_with_us_address() {
 }
 add_action( 'init', 'ccs_working_with_us_address', 5 );
 
-/**
- * The old address goes to the new one (WordPress keeps old addresses for
- * posts, not for pages).
- */
-function ccs_working_with_us_redirect() {
-	if ( ! is_404() ) {
-		return;
-	}
-	$path = isset( $_SERVER['REQUEST_URI'] ) ? (string) wp_parse_url( esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ), PHP_URL_PATH ) : '';
-	if ( preg_match( '#/careers/working-' . 'for-us/?$#', $path ) ) {
-		wp_safe_redirect( home_url( '/careers/working-with-us/' ), 301 );
-		exit;
-	}
-}
-add_action( 'template_redirect', 'ccs_working_with_us_redirect', 1 );
+// The old address is sent to the new one in inc/redirects.php, with the old website's addresses.
 
 /**
  * The About page's closing line is a link (Nov 2026, client, pasting the

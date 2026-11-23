@@ -1,5 +1,9 @@
 # Sitemap & Build Tracker
 
+> **Superseded, Nov 2026.** The redirects are built: see `inc/redirects.php`, which
+> maps the old site's twenty addresses to the pages that exist on the new site
+> (its addresses differ from the plan below). `bin/qa.sh` tests every one.
+
 URL map for the rebuild. Live inventory below is the complete redirect source list from [page-sitemap.xml](https://www.continuitycareservices.co.uk/page-sitemap.xml) and [post-sitemap.xml](https://www.continuitycareservices.co.uk/post-sitemap.xml). Image counts are from Rank Math sitemap metadata (embedded images per URL).
 
 **At launch vs final target:** `At launch` is the 301 destination on go-live day — always a P1 page that exists. `New URL` is the final destination once that page ships; update the redirect when the page goes live. Never 301 to a URL that does not exist yet.

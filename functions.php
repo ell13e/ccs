@@ -60,6 +60,7 @@ require_once THEME_DIR . '/inc/area-local-support.php';
 require_once THEME_DIR . '/inc/internal-links.php';
 require_once THEME_DIR . '/inc/forms.php';
 require_once THEME_DIR . '/inc/content-updates.php';
+require_once THEME_DIR . '/inc/redirects.php';
 require_once THEME_DIR . '/inc/content-sections.php';
 
 /**
