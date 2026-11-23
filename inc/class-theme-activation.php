@@ -1240,7 +1240,8 @@ class CCS_Theme_Activation {
 				 * recent, rather than four posts sharing one timestamp and
 				 * ordering by ID.
 				 */
-				'post_date'    => gmdate( 'Y-m-d H:i:s', strtotime( '-' . (int) $data['days_ago'] . ' days' ) ),
+				// An article brought over from the old site keeps its own date.
+				'post_date'    => ! empty( $data['date'] ) ? $data['date'] : gmdate( 'Y-m-d H:i:s', strtotime( '-' . (int) $data['days_ago'] . ' days' ) ),
 			), true );
 
 			if ( is_wp_error( $id ) ) {
@@ -1328,6 +1329,60 @@ class CCS_Theme_Activation {
 		$started_url  = home_url( '/getting-started/' );
 
 		return array(
+			/*
+			 * Three articles from the website this theme replaces, brought across
+			 * word for word at their old addresses and with their old dates (Nov
+			 * 2026, client: "bring them over"), so links to them keep working. The
+			 * wording is the authors' own, typing slips included: it is the
+			 * client's to edit. The fourth old article (Black Friday shopping tips,
+			 * 2024) is not carried over; its address goes to News (inc/redirects.php).
+			 */
+			'proud-to-be-a-nurse-maidstone' => array(
+				'title'    => 'Why I am proud to be a nurse',
+				'category' => 'From the team',
+				'image'    => '',
+				'date'     => '2021-05-13 09:00:00',
+				'excerpt'  => 'Thirty-five years of dedicated care have led to a profound reflection on the privilege of shared compassion and experiencing life-changing moments.',
+				'content'  => '<p>Today is international National Nurses Day and every year I celebrate this along with all my nursing colleagues, especially since the beginning of the covid pandemic during which we have seen many loses of the people who care for people.</p>
+<p>Having been a nurse for over thirty-five years I am proud to say I have been able to enjoy all aspects of nursing throughout my career.</p>
+<p>What was originally looking after people who were ill in hospital as a student nurse, providing basic nursing care whilst gleaning as much information from the nurses that would be training all of us students.</p>
+<p>Since the 1980s nursing has evolved to become a highly responsible, accountable, clinical career where nurses rarely get the opportunity to give basic nursing care, many are trained to give what would have been considered the responsibilities that a doctor would have provided back in the eighties.</p>
+<p>I am a great believer that being a carer or nurse is something that you are born with, it is not just anybody that can have such a good rapport with someone that they look forward to seeing you when you see them to wash their back or dress their wounds, it is innate.</p>
+<p>My best nursing moments are so immense that I would not know where to start.</p>
+<p>Simple things like giving hugs (pre-covid of course) to the patients that came for regular B12 injections in the surgery, reassuring a young lady having her first smear then her tearfully thanking you when it is all done saying it wasn’t so bad , confidently giving vaccinations to toddler and they not shedding a tear as you did it well. Settling someone’s pain after an operation with the right prescribed medication and healing a long existing wound by finding the right treatment. All of which give satisfaction to make you feel like you make a real difference to that person.</p>
+<p>Finally, all the thankyous, thankyou letters from relatives when you have looked after, tomatoes from the garden from grateful patients, the satisfaction on talking to someone when they say that you have helped them with their anxieties and holding someone’s hand just because they take comfort in it.</p>
+<p>Every year I have a dahlia that flowers in September reminding me of a grateful patient who gave it to me as a thankyou for listening to him when he exploded with angry emotion when he was at the end of his tether whilst trying to care for his wife who had dementia, he was a carer and to the end of his wife’s life he gave his every minute of love and care.</p>
+<p>My worst ever scenario as a nurse was going into a patient’s home and finding that he had passed away in his bed. I was shocked and devastated. I had left this lovely man eating his sausage and mash on the promise of packing to go to his family for a Christmas break the next day. His daughters arrived at the home as the paramedics, they were composed and thankful to me for the care that I had given to him over the months.</p>
+<p>This, I can say with my hand on my heart, was the best care that I could have given. The same care and consideration that I would have given to my parents or children, this is what makes a good nurse or carer. These are just some of the things that stand out in my mind as to why I am still a nurse.</p>',
+			),
+			'the-right-person-makes-the-difference' => array(
+				'title'    => 'The right person makes the difference',
+				'category' => 'From the team',
+				'image'    => '',
+				'date'     => '2021-06-08 09:00:00',
+				'excerpt'  => 'Human beings, by nature, are a social species. While some individuals enjoy solitude (myself included), extended periods without social interaction can strain both mental and physical well-being.',
+				'content'  => '<p>Human beings, by nature, are a social species. While some individuals enjoy solitude (myself included), extended periods without social interaction can strain both mental and physical well-being.</p>
+<p>I remember this all too well from a few years ago when I was 21 weeks pregnant and broke my ankle. It wasn’t a simple break — it was a Trimalleolar fracture, meaning all three bones in my ankle were broken, along with a dislocation.</p>
+<p>I spent about a week in the hospital, feeling vulnerable and overwhelmed. One memory stands out: a particularly compassionate nurse who attended to me on the first day after my operation. She clearly loved her job. She helped me shower using a chair and, during this time, engaged me in light-hearted conversations about my family, my life, and even how the accident happened. I reciprocated by asking about her nursing career. Afterward, I felt not only physically clean but emotionally supported. Although I didn’t see anyone else that day and preferred to rest, her kindness stayed with me.</p>
+<p>The following day, another nurse performed the same duty. She was polite and professional, yet the experience felt entirely different. The conversations were just as superficial, but it was clear that, for her, this was a task, not a passion. While she wasn’t unpleasant, she didn’t evoke the same sense of care and connection as the first nurse.</p>
+<p>This contrast underscores why finding the right person to provide care is so vital. When we seek support for ourselves or loved ones at home, we need someone who genuinely wants to be there — someone who will wake up an hour earlier to help another person start their day with dignity and compassion. This kind of person cannot be fully understood through a CV or application form alone.</p>
+<p>At Continuity of Care Services, we take pride in ensuring the right match between caregivers and clients. Our process goes beyond resumes; we conduct thorough interviews and encourage families to participate in the selection process. We even arrange shadow calls to allow both parties to assess compatibility — because, let’s face it, not everyone will click, and that’s perfectly okay. The right person really can make all the difference.</p>',
+			),
+			'end-of-life-care-experience' => array(
+				'title'    => 'My first experience of end of life care',
+				'category' => 'From the team',
+				'image'    => '',
+				'date'     => '2021-06-08 10:00:00',
+				'excerpt'  => 'Back in 2013 I had just started in the care industry working for a company and was approached by a lady who worked at the NHS to support a lady in her own home who was very poorly.',
+				'content'  => '<p>Back in 2013 I had just started in the care industry working for a company and was approached by a lady who worked at the NHS to support a lady in her own home who was very poorly. The lady in question was trying to find hospice care and needed a company to support until a bed was made available.</p>
+<p>Back then I was younger and naïve and just felt that I could do anything. We had a local team of carers that lived in the village of Sutton valence and I went out to carry out an assessment. This lady was introduced to me by her son and daughter in law, and I arrived with one of her soon to be care team. She was sitting in her chair watching TV when I arrived. I was able to talk to Mrs T about herself, her routines, where she ate her meals, wheather she has a night light at bedtime, how many pillows she has on her bed to name a few question which I would then collate and put into her care plan.</p>
+<p>I carried out the very first call with this lady, she was lovely. She had come to accept that she was very poorly, but to speak to her you wouldn’t know it. I would make breakfast and Tea, and she would come and assist with lunch when she could.</p>
+<p>It wasn’t long before Mrs T started to go slowly downhill, to eventually being in her bed. She loved to watch downtown abbey and would often ask if the carer could sit with her to watch it together and talk about it while having the extra support to be cleaned and fresh of an evening.</p>
+<p>The son and daughter in law would pop in and there would be a free flowing conversation about the news or anything that may have caught our imagination at the time.</p>
+<p>In time, the conversation with Mrs T would drop, and the support for the family would become just as important as making sure that Mrs T was kept safe, clean and had her dignity at all times. The family would update the staff as to how MRs T was, and the staff could start to interact and get a picture of situations out side of the normal care times.</p>
+<p>If concerns were raised then this could be picked up quickly as it was the same team that were going into Mrs T, the company was able to work with the other professionals to ensure that Mrs T had a pain free passing and no pressure sores or marks which is so important.</p>
+<p>Now in 2021, we have set up a specialist Palliative care department with trained staff specifically working the NHS and the local hospice to help assist with end of life care.</p>',
+			),
 			'signs-a-relative-needs-help-at-home' => array(
 				'title'    => 'The quiet signs a relative may need help at home',
 				'category' => 'Care Advice',

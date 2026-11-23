@@ -17,8 +17,8 @@
  * - Any other address under /home/ goes to the same address without /home/
  *   when a page lives there, and to the homepage when one does not.
  *
- * The four old articles are not carried over. Each goes to the page nearest
- * its subject; change a target here if an article is brought across later.
+ * Three of the old site's four articles are carried over at their old
+ * addresses, so they need no redirect. The fourth goes to News.
  *
  * @package CCS_WP_Theme
  */
@@ -52,11 +52,8 @@ function ccs_old_site_redirects() {
 		// Pages with no successor.
 		'/home/under-construction/'             => '/',
 		'/sitemap/'                             => '/',
-		// The old site's four articles, each to the page nearest its subject.
-		'/proud-to-be-a-nurse-maidstone/'       => '/careers/',                      // a nurse on why she nurses; the old page pointed readers to careers.
-		'/the-right-person-makes-the-difference/' => '/services/companionship-care/', // on company and loneliness.
-		'/end-of-life-care-experience/'         => '/services/palliative-care/',     // a carer's first experience of end of life care.
-		'/stay-safe-online-shopping-tips/'      => '/news-and-updates/',             // seasonal advice, no page on the subject now.
+		// One old article is not carried over (seasonal advice from 2024). The other three live at their old addresses (class-theme-activation.php).
+		'/stay-safe-online-shopping-tips/'      => '/news-and-updates/',
 		// This site's own earlier address for Working with us.
 		'/careers/working-for-us/'              => '/careers/working-with-us/',
 	);
