@@ -231,7 +231,7 @@ get_header();
 					</p>
 				</header>
 				<?php // Five even beads in a row, no boxes: a mark, the question's name, its rating as a handwritten note, and what it means (Nov 2026; the boxed tiles in a 2, 2, 1 grid "need restyling"). ?>
-				<ul class="cqc-five__row" role="list">
+				<ul class="cqc-five__row" role="list" data-ccs-exception="rule 10: five short captions, each centred under its badge in a narrow column">
 					<?php foreach ( $ccs_cqc_five as $ccs_cqc_q ) : ?>
 						<li class="cqc-five__item">
 							<span class="ccs-badge cqc-five__mark" aria-hidden="true"><?php echo ccs_icon( $ccs_cqc_q[0] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>

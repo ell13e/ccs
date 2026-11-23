@@ -4307,6 +4307,12 @@ p + .link-line { margin-top: var(--space-2, 0.5rem); }
 
 /* Service page questions: the "Can’t find the answer?" line has room for one
    line under the heading (client: "wider a bit"). */
+/* The questions and "where we offer this" are both on white: one section
+   padding between them, not two stacked into an empty gap. */
+.service-faqs:has(+ .svc-where) {
+	padding-bottom: 0;
+}
+
 .service-faqs .ccs-head--center {
 	max-width: 52rem;
 }

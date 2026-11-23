@@ -132,7 +132,7 @@ $ccs_rh_lower = static function ( $title ) {
 $ccs_rh_last = count( $ccs_rh_rows ) - 1;
 ?>
 <?php foreach ( $ccs_rh_rows as $ccs_rh_n => $ccs_rh_row ) : ?>
-	<section class="ccs-section ccs-section--sm signpost<?php echo 0 === $ccs_rh_n ? ' resources-hub' : ''; ?><?php echo $ccs_rh_n % 2 ? ' ccs-section--tint' : ''; ?>">
+	<section class="ccs-section ccs-section--sm signpost<?php echo 0 === $ccs_rh_n ? ' resources-hub' : ''; ?><?php echo $ccs_rh_n % 2 ? ' ccs-section--tint' : ''; ?><?php echo ( $ccs_rh_n === $ccs_rh_last && ! ( $ccs_rh_n % 2 ) && ! $ccs_rh_strip_box && ! $ccs_rh_notes ) ? ' ccs-section--flush-bottom' : ''; ?>">
 		<div class="container container--lg">
 			<div class="signpost__row<?php echo $ccs_rh_n % 2 ? ' signpost__row--flip' : ''; ?>">
 				<?php $ccs_rh_img = $ccs_rh_photo( $ccs_rh_row['url'], $ccs_rh_n ); ?>
@@ -152,7 +152,7 @@ $ccs_rh_last = count( $ccs_rh_rows ) - 1;
 						<p class="signpost__text"><?php echo esc_html( $ccs_rh_row['line'] ); ?></p>
 					<?php endif; ?>
 					<?php // Filled on purpose: each section has one action and they never share a screen side by side (rule 8); the quiet button read as an afterthought beside a photo. ?>
-					<a class="btn btn-primary signpost__go" href="<?php echo esc_url( $ccs_rh_row['url'] ); ?>">
+					<a class="btn btn-primary signpost__go" data-ccs-exception="rule 8: each section's one action; the quiet button was not visible enough (client, Nov 2026)" href="<?php echo esc_url( $ccs_rh_row['url'] ); ?>">
 						<?php
 						/* translators: %s: the page's name, e.g. "care guides". */
 						printf( esc_html__( 'Go to %s', 'ccs-wp-theme' ), esc_html( isset( $ccs_rh_row['go'] ) ? $ccs_rh_row['go'] : $ccs_rh_lower( $ccs_rh_row['title'] ) ) );
@@ -174,7 +174,8 @@ $ccs_rh_last = count( $ccs_rh_rows ) - 1;
 
 <?php if ( $ccs_rh_strip_box ) : ?>
 	<?php $ccs_rh_call = function_exists( 'ccs_get_contact_info' ) ? ccs_get_contact_info() : array( 'phone' => '', 'phone_link' => '' ); ?>
-	<section class="ccs-section ccs-section--sm<?php echo count( $ccs_rh_rows ) % 2 ? ' ccs-section--tint' : ''; ?>">
+	<?php // On white it runs straight into the white CTA band: one padding, not two (rule 9). ?>
+	<section class="ccs-section ccs-section--sm<?php echo count( $ccs_rh_rows ) % 2 ? ' ccs-section--tint' : ' ccs-section--flush-bottom'; ?>">
 		<div class="container container--lg">
 			<div class="prompt-card">
 				<span class="ccs-badge" aria-hidden="true"><?php echo ccs_icon( 'question' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>

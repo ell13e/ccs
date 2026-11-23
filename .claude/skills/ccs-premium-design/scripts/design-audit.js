@@ -249,7 +249,10 @@
 			if (!visible(img) || !img.naturalWidth || img.closest('.cqc-widget')) return;
 			var r = img.getBoundingClientRect(), st = cs(img);
 			var fit = st.objectFit;
-			var natural = img.naturalWidth / img.naturalHeight, shown = r.width / r.height;
+			// The layout box, not the bounding rect: a rotated image (the doodles
+			// are tilted a few degrees) has a wider, squarer bounding rect and
+			// would read as stretched when it is not.
+			var natural = img.naturalWidth / img.naturalHeight, shown = img.offsetWidth && img.offsetHeight ? img.offsetWidth / img.offsetHeight : r.width / r.height;
 			if ((fit === 'fill' || fit === '') && Math.abs(natural - shown) / natural > 0.04) R.distortedImages.push(label(img) + ' ' + (img.currentSrc || img.src).split('/').pop().slice(0, 40));
 			// The best file the browser could choose on a 2x screen: the largest
 			// srcset candidate, not whichever 1x file this headless run picked.

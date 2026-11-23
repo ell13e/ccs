@@ -333,6 +333,17 @@
 	background-color: var(--color-band-tint);
 }
 
+/* The introduction grew to two sentences (client copy, Nov 2026). At the
+   standard centred width it ran to three centred lines; the same measure the
+   service pages give this text (.svc-steps) sets it in two. */
+.home-steps .ccs-head--center {
+	max-width: 58rem;
+}
+
+.home-steps .ccs-head--center .ccs-lede {
+	max-width: 52rem;
+}
+
 .ccs-steps {
 	--step-gap: var(--space-xl);
 	--step-pad: 0px; /* a length, not a bare 0: it is added to rem values inside calc() */

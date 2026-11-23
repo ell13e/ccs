@@ -153,7 +153,7 @@ get_header();
 					<header class="ccs-head ccs-head--center gs-intro">
 						<h2 id="gs-steps-heading" class="ccs-title"><?php echo ccs_accent_text( __( 'From first call to *first visit*', 'ccs-wp-theme' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_accent_text(). ?></h2>
 						<?php if ( '' !== trim( wp_strip_all_tags( $ccs_gs['intro'] ) ) ) : ?>
-							<div class="ccs-lede gs-intro__lede">
+							<div class="ccs-lede gs-intro__lede" data-ccs-exception="rule 10: the client chose the lead centred over the timeline, from three sketches">
 								<?php echo wp_kses_post( $ccs_gs['intro'] ); ?>
 							</div>
 						<?php endif; ?>

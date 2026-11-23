@@ -471,7 +471,7 @@ $ccs_sb_contact = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us'
 			<h2 id="svc-steps-heading" class="ccs-title"><?php echo esc_html( ccs_copy( 'steps_title' ) ); ?></h2>
 			<p class="ccs-lede"><?php echo esc_html( ccs_copy( 'steps_lede' ) ); ?></p>
 		</header>
-		<ol class="flow-steps" role="list">
+		<ol class="flow-steps" role="list" data-ccs-exception="rule 10: three short captions, each centred under its drawing in a narrow column">
 			<?php
 			/*
 			 * A drawing from the client's packs over each step, and a hand-drawn
