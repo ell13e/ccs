@@ -257,3 +257,70 @@ function ccs_photo_sheet_value( $rel, $column ) {
 	}
 	return isset( $sheet[ $rel ][ $column ] ) ? trim( (string) $sheet[ $rel ][ $column ] ) : '';
 }
+
+/**
+ * Give a theme photo in the media library the description from the photo sheet.
+ *
+ * Page headers and featured images print the media library's alt text, and
+ * the photos the theme loads into the library arrived without any. Only an
+ * empty alt text is filled, so a description edited in Media is never
+ * overwritten.
+ *
+ * @param int $attachment_id Attachment ID.
+ * @return void
+ */
+function ccs_fill_theme_photo_alt( $attachment_id ) {
+	$source = (string) get_post_meta( $attachment_id, '_ccs_source_theme_path', true );
+	if ( 0 !== strpos( $source, 'assets/images/' ) ) {
+		return;
+	}
+	if ( '' !== trim( (string) get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ) ) ) {
+		return;
+	}
+	$alt = ccs_photo_sheet_value( substr( $source, strlen( 'assets/images/' ) ), 'alt_text' );
+	if ( '' !== $alt ) {
+		update_post_meta( $attachment_id, '_wp_attachment_image_alt', $alt );
+	}
+}
+
+/**
+ * Fill the alt text as soon as the theme records where a new library photo came from.
+ *
+ * @param int    $meta_id    Meta ID.
+ * @param int    $object_id  Attachment ID.
+ * @param string $meta_key   Meta key.
+ * @return void
+ */
+function ccs_fill_alt_on_theme_import( $meta_id, $object_id, $meta_key ) {
+	if ( '_ccs_source_theme_path' === $meta_key ) {
+		ccs_fill_theme_photo_alt( (int) $object_id );
+	}
+}
+add_action( 'added_post_meta', 'ccs_fill_alt_on_theme_import', 10, 3 );
+
+/**
+ * Fill photos already in the library, once for each version of the photo sheet.
+ *
+ * @return void
+ */
+function ccs_fill_theme_photo_alts() {
+	$file    = get_template_directory() . '/assets/images/media-metadata.csv';
+	$version = is_readable( $file ) ? md5_file( $file ) : '';
+	if ( '' === $version || get_option( 'ccs_photo_sheet_alts' ) === $version ) {
+		return;
+	}
+	$ids = get_posts(
+		array(
+			'post_type'      => 'attachment',
+			'post_status'    => 'inherit',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'meta_key'       => '_ccs_source_theme_path', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- runs once per sheet version.
+		)
+	);
+	foreach ( $ids as $id ) {
+		ccs_fill_theme_photo_alt( (int) $id );
+	}
+	update_option( 'ccs_photo_sheet_alts', $version, false );
+}
+add_action( 'init', 'ccs_fill_theme_photo_alts', 80 );
