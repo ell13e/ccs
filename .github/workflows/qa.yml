@@ -42,6 +42,31 @@ jobs:
           cat "$RUNNER_TEMP/playground.log"
           exit 1
 
+      # The first requests to a new Playground get a half-set-up site (default
+      # title, no front page yet): the theme builds its pages, services and
+      # menus over the first few requests. The first run on GitHub audited the
+      # homepage in that window and found no h1. Wait until the pages exist and
+      # the homepage has its heading, then load an admin request once so the
+      # theme's one-time content updates (inc/content-updates.php, admin_init)
+      # are applied before anything is measured.
+      - name: Wait for the theme to finish setting up
+        run: |
+          B=http://127.0.0.1:9401
+          for i in $(seq 1 48); do
+            pages=$(curl -s -m 30 "$B/wp-json/wp/v2/pages?per_page=100&_fields=slug" | grep -o '"slug"' | wc -l)
+            h1=$(curl -s -m 30 "$B/" | grep -c '<h1' || true)
+            echo "try $i: $pages pages, homepage h1 x$h1"
+            if [ "$pages" -ge 25 ] && [ "$h1" -ge 1 ]; then
+              curl -s -m 60 -o /dev/null "$B/wp-admin/admin-ajax.php?action=ccs_warm_up" || true
+              curl -s -m 30 -o /dev/null "$B/"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "The site did not finish setting up"
+          cat "$RUNNER_TEMP/playground.log"
+          exit 1
+
       - name: Run QA
         working-directory: CCS
         env:
