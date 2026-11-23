@@ -339,3 +339,40 @@ function ccs_directions_url( $address_line ) {
 	}
 	return 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( $address_line );
 }
+
+/**
+ * The site icon (the favicon in the browser tab, and the icon when the site
+ * is saved to a phone's home screen), Nov 2026.
+ *
+ * The theme had none, so a new site showed WordPress's own "W" in the tab.
+ * Until an icon is chosen in Appearance > Customise > Site Identity, the
+ * infinity mark from the logo is used: on a clear ground for browser tabs,
+ * on white for an iPhone's home screen, which would otherwise put it on
+ * black. An icon chosen in the Customiser replaces all of these.
+ *
+ * The files are assets/images/brand/site-icon-{32,180,192,270,512}.png, made
+ * from ccs-infinity-mark.png (resized and centred on a square, nothing else).
+ *
+ * @param string $url  Site icon URL, empty when none is set.
+ * @param int    $size Size asked for, in pixels.
+ * @return string
+ */
+function ccs_default_site_icon( $url, $size ) {
+	if ( '' !== (string) $url && false === strpos( (string) $url, '/wp-includes/images/w-logo' ) ) {
+		return $url;
+	}
+	if ( get_option( 'site_icon' ) ) {
+		return $url;
+	}
+	$sizes = array( 32, 180, 192, 270, 512 );
+	$pick  = 512;
+	foreach ( $sizes as $candidate ) {
+		if ( $candidate >= (int) $size ) {
+			$pick = $candidate;
+			break;
+		}
+	}
+	$file = '/assets/images/brand/site-icon-' . $pick . '.png';
+	return file_exists( get_template_directory() . $file ) ? get_template_directory_uri() . $file : $url;
+}
+add_filter( 'get_site_icon_url', 'ccs_default_site_icon', 10, 2 );
