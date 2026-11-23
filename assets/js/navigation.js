@@ -124,7 +124,6 @@
 		setMenuOpen(!open);
 	}
 
-	/* ESC to close */
 	function onKeyDown(e) {
 		if (e.key !== 'Escape') return;
 		if (nav && nav.classList.contains(NAV_OPEN_CLASS_NAV)) {
@@ -152,7 +151,6 @@
 		}
 	}
 
-	/* Toggle button click */
 	if (toggle && nav) {
 		toggle.addEventListener('click', function() {
 			toggleMenu();
@@ -161,7 +159,6 @@
 
 	document.addEventListener('keydown', onKeyDown);
 
-	/* Click overlay to close */
 	document.addEventListener('click', function(e) {
 		if (!nav || !nav.classList.contains(NAV_OPEN_CLASS_NAV) || !isMobile()) return;
 		if (nav.contains(e.target) || (toggle && toggle.contains(e.target))) return;

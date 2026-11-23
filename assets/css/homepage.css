@@ -1,10 +1,8 @@
 /**
  * Homepage template styles
  *
- * Hero (unchanged), then every section below it on the shared section system:
- * CQC, why choose us, services, steps, differentiators, costs, reviews, team,
- * info cards, partnerships, closing card. See the block comment at the start of
- * the sections for the band sequence and the reasoning.
+ * The hero, then every section below it on the shared section system. The
+ * grounds are set in one block ("CALM PASS", below).
  * Uses design-system and components; flat specificity.
  *
  * @package CCS_WP_Theme
@@ -347,21 +345,11 @@
 /* =========================================================================
    SECTIONS BELOW THE HERO — rebuilt Nov 2026
 
-   Rebuilt on one system after the page was judged, fairly, to be "nowhere
-   near" the ElderlyCare X template the client chose as the standard. The
-   individual sections were reasonable; the system underneath them was not:
-   ~40px mid-purple titles, 14px radii, hairline borders, no icon language, no
-   overlapping layers, every header left-aligned. Everything here uses the
-   shared vocabulary in components.css (.ccs-head, .ccs-title, .ccs-lede,
-   .ccs-badge, .ccs-actions) and the tokens in design-system.css ("Section
-   system"), so a change to the type scale or card elevation lands everywhere.
-
-   Grounds, top to bottom, so no two neighbours share one:
-     hero · tint (CQC) · white (why) · cream (services) · tint (steps) ·
-     deep (differentiators) · white (costs) · cream (reviews) · tint (team) ·
-     white (info) · cream (partners) · white (closing card) · cream footer
-
-   The hero above is untouched.
+   Rebuilt on one system, against the ElderlyCare X template the client chose
+   as the standard. Everything here uses the shared vocabulary in
+   components.css (.ccs-head, .ccs-title, .ccs-lede, .ccs-badge, .ccs-actions)
+   and the tokens in design-system.css ("Section system"), so a change to the
+   type scale or card elevation lands everywhere. Grounds: see "CALM PASS".
    ========================================================================= */
 
 /* -------------------------------------------------------------------------

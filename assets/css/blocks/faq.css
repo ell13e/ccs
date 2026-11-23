@@ -27,7 +27,6 @@
 	border-top: 1px solid var(--ccs-faq-border, rgba(0, 0, 0, 0.08));
 }
 
-/* Question button */
 .ccs-faq__question-wrap {
 	margin: 0;
 	padding: 0;
@@ -75,7 +74,6 @@
 	min-width: 0;
 }
 
-/* Arrow icon */
 .ccs-faq__icon {
 	flex-shrink: 0;
 	width: 1.25rem;

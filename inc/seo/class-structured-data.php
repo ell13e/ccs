@@ -13,9 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class CCS_Structured_Data
- */
 class CCS_Structured_Data {
 
 	/**
@@ -484,18 +481,11 @@ class CCS_Structured_Data {
 	}
 
 	/**
-	 * BlogPosting schema for a news post.
-	 *
-	 * News posts previously emitted only the generic WebPage node every singular
-	 * URL gets, which says a URL exists but not that it is an article, who wrote
-	 * it, or when. Without that, a news item cannot qualify for article
-	 * treatment in search results and carries none of the author or freshness
-	 * signals that make dated content worth surfacing at all.
+	 * BlogPosting schema for a news post: says it is an article, who wrote it
+	 * and when.
 	 *
 	 * BlogPosting rather than NewsArticle: NewsArticle is for journalism from a
-	 * news organisation, and Google's own guidance is that misapplying it to a
-	 * company blog is a mismatch. These are provider updates and care advice, so
-	 * BlogPosting is the honest type.
+	 * news organisation. These are provider updates and care advice.
 	 *
 	 * @param WP_Post $post Post object.
 	 * @return array Schema array or empty.

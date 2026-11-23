@@ -2,12 +2,6 @@
 /**
  * One icon set for the whole theme.
  *
- * The ElderlyCare X template the client benchmarked against carries a single
- * icon language through every page: the same stroke weight, the same rounded
- * joins, always set in the same round tinted badge. That consistency is a large
- * part of why it reads as one designed system. Before this file the theme had
- * three unrelated line icons in one homepage section and nothing anywhere else.
- *
  * Drawn on a 24px grid, 1.7px stroke, round caps and joins, currentColor, so an
  * icon inherits whatever colour its badge or link sets. Filled in where the
  * shape allows (client, Nov 2026: "fill in the icons where poss"): each

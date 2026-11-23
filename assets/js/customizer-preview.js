@@ -37,7 +37,6 @@
 		 * applies correctly wherever it's actually printed.
 		 */
 
-		// Emergency banner: enabled
 		wp.customize('ccs_emergency_banner_enabled', function (value) {
 			value.bind(function (to) {
 				var bar = document.querySelector('.emergency-banner');
@@ -59,7 +58,6 @@
 			container.innerHTML = link ? '<a href="' + esc(link) + '">' + esc(text) + '</a>' : text;
 		}
 
-		// Emergency banner: text
 		wp.customize('ccs_emergency_banner', function (value) {
 			value.bind(setEmergencyBannerContent);
 		});

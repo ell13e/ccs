@@ -13,9 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class CCS_Accessibility_Checker
- */
 class CCS_Accessibility_Checker {
 
 	const TRANSIENT_KEY = 'ccs_a11y_check_results';
@@ -164,7 +161,6 @@ class CCS_Accessibility_Checker {
 			$results['skip-link']['message'] = __( 'Add a skip link (e.g. <a href="#main" class="skip-link">Skip to content</a>) in header.php.', 'ccs-wp-theme' );
 		}
 
-		// Nav aria-label
 		$results['aria-nav-label'] = array(
 			'status'  => ( strpos( $header, 'aria-label' ) !== false && strpos( $header, 'site-navigation' ) !== false ) ? 'pass' : 'fail',
 			'message' => __( 'Primary nav has aria-label.', 'ccs-wp-theme' ),
@@ -173,7 +169,6 @@ class CCS_Accessibility_Checker {
 			$results['aria-nav-label']['message'] = __( 'Add aria-label to the primary <nav> in header.php.', 'ccs-wp-theme' );
 		}
 
-		// Toggle aria-expanded / aria-controls
 		$results['aria-toggle-expanded'] = array(
 			'status'  => ( strpos( $header, 'aria-expanded' ) !== false && strpos( $header, 'aria-controls' ) !== false && strpos( $header, 'primary-menu' ) !== false ) ? 'pass' : 'fail',
 			'message' => __( 'Menu toggle has aria-expanded and aria-controls.', 'ccs-wp-theme' ),
@@ -342,7 +337,6 @@ class CCS_Accessibility_Checker {
 			echo '<div class="notice notice-warning is-dismissible"><p>' . wp_kses_post( $message ) . '</p></div>';
 		} );
 
-		// Dismiss handler
 		if ( isset( $_GET['ccs_a11y_dismiss'] ) && $_GET['ccs_a11y_dismiss'] === '1' ) {
 			update_option( 'ccs_a11y_notices_dismissed', array( 'all' ) );
 			wp_safe_redirect( remove_query_arg( 'ccs_a11y_dismiss' ) );

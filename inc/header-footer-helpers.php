@@ -260,23 +260,16 @@ function ccs_footer_help_fallback_menu() {
 }
 
 /**
- * Wrap one word (or short phrase) of a section heading in the accent mark.
+ * Wrap one word (or short phrase) of a section heading in the accent mark
+ * (.ccs-accent in components.css).
  *
- * reference/copy/homepage.md specifies an "Accent word" for each homepage H2
- * ("starts", "families", ...), and the inspiration set it was written against
- * (the plum NDIS and Aims concepts, the ElderlyCare X template) all lift one word per
- * heading. The mark is a hand-drawn brush underline in the brand mint, drawn in
- * CSS (.ccs-accent in components.css), so the heading stays in one typeface,
- * one colour and one weight: only the word that matters gets the stroke.
- *
- * Returns markup, already escaped, so it is safe to pass straight to printf()
- * as a %s placeholder inside an esc_html__() heading:
+ * Returns markup, already escaped, so it can go straight to printf() as a %s
+ * placeholder inside an esc_html__() heading:
  *
  *     printf( esc_html__( 'How care %s', 'ccs-wp-theme' ), ccs_accent( __( 'starts', 'ccs-wp-theme' ) ) );
  *
- * Keeping the placeholder inside the translatable string, rather than splitting
- * the heading into three fragments, means a translator can move the emphasis to
- * wherever the word falls in their language.
+ * Keeping the placeholder inside the translatable string lets a translator
+ * move the emphasis to wherever the word falls in their language.
  *
  * @param string $word The word or phrase to emphasise (unescaped).
  * @return string Escaped <span> markup.

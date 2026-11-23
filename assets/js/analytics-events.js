@@ -54,12 +54,10 @@
 			eventParams: eventParams
 		});
 
-		// GA4
 		if (ga4Id && typeof gtag === 'function') {
 			gtag('event', eventName, eventParams);
 		}
 
-		// Facebook Pixel
 		if (fbPixelId && typeof fbq === 'function') {
 			var fbEvent = eventParams.fbEvent || mapToFbEvent(eventName);
 			if (fbEvent) {
@@ -220,7 +218,6 @@
 			sendEvent('conversion', { type: 'thank_you_page' });
 		}
 
-		// Delegated listeners.
 		document.addEventListener('click', function (e) {
 			onPhoneClick(e);
 			onEmailClick(e);

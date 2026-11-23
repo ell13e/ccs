@@ -83,7 +83,6 @@ iframe {
 		align-items: center;
 	}
 
-	/* Contact form submit and primary actions */
 	/* Focus ring only on keyboard focus (not mouse click) */
 	a:focus-visible,
 	button:focus-visible {

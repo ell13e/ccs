@@ -11,9 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class CCS_Form_Handlers
- */
 class CCS_Form_Handlers {
 
 	/**

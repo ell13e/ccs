@@ -1,10 +1,6 @@
 <?php
 /**
- * Reusable inner-page header band.
- *
- * Inner pages previously rendered a bare <h1> on white with no visual anchor,
- * so every page below the homepage felt unfinished. This gives them a
- * consistent cream band with breadcrumb, heading and optional lede.
+ * Reusable inner-page header band: breadcrumb, heading and optional lede.
  *
  * Heading falls back to the post title, but pages can set a friendlier one via
  * the `ccs_page_heading` meta (several page titles are keyword strings like
@@ -80,22 +76,11 @@ $ccs_ph_inset = ! $ccs_ph_has_photo
 			<div class="page-hero__media">
 				<?php
 				/*
-				 * 'full', not 'large', and an explicit sizes of 100vw. Both matter,
-				 * and both were making this hero look far softer than the source files
-				 * deserve:
-				 *
-				 * - 'large' caps the src at WordPress's 1024px large size, so the
-				 *   fallback behind a full-bleed banner was a 1024px file.
-				 * - WordPress's default sizes attribute was
-				 *   "(max-width: 1024px) 100vw, 1024px" — correct for an image sitting
-				 *   in a content column, wrong for one spanning the viewport. It told
-				 *   the browser the image would never render wider than 1024px, so on
-				 *   a 1265px desktop at 2x (2530 device pixels of banner) the browser
-				 *   dutifully picked the 1024w candidate and ignored the larger one
-				 *   already sitting in the srcset.
-				 *
-				 * This hero is always 100vw (see .page-hero--photo in components.css),
-				 * so say so and let the browser choose properly.
+				 * 'full', not 'large', and an explicit sizes of 100vw. 'large' caps the
+				 * src at 1024px, and WordPress's default sizes attribute
+				 * ("(max-width: 1024px) 100vw, 1024px") tells the browser the image never
+				 * renders wider than that, so a 2x desktop picked the 1024w candidate. This
+				 * hero is always 100vw (.page-hero--photo in components.css).
 				 */
 				echo get_the_post_thumbnail(
 					$ccs_ph_id,

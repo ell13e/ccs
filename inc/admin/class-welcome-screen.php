@@ -11,9 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class CCS_Welcome_Screen
- */
 class CCS_Welcome_Screen {
 
 	const OPTION_CHECKLIST       = 'ccs_welcome_checklist';

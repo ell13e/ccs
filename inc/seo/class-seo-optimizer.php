@@ -13,9 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class CCS_SEO_Optimizer
- */
 class CCS_SEO_Optimizer {
 
 	const TITLE_MAX = 60;
@@ -93,27 +90,14 @@ class CCS_SEO_Optimizer {
 	/**
 	 * Truncate the final document title to TITLE_MAX characters.
 	 *
-	 * Truncating the assembled "Page Title | Site Name" string as one blob cut
-	 * wherever 60 characters happened to land, which on this site produced
-	 * "The quiet signs a relative may need help at home |" — a separator with
-	 * nothing after it — on three of the four news posts, and amputated the
-	 * business's own name to "Continuity Care" on the homepage. Both appear
-	 * verbatim in search results, so this is a shop-window defect.
+	 * All-or-nothing on the site-name suffix, never on the page title: keep both
+	 * when both fit, otherwise the page title alone, and shorten the page title
+	 * itself only when it exceeds the budget on its own. (Cutting the assembled
+	 * string as one blob left titles ending in a bare separator, and the
+	 * business's own name cut in half.)
 	 *
-	 * The two parts are not equally valuable. The page title is what somebody
-	 * searched for and is the reason the result is worth clicking; the site name
-	 * is a suffix that helps when it fits and hurts when it is half there. So
-	 * the rule is all-or-nothing on the suffix, never on the title: keep both
-	 * when both fit, otherwise keep the page title alone, and only shorten the
-	 * page title itself when it exceeds the budget on its own. An earlier
-	 * attempt at this preserved the site name at the title's expense and gave
-	 * "Home Care in Maidstone & | Continuity Care Services", dropping "Kent"
-	 * from the one title where the county is the whole point.
-	 *
-	 * Lengths are measured on the decoded string. WordPress has already turned
-	 * "&" into "&#038;" by this point, and counting the entity made a 56
-	 * character homepage title measure 61 and get cut for no reason — nobody
-	 * ever sees the entity, so nothing should be budgeted for it.
+	 * Lengths are measured on the decoded string: WordPress has already turned
+	 * "&" into "&#038;" by this point, and nobody sees the entity.
 	 *
 	 * @param string $title Full title string.
 	 * @return string Truncated title.
@@ -348,18 +332,10 @@ class CCS_SEO_Optimizer {
 		$image = $this->get_og_image();
 		$url   = $this->get_canonical_url();
 		/*
-		 * og:type — 'article' is only correct for things that genuinely are
-		 * articles: a published piece with an author and a date. News posts
-		 * qualify; service, location and ordinary pages do not, and the front
-		 * page least of all.
-		 *
-		 * The previous logic opened with `is_singular() ? 'website' : 'website'`
-		 * (both branches identical, so it decided nothing) and then set
-		 * 'article' for any singular page. Because the homepage is a static
-		 * page, that made the front page of the site advertise itself to
-		 * Facebook, LinkedIn and every other OG consumer as an article — the one
-		 * URL where 'website' matters most, since it is what gets shared when
-		 * someone links the business itself.
+		 * og:type: 'article' only for things that are articles, a published piece
+		 * with an author and a date. News posts qualify; service, location and
+		 * ordinary pages do not, and the front page least of all, since it is what
+		 * gets shared when someone links the business itself.
 		 */
 		$type = is_singular( 'post' ) && ! is_front_page() ? 'article' : 'website';
 
@@ -438,19 +414,12 @@ class CCS_SEO_Optimizer {
 	}
 
 	/**
-	 * og:image with a guaranteed result.
-	 *
-	 * Previously this returned '' on the front page: the homepage has no featured
-	 * image, and the theme renders its logo from a packaged PNG rather than the
-	 * custom_logo theme mod, so both branches missed and every shared link
-	 * previewed as a blank card. That matters more here than on most sites —
-	 * families routinely send a provider's link to siblings on WhatsApp, and the
-	 * preview sat next to competitors' photography with no image at all.
+	 * og:image with a guaranteed result, so a shared link never previews as a
+	 * blank card.
 	 *
 	 * Order is deliberate: the most page-specific image first, then the editor's
-	 * chosen share image, then the hero (a warm photograph of real care, which
-	 * makes a far better social card than a logo on white), then the packaged
-	 * hero, and only then the logo as a last resort.
+	 * chosen share image, then the hero (a photograph makes a better social card
+	 * than a logo on white), then the packaged hero, and only then the logo.
 	 *
 	 * @return string Image URL, or empty only if the theme files are missing.
 	 */

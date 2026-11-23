@@ -13,9 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class CCS_Testimonial_Block
- */
 class CCS_Testimonial_Block {
 
 	const BLOCK_NAME = 'ccs/testimonial';

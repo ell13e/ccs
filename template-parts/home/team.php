@@ -1,28 +1,17 @@
 <?php
 /**
- * Homepage "meet the people" strip.
+ * Homepage "meet the people" strip: the brand promise ("the same faces at
+ * every visit") shown, not just stated.
  *
- * Both the ElderlyCare X template and Harmony Care give their team a section on
- * the homepage, and it is the strongest human signal either one has. It is a
- * stronger one here than for most providers, because it is literally the brand
- * promise: "You'll see the same faces at every visit" (hero) and "the same small
- * team comes back each visit" (why-choose-us). The page makes that claim in text
- * four times and, until this section, showed nobody.
+ * The roster, order and photographs come from ccs_team_members() (inc/team.php),
+ * the single source the Team page also reads, so a change there updates both.
  *
- * page-templates/template-team.php states the principle in its own docblock:
- * what a family arranging care needs is to be able to "look for real names and
- * real faces" before a stranger comes into a relative's home. The roster, order
- * and photographs come from ccs_team_members() (inc/team.php), the single source
- * the Team page also reads, so a change there updates both. These are the same
- * people and photographs already published on that page, not new material.
- *
- * Four, not eight: the homepage shows the people a family is most likely to deal
- * with first (the managers), and hands the rest to the Team page. Members with no
- * photograph are skipped here rather than shown as initials, because a row of
- * faces with one grey tile in it undoes the point of the row.
+ * Four, not eight: the people a family is most likely to deal with first (the
+ * managers); the rest are on the Team page. Members with no photograph are
+ * skipped here rather than shown as initials.
  *
  * Photographs are cropped by the browser (object-fit) and nothing else: no
- * filter, no tone adjustment, so the set stays exactly as supplied.
+ * filter, no tone adjustment.
  *
  * @package CCS_WP_Theme
  */

@@ -10,9 +10,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class CCS_Location_Meta_Box
- */
 class CCS_Location_Meta_Box extends CCS_Meta_Box_Base {
 
 	/**

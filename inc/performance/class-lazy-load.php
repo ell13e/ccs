@@ -14,9 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class CCS_Lazy_Load
- */
 class CCS_Lazy_Load {
 
 	/**

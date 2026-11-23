@@ -11,9 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class CCS_Image_Optimization
- */
 class CCS_Image_Optimization {
 
 	/**

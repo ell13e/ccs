@@ -1,13 +1,9 @@
 <?php
 /**
- * Reusable pre-footer CTA: the homepage's closing card, on every inner page.
- *
- * Inner pages previously ended by running straight into the footer with no
- * next step, and then on a full-width purple stripe that no longer matched the
- * homepage. They now end on the same .cta-card (assets/css/sections.css): the
- * deepest plum, the ranked button pair, and on care pages the same photograph,
- * so every page closes the same way. Copy follows the "Ready when you are"
- * block in reference/copy/homepage.md.
+ * Reusable pre-footer CTA: the homepage's closing card (.cta-card,
+ * assets/css/sections.css) on every inner page, so every page closes the same
+ * way. Copy follows the "Ready when you are" block in
+ * reference/copy/homepage.md.
  *
  * Suppressed on the Contact page, where the form itself is the action.
  *

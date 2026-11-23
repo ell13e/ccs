@@ -13,9 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class CCS_Register_Taxonomies
- */
 class CCS_Register_Taxonomies {
 
 	/**

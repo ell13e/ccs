@@ -4017,11 +4017,6 @@ p + .link-line { margin-top: var(--space-2, 0.5rem); }
 }
 
 
-/* Getting started, "Good to know": the questions sit together in one soft
-   lilac card instead of four separate white boxes. */
-/* ("Good to know" now uses the site's one accordion style, with no card
-   of its own round the rows.) */
-
 /* =========================================================================
    FAQs: topics down the left, that topic's questions on the right (Nov 2026,
    from a reference the client sent). The rail is plain names; the one being

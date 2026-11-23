@@ -11,9 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class CCS_Theme_Activation
- */
 class CCS_Theme_Activation {
 
 	const DEMO_META_KEY       = '_ccs_demo_content';
@@ -546,18 +543,8 @@ class CCS_Theme_Activation {
 	/**
 	 * Is a site title/tagline still an untouched installer placeholder?
 	 *
-	 * The previous check compared blogname against 'Just another WordPress site',
-	 * which is WordPress's default *tagline*, never its default title — so no
-	 * real install ever matched it and the site title was left alone. On this
-	 * build that left "My WordPress Website" (the title WordPress Playground and
-	 * the wp-admin installer's own placeholder both ship) rendering in the
-	 * <title> tag, og:title, og:site_name, og:image:alt, the footer brand and the
-	 * copyright line — the site name is the single most repeated piece of brand
-	 * copy on every page, so a placeholder there undoes the rest of the branding.
-	 *
-	 * Matching is trimmed and case-insensitive because installers vary in casing,
-	 * and deliberately limited to a known placeholder list: anything a human has
-	 * actually typed is left untouched.
+	 * Matching is trimmed and case-insensitive, and limited to a known placeholder
+	 * list: anything a human has typed is left untouched.
 	 *
 	 * @param mixed $value Stored option value.
 	 * @return bool True when the value is empty or a known placeholder.
@@ -905,25 +892,15 @@ class CCS_Theme_Activation {
 	}
 
 	/**
-	 * Update a seeded page's copy — but only while it is still the theme's own.
+	 * Update a seeded page's copy, but only while it is still the theme's own.
 	 *
-	 * ensure_pages() deliberately never touched post_content on an existing page,
-	 * which is the right instinct (nothing should silently overwrite what an
-	 * editor has written) but left the seeded copy frozen: improving the wording
-	 * in get_default_page_content() changed nothing on any site where the pages
-	 * already existed, so the defaults could never be maintained after launch.
+	 * At seed time the page records a hash of what was written into it. On a later
+	 * populate, content that still hashes to that value is untouched and safe to
+	 * refresh; anything else has been edited by a person and is left alone.
 	 *
-	 * The fix is to tell the two cases apart rather than guess. At seed time the
-	 * page records a hash of exactly what was written into it. On a later
-	 * populate, if the current content still hashes to that value, nobody has
-	 * touched it and it is safe to refresh; if it differs by so much as a comma,
-	 * a human has been in there and it is left completely alone.
-	 *
-	 * Pages seeded before this meta existed carry no hash. Those get their
-	 * current content recorded as the baseline and are NOT modified on that run —
-	 * the conservative reading, since without a baseline there is no way to know
-	 * whether the copy is original or edited. They become refreshable from the
-	 * next populate onwards.
+	 * Pages seeded before the hash existed get their current content recorded as
+	 * the baseline and are not modified on that run; they become refreshable from
+	 * the next populate.
 	 *
 	 * @param WP_Post $page Existing page.
 	 * @param string  $slug Page slug, used to look up the current default copy.
@@ -967,22 +944,14 @@ class CCS_Theme_Activation {
 	/**
 	 * Replace WordPress's own untouched privacy-policy draft with the CCS policy.
 	 *
-	 * Every WordPress install creates a draft "Privacy Policy" page (ID 3, slug
-	 * privacy-policy, recorded in wp_page_for_privacy_policy) holding the core
-	 * template text. ensure_pages() reuses an existing page with a matching slug,
-	 * so it adopted that draft instead of creating the theme's own published
-	 * page, and refresh_seeded_content() deliberately never rewrites a page the
-	 * theme did not seed. The result on every fresh install: the footer's
-	 * Privacy Policy link pointed at /?page_id=3, a 404 for every visitor, on a
-	 * care provider's site where a published privacy notice is a UK GDPR
-	 * expectation rather than a nicety.
+	 * Every install creates a draft "Privacy Policy" page, which ensure_pages()
+	 * would otherwise adopt by its slug, leaving the footer link pointing at an
+	 * unpublished page.
 	 *
-	 * Acts only when all three hold, which together mean "nobody has touched
-	 * this": it is the site's designated privacy page, it is still a draft, and
-	 * it has never been modified (core inserts it with post_modified_gmt equal
-	 * to post_date_gmt, and any edit through WordPress changes the former). A
-	 * policy someone has edited, published or unpublished is left exactly as it
-	 * is.
+	 * Acts only when all three hold: it is the site's designated privacy page, it
+	 * is still a draft, and it has never been modified (post_modified_gmt equals
+	 * post_date_gmt). A policy someone has edited, published or unpublished is
+	 * left as it is.
 	 *
 	 * @param WP_Post $page Existing page found for $slug.
 	 * @param string  $slug Seeded page slug.
@@ -1238,18 +1207,11 @@ class CCS_Theme_Activation {
 
 
 	/**
-	 * Seed the News & Updates section and clear WordPress's own sample content.
-	 *
-	 * The blog was the one section of the site left at WordPress defaults: the
-	 * News & Updates index listed a single post titled "Hello world!" whose body
-	 * invited the reader to start editing, and /sample-page/ was still live and
-	 * indexable. On a site whose credibility rests on looking like a real,
-	 * running care business, an untouched WordPress demo post is worse than an
-	 * empty section — it says nobody has been here.
+	 * Seed the News & Updates section and clear WordPress's own sample content
+	 * ("Hello world!" and /sample-page/).
 	 *
 	 * Posts are seeded with real categories because the news templates label
-	 * every card with one, and a category-less post shows a gap where the topic
-	 * should be.
+	 * every card with one.
 	 */
 	private function ensure_news_posts() {
 		$this->remove_default_wordpress_content();
@@ -1477,18 +1439,9 @@ class CCS_Theme_Activation {
 	/**
 	 * Find an already-seeded post by slug, falling back to an exact title match.
 	 *
-	 * The slug-only lookup this replaces could miss a post it had itself created
-	 * moments earlier: if anything (a re-fired activation hook, a populate run
-	 * landing in the same request, a slug already claimed elsewhere) made
-	 * WordPress assign a suffixed slug like `aylesford-2`, the next lookup for
-	 * `aylesford` found nothing and seeded the town a second time. That is how
-	 * this site ended up with two Aylesford location pages on two live URLs and
-	 * two West Malling pages fighting over one — duplicate content on exactly
-	 * the pages whose whole purpose is ranking for a town name.
-	 *
-	 * Title is the right fallback key because it is what the duplicates actually
-	 * share: WordPress will silently rewrite a colliding slug, but it never
-	 * touches the title.
+	 * WordPress silently rewrites a colliding slug (`aylesford-2`) but never the
+	 * title, so a slug-only lookup missed such posts and seeded the town a second
+	 * time.
 	 *
 	 * @param string $post_type Post type to search.
 	 * @param string $post_name Intended slug.
@@ -1524,16 +1477,11 @@ class CCS_Theme_Activation {
 
 	/**
 	 * Trash duplicate seeded posts of a type, keeping the earliest of each title.
+	 * Runs before seeding, so a populate cleans up and re-seeds in one pass.
 	 *
-	 * Hardening find_seeded_post() stops new duplicates being created, but does
-	 * nothing about the ones already in the database — and duplicates are only a
-	 * problem once they are published and indexable. Runs before seeding so a
-	 * populate both cleans up and re-seeds in one pass.
-	 *
-	 * Trashed, not deleted: these are real posts that an editor may have written
-	 * into, and a wrong guess here should be recoverable from the Trash rather
-	 * than final. Only posts this theme seeded (marked via mark_as_demo) are
-	 * considered, so a location page an editor added by hand is never touched.
+	 * Trashed, not deleted, so a wrong guess is recoverable. Only posts this theme
+	 * seeded (mark_as_demo) are considered; a page an editor added by hand is
+	 * never touched.
 	 *
 	 * @param string $post_type Post type to de-duplicate.
 	 * @return int Number of posts trashed.
@@ -1726,18 +1674,12 @@ class CCS_Theme_Activation {
 	}
 
 	/**
-	 * Give the seeding author a display name fit to appear as a byline.
+	 * Give the seeding author a display name fit to appear as a byline: news
+	 * articles print "By {author}" and publish a schema.org author node, and the
+	 * WordPress default read "By admin".
 	 *
-	 * News articles carry "By {author}" and publish a schema.org author node, so
-	 * the author's display name is public-facing copy on this site rather than
-	 * an internal label. Left at the WordPress default it read "By admin" on
-	 * every article and shipped `"author": {"name": "admin"}` to search engines —
-	 * which undercuts an article about arranging care for a relative more than
-	 * having no byline would.
-	 *
-	 * Only touched while it is still the username-derived default, so a real
-	 * name a person has set is never overwritten. Falls back to the business
-	 * name because these are provider updates published by the organisation.
+	 * Only touched while it is still the username-derived default. Falls back to
+	 * the business name, since these are updates published by the organisation.
 	 */
 	private function ensure_author_display_name() {
 		$user_id = $this->get_author_id();

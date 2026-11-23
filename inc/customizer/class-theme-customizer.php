@@ -13,9 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class CCS_Theme_Customizer
- */
 class CCS_Theme_Customizer {
 
 	/**
@@ -130,16 +127,7 @@ class CCS_Theme_Customizer {
 	}
 
 	/**
-	 * Care Costs section.
-	 *
-	 * These figures were previously hardcoded into
-	 * template-parts/home/costs.php as a PHP array. That made the most
-	 * frequently changing and most business-critical number on the entire site —
-	 * the published hourly rate — editable only by a developer with deploy
-	 * access, on a page whose own file comment notes that rates are reviewed
-	 * annually. Published pricing is also this site's clearest advantage over
-	 * every benchmarked competitor, so it needs to stay current without a
-	 * release.
+	 * Care Costs section: the published rates, editable without a release.
 	 *
 	 * Defaults match the 1 Sept 2026 schedule exactly, so an existing install
 	 * renders identically until someone deliberately changes a value.

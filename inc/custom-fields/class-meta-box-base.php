@@ -12,9 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class CCS_Meta_Box_Base
- */
 abstract class CCS_Meta_Box_Base {
 
 	/**

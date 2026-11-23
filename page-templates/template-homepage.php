@@ -26,18 +26,9 @@ $ccs_phone_tel = $ccs_phone ? preg_replace( '/\s+/', '', $ccs_phone ) : '';
 
 	<?php
 	/*
-	 * Section order follows the family's decision path:
-	 * hero (who/what/where + CTA) -> CQC (regulatory proof, checked early)
-	 * -> why choose us (narrative) -> services (the offer)
-	 * -> steps (what actually happens when you call: the question that stops
-	 * most first calls) -> differentiators (concrete proof) -> costs (the
-	 * question families ask first, and the one competitors refuse to answer)
-	 * -> testimonial (social proof) -> team (real names, real faces: the brand
-	 * promise shown, not just stated) -> info cards (next steps) -> partnerships
-	 * (supporting credibility) -> closing CTA (the ask).
-	 *
-	 * Grounds run white / tint / cream in a repeating cycle so no two neighbours
-	 * share one; see the "Bands" block in design-system.css.
+	 * Section order: hero, partner marquee, why choose us, services, steps, the
+	 * story video, differentiators, reviews, team, news, closing CTA. Grounds are
+	 * set in one block at the end of homepage.css.
 	 */
 	?>
 	<?php

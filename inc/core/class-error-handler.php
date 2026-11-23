@@ -11,9 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class CCS_Error_Handler
- */
 class CCS_Error_Handler {
 
 	const LEVEL_ERROR   = 'ERROR';

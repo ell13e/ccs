@@ -12,7 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $items = array();
 
-// Home.
 $items[] = array(
 	'label' => __( 'Home', 'ccs-wp-theme' ),
 	'url'   => home_url( '/' ),

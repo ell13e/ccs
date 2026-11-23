@@ -12,10 +12,6 @@
  * _company honeypot and [data-ccs-form-message]. id="contact-form" is kept too,
  * because other pages link straight to #contact-form.
  *
- * The old "How can we help?" cards under the form are gone: two of the three
- * linked back to #contact-form on this same page, so they sent people round in
- * a circle, and the third duplicated the call card.
- *
  * @package CCS_WP_Theme
  * @since 1.0.0
  */

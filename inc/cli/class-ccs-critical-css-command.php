@@ -18,9 +18,6 @@ if ( ! class_exists( 'WP_CLI' ) ) {
 	return;
 }
 
-/**
- * Class CCS_Critical_CSS_Command
- */
 class CCS_Critical_CSS_Command {
 
 	/**

@@ -147,29 +147,14 @@
 	--space-3xl: clamp(4rem, 3rem + 5vw, 6rem);            /* ~64–96px */
 
 	/* ---- Vertical rhythm -------------------------------------------------
-	   Page sections were alternating between --space-3xl and --space-2xl with
-	   no rule governing which got which, so the gaps between blocks changed
-	   size as you scrolled. Below is the rhythm: every section uses one of
-	   two tiers for its padding-block, and every section heading block is
-	   separated from its content by --section-heading-gap. Change the rhythm
-	   of the whole page by changing these, not by editing individual sections.
-
-	   Two tiers, not one:
-	   - --section-space-y — the default. Primary content sections (services,
-	     differentiators, costs, why-choose-us): the blocks carrying the
-	     page's actual argument.
-	   - --section-space-y-compact — lighter bands that do not need the same
-	     weight of air around them: a single pull-quote testimonial, a strip
-	     of partner logos. Using the full tier on a one-line section made it
-	     read as padded-out rather than intentionally light.
-	   Both scale a little wider than --space-3xl at large viewports, because
-	   the editorial layout needs more air between blocks than a boxed one did.
-
-	   This replaces an earlier, unfinished attempt at the same idea —
-	   --space-section / --page-width / --page-gutter below, added 2026-08-19
-	   and never wired into any section. Three unreconciled spacing systems
-	   sitting in one file was its own version of this exact problem, so the
-	   dead one is removed rather than left as a second candidate answer. */
+	   Every section uses one of two tiers for its padding-block, and every
+	   section heading block is separated from its content by
+	   --section-heading-gap. Change the rhythm of the whole page here, not
+	   by editing individual sections.
+	   - --section-space-y: the default, for sections carrying the page's
+	     argument (services, differentiators, why-choose-us).
+	   - --section-space-y-compact: lighter bands (a single pull quote, a
+	     strip of partner logos), which read as padded-out on the full tier. */
 	--section-space-y: clamp(3.5rem, 2.4rem + 5vw, 7rem);         /* ~56–112px */
 	--section-space-y-compact: clamp(2.5rem, 1.8rem + 3vw, 4.5rem); /* ~40–72px */
 	--section-heading-gap: clamp(1.75rem, 1.2rem + 2.5vw, 3rem);  /* ~28–48px */
@@ -179,18 +164,10 @@
 	--measure: min(48rem, 100%);
 
 	/* Main content width, used by .container--lg and every direct
-	   var(--content-width-lg) reference — deliberately its own token, not
-	   --bp-lg below. .container--lg used to read max-width: var(--bp-lg), which
-	   made "the site's content column" and "the 1024px layout breakpoint"
-	   secretly the same number with no reason for them to be. On a wide desktop
-	   monitor that meant every page section below the (full-bleed) hero sat in
-	   a 1024px strip with equal margins pushing in from both sides — correctly
-	   centred, but at 1920px wide that is 46% of the screen sitting empty,
-	   which reads as the page having collapsed to one side even though nothing
-	   is actually off-centre. 1280px keeps the prose measure comfortable
-	   (paragraphs already cap at 48rem/~56–62ch via --measure and per-element
-	   ch limits, independent of this) while giving the card grids meaningfully
-	   more room and closing most of that gap. */
+	   var(--content-width-lg) reference. Deliberately its own token, not
+	   --bp-lg below: the content column and the 1024px layout breakpoint are
+	   different things. At 1024px, a 1920px screen sat 46% empty; 1280px gives
+	   the card grids room while prose still caps at its own measure. */
 	--content-width-lg: 1280px;
 
 	/* ----- Breakpoints (layout switches — nav, grid columns; NOT content
@@ -327,7 +304,6 @@
 	--z-tooltip: 60;
 }
 
-/* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
 	:root {
 		--duration-fast: 0ms;
@@ -377,7 +353,6 @@
    UTILITIES – Spacing (margin / padding)
    ------------------------------------------------------------------------- */
 
-/* Margin */
 .m-0   { margin: 0; }
 .m-xs  { margin: var(--space-xs); }
 .m-sm  { margin: var(--space-sm); }
@@ -419,7 +394,6 @@
 .mr-lg, .mx-lg { margin-right: var(--space-lg); }
 .mr-xl, .mx-xl { margin-right: var(--space-xl); }
 
-/* Padding */
 .p-0   { padding: 0; }
 .p-xs  { padding: var(--space-xs); }
 .p-sm  { padding: var(--space-sm); }
@@ -461,7 +435,6 @@
 .pr-lg, .px-lg { padding-right: var(--space-lg); }
 .pr-xl, .px-xl { padding-right: var(--space-xl); }
 
-/* Gap (flex/grid) */
 .gap-0   { gap: 0; }
 .gap-xs  { gap: var(--space-xs); }
 .gap-sm  { gap: var(--space-sm); }

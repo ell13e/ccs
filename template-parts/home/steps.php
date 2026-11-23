@@ -1,27 +1,14 @@
 <?php
 /**
- * Homepage "How care starts" — three steps.
+ * Homepage "How care starts": three steps, answering what happens when you
+ * pick up the phone.
  *
- * Specified in reference/copy/homepage.md ("How it works (3 steps)", H2 "How care
- * starts", accent word "starts") and never built. reference/strategy.md asks the
- * top of the page to "include a visible hint there's more (e.g. 'How it works in
- * 3 steps')", and its journey table puts "what happens next" at the stage where
- * a family is "logistical, money-aware, wants to know what happens next".
+ * Copy rewritten by the client (Nov 2026). The lead-in says care "often
+ * starts within a month" of agreeing the plan.
  *
- * That is also the gap the ElderlyCare X template's "Easy care in three steps"
- * block fills, and the one the page had: it explained who we are, what we offer
- * and what it costs, but never what actually happens when you pick up the phone.
- * Not knowing is what stops most first calls.
- *
- * Copy rewritten by the client (Nov 2026). The lead-in now says care "often
- * starts within a month" of agreeing the plan. The FAQ page (editor content)
- * still says "within one to two weeks"; the two should agree.
- *
- * Voice rules (reference/copy/homepage.md): no em dashes, one CTA label. This
- * block deliberately ends on a link to the full process rather than a second
- * "Book a free consultation" button: the services band directly above already
- * asks, and the closing band asks again below, so a third ask in six screens
- * would be pressure rather than help.
+ * Ends on a link to the full process rather than a second "Book a free
+ * consultation" button: the services band above already asks, and the closing
+ * band asks again below.
  *
  * Filterable so the steps can be edited without touching the template.
  *

@@ -14,9 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class CCS_Analytics
- */
 class CCS_Analytics {
 
 	/**
@@ -170,7 +167,6 @@ class CCS_Analytics {
 			$this->output_ga4_script( $ga4_id );
 		}
 
-		// Facebook Pixel.
 		if ( $fb_id !== '' ) {
 			$this->output_fb_pixel_script( $fb_id );
 		}

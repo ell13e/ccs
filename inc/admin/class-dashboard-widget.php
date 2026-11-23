@@ -11,9 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class CCS_Dashboard_Widget
- */
 class CCS_Dashboard_Widget {
 
 	const WIDGET_ID   = 'ccs_care_dashboard';

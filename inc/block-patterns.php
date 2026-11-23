@@ -28,7 +28,6 @@ add_action( 'init', 'ccs_register_block_pattern_category' );
 function ccs_register_block_patterns() {
 	$contact_url = esc_url( ( function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us' ) : home_url( '/contact-us/' ) ) );
 
-	// Service / CTA box
 	register_block_pattern( 'ccs-wp-theme/service-cta-box', array(
 		'title'       => __( 'Service CTA Box', 'ccs-wp-theme' ),
 		'description' => __( 'A highlighted box with heading, short text and primary button (e.g. Get in touch).', 'ccs-wp-theme' ),
@@ -51,7 +50,6 @@ function ccs_register_block_patterns() {
 <!-- /wp:group -->',
 	) );
 
-	// Contact prompt
 	register_block_pattern( 'ccs-wp-theme/contact-prompt', array(
 		'title'       => __( 'Contact Prompt', 'ccs-wp-theme' ),
 		'description' => __( 'A short line with a link or button to the contact page.', 'ccs-wp-theme' ),
@@ -68,7 +66,6 @@ function ccs_register_block_patterns() {
 <!-- /wp:buttons -->',
 	) );
 
-	// Trust / stats strip
 	register_block_pattern( 'ccs-wp-theme/trust-stats-strip', array(
 		'title'       => __( 'Trust &amp; Stats Strip', 'ccs-wp-theme' ),
 		'description' => __( 'A row of 2–3 stat-style items (number + label) with CCS spacing and colours.', 'ccs-wp-theme' ),
@@ -109,7 +106,6 @@ function ccs_register_block_patterns() {
 <!-- /wp:group -->',
 	) );
 
-	// Quote / testimonial
 	register_block_pattern( 'ccs-wp-theme/quote-testimonial', array(
 		'title'       => __( 'Quote or Testimonial', 'ccs-wp-theme' ),
 		'description' => __( 'A quote block with optional attribution.', 'ccs-wp-theme' ),
@@ -120,7 +116,6 @@ function ccs_register_block_patterns() {
 <!-- /wp:quote -->',
 	) );
 
-	// Key points list
 	register_block_pattern( 'ccs-wp-theme/key-points-list', array(
 		'title'       => __( 'Key Points List', 'ccs-wp-theme' ),
 		'description' => __( 'A list with checkmark-style or styled list items.', 'ccs-wp-theme' ),
@@ -135,7 +130,6 @@ function ccs_register_block_patterns() {
 <!-- /wp:list -->',
 	) );
 
-	// Secondary CTA (Find out more)
 	register_block_pattern( 'ccs-wp-theme/find-out-more-cta', array(
 		'title'       => __( 'Find Out More CTA', 'ccs-wp-theme' ),
 		'description' => __( 'A compact CTA with heading and secondary-style button.', 'ccs-wp-theme' ),

@@ -14,9 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class CCS_FAQ_Block
- */
 class CCS_FAQ_Block {
 
 	const BLOCK_NAME = 'ccs/faq';

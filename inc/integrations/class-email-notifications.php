@@ -12,27 +12,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class CCS_Email_Notifications
- */
 class CCS_Email_Notifications {
 
-	/** Default admin recipient. */
 	const ADMIN_EMAIL_DEFAULT = 'office@continuitycareservices.co.uk';
 
 	/** Theme mod: admin recipient(s), comma-separated. */
 	const SETTING_RECIPIENTS = 'ccs_email_recipients';
 
-	/** Theme mod: From name. */
 	const SETTING_FROM_NAME = 'ccs_email_from_name';
 
-	/** Theme mod: From email. */
 	const SETTING_FROM_EMAIL = 'ccs_email_from_email';
 
-	/** Theme mod: Reply-To. */
 	const SETTING_REPLY_TO = 'ccs_email_reply_to';
 
-	/** Theme mod: logo URL for emails. */
 	const SETTING_LOGO_URL = 'ccs_email_logo_url';
 
 	/** Theme mod: contact phone (user confirmation). */

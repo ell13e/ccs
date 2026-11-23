@@ -1,28 +1,11 @@
 <?php
 /**
- * Homepage differentiators: four items in a 2-column grid with number badge,
- * title and description.
+ * Homepage differentiators: a photo beside an accordion of four items (title
+ * and description), the first open.
  *
- * Was six items, each carrying a second `detail` paragraph — twelve blocks of
- * prose in one section. strategy.md asks for "scannable blocks, one obvious
- * next step — never a wall of choices" for this audience, and that is precisely
- * what it had become. Three changes, all subtractive:
- *
- * - "CQC regulated" removed. The homepage already opens with a full CQC section
- *   ("Rated Good by the CQC") directly under the hero, so this repeated the
- *   page's own strongest trust signal a screen and a half later.
- * - "Transparent pricing" removed to template-parts/home/costs.php, where it is
- *   backed by actual rates. Making the claim here with no numbers anywhere on
- *   the site was the thing that made it hollow.
- * - The area list moved out of "Local, and quick to respond"; towns belong with
- *   the location pages, not buried in a supporting paragraph.
- *
- * The `detail` line is gone entirely — it was carrying the text that made this
- * a wall. Anything genuinely load-bearing was promoted into `desc`.
- *
- * Strongest claim first. "A team matched to you" is the only item here no
- * competitor can copy, so it leads rather than sitting second behind a
- * regulation badge every provider has.
+ * Not here on purpose: "CQC regulated" (the rating is shown elsewhere on the
+ * page), "Transparent pricing" (a claim that belongs beside actual rates) and
+ * the list of towns (they belong with the location pages).
  *
  * @package CCS_WP_Theme
  */

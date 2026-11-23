@@ -24,7 +24,6 @@
 	font-size: 1.1em;
 }
 
-/* Checklist list */
 .ccs-welcome-checklist-list {
 	list-style: none;
 	margin: 12px 0;
@@ -127,7 +126,6 @@
 	margin: 0;
 }
 
-/* Theme meta */
 .ccs-welcome-theme-meta {
 	list-style: none;
 	margin: 12px 0;
@@ -138,7 +136,6 @@
 	margin: 6px 0;
 }
 
-/* Requirements table */
 .ccs-welcome-requirements .widefat {
 	max-width: 480px;
 }
@@ -147,7 +144,6 @@
 	color: #d63638;
 }
 
-/* Docs overlay */
 .ccs-welcome-docs-overlay {
 	position: fixed;
 	inset: 0;

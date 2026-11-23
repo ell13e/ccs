@@ -10,9 +10,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class CCS_Enquiry_Manager
- */
 class CCS_Enquiry_Manager {
 
 	const POST_TYPE   = 'enquiry';

@@ -2,11 +2,9 @@
 /**
  * Responsive images for photographs bundled with the theme.
  *
- * Media Library images get a srcset from WordPress. Files shipped in
- * assets/images/ got none, so every screen downloaded the full-size original:
- * the homepage hero sent 411KB to a phone, and a 1600px photo filled a 205px
- * collage tile. This reads pre-made width variants that sit beside the
- * original and prints them as srcset.
+ * Media Library images get a srcset from WordPress; files shipped in
+ * assets/images/ get none. This reads pre-made width variants that sit beside
+ * the original and prints them as srcset.
  *
  * Variant naming: `{original name}-{width}w.{ext}` in the same folder, e.g.
  * `home-hero-family.jpg` + `home-hero-family-800w.webp`. Variants are resized

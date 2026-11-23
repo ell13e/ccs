@@ -2,20 +2,8 @@
 /**
  * Homepage review band.
  *
- * Replaces a single unattributed pull quote ("C.P.", no source, no date, no
- * relationship) that was the weakest section on the page — 278px tall, with its
- * heading set to .visually-hidden so the band read as a stray italic paragraph
- * rather than social proof.
- *
- * The competitive gap this closes is the widest on the site. Bluebird Care's
- * Maidstone page carries 45 syndicated homecare.co.uk reviews behind a live
- * 8.9/10 aggregate, each attributed by relationship; Helping Hands puts a
- * Trustpilot score and review count in a trust strip on every page. Both make
- * their proof externally checkable. A quote signed with initials asks to be
- * taken on trust, which is the one thing a family arranging care will not do.
- *
- * Every quote here is drawn from the vetted pool in reference/reviews.md and
- * follows that file's rules exactly:
+ * Every quote is from the vetted pool in reference/reviews.md and follows
+ * that file's rules:
  *   - Verbatim only. Trims are marked with an ellipsis; nothing is reworded and
  *     no two reviewers are merged.
  *   - Attribution carries relationship + source + date, not just initials.
@@ -23,16 +11,9 @@
  *   - R2's pull quote deliberately avoids the "person-centred" phrasing in the
  *     source review, per that entry's own note.
  *
- * Deliberately NOT marked up as Review/AggregateRating JSON-LD: reviews.md
- * states "Never mark third-party reviews up in JSON-LD (schema gets the CQC
- * facts, not these)." The CQC rating travels in the organisation schema
- * instead — see inc/seo/class-structured-data.php.
- *
- * Quotes stay in the template rather than the Customizer because each one is
- * consent-gated and changes rarely — unlike the rate card, which moves
- * annually and now lives in Appearance → Customise → Care Costs. A Testimonial
- * CPT already exists in the theme and is the right long-term home once the pool
- * grows beyond a curated three.
+ * Not marked up as Review/AggregateRating JSON-LD: reviews.md says never to
+ * mark third-party reviews up in schema. The CQC rating travels in the
+ * organisation schema instead (inc/seo/class-structured-data.php).
  *
  * @package CCS_WP_Theme
  */

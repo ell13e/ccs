@@ -11,9 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class CCS_Cache_Control
- */
 class CCS_Cache_Control {
 
 	/**

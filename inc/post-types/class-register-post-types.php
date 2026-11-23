@@ -12,9 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class CCS_Register_Post_Types
- */
 class CCS_Register_Post_Types {
 
 	/**

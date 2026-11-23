@@ -16,7 +16,6 @@
 		$('#ccs-quick-view-modal').attr('hidden', true).hide();
 	});
 
-	// Quick View modal
 	$(document).on('click', '.ccs-quick-view', function(e) {
 		e.preventDefault();
 		var id = $(this).data('id');

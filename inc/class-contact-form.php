@@ -11,9 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class CCS_Contact_Form
- */
 class CCS_Contact_Form {
 
 	const CPT_ENQUIRY       = 'ccs_enquiry';

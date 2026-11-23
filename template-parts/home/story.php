@@ -1,21 +1,12 @@
 <?php
 /**
- * Homepage: the story video.
- *
- * The one piece of moving, human material CCS has (the registered manager
- * telling the company's story) lived only on the About page. Here it gets a
- * full-width frame of its own: the largest image on the page after the hero,
- * and the page's main splash of brand colour, since the poster is the brand's
- * own plum.
- *
- * Layout borrowed from the benchmark (ElderlyCare X "facilities" section): a
- * centred head over a wide video that straddles two grounds, so the frame
- * overlaps the seam between this section and the cream services band below it.
- * Click-to-load: nothing from YouTube is requested until someone presses play.
+ * Homepage: the story video (the registered manager telling the company's
+ * story), in one wide frame. Click-to-load: nothing from YouTube is requested
+ * until someone presses play.
  *
  * The heading is the homepage's own (Nov 2026, client review: "Where it
  * started", shared with the About page, did not say what this section is).
- * It now says there is a video to watch; the About page keeps its heading.
+ * It says there is a video to watch; the About page keeps its heading.
  *
  * @package CCS_WP_Theme
  */

@@ -1,19 +1,11 @@
 <?php
 /**
- * 404 — page not found.
+ * 404: page not found.
  *
- * Without this file a missing URL fell through to index.php, which renders
- * template-parts/content-none.php inside a bare <main> with no container: an
- * unstyled "Nothing Found / No content matched your request." pinned to the
- * left edge of the viewport, outside the site's layout grid entirely.
- *
- * That is a poor page anywhere and a bad one here. The people most likely to
- * hit a dead URL on this site are following an old link from a leaflet, a
- * directory listing or a hospital discharge pack — often while arranging care
- * under pressure. A dead end that offers no phone number and no route onward
- * is the opposite of what the rest of the site promises. So this page does
- * three things: says plainly what happened, hands over the phone number, and
- * offers the handful of destinations people actually arrive looking for.
+ * Says plainly what happened, gives the phone number, and offers the few
+ * destinations people arrive looking for. Someone reaching a dead URL here is
+ * often following an old link from a leaflet or a hospital discharge pack, so
+ * this page must never be a dead end.
  *
  * @package CCS_WP_Theme
  * @since 1.0.0

@@ -711,19 +711,10 @@ add_action( 'init', 'ccs_register_accessibility_checker', 25 );
 /**
  * Version theme CSS/JS by file modification time, not THEME_VERSION.
  *
- * Every asset was enqueued with THEME_VERSION ('1.0.0'), which has never
- * changed, so an edited stylesheet kept the same URL and browsers kept serving
- * their cached copy. Combined with the page HTML's own cache lifetime
- * (inc/performance/class-cache-control.php sends public, max-age=3600) that
- * produced a mixed page after a deploy: new HTML painted with old CSS, or old
- * HTML with new CSS, unstyled sections and all. It was seen exactly that way
- * during the November 2026 homepage rebuild.
- *
- * With the file's mtime as ?ver, a changed file gets a new URL, so cached HTML
- * keeps pointing at the CSS it was written for and fresh HTML gets fresh CSS:
- * whichever page a visitor has, it is internally consistent. Applied in one
- * place to every theme asset rather than at each of the enqueue calls above.
- * Assets from plugins or core are left alone.
+ * THEME_VERSION never changes, so an edited stylesheet kept its URL and
+ * browsers painted fresh HTML with a cached copy (seen during the Nov 2026
+ * homepage rebuild). With the file's mtime as ?ver, a changed file gets a new
+ * URL. Applied here to every theme asset; plugin and core assets are left alone.
  *
  * @param string $src Asset URL as enqueued.
  * @return string URL with ?ver set to the file's mtime when it is a theme file.

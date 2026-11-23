@@ -13,9 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class Autoloader
- */
 class CCS_Autoloader {
 
 	/**

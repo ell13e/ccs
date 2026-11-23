@@ -1,30 +1,13 @@
 <?php
 /**
- * Homepage closing CTA band.
+ * Homepage closing CTA band: the final call to action before the footer.
  *
- * The page previously ran out of road: the last content section was the partner
- * logo wall, then the footer, with no final call to action anywhere below the
- * mid-page services CTA. A reader who scrolled the whole homepage — by
- * definition the most engaged visitor on the site — arrived at a row of faded
- * logos and had nothing to do next.
- *
- * reference/inspo-teardowns.md identifies the fix as the one move every strong
- * reference in the set shares: "The strong concepts all end on a dark statement
- * band — plum NDIS's dark plum pre-footer, Premier's dark green CTA card: one
- * saturated full-bleed moment holding the final call to action just before the
- * footer." It is also described there as tonal inversion used as narrative
- * punctuation — the page audibly ends.
- *
- * Shape: an inset card, not a full-bleed stripe. The ElderlyCare X template ends
- * its pages on a rounded brand-colour card holding a photograph beside the ask,
- * and that is the form here: the deepest plum (--color-band-deepest, one step
- * darker than the differentiators band so the two are never a literal repeat),
- * a real photograph of hands held, and the ranked pair of actions the hero
- * uses. A flat full-width stripe of colour said "end of page"; a card with a
- * person in it says "here is who you will be talking to".
+ * An inset card, not a full-bleed stripe (after the ElderlyCare X template):
+ * the deepest plum (--color-band-deepest), a real photograph, and a ranked
+ * pair of actions.
  *
  * Careers pages get their own CTA elsewhere and must not be offered a
- * client-facing "book a consultation" — see ccs_is_careers_context().
+ * client-facing "book a consultation": see ccs_is_careers_context().
  *
  * @package CCS_WP_Theme
  */

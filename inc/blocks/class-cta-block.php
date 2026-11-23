@@ -13,9 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class CCS_CTA_Block
- */
 class CCS_CTA_Block {
 
 	const BLOCK_NAME = 'ccs/cta';

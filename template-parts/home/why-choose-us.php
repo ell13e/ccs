@@ -1,20 +1,8 @@
 <?php
 /**
- * Homepage "Why choose us": photo collage beside the argument.
- *
- * This was the one section on the page with no imagery at all: a heading rail
- * and four paragraphs, in a sector where (reference/inspo-teardowns.md) "the
- * warmest sites pair a calm UI with emotional photography". Both the ElderlyCare
- * X template and Harmony Care answer the same "why us" question with a
- * staggered collage of real moments beside the copy, and that is the layout
- * here, using the business's own photographs: three different people, all
- * mid-moment, none repeated from the service cards below. Cropped by the
+ * Homepage "Why choose us": one photograph beside the argument (a collage
+ * until the calm pass, Nov 2026; see the note at the figure). Cropped by the
  * browser only; never filtered or tone-adjusted.
- *
- * The four proof points are claims the site already makes and can stand behind
- * (the CQC rating, the years and coverage from the hero, the rest from this
- * section's copy); they move from a footnote-sized tick list into the shared
- * icon badge, which is how the ElderlyCare template sets its feature points.
  *
  * Copy rewritten by the client (Nov 2026): heading, one italic line, two short
  * paragraphs and one action.
@@ -30,11 +18,7 @@ $services_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'home-care-ser
 $about_url    = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'about-home-care-maidstone' ) : home_url( '/about-home-care-maidstone/' );
 
 
-/*
- * Collage photographs, largest first. Paths are relative to assets/images/.
- * A missing file is skipped, so the collage degrades to two photos, or none,
- * rather than rendering an empty frame.
- */
+// Paths are relative to assets/images/. A missing file is skipped rather than rendering an empty frame.
 // The boat trip first (Nov 2026): the summer-party photo is the About hero,
 // and the site showed it twice.
 $why_photos = array(

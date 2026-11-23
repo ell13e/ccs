@@ -882,7 +882,6 @@ body.ccs-mobile-nav-open::before {
 	animation: header-overlay-in var(--duration-normal) var(--ease-out);
 }
 
-/* Mobile menu list inside panel */
 #mobile-navigation .mobile-menu-list {
 	flex-direction: column;
 	align-items: stretch;

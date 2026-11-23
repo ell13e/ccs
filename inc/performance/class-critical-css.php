@@ -6,7 +6,7 @@
  * - Serves critical CSS per template type from wp_options (option key: ccs_critical_css).
  * - Inlines first 14KB in <head> for fast first paint (HTTP/2 recommendation).
  * - Defers non-critical stylesheets with media="print" and onload="this.media='all'".
- * - Preconnects to Google Fonts and preloads the main font stylesheet.
+ * - Preloads the self-hosted font files used above the fold (preload_fonts()).
  *
  * Asset optimization:
  * - Non-critical styles are deferred (filter ccs_deferred_style_handles to extend).
@@ -24,9 +24,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class CCS_Critical_CSS
- */
 class CCS_Critical_CSS {
 
 	/**

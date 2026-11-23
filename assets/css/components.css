@@ -63,7 +63,6 @@
 	outline-offset: var(--focus-ring-offset);
 }
 
-/* Icon inside button */
 .btn .icon,
 .btn svg {
 	flex-shrink: 0;
@@ -78,7 +77,6 @@
 	margin-inline-start: 0;
 }
 
-/* ---- Primary (main CTA) ---- */
 .btn-primary {
 	background-color: var(--color-primary);
 	border-color: var(--color-primary);
@@ -96,7 +94,6 @@
 	transform: scale(0.98);
 }
 
-/* ---- Phone (prominent call CTA) ---- */
 .btn-phone {
 	background-color: var(--color-secondary-dark);
 	border-color: var(--color-secondary-dark);
@@ -134,12 +131,6 @@
 	transform: scale(0.98);
 }
 
-/* The old outlined "secondary" and the large size were removed (Nov 2026):
-   no template or page content used them, and the outlined one duplicated
-   .btn-quiet. The button set is primary, quiet and sheen on light grounds,
-   accent and ghost on plum. */
-
-/* ---- Size variants ---- */
 .btn-sm {
 	min-height: 2.75rem; /* 44px touch target per MASTER */
 	padding: 0.375rem var(--space-sm);
@@ -153,7 +144,6 @@
 	height: 1.125em;
 }
 
-/* Disabled state */
 .btn:disabled,
 .btn.is-disabled {
 	opacity: 0.6;
@@ -192,7 +182,6 @@
 	border-color: var(--color-hairline-strong);
 }
 
-/* Card as link (e.g. <a class="card">) */
 a.card {
 	cursor: pointer;
 }
@@ -222,12 +211,10 @@ a.card {
 	color: var(--color-text-light);
 }
 
-/* Card with only body (no header/footer) */
 .card-body:only-child {
 	display: block;
 }
 
-/* Focus within card when card is interactive */
 .card:focus-within {
 	outline: var(--focus-ring);
 	outline-offset: var(--focus-ring-offset);
@@ -280,7 +267,6 @@ a.card {
 	opacity: 0.9;
 }
 
-/* Info (blue) – white text */
 .badge-info {
 	background-color: var(--color-info);
 	color: #fff;
@@ -1143,7 +1129,6 @@ a.card {
 	border-radius: var(--card-radius);
 }
 
-/* Pagination */
 .pagination {
 	margin-top: var(--space-2xl);
 }
@@ -1446,31 +1431,10 @@ a.card {
 /* -------------------------------------------------------------------------
    SECTION EYEBROW + SURFACE PRIMITIVES
 
-   Why these exist as shared components rather than per-section rules.
-
-   Every strong reference in reference/inspo-teardowns.md repeats one section
-   schema down the whole page. The set's note on Premier Homecare is explicit
-   about the mechanism: "the repeating section schema (eyebrow pill -> heading
-   with accent -> body -> action) is recognition-over-recall design — by the
-   third section the user reads the structure pre-attentively and just skims
-   content", and the same file credits that rhythm with giving "the long page a
-   steady heartbeat".
-
-   The homepage had the ingredients but not the rhythm: two of its ten sections
-   carried an eyebrow (services, reviews) and they were styled differently from
-   each other — .home-services__small-heading in --color-text-light at 0.02em
-   tracking, .home-reviews__eyebrow in --color-accent at 0.08em. Everywhere
-   else a section opened cold on its heading. One component, used in every
-   section, is what turns ten blocks into one page.
-
-   .ccs-surface is the same argument applied to containment. An earlier pass
-   removed every card, border and hairline from this page on the reasoning that
-   "four different rules doing the same small job read as a tic rather than a
-   system" — correct about the tic, but the cure left the page with no surface
-   language at all below the hero, which is exactly why everything under the
-   hero reads flatter than it. One card anatomy — one radius, one hairline, one
-   warm shadow, one padding scale — is the system that reasoning was reaching
-   for.
+   Shared components, not per-section rules: one section schema (eyebrow,
+   heading with accent, body, action) and one card anatomy (one radius, one
+   hairline, one warm shadow, one padding scale) repeated down every page, so
+   the structure is learned once and the pages read as one system.
    ------------------------------------------------------------------------- */
 
 .ccs-eyebrow {

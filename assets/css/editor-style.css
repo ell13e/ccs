@@ -69,7 +69,6 @@
 	margin-bottom: var(--space-md);
 }
 
-/* Links */
 .editor-styles-wrapper a {
 	color: var(--color-primary);
 	text-underline-offset: 0.15em;
@@ -79,7 +78,6 @@
 	color: var(--color-primary-dark);
 }
 
-/* Headings */
 .editor-styles-wrapper h1,
 .editor-styles-wrapper h2,
 /* font-weight-medium, matching the frontend default (design-system.css). This
@@ -122,7 +120,6 @@
 	color: var(--color-background);
 }
 
-/* Lists */
 .editor-styles-wrapper ul,
 .editor-styles-wrapper ol {
 	margin-bottom: var(--space-md);
