@@ -1,6 +1,6 @@
 <?php
 /**
- * Careers > Working with us (page slug: working-for-us).
+ * Careers > Working with us (page slug: working-with-us).
  *
  * WordPress picks this file for the page by its slug, so nothing needs
  * setting in the editor. The page was the default long-form layout; the user
@@ -29,7 +29,7 @@ get_header();
 		 * its own shape, with the page's opening paragraph centred beneath.
 		 */
 		$ccs_wf_content = ccs_content_sections( apply_filters( 'the_content', get_the_content() ) );
-		$ccs_wf_photo   = 'site-photos-extra/WhatsApp-Image-2025-06-10-at-14.34.31.webp';
+		$ccs_wf_photo   = 'site-photos-extra/team-group-office-window.webp';
 		get_template_part( 'template-parts/page-header' );
 		?>
 		<section class="ccs-section careers-open" aria-labelledby="working-intro-heading">
@@ -38,8 +38,7 @@ get_header();
 				/*
 				 * Words beside the photo, as the other careers pages and the care
 				 * pages open (client, Nov 2026: a centred heading over a banner
-				 * photo "sticks out like a sore thumb"). The photo keeps its own
-				 * wide shape, so all six people stay in it.
+				 * photo "sticks out like a sore thumb").
 				 */
 				?>
 				<div class="ccs-media-split careers-open__layout">
@@ -49,16 +48,25 @@ get_header();
 							<div class="ccs-lede careers-open__lede"><?php echo wp_kses_post( $ccs_wf_content['intro'] ); ?></div>
 						<?php endif; ?>
 					</header>
-					<figure class="hero-banner">
-						<?php
-						printf(
-							'<img src="%1$s" alt="%2$s" width="1200" height="500" fetchpriority="high" decoding="async"%3$s>',
-							esc_url( get_template_directory_uri() . '/assets/images/' . $ccs_wf_photo ),
-							esc_attr__( 'Six members of the Continuity Care Services team together at the office', 'ccs-wp-theme' ),
-							ccs_theme_image_srcset( $ccs_wf_photo, '(min-width: 1100px) 1024px, 92vw' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset().
-						);
-						?>
-					</figure>
+					<?php
+					/*
+					 * The site's standard photo frame (client, Nov 2026, on the banner
+					 * this replaced: "the styling of this photo is so random"). It had
+					 * its own letterbox shape, a rounder corner and a heavier shadow
+					 * than every other photo on the site. The file is a wide crop, so
+					 * the frame is the widest of the standard shapes and is placed to
+					 * keep all six people in it.
+					 */
+					ccs_section_photo(
+						$ccs_wf_photo,
+						array(
+							'alt'      => __( 'Six members of the Continuity Care Services team together at the office', 'ccs-wp-theme' ),
+							'class'    => 'ccs-photo--wide',
+							'position' => '58% 50%',
+							'sizes'    => '(min-width: 900px) 620px, 92vw',
+						)
+					);
+					?>
 				</div>
 			</div>
 		</section>

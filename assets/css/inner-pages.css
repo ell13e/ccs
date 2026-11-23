@@ -2921,44 +2921,6 @@
 /* =========================================================================
    Careers pages
    ========================================================================= */
-.hero-banner {
-	max-width: 64rem;
-	margin: 0 auto;
-}
-
-.hero-banner img {
-	display: block;
-	width: 100%;
-	aspect-ratio: 12 / 5;
-	object-fit: cover;
-	border-radius: var(--radius-3xl);
-	box-shadow: 0 2px 4px rgba(43, 35, 71, 0.06), 0 26px 60px -28px rgba(43, 35, 71, 0.45);
-}
-
-@media (max-width: 599px) {
-	.hero-banner img {
-		aspect-ratio: 3 / 2;
-	}
-}
-
-.hero-banner__lede {
-	max-width: 44rem;
-	margin: var(--space-xl) auto 0;
-	text-align: center;
-	font-size: var(--lede-size);
-	line-height: 1.75;
-	color: var(--color-ink-soft);
-}
-
-.hero-banner__lede > :first-child { margin-top: 0; }
-.hero-banner__lede > :last-child { margin-bottom: 0; }
-
-@media (max-width: 599px) {
-	.hero-banner__lede {
-		text-align: left;
-	}
-}
-
 @media (prefers-reduced-motion: reduce) {
 	.hub-item__cue,
 	.care-card,
@@ -4458,19 +4420,13 @@ p + .link-line { margin-top: var(--space-2, 0.5rem); }
 
 /* Careers, second pass (Nov 2026). */
 
-/* Working with us: words beside the team photo, like the other openings.
-   The photo keeps its own wide shape. */
+/* Working with us: words beside the team photo, like the other openings. */
 .careers-open__text .ccs-title {
 	margin-bottom: var(--space-md);
 }
 
 .careers-open__lede > :first-child { margin-top: 0; }
 .careers-open__lede > :last-child { margin-bottom: 0; }
-
-.careers-open__layout .hero-banner {
-	max-width: none;
-	margin: 0;
-}
 
 @media (min-width: 900px) {
 	.careers-open__layout {

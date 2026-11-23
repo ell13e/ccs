@@ -48,7 +48,7 @@ get_header();
 					<div class="about-intro__side">
 						<?php
 						ccs_section_photo(
-							'site-photos/Untitled-1.webp',
+							'site-photos/clients-tea-and-cake-ribbon-hat.webp',
 							array(
 								'alt'   => __( 'Two women smiling over tea and cake, one wearing a hat decorated with ribbons', 'ccs-wp-theme' ),
 								'sizes' => '(min-width: 900px) 520px, 92vw',

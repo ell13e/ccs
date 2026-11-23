@@ -130,8 +130,8 @@ get_header();
 			$ccs_gs_photos = array(
 				array( 'site-photos/client-baking-together.webp', '50% 35%' ),
 				array( 'site-photos/client-sewing.webp', '50% 30%' ),
-				array( 'site-photos/IMG-20241017-WA0005-edited-scaled.jpg', '50% 45%' ),
-				array( 'site-photos/467212766_9676172959062903_646005181027754761_n-copy.webp', '50% 30%' ),
+				array( 'site-photos/team-member-writing-at-event.jpg', '50% 45%' ),
+				array( 'site-photos/carer-with-older-gentleman-selfie.webp', '50% 30%' ),
 				array( 'site-photos/client-cooking-prep.webp', '50% 45%' ),
 				array( 'site-photos/client-thank-you-flowers.webp', '50% 30%' ),
 			);

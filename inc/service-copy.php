@@ -12,6 +12,24 @@
  * a funding figure, left out until someone has checked them against the
  * source. Edit the wording here.
  *
+ * Sources (24 Nov 2026, client: "how could you have missed where Macmillan
+ * Cancer Support actually says this?"). Six sentences credited another
+ * organisation with no link to where it says so. Each was checked against the
+ * organisation's own page and now links to it; a paragraph may hold a plain
+ * <a href> for this (the templates print these strings through wp_kses).
+ * - Overnight care: Macmillan's page on taking a break from caring does not
+ *   say what the sentence credited it with, so the sentence now stands as our
+ *   own and points to that page as further advice.
+ * - Cancer care: Macmillan's page names the professionals but not "home care
+ *   teams working hand-in-hand", so the sentence now says what the page says
+ *   and what our carers do as two separate things.
+ * - Elderly care: Age UK and the NHS both say a free council needs assessment
+ *   is the first step; both linked.
+ * - Cerebral palsy care: Regulation 9 links to the regulation itself.
+ * - Not linked, because cqc.org.uk refused every attempt to read it: "As the
+ *   CQC outlines" (domiciliary care) and "CQC guidance on person-centred care"
+ *   (disability care). Add the links once someone has opened those pages.
+ *
  * @package CCS_WP_Theme
  */
 
@@ -150,7 +168,7 @@ function ccs_service_copy( $slug ) {
 				'title' => 'Safe, Reassuring Overnight Care at Home',
 				'intro' => array(
 					'Night-time can be the most anxious period for people with care needs and their families, whether due to mobility difficulties, confusion, medication schedules, or the fear of falling. Our overnight care service ensures skilled support is right there whenever it is needed.',
-					'As Macmillan Cancer Support highlights, overnight care at home helps people remain safely in their own surroundings through the night while giving family carers uninterrupted, restorative rest.',
+					'Overnight care at home helps people remain safely in their own surroundings through the night while giving family carers uninterrupted, restorative rest. Macmillan Cancer Support has advice for carers on <a href="https://www.macmillan.org.uk/cancer-information-and-support/supporting-someone/practical-support-for-carers/taking-a-break-from-caring">taking a break from caring</a>.',
 				),
 				'sections' => array(
 					array(
@@ -322,7 +340,7 @@ function ccs_service_copy( $slug ) {
 					array(
 						'heading' => 'Know Your Rights to Support',
 						'paras' => array(
-							'Both Age UK and the NHS recommend starting with a free local authority care needs assessment to identify what practical support, home adaptations, or care visits will best support your independence. We can support you privately alongside council services or as your primary care provider.',
+							'Both <a href="https://www.ageuk.org.uk/information-advice/care/arranging-care/care-needs-assessment/">Age UK</a> and <a href="https://www.nhs.uk/social-care-and-support/help-from-social-services-and-charities/getting-a-needs-assessment/">the NHS</a> recommend starting with a free local authority care needs assessment to identify what practical support, home adaptations, or care visits will best support your independence. We can support you privately alongside council services or as your primary care provider.',
 						),
 						'items' => array(),
 					),
@@ -633,7 +651,7 @@ function ccs_service_copy( $slug ) {
 				'title' => 'Compassionate Cancer Care in the Comfort of Home',
 				'intro' => array(
 					'Whether you are undergoing chemotherapy or radiotherapy, recovering from surgery, or living with advanced cancer, having practical and emotional support at home takes a huge weight off you and your family.',
-					'As Macmillan Cancer Support notes, home care teams work hand-in-hand with GPs, district nurses, occupational therapists, and physiotherapists to help with personal care, mobility, and daily tasks so people can remain at home as much as possible.',
+					'As Macmillan Cancer Support explains in its guide to <a href="https://www.macmillan.org.uk/cancer-information-and-support/treatment/if-you-have-an-advanced-cancer/end-of-life/being-cared-for-at-home">being cared for at home</a>, GPs, district nurses, occupational therapists and physiotherapists can all be involved in helping someone stay at home. Our carers work alongside them, helping with personal care, mobility and daily tasks.',
 				),
 				'sections' => array(
 					array(
@@ -677,28 +695,17 @@ function ccs_service_copy( $slug ) {
 				),
 				'sections' => array(
 					array(
-						'heading' => 'Personal Care vs. Nursing Care',
+						// Two labelled points (client, Nov 2026: as two long ticked sentences it "looks a bit complex"). Same facts, shorter, and "RN" spelt out.
+						'heading' => 'Personal Care or Nursing Care?',
 						'paras' => array(),
 						'items' => array(
 							array(
-								'',
-								'Personal care is delivered by trained care assistants and covers everyday support such as washing, dressing, mobility, and medication prompts.',
+								'Personal care',
+								'Everyday support such as washing, dressing, mobility and medication prompts, from trained care assistants.',
 							),
 							array(
-								'',
-								'Nursing care involves clinical tasks, such as wound management, PEG feeding, complex medication administration, or airway care, delivered directly by a Registered Nurse (RN) or by specially trained complex care workers under strict RN supervision and competency sign-off.',
-							),
-						),
-					),
-					array(
-						'heading' => 'Understanding NHS Funding for Nursing Care',
-						'paras' => array(
-							'It is helpful to know how NHS funding works in England:',
-						),
-						'items' => array(
-							array(
-								'NHS Continuing Healthcare (CHC)',
-								'If you have a complex primary health need, the NHS can fund a complete package of nursing and personal care in your own home, free at the point of delivery.',
+								'Nursing care',
+								'Clinical tasks such as wound management, PEG feeding, complex medication or airway care, from a registered nurse or from complex care workers a nurse has trained and signed off.',
 							),
 						),
 					),
@@ -712,6 +719,11 @@ function ccs_service_copy( $slug ) {
 						'How do I know if I need nursing care or personal care?',
 						'Our free care assessment will evaluate your clinical and daily needs and clearly advise on the safest level of support.',
 					),
+					// One funding question (client, Nov 2026: "combine?"). It joins what was a section of its own, "Understanding NHS funding for nursing care", to the general answer every service page ends on, which this replaces here. Same facts as both.
+					array(
+						'How can nursing care be paid for?',
+						'If you have a complex primary health need, the NHS can fund a complete package of nursing and personal care in your own home, free at the point of delivery. This is called NHS Continuing Healthcare (CHC). Otherwise some people pay for their own care, and others have part or all of it paid by Kent County Council after a free needs assessment. Our Costs page lists every rate, and we can talk the options through with you.',
+					),
 				),
 			),
 			'cerebral-palsy-care' => array(
@@ -723,7 +735,7 @@ function ccs_service_copy( $slug ) {
 					array(
 						'heading' => 'Coordinated, Empowering Support',
 						'paras' => array(
-							'In line with CQC Regulation 9 (Person-centred care) and NHS multidisciplinary principles, we coordinate closely with your physiotherapists, occupational therapists, and speech and language therapists to support:',
+							'In line with CQC <a href="https://www.legislation.gov.uk/uksi/2014/2936/regulation/9">Regulation 9 (Person-centred care)</a> and NHS multidisciplinary principles, we coordinate closely with your physiotherapists, occupational therapists, and speech and language therapists to support:',
 						),
 						'items' => array(
 							array(

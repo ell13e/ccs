@@ -22,8 +22,8 @@ $cqc_id    = $cqc_id ? $cqc_id : '1-2624556588';
 // Official CQC artwork — same file the hero's floating badge uses, so a
 // blocked/failed widget script (ad blockers, a strict CSP, cqc.org.uk being
 // down) still leaves a real, on-brand badge rather than an empty box.
-$cqc_badge     = get_template_directory() . '/assets/images/cqc-badges/CQC inspected and rated good RGB.jpg';
-$cqc_badge_url = get_template_directory_uri() . '/assets/images/cqc-badges/CQC inspected and rated good RGB.jpg';
+$cqc_badge     = get_template_directory() . '/assets/images/cqc-badges/cqc-inspected-and-rated-good.jpg';
+$cqc_badge_url = get_template_directory_uri() . '/assets/images/cqc-badges/cqc-inspected-and-rated-good.jpg';
 $cqc_has_badge = file_exists( $cqc_badge );
 ?>
 

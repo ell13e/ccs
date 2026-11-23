@@ -96,13 +96,13 @@ class CCS_Theme_Activation {
 			'heading'         => 'Careers in care',
 			'intro'           => 'Flexible hours, proper training, and enough time to do the job well.',
 			'template'        => 'page-templates/template-careers.php',
-			'hero_image'      => 'assets/images/site-photos/IMG-20240930-WA0058-scaled-1.webp',
+			'hero_image'      => 'assets/images/site-photos/team-celebration-flowers-party-hats.webp',
 			'seo_title'       => 'Careers in Care',
 			'seo_description' => 'Join our Kent home care team. Flexible hours, ongoing training and real support — see current vacancies and what it\'s like to work with us.',
 		),
 		'professional-development'    => array( 'title' => 'Professional Development', 'parent_slug' => 'careers' ),
 		'current-vacancies'           => array( 'title' => 'Current Vacancies', 'parent_slug' => 'careers', 'template' => 'page-templates/template-current-vacancies.php', 'hero_image' => 'assets/images/site-photos/careers-apprenticeships-fair.webp' ),
-		'working-for-us'              => array( 'title' => 'Working with us', 'parent_slug' => 'careers' ),
+		'working-with-us'              => array( 'title' => 'Working with us', 'parent_slug' => 'careers' ),
 		// Optional care pages (Section 7).
 		'cqc-and-our-care'            => array( 'title' => 'CQC and Our Care', 'template' => 'page-templates/template-cqc.php', 'hero_image' => 'assets/images/site-photos/client-easter-activity.webp' ),
 		'getting-started'              => array( 'title' => 'Getting Started', 'template' => 'page-templates/template-getting-started.php' ),
@@ -832,10 +832,10 @@ class CCS_Theme_Activation {
 <h2>Where it leads</h2>
 <p>Carer, senior carer, field supervisor, care coordinator, deputy manager, registered manager. Almost everyone in our office started on the rounds, and we recruit internally first as a matter of policy. If you want to move towards nursing, we will support an access route and work around your study.</p>
 
-<p>' . '<a href="' . esc_url( home_url( '/careers/current-vacancies/' ) ) . '">Current vacancies</a>' . ' lists current openings, and ' . '<a href="' . esc_url( home_url( '/careers/working-for-us/' ) ) . '">Working for us</a>' . ' covers pay, rotas and day-to-day support.</p>',
+<p>' . '<a href="' . esc_url( home_url( '/careers/current-vacancies/' ) ) . '">Current vacancies</a>' . ' lists current openings, and ' . '<a href="' . esc_url( home_url( '/careers/working-with-us/' ) ) . '">Working for us</a>' . ' covers pay, rotas and day-to-day support.</p>',
 			'current-vacancies' => '<p>Browse our current vacancies and apply online. We\'re always looking for caring, reliable people to join our team across Maidstone and Kent.</p>
 <p>Use the job portal below to see open roles and submit your application.</p>',
-			'working-for-us' => '<p class="lead">We are a small, family-run provider in Maidstone, not a national franchise. That shapes the job more than anything else on this page: you work with a handful of regular clients rather than a different address every hour, and you are known by name in the office.</p>
+			'working-with-us' => '<p class="lead">We are a small, family-run provider in Maidstone, not a national franchise. That shapes the job more than anything else on this page: you work with a handful of regular clients rather than a different address every hour, and you are known by name in the office.</p>
 
 <h2>What we pay for</h2>
 <p>We pay for travel time between calls and mileage, not just contact time. Your rota is built around the visits you actually have, so you are not unpaid for gaps you cannot use. Enhanced rates apply to weekends and bank holidays, and we tell you the rate before you accept a shift, not after.</p>
@@ -1044,7 +1044,7 @@ class CCS_Theme_Activation {
 			'careers',
 			'professional-development',
 			'current-vacancies',
-			'working-for-us',
+			'working-with-us',
 			'privacy-policy',
 			'terms-and-conditions',
 			'accessibility-statement',
@@ -1115,7 +1115,7 @@ class CCS_Theme_Activation {
 		}
 
 		// Persist careers page IDs for header menu switch.
-		$careers_slugs = array( 'careers', 'professional-development', 'current-vacancies', 'working-for-us' );
+		$careers_slugs = array( 'careers', 'professional-development', 'current-vacancies', 'working-with-us' );
 		$this->careers_page_ids = array();
 		foreach ( $careers_slugs as $cslug ) {
 			if ( isset( $this->page_ids[ $cslug ] ) ) {
@@ -1680,12 +1680,12 @@ class CCS_Theme_Activation {
 		if ( ! $menu_id ) {
 			return;
 		}
-		$careers_order = array( 'careers', 'professional-development', 'current-vacancies', 'working-for-us' );
+		$careers_order = array( 'careers', 'professional-development', 'current-vacancies', 'working-with-us' );
 		$labels = array(
 			'careers'                 => 'Careers',
 			'professional-development' => 'Development',
 			'current-vacancies'       => 'Vacancies',
-			'working-for-us'          => 'Working with us',
+			'working-with-us'          => 'Working with us',
 		);
 		$position = 0;
 		foreach ( $careers_order as $slug ) {

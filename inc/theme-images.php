@@ -128,6 +128,12 @@ function ccs_section_photo( $rel, $args = array() ) {
 		return;
 	}
 
+	// The photo sheet (assets/images/media-metadata.csv) has the last word on alt text, so descriptions can be reviewed and edited in one place.
+	$sheet_alt = ccs_photo_sheet_value( $rel, 'alt_text' );
+	if ( '' !== $sheet_alt ) {
+		$args['alt'] = $sheet_alt;
+	}
+
 	$size     = wp_getimagesize( $path );
 	$segments = array_map( 'rawurlencode', explode( '/', $rel ) );
 	$src      = get_template_directory_uri() . '/assets/images/' . implode( '/', $segments );
@@ -220,4 +226,35 @@ function ccs_service_card_photo( $slug, $sizes ) {
 		ccs_theme_image_srcset( $photo[0], $sizes ),
 		esc_attr( $photo[2] )
 	);
+}
+
+/**
+ * One value from the photo sheet, assets/images/media-metadata.csv (Nov
+ * 2026, after the sheet used on the Restwell site): filename, alt_text,
+ * title, caption, description. bin/build-media-csv.py writes the sheet from
+ * the templates and keeps anything edited in it.
+ *
+ * @param string $rel    Path relative to assets/images/.
+ * @param string $column Column name.
+ * @return string The value, or '' when the photo or column is not in the sheet.
+ */
+function ccs_photo_sheet_value( $rel, $column ) {
+	static $sheet = null;
+	if ( null === $sheet ) {
+		$sheet = array();
+		$file  = get_template_directory() . '/assets/images/media-metadata.csv';
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- a small local file shipped with the theme.
+		$handle = is_readable( $file ) ? fopen( $file, 'r' ) : false;
+		if ( $handle ) {
+			$header = fgetcsv( $handle );
+			while ( is_array( $header ) && false !== ( $row = fgetcsv( $handle ) ) ) {
+				if ( count( $row ) === count( $header ) ) {
+					$row                       = array_combine( $header, $row );
+					$sheet[ $row['filename'] ] = $row;
+				}
+			}
+			fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+		}
+	}
+	return isset( $sheet[ $rel ][ $column ] ) ? trim( (string) $sheet[ $rel ][ $column ] ) : '';
 }

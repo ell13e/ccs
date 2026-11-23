@@ -138,7 +138,11 @@ while ( have_posts() ) :
 		foreach ( $ccs_svc_pack['faqs'] as $ccs_faq ) {
 			$ccs_svc_faqs[] = array( 'q' => $ccs_faq[0], 'a' => wpautop( esc_html( $ccs_faq[1] ) ) );
 		}
+		// The general funding answer closes the list, unless the service has a funding question of its own (nursing care).
+		$ccs_svc_own_funding = (bool) preg_grep( '/\b(paid for|pay for)\b/i', wp_list_pluck( $ccs_svc_faqs, 'q' ) );
+		if ( ! $ccs_svc_own_funding ) {
 		$ccs_svc_faqs[] = array( 'q' => __( 'How can care be paid for?', 'ccs-wp-theme' ), 'a' => wpautop( esc_html__( 'Some people pay for their own care. Others have part or all of it paid by Kent County Council after a free needs assessment, or by the NHS through Continuing Healthcare when the main need is a health need. Our Costs page lists every rate, and we can talk the options through with you.', 'ccs-wp-theme' ) ) );
+		}
 	}
 	// No questions of its own in the editor: the built-in plain-English set for this kind of care (inc/service-guides.php).
 	if ( ! $ccs_svc_faqs && function_exists( 'ccs_service_guide_faqs' ) ) {

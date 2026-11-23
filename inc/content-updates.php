@@ -239,7 +239,8 @@ add_action( 'admin_init', 'ccs_apply_cost_extras_update' );
  * "Working for Us" becomes "Working with us" (Nov 2026, user). The page title
  * and its careers-menu label are renamed once, and only while they still read
  * exactly the old way, so a title the client has since changed is left alone.
- * The address (/careers/working-for-us/) is unchanged, so no link breaks.
+ * The address stayed /careers/working-for-us/ until 24 Nov 2026, when it was
+ * changed to match the title (see ccs_working_with_us_address() below).
  */
 function ccs_apply_working_with_us_rename() {
 	if ( get_option( 'ccs_working_with_us_renamed' ) ) {
@@ -319,7 +320,7 @@ function ccs_apply_working_intro_reword() {
 	}
 	$old   = 'We are a small, family-run provider based in Maidstone. That shapes the job more than anything else on this page: you work with a handful of regular clients rather than a different address every hour, and you are known by name in the office.';
 	$new   = 'We’re a small, family-run team in Maidstone, and you’ll feel that from your first day. You’ll look after a handful of regular clients and get to know them well, and everyone in the office will know your name.';
-	$pages = get_posts( array( 'name' => 'working-for-us', 'post_type' => 'page', 'post_status' => 'any', 'numberposts' => 1, 'suppress_filters' => true ) );
+	$pages = get_posts( array( 'name' => 'working-with-us', 'post_type' => 'page', 'post_status' => 'any', 'numberposts' => 1, 'suppress_filters' => true ) );
 	if ( ! empty( $pages ) && false !== strpos( $pages[0]->post_content, $old ) ) {
 		wp_update_post( wp_slash( array( 'ID' => $pages[0]->ID, 'post_content' => str_replace( $old, $new, $pages[0]->post_content ) ) ) );
 	}
@@ -472,7 +473,7 @@ function ccs_apply_unnamed_qualifications() {
 		return $found ? $found[0] : null;
 	};
 
-	$page = $get( 'working-for-us' );
+	$page = $get( 'working-with-us' );
 	$old  = 'Beyond that we fund the Level 2 and Level 3 Diploma in Adult Care and specialist training in areas like';
 	if ( $page && false !== strpos( $page->post_content, $old ) ) {
 		wp_update_post( wp_slash( array( 'ID' => $page->ID, 'post_content' => str_replace( $old, 'Beyond that there are opportunities to take health and social care qualifications, and specialist training in areas like', $page->post_content ) ) ) );
@@ -490,3 +491,54 @@ function ccs_apply_unnamed_qualifications() {
 	update_option( 'ccs_unnamed_qualifications', 1, false );
 }
 add_action( 'admin_init', 'ccs_apply_unnamed_qualifications' );
+
+
+/**
+ * The page's address matches its title (Nov 2026, client: "that page URL
+ * should be working with us"): /careers/working-with-us/, not
+ * /careers/working-for-us/. The theme's own code now uses the new slug
+ * throughout, so on a site that already has the page it is renamed before
+ * anything else looks for it, and the old address is sent on to the new one
+ * for good, so no link or bookmark breaks.
+ */
+function ccs_working_with_us_address() {
+	if ( get_option( 'ccs_working_with_us_address' ) ) {
+		return;
+	}
+	$old   = 'working-' . 'for-us';
+	$pages = get_posts(
+		array(
+			'name'             => $old,
+			'post_type'        => 'page',
+			'post_status'      => 'any',
+			'numberposts'      => 1,
+			'suppress_filters' => true,
+		)
+	);
+	if ( $pages && ! get_posts( array( 'name' => 'working-with-us', 'post_type' => 'page', 'post_status' => 'any', 'numberposts' => 1, 'suppress_filters' => true ) ) ) {
+		wp_update_post(
+			array(
+				'ID'        => $pages[0]->ID,
+				'post_name' => 'working-with-us',
+			)
+		);
+	}
+	update_option( 'ccs_working_with_us_address', 1, false );
+}
+add_action( 'init', 'ccs_working_with_us_address', 5 );
+
+/**
+ * The old address goes to the new one (WordPress keeps old addresses for
+ * posts, not for pages).
+ */
+function ccs_working_with_us_redirect() {
+	if ( ! is_404() ) {
+		return;
+	}
+	$path = isset( $_SERVER['REQUEST_URI'] ) ? (string) wp_parse_url( esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ), PHP_URL_PATH ) : '';
+	if ( preg_match( '#/careers/working-' . 'for-us/?$#', $path ) ) {
+		wp_safe_redirect( home_url( '/careers/working-with-us/' ), 301 );
+		exit;
+	}
+}
+add_action( 'template_redirect', 'ccs_working_with_us_redirect', 1 );

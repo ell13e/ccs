@@ -42,7 +42,7 @@ if ( get_theme_mod( 'ccs_cqc_widget_hide', false )
 $ccs_cqc_id    = get_theme_mod( 'ccs_cqc_widget_data_id', '1-2624556588' );
 $ccs_cqc_id    = $ccs_cqc_id ? $ccs_cqc_id : '1-2624556588';
 $ccs_cqc_url   = defined( 'CCS_CQC_REPORT_URL' ) ? CCS_CQC_REPORT_URL : get_theme_mod( 'ccs_cqc_url', 'https://www.cqc.org.uk/location/1-2624556588' );
-$ccs_cqc_badge = 'cqc-badges/CQC inspected and rated good RGB.jpg';
+$ccs_cqc_badge = 'cqc-badges/cqc-inspected-and-rated-good.jpg';
 $ccs_cqc_has   = file_exists( get_template_directory() . '/assets/images/' . $ccs_cqc_badge );
 ?>
 <div class="page-cqc">

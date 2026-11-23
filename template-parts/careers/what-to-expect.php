@@ -31,7 +31,7 @@ $items = array(
 		'body'  => __( 'School hours, overnight shifts or steady full-time work. We build the rota around you.', 'ccs-wp-theme' ),
 	),
 	array(
-		'photo' => 'site-photos/WhatsApp-Image-2021-02-10-at-15.39.32.webp',
+		'photo' => 'site-photos/team-talking-through-care-notes.webp',
 		'pos'   => '35% 40%',
 		'alt'   => __( 'Members of the team talking through care notes together', 'ccs-wp-theme' ),
 		'title' => __( "You're listened to", 'ccs-wp-theme' ),

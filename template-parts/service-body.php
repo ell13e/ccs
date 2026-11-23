@@ -66,15 +66,33 @@ $ccs_sb_more  = array();
 if ( $ccs_sb_copy ) {
 	$ccs_sb_about['title'] = $ccs_sb_case( $ccs_sb_copy['title'] );
 	foreach ( $ccs_sb_copy['intro'] as $ccs_sb_para ) {
-		$ccs_sb_about['html'] .= '<p>' . esc_html( $ccs_sb_para ) . '</p>';
+		$ccs_sb_about['html'] .= '<p>' . wp_kses( $ccs_sb_para, array( 'a' => array( 'href' => true ) ) ) . '</p>'; // A sentence may link to its source (inc/service-copy.php).
 	}
 	foreach ( $ccs_sb_copy['sections'] as $ccs_sb_sec ) {
 		// A section that is only a paragraph joins the opening text as a further
 		// paragraph, so every page opens the same way: one heading, then text.
 		if ( ! array_filter( $ccs_sb_sec['items'] ) ) {
 			foreach ( $ccs_sb_sec['paras'] as $ccs_sb_para ) {
-				$ccs_sb_about['html'] .= '<p>' . esc_html( $ccs_sb_para ) . '</p>';
+				$ccs_sb_about['html'] .= '<p>' . wp_kses( $ccs_sb_para, array( 'a' => array( 'href' => true ) ) ) . '</p>'; // A sentence may link to its source (inc/service-copy.php).
 			}
+			continue;
+		}
+		// A section with a single point is not a list: one card beside a heading looked stranded (client, Nov 2026: "not the right layout here"). It goes with the page's other notes, under "Good to know".
+		$ccs_sb_sec_items = array_values( array_filter( $ccs_sb_sec['items'] ) );
+		if ( 1 === count( $ccs_sb_sec_items ) ) {
+			$ccs_sb_body = '';
+			foreach ( $ccs_sb_sec['paras'] as $ccs_sb_para ) {
+				// A line that only introduced the list ("…works in England:") has nothing to introduce now.
+				if ( ':' === substr( rtrim( $ccs_sb_para ), -1 ) ) {
+					continue;
+				}
+				$ccs_sb_body .= '<p>' . wp_kses( $ccs_sb_para, array( 'a' => array( 'href' => true ) ) ) . '</p>';
+			}
+			$ccs_sb_body .= '<p>' . ( '' !== $ccs_sb_sec_items[0][0] ? '<strong>' . esc_html( $ccs_sb_sec_items[0][0] ) . '.</strong> ' : '' ) . wp_kses( $ccs_sb_sec_items[0][1], array( 'a' => array( 'href' => true ) ) ) . '</p>';
+			$ccs_sb_more[] = array(
+				'heading' => $ccs_sb_case( $ccs_sb_sec['heading'] ),
+				'body'    => $ccs_sb_body,
+			);
 			continue;
 		}
 		$ccs_sb_parts[] = array(
@@ -395,7 +413,7 @@ $ccs_sb_contact = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us'
 					<header class="ccs-head<?php echo $ccs_sb_plain ? ' ccs-head--center' : ''; ?>">
 						<h2 id="svc-part-<?php echo (int) $ccs_sb_n; ?>" class="ccs-title"><?php echo esc_html( $ccs_sb_part['heading'] ); ?></h2>
 						<?php foreach ( $ccs_sb_part['paras'] as $ccs_sb_para ) : ?>
-							<p class="ccs-lede"><?php echo esc_html( $ccs_sb_para ); ?></p>
+							<p class="ccs-lede"><?php echo wp_kses( $ccs_sb_para, array( 'a' => array( 'href' => true ) ) ); ?></p>
 						<?php endforeach; ?>
 						<?php // Beside a card, the button sits under the heading. Over a centred checklist it came between the heading and its list (client, Nov 2026: "should that be there?"), so there it follows the list instead. ?>
 						<?php if ( 0 === $ccs_sb_n && ! $ccs_sb_plain ) : ?>

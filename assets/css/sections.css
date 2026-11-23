@@ -1579,6 +1579,11 @@
 	aspect-ratio: 3 / 2;
 }
 
+/* For a photo that is itself a wide crop (a row of people). */
+.ccs-photo--wide {
+	aspect-ratio: 16 / 9;
+}
+
 .ccs-photo img {
 	display: block;
 	width: 100%;
@@ -4989,6 +4994,12 @@ p.costs-more {
 @media (min-width: 900px) {
 	.careers-intro .ccs-split {
 		align-items: center;
+		/* A short heading ("Why work with us?") broke into two stubby lines in
+		   the standard five-twelfths column and looked lost beside the text
+		   (client, Nov 2026). The heading's column is now as wide as the
+		   heading, up to a limit, so it sits on one line; a longer heading
+		   still wraps at that limit. */
+		grid-template-columns: fit-content(clamp(22rem, 38vw, 30rem)) minmax(0, 1fr);
 	}
 
 	.careers-intro .ccs-split > .ccs-head {

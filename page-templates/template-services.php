@@ -174,9 +174,9 @@ $ccs_services = ccs_ordered_services();
 							// A photo used nowhere else on the site.
 							printf(
 								'<img src="%1$s" alt="%2$s" width="900" height="1070" loading="lazy" decoding="async"%3$s>',
-								esc_url( get_template_directory_uri() . '/assets/images/site-photos/WhatsApp-Image-2025-04-30-at-15.12.20-e1752499831227.webp' ),
+								esc_url( get_template_directory_uri() . '/assets/images/site-photos/carer-and-client-football-ground.webp' ),
 								esc_attr__( 'A carer leaning in beside a young man in a wheelchair at a football ground, both smiling', 'ccs-wp-theme' ),
-								ccs_theme_image_srcset( 'site-photos/WhatsApp-Image-2025-04-30-at-15.12.20-e1752499831227.webp', '(min-width: 960px) 480px, 92vw' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset().
+								ccs_theme_image_srcset( 'site-photos/carer-and-client-football-ground.webp', '(min-width: 960px) 480px, 92vw' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset().
 							);
 							?>
 						</figure>

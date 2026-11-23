@@ -228,9 +228,9 @@ $ccs_pay_ways = array(
 					// A photo used nowhere else on the site.
 					printf(
 						'<img src="%1$s" alt="%2$s" width="900" height="1600" loading="lazy" decoding="async" style="object-position:50%% 12%%"%3$s>',
-						esc_url( get_template_directory_uri() . '/assets/images/site-photos/WhatsApp-Image-2025-04-30-at-15.12.21.webp' ),
+						esc_url( get_template_directory_uri() . '/assets/images/site-photos/client-football-club-blanket.webp' ),
 						esc_attr__( 'A young man in a wheelchair with a football club blanket over his knees, smiling', 'ccs-wp-theme' ),
-						ccs_theme_image_srcset( 'site-photos/WhatsApp-Image-2025-04-30-at-15.12.21.webp', '(min-width: 960px) 480px, 92vw' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset().
+						ccs_theme_image_srcset( 'site-photos/client-football-club-blanket.webp', '(min-width: 960px) 480px, 92vw' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset().
 					);
 					?>
 				</figure>

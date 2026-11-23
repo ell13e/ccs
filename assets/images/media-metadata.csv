@@ -1,0 +1,78 @@
+filename,alt_text,title,caption,description,used_in
+site-photos/careers-apprenticeships-fair.webp,,Careers apprenticeships fair,,,inc/class-theme-activation.php; inc/content-updates.php
+site-photos/carer-and-client-football-ground.webp,"A carer leaning in beside a young man in a wheelchair at a football ground, both smiling",Carer and client football ground,,,page-templates/template-services.php
+site-photos/carer-and-client-selfie.webp,Two women smiling together for a selfie,Carer and client selfie,,,template-parts/careers/benefits.php
+site-photos/carer-with-older-gentleman-selfie.webp,,Carer with older gentleman selfie,,,page-templates/template-getting-started.php
+site-photos/ccs-complex-care-maidstone-24-7.webp,,Ccs complex care maidstone 24 7,,,inc/class-theme-activation.php; template-parts/home/services.php
+site-photos/ccs-complex-care-wheelchair-1.webp,"Two women sitting together in the sun on a patio, smiling",Ccs complex care wheelchair 1,,,page-templates/template-cqc.php
+site-photos/ccs-domiciliary-care.webp,,Ccs domiciliary care,,,inc/class-theme-activation.php; template-parts/home/services.php
+site-photos/ccs-respite-care-guitar-1.webp,,Ccs respite care guitar 1,,,inc/class-theme-activation.php
+site-photos/ccs-victoria-walker-registered-manager.webp,,Ccs victoria walker registered manager,,,page-templates/template-about.php
+site-photos/client-activity-laughing.webp,,Client activity laughing,,,template-parts/cta-band.php
+site-photos/client-afternoon-tea.webp,,Client afternoon tea,,,template-parts/cta-band.php
+site-photos/client-baking-together.webp,,Client baking together,,,page-templates/template-getting-started.php
+site-photos/client-boat-trip.webp,,Client boat trip,,,template-parts/home/why-choose-us.php
+site-photos/client-cafe-counter.webp,,Client cafe counter,,,template-parts/resources-hub.php
+site-photos/client-care-farm-chores.webp,,Client care farm chores,,,template-parts/resources-hub.php
+site-photos/client-carer-boat-trip-lifejackets.webp,,Client carer boat trip lifejackets,,,template-parts/resources-hub.php
+site-photos/client-cooking-hob.webp,,Client cooking hob,,,template-parts/resources-hub.php
+site-photos/client-cooking-prep.webp,,Client cooking prep,,,page-templates/template-getting-started.php
+site-photos/client-easter-activity.webp,,Client easter activity,,,inc/class-theme-activation.php; template-parts/home/why-choose-us.php
+site-photos/client-football-club-blanket.webp,"A young man in a wheelchair with a football club blanket over his knees, smiling",Client football club blanket,,,page-templates/template-costs.php
+site-photos/client-jigsaw.webp,,Client jigsaw,,,template-parts/resources-hub.php
+site-photos/client-picking-flowers.webp,Someone sitting in a meadow picking buttercups on a day out,Client picking flowers,,,template-parts/careers/what-to-expect.php
+site-photos/client-pottery-wheel.webp,,Client pottery wheel,,,template-parts/home/why-choose-us.php
+site-photos/client-pottery.webp,,Client pottery,,,template-parts/cta-band.php; template-parts/home/closing-cta.php
+site-photos/client-sewing.webp,,Client sewing,,,page-templates/template-getting-started.php
+site-photos/client-thank-you-flowers.webp,,Client thank you flowers,,,page-templates/template-getting-started.php
+site-photos/client-wheelchair-seafront-pier.webp,,Client wheelchair seafront pier,,,template-parts/home/differentiators.php
+site-photos/clients-tea-and-cake-ribbon-hat.webp,"Two women smiling over tea and cake, one wearing a hat decorated with ribbons",Clients tea and cake ribbon hat,,,assets/css/header.css; page-templates/template-about.php
+site-photos/home-hero-family.jpg,,Home hero family,,,inc/seo/class-seo-optimizer.php; inc/theme-images.php; template-parts/home/hero.php
+site-photos/services-hero-desktop.webp,,Services hero desktop,,,inc/class-theme-activation.php
+site-photos/team-celebration-flowers-party-hats.webp,,Team celebration flowers party hats,,,inc/class-theme-activation.php
+site-photos/team-meeting-around-table.jpeg,,Team meeting around table,,,template-parts/resources-hub.php
+site-photos/team-member-writing-at-event.jpg,,Team member writing at event,,,page-templates/template-getting-started.php
+site-photos/team-talking-through-care-notes.webp,Members of the team talking through care notes together,Team talking through care notes,,,template-parts/careers/what-to-expect.php
+site-photos-extra/caregiver-supporting-patient.webp,,Caregiver supporting patient,,,inc/class-theme-activation.php
+site-photos-extra/ccs-respite-care-guitar.webp,,Ccs respite care guitar,,,template-parts/home/services.php
+site-photos-extra/client-creative-activity-autumn-leaves.webp,,Client creative activity autumn leaves,,,inc/class-theme-activation.php
+site-photos-extra/client-summer-party-laineys-care-farm.webp,,Client summer party laineys care farm,,,inc/class-theme-activation.php; template-parts/home/why-choose-us.php
+site-photos-extra/kent-summer-party-hero.webp,"A young woman in a flower crown, laughing at a summer party",Kent summer party hero,,,template-parts/home/hero.php
+site-photos-extra/team-group-office-window.webp,,Team group office window,,,page-working-with-us.php
+careers/flipchart.webp,,Flipchart,,,template-parts/service-body.php
+careers/hoist-practice.webp,,Hoist practice,,,template-parts/service-body.php
+careers/infant-cpr.webp,A trainer showing infant resuscitation on a training manikin,Infant cpr,,,page-professional-development.php
+careers/learner-notes.webp,A learner taking notes during a practical training session,Learner notes,,,template-parts/careers/what-to-expect.php
+careers/notes-cpr.webp,,Notes cpr,,,template-parts/service-body.php
+careers/sling-practice.webp,,Sling practice,,,template-parts/service-body.php
+careers/trainer-with-learner.webp,A trainer helping a new member of staff at a laptop,Trainer with learner,,,template-parts/careers/what-to-expect.php
+careers/training-room.webp,Learners around a table in the Continuity Training Academy classroom,Training room,,,page-templates/template-about.php; template-parts/careers/onboarding-proof.php
+journey/cta-trainer.webp,,Cta trainer,,,page-templates/template-about.php
+journey/cta-training-room.webp,Learners around a table in the Continuity Training Academy classroom,Cta training room,,,page-templates/template-about.php
+journey/restwell-bungalow.webp,"The Restwell Retreats bungalow in Whitstable, seen from its level driveway",Restwell bungalow,,,page-templates/template-about.php
+journey/restwell-garden.webp,,Restwell garden,,,page-templates/template-about.php
+stock/at-the-dressing-table.webp,,At the dressing table,,,inc/theme-images.php
+stock/baking-at-the-table.webp,,Baking at the table,,,inc/theme-images.php
+stock/baking-together.webp,,Baking together,,,inc/theme-images.php; page-templates/template-getting-started.php
+stock/bedside-visit.webp,,Bedside visit,,,inc/theme-images.php
+stock/guitar-at-home.webp,,Guitar at home,,,inc/theme-images.php
+stock/help-with-tablets.webp,,Help with tablets,,,inc/theme-images.php
+stock/laughing-in-the-park.webp,,Laughing in the park,,,inc/theme-images.php
+stock/laughing-on-the-patio.webp,,Laughing on the patio,,,inc/theme-images.php
+stock/mother-and-daughter-walk.webp,,Mother and daughter walk,,,inc/theme-images.php
+stock/settling-in-for-the-night.webp,,Settling in for the night,,,inc/theme-images.php
+stock/stroll-in-the-park.webp,,Stroll in the park,,,inc/theme-images.php
+stock/tea-outside.webp,,Tea outside,,,inc/theme-images.php
+stock/unpacking-the-shopping.webp,,Unpacking the shopping,,,inc/theme-images.php
+stock/walking-frame-in-the-park.webp,,Walking frame in the park,,,inc/theme-images.php
+stock/watering-the-plants.webp,,Watering the plants,,,inc/theme-images.php
+stock/wheelchair-and-chess.webp,,Wheelchair and chess,,,inc/theme-images.php
+stock/woman-with-her-dog.webp,,Woman with her dog,,,inc/theme-images.php
+team/amanda-carter.jpg,,Amanda carter,,,inc/team.php
+team/jacqueline-ellis.jpg,,Jacqueline ellis,,,inc/team.php
+team/keelie-varney.jpg,,Keelie varney,,,inc/team.php
+team/magdalena-zoledz.jpg,,Magdalena zoledz,,,inc/team.php
+team/magdalena_zoledz.jpg,,Magdalena zoledz,,,inc/team.php
+team/nikki-mackay.jpg,,Nikki mackay,,,inc/team.php
+team/shayna-rae-fuller.jpg,,Shayna rae fuller,,,inc/team.php
+team/victoria-walker.jpg,,Victoria walker,,,inc/team.php

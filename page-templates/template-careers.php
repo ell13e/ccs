@@ -29,7 +29,7 @@ $ccs_careers_meta = array(
 		'text'  => ccs_copy( 'careers_card_1_text' ),
 		'cue'   => ccs_copy( 'careers_card_1_link' ),
 	),
-	'working-for-us'           => array(
+	'working-with-us'           => array(
 		'icon'  => 'people',
 		'label' => ccs_copy( 'careers_card_2_label' ),
 		'text'  => ccs_copy( 'careers_card_2_text' ),

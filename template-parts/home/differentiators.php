@@ -63,7 +63,7 @@ $items = array(
 		 * explanation one tap away, the first open. Native <details name>, so
 		 * keyboard and screen readers work with no script.
 		 */
-		$ccs_diff_photo = 'site-photos/WhatsApp-Image-2025-05-23-at-13.39.58-2.webp';
+		$ccs_diff_photo = 'site-photos/client-wheelchair-seafront-pier.webp';
 		?>
 		<?php if ( file_exists( get_template_directory() . '/assets/images/' . $ccs_diff_photo ) ) : ?>
 			<figure class="home-diff__photo" aria-hidden="true">

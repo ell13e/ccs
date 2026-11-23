@@ -112,10 +112,10 @@ foreach ( $ccs_rh_groups as $ccs_rh_group ) {
 $ccs_rh_photo = static function ( $url, $n ) {
 	$map = array(
 		'faq|question' => 'site-photos/client-jigsaw.webp',
-		'referral'     => 'site-photos/WhatsApp-Image-2021-02-10-at-15.39.47.jpeg',
+		'referral'     => 'site-photos/team-meeting-around-table.jpeg',
 		'guide'        => 'site-photos/client-cooking-hob.webp',
 		'start'        => 'site-photos/client-care-farm-chores.webp',
-		'news|blog'    => 'site-photos/IMG-20241107-WA0006.webp',
+		'news|blog'    => 'site-photos/client-carer-boat-trip-lifejackets.webp',
 		'cqc|regulat'  => 'site-photos/client-cafe-counter.webp',
 	);
 	foreach ( $map as $pattern => $photo ) {

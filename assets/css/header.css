@@ -1662,7 +1662,7 @@ body.ccs-mobile-nav-open::before {
 	color: #fff;
 	background:
 		linear-gradient(to top, rgba(28, 18, 52, 0.92) 0%, rgba(28, 18, 52, 0.55) 40%, rgba(28, 18, 52, 0) 70%),
-		var(--color-band-deepest) url("../images/site-photos/Untitled-1.webp") 62% 30% / cover no-repeat;
+		var(--color-band-deepest) url("../images/site-photos/clients-tea-and-cake-ribbon-hat.webp") 62% 30% / cover no-repeat;
 }
 
 .nav-desktop .nav-feature > .nav-feature__link:hover,

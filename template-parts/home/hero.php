@@ -35,8 +35,8 @@ $hero_years    = absint( get_theme_mod( 'ccs_hero_stat_value', '10' ) );
 // the same treatment used by every regulated competitor benchmarked in the
 // UI audit (Home Instead, Bluebird). Links to the specific CQC report/profile
 // via $hero_cqc_url, same target the old text-only link used.
-$hero_cqc_badge_file = get_template_directory() . '/assets/images/cqc-badges/CQC inspected and rated good RGB.jpg';
-$hero_cqc_badge_src  = get_template_directory_uri() . '/assets/images/cqc-badges/CQC inspected and rated good RGB.jpg';
+$hero_cqc_badge_file = get_template_directory() . '/assets/images/cqc-badges/cqc-inspected-and-rated-good.jpg';
+$hero_cqc_badge_src  = get_template_directory_uri() . '/assets/images/cqc-badges/cqc-inspected-and-rated-good.jpg';
 $hero_has_cqc_badge  = file_exists( $hero_cqc_badge_file );
 
 /*
@@ -115,7 +115,7 @@ $hero_photos = apply_filters(
 			<div class="hero-cqc">
 				<?php if ( $hero_has_cqc_badge ) : ?>
 					<a id="hero-cqc-fallback" class="hero-cqc__fallback" href="<?php echo esc_url( $hero_cqc_url ); ?>" target="_blank" rel="noopener noreferrer">
-						<img src="<?php echo esc_url( $hero_cqc_badge_src ); ?>" alt="<?php esc_attr_e( 'CQC inspected and rated Good (opens in a new window)', 'ccs-wp-theme' ); ?>" width="1184" height="821"<?php echo ccs_theme_image_srcset( 'cqc-badges/CQC inspected and rated good RGB.jpg', '200px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset(). ?> loading="lazy" decoding="async">
+						<img src="<?php echo esc_url( $hero_cqc_badge_src ); ?>" alt="<?php esc_attr_e( 'CQC inspected and rated Good (opens in a new window)', 'ccs-wp-theme' ); ?>" width="1184" height="821"<?php echo ccs_theme_image_srcset( 'cqc-badges/cqc-inspected-and-rated-good.jpg', '200px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset(). ?> loading="lazy" decoding="async">
 					</a>
 				<?php endif; ?>
 				<script
