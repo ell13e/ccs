@@ -48,7 +48,12 @@ class CCS_SEO_Optimizer {
 
 		add_filter( 'wp_sitemaps_post_types', array( $this, 'filter_sitemap_post_types' ), 10, 1 );
 		add_filter( 'wp_sitemaps_posts_entry', array( $this, 'filter_sitemap_posts_entry' ), 10, 3 );
-		add_filter( 'wp_sitemaps_exclude_post_ids', array( $this, 'exclude_sitemap_post_ids' ), 10, 2 );
+		// WordPress has no "exclude these IDs" sitemap filter (the one this used
+		// to hook, wp_sitemaps_exclude_post_ids, does not exist, so nothing was
+		// ever left out). The theme collects IDs on its own filter and applies
+		// them to the sitemap query.
+		add_filter( 'ccs_sitemap_exclude_post_ids', array( $this, 'exclude_sitemap_post_ids' ), 10, 2 );
+		add_filter( 'wp_sitemaps_posts_query_args', array( $this, 'filter_sitemap_query_args' ), 10, 2 );
 	}
 
 	/**
@@ -638,6 +643,27 @@ class CCS_SEO_Optimizer {
 			$entry['priority'] = '1.0';
 		}
 		return $entry;
+	}
+
+	/**
+	 * Leave the collected post IDs out of the core sitemap's query.
+	 *
+	 * @param array  $args      WP_Query arguments.
+	 * @param string $post_type Post type.
+	 * @return array
+	 */
+	public function filter_sitemap_query_args( $args, $post_type ) {
+		/**
+		 * Filters the post IDs left out of the sitemap for a post type.
+		 *
+		 * @param int[]  $post_ids  IDs to leave out.
+		 * @param string $post_type Post type.
+		 */
+		$ids = array_filter( array_map( 'intval', (array) apply_filters( 'ccs_sitemap_exclude_post_ids', array(), $post_type ) ) );
+		if ( $ids ) {
+			$args['post__not_in'] = array_merge( isset( $args['post__not_in'] ) ? (array) $args['post__not_in'] : array(), $ids );
+		}
+		return $args;
 	}
 
 	/**
