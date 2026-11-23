@@ -126,7 +126,31 @@ while ( have_posts() ) :
 			<div class="location-about__grid">
 				<div class="location-about__main">
 					<header class="ccs-head">
-						<?php echo ccs_doodle( 'bird-house', 'doodle--above' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle(). ?>
+						<?php
+						/*
+						 * One drawing per area (approved Nov 2026), so the areas don't all
+						 * carry the same picture. Each has a local hook where there is one
+						 * (tea rooms for Tunbridge Wells, hop farms for Paddock Wood). A new
+						 * area falls back to the bird house until it is given its own.
+						 */
+						$ccs_area_doodles = array(
+							'ashford'         => 'bird-house',
+							'maidstone'       => 'tree',
+							'medway'          => 'pen-and-ink',
+							'tunbridge-wells' => 'tea-cup',
+							'tonbridge'       => 'wellies',
+							'paddock-wood'    => 'wheelbarrow',
+							'west-malling'    => 'flowers',
+							'aylesford'       => 'bird',
+							'snodland'        => 'watering-can-flowers',
+							'whitstable'      => 'sun-hat',
+							'herne-bay'       => 'sun-and-clouds',
+							'thanet'          => 'paint-palette',
+						);
+						$ccs_town_key     = sanitize_title( $town );
+						$ccs_area_doodle  = isset( $ccs_area_doodles[ $ccs_town_key ] ) ? $ccs_area_doodles[ $ccs_town_key ] : 'bird-house';
+						echo ccs_doodle( $ccs_area_doodle, 'doodle--above' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_doodle().
+						?>
 						<h2 id="location-about-heading" class="ccs-title">
 							<?php
 							/* translators: %s: town name, drawn with a brush underline. */
