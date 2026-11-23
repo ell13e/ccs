@@ -205,7 +205,7 @@ function ccs_area_copy_2026_11c_was() {
  * @param bool $with_outings False gives the wording before the outings were added.
  * @return array<string, array<string, string>>
  */
-function ccs_area_copy_2026_11( $with_outings = true ) {
+function ccs_area_copy_2026_11( $with_outings = true, $with_restwell = true ) {
 	$lines = array(
 		'west-malling'    => 'Carers for West Malling and the villages around it, from a team based just down the road in Maidstone.',
 		'snodland'        => 'Carers for Snodland and the villages along the Medway, from a small, consistent local team.',
@@ -244,6 +244,10 @@ function ccs_area_copy_2026_11( $with_outings = true ) {
 		if ( isset( $out[ $slug ] ) ) {
 			$copy[ $slug ]['content'] .= "\n" . '<p>' . $out[ $slug ] . '</p>';
 		}
+	}
+	// Whitstable is where Restwell Retreats is (client, 24 Nov 2026: "link and mention Restwell for Whitstable"). The facts are the ones the About page already gives.
+	if ( $with_restwell && isset( $copy['whitstable'] ) ) {
+		$copy['whitstable']['content'] .= "\n" . '<p>Whitstable is also home to <a href="https://restwellretreats.co.uk/">Restwell Retreats</a>, our accessible holiday home: a single-storey bungalow a short walk from the sea, with a level wet room and a ceiling track hoist. Guests can add home care from us during their stay.</p>';
 	}
 	return $copy;
 }
@@ -284,6 +288,25 @@ function ccs_area_copy_2026_11e() {
 	ccs_area_copy_apply_2026_11( array( ccs_area_copy_2026_11( false ) ) );
 }
 add_action( 'init', 'ccs_area_copy_2026_11e', 39 );
+
+/**
+ * The Restwell paragraph on the Whitstable page: a site that already had the
+ * page's wording without it gains the paragraph, once, and only where the
+ * page still holds exactly that wording.
+ */
+function ccs_area_copy_2026_11f() {
+	if ( get_option( 'ccs_area_copy_2026_11f' ) || ! get_option( 'ccs_area_copy_2026_11e' ) || ! post_type_exists( 'location' ) ) {
+		return;
+	}
+	if ( ! add_option( 'ccs_area_copy_2026_11f', '1', '', 'no' ) ) {
+		return;
+	}
+	$before = ccs_area_copy_2026_11( true, false );
+	if ( isset( $before['whitstable'] ) ) {
+		ccs_area_copy_apply_2026_11( array( array( 'whitstable' => $before['whitstable'] ) ) );
+	}
+}
+add_action( 'init', 'ccs_area_copy_2026_11f', 40 );
 
 /**
  * Every service offered in an area, in the site's order: all of them, less

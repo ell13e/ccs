@@ -232,7 +232,8 @@ get_header();
 					<div class="ccs-media-split family-feature<?php echo 1 === $ccs_family_i % 2 ? ' ccs-media-split--flip' : ''; ?>">
 						<div class="family-feature__text">
 							<h3 class="family-feature__name"><?php echo esc_html( $ccs_family_item['name'] ); ?></h3>
-							<p class="family-feature__lede"><?php echo esc_html( $ccs_family_item['text'] ); ?></p>
+							<?php // A company named in the text (Wetwheels South East) links to its own site. ?>
+							<p class="family-feature__lede"><?php echo wp_kses_post( ccs_link_mentions( esc_html( $ccs_family_item['text'] ), 1 ) ); ?></p>
 							<?php
 							// Facts are "figure | label" pairs separated by semicolons, so a
 							// figure can hold a comma (2,000+).

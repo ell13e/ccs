@@ -143,6 +143,13 @@ function ccs_link_targets() {
 	$targets['dbs check']                     = 'https://www.gov.uk/government/organisations/disclosure-and-barring-service';
 	// Kent County Council's own page on asking for one (read 23 Nov 2026).
 	$targets['needs assessment']              = 'https://www.kent.gov.uk/social-care-and-health/adult-social-care/care-and-support/how-to-get-adult-social-care-support/care-needs-assessments';
+	// Places and companies the site names (client, Nov 2026: links for
+	// backlinks, internal and external linking). Each address opened and read
+	// on 23 Nov 2026. The care farm spells itself without the apostrophe too.
+	$targets["lainey's care farm"]   = 'https://www.laineyscarefarm.com/';
+	$targets['laineys care farm']    = 'https://www.laineyscarefarm.com/';
+	$targets['wetwheels south east'] = 'https://wetwheelsfoundation.org/wetwheels-operator/wetwheels-south-east/';
+	$targets['restwell retreats']    = 'https://restwellretreats.co.uk/';
 
 	uksort(
 		$targets,
