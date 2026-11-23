@@ -6,10 +6,13 @@
 # served from /wp-content/themes/CCS/.
 name: QA
 
+# Only when started by hand (GitHub > Actions > QA > Run workflow). It used
+# to run on every push to main, and failed about one time in six because the
+# throwaway site had not finished starting, not because of the theme (client,
+# 23 Nov 2026: "it keeps breaking", then "Yes, switch it off"). The same
+# checks run locally with bin/qa.sh.
 on:
-  push:
-    branches: [main]
-  pull_request:
+  workflow_dispatch:
 
 jobs:
   qa:
