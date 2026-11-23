@@ -46,6 +46,7 @@ LISTS = [
     ("sameGroundBands", "same-ground bands touching"),
     ("clippedShadows", "shadow cut off at a band edge"),
     ("clippedInScroller", "shadow cut off inside a scrolling row"),
+    ("overflowingText", "text running out of its box"),
     ("noFocusStyle", "no visible focus"),
 ]
 

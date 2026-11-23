@@ -5,7 +5,7 @@
 #   CCS_BASE=http://127.0.0.1:9401 CHROME=/path/to/chrome bin/qa.sh
 #
 # Runs, in order: PHP syntax on every theme file, the homepage copy registry
-# test, the design audit at 1440 and 375 on every page type, the internal
+# test, the design audit at 1440, 900, 768 and 375 on every page type, the internal
 # link check, and the old-site redirects. Exits non-zero on the first kind of failure it finds, after
 # printing all of them. Used by .github/workflows/qa.yml.
 #
@@ -32,7 +32,7 @@ if [ -n "$BAD" ]; then print -r -- "$BAD"; FAIL=1; else echo "ok"; fi
 echo "== Homepage copy registry"
 php bin/test-home-copy.php || FAIL=1
 
-for W in 1440 375; do
+for W in 1440 900 768 375; do
 	echo "== Design audit at ${W}px"
 	OUT=$("$AUDIT/run-audit.sh" --width $W $PAGES 2>&1)
 	CLEAN=$(print -r -- "$OUT" | grep -c '^  no flags$')

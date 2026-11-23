@@ -1859,8 +1859,10 @@ a.card {
    wraps to four to six at 375px, and centred text that long is hard to read
    (CCS/CLAUDE.md rule 10). Short centred titles would survive, but a head
    that switches alignment halfway through reads worse than one that
-   doesn't. */
-@media (max-width: 599px) {
+   doesn't.
+   Tablets too (Nov 2026): between 600 and 899px the "How care starts" and
+   CQC intros still ran to three centred lines. */
+@media (max-width: 899px) {
 	.ccs-head--center {
 		margin-inline: 0;
 		text-align: left;

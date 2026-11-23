@@ -526,6 +526,14 @@
 	list-style: none;
 }
 
+/* One column on tablets: the card stops at the width its photo was cut for
+   (550px), not the full 704px column, which stretched it (rule 15). */
+@media (min-width: 600px) and (max-width: 859px) {
+	.home-services__grid {
+		max-width: 34rem;
+	}
+}
+
 @media (min-width: 860px) {
 	.home-services__grid {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -777,9 +785,12 @@
 	}
 }
 
+/* Stacked: the photo's file is 622px wide, so the frame stops there rather
+   than stretching it across a tablet (rule 15: never upscaled). */
 @media (max-width: 959px) {
 	.why-photo {
 		aspect-ratio: 4 / 3;
+		max-width: 38rem;
 	}
 }
 

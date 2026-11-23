@@ -413,6 +413,40 @@
 			}
 		});
 
+		// ---- 14: words running out of their box (Nov 2026). A long word, a
+		// button label or a fixed-width column at an in-between width can push
+		// text past the edge of the card or band it sits in, or off the page.
+		// Measured on the text itself, against the nearest ancestor that is a
+		// drawn box (ground, border or shadow) or that clips, and the page width.
+		R.overflowingText = [];
+		var pageW = doc.documentElement.clientWidth;
+		Array.prototype.forEach.call(main.querySelectorAll('*'), function (e) {
+			if (R.overflowingText.length >= 6 || !visible(e)) return;
+			var own = Array.prototype.filter.call(e.childNodes, function (n) { return n.nodeType === 3 && n.nodeValue.trim().length > 1; });
+			if (!own.length) return;
+			var est = cs(e);
+			if (est.textOverflow === 'ellipsis' || est.position === 'absolute' && parseFloat(est.width) <= 2) return;
+			var rg = doc.createRange(), l = Infinity, r = -Infinity;
+			own.forEach(function (n) {
+				rg.selectNodeContents(n);
+				Array.prototype.forEach.call(rg.getClientRects(), function (q) { if (q.width > 0) { l = Math.min(l, q.left); r = Math.max(r, q.right); } });
+			});
+			if (r === -Infinity) return;
+			var box = null, scrolls = false;
+			for (var up = e; up && up !== doc.body; up = up.parentElement) {
+				var st = cs(up);
+				if (/auto|scroll/.test(st.overflowX)) { scrolls = true; break; }
+				var drawn = (st.backgroundColor && !/rgba\(0, 0, 0, 0\)|transparent/.test(st.backgroundColor)) || parseFloat(st.borderLeftWidth) > 0 || (st.boxShadow && st.boxShadow !== 'none') || st.overflowX !== 'visible';
+				if (drawn && st.display !== 'inline' && !box) box = up; // keep climbing: a card in a row that scrolls sideways is meant to run off the page
+			}
+			if (scrolls) return;
+			var words = own[0].nodeValue.trim().slice(0, 30);
+			if (r > pageW + 1 || l < -1) { R.overflowingText.push(label(e) + ' "' + words + '" runs off the page'); return; }
+			if (!box) return;
+			var b = box.getBoundingClientRect();
+			if (r > b.right + 1.5 || l < b.left - 1.5) R.overflowingText.push(label(e) + ' "' + words + '" runs ' + Math.round(Math.max(r - b.right, b.left - l)) + 'px past ' + label(box));
+		});
+
 		// ---- 22: every control shows a focus indicator when focused by keyboard.
 		R.noFocusStyle = [];
 		var sample = controls.filter(function (e) { return !e.closest('.cqc-widget'); }).slice(0, 60);

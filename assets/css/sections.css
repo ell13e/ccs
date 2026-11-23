@@ -621,7 +621,10 @@
 	object-fit: cover;
 }
 
-@media (min-width: 900px) {
+/* Side by side from 1100px. Between 900 and 1099 the photo's column was a
+   tall sliver (334 by 762px) that needed more of the photo than its file
+   holds, so it stays a wide strip on top there (rule 15). */
+@media (min-width: 1100px) {
 	.cta-card--photo {
 		grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
 	}
