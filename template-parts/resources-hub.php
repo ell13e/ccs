@@ -149,7 +149,7 @@ $ccs_rh_last = count( $ccs_rh_rows ) - 1;
 				<div class="signpost__about">
 					<h2 class="signpost__title"><?php echo esc_html( $ccs_rh_row['title'] ); ?></h2>
 					<?php if ( '' !== $ccs_rh_row['line'] ) : ?>
-						<p class="signpost__text"><?php echo esc_html( $ccs_rh_row['line'] ); ?></p>
+						<p class="signpost__text"><?php echo function_exists( 'ccs_link_mentions' ) ? ccs_link_mentions( esc_html( $ccs_rh_row['line'] ), 1, 'page' ) : esc_html( $ccs_rh_row['line'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped, then links added by ccs_link_mentions(). ?></p>
 					<?php endif; ?>
 					<?php // Filled on purpose: each section has one action and they never share a screen side by side (rule 8); the quiet button read as an afterthought beside a photo. ?>
 					<a class="btn btn-primary signpost__go" data-ccs-exception="rule 8: each section's one action; the quiet button was not visible enough (client, Nov 2026)" href="<?php echo esc_url( $ccs_rh_row['url'] ); ?>">

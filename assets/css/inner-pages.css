@@ -4338,6 +4338,20 @@ p + .link-line { margin-top: var(--space-2, 0.5rem); }
 	margin-top: var(--space-md);
 }
 
+/* Under the checklist it closes: centred, with room above. */
+.svc-help__part--list .svc-help__action--after {
+	margin-top: var(--space-xl);
+	text-align: center;
+}
+
+/* Centred heads go left on phones; the button follows the heading. */
+@media (max-width: 47.99rem) {
+	.svc-help__part--list .svc-help__action--after {
+		margin-top: var(--space-lg);
+		text-align: left;
+	}
+}
+
 .svc-ticks {
 	display: grid;
 	gap: var(--space-md) var(--space-xl);

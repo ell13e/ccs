@@ -192,14 +192,17 @@ body.has-photo-hero:not(.ccs-mobile-nav-open) .site-header:not(.is-scrolled) .na
 
 body.has-photo-hero:not(.ccs-mobile-nav-open) .site-header:not(.is-scrolled) .mobile-menu-btn {
 	color: #fff;
+	/* On the photo the button's ground is a white wash, not lilac. */
+	background: rgba(255, 255, 255, 0.16);
 }
 
 /* Hover and focus for the hamburger while it sits on the photo. The default
    states below are built for a light header: a --color-background-grey fill and
    a purple focus ring, both of which turn to mud on a dark photo. Swap in a
    translucent white wash and a white ring for the transparent state only. */
-body.has-photo-hero:not(.ccs-mobile-nav-open) .site-header:not(.is-scrolled) .mobile-menu-btn:hover {
-	background: rgba(255, 255, 255, 0.18);
+body.has-photo-hero:not(.ccs-mobile-nav-open) .site-header:not(.is-scrolled) .mobile-menu-btn:hover,
+body.has-photo-hero:not(.ccs-mobile-nav-open) .site-header:not(.is-scrolled) .mobile-menu-btn:focus-visible {
+	background: rgba(255, 255, 255, 0.28);
 }
 
 body.has-photo-hero:not(.ccs-mobile-nav-open) .site-header:not(.is-scrolled) .mobile-menu-btn:focus-visible {
@@ -695,10 +698,18 @@ body.has-photo-hero:not(.ccs-mobile-nav-open) .site-header:not(.is-scrolled) .mo
 .mobile-menu-btn {
 	width: auto;
 	gap: 0.5rem;
-	padding-inline: 0.625rem;
+	padding-inline: 0.875rem;
 	font-size: 0.9375rem;
 	font-weight: var(--font-weight-semibold);
 	color: var(--color-ink);
+	/* A soft lilac ground, the quiet button's (client, Nov 2026): bare lines
+	   and a word did not read as something to tap. No outline. */
+	background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+}
+
+.mobile-menu-btn:hover,
+.mobile-menu-btn:focus-visible {
+	background: color-mix(in srgb, var(--color-primary) 17%, transparent);
 }
 
 .mobile-menu-btn::after {

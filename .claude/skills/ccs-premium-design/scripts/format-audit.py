@@ -44,6 +44,7 @@ LISTS = [
     ("newTabUnannounced", "new tab not announced"),
     ("missingAlt", "img without alt"),
     ("sameGroundBands", "same-ground bands touching"),
+    ("clippedShadows", "shadow cut off at a band edge"),
     ("noFocusStyle", "no visible focus"),
 ]
 

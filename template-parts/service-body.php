@@ -397,7 +397,8 @@ $ccs_sb_contact = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us'
 						<?php foreach ( $ccs_sb_part['paras'] as $ccs_sb_para ) : ?>
 							<p class="ccs-lede"><?php echo esc_html( $ccs_sb_para ); ?></p>
 						<?php endforeach; ?>
-						<?php if ( 0 === $ccs_sb_n ) : ?>
+						<?php // Beside a card, the button sits under the heading. Over a centred checklist it came between the heading and its list (client, Nov 2026: "should that be there?"), so there it follows the list instead. ?>
+						<?php if ( 0 === $ccs_sb_n && ! $ccs_sb_plain ) : ?>
 							<p class="svc-help__action"><a class="btn btn-primary" href="<?php echo esc_url( $ccs_sb_contact ); ?>"><?php esc_html_e( 'Book a free consultation', 'ccs-wp-theme' ); ?></a></p>
 						<?php endif; ?>
 					</header>
@@ -429,7 +430,7 @@ $ccs_sb_contact = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us'
 										<?php // A plain line is set as the item's title, so every item reads the same way. ?>
 										<?php if ( '' !== $ccs_sb_item[0] ) : ?>
 											<h3 class="cqc-checks__title"><?php echo esc_html( $ccs_sb_case( $ccs_sb_item[0] ) ); ?></h3>
-											<p class="cqc-checks__text"><?php echo esc_html( $ccs_sb_item[1] ); ?></p>
+											<p class="cqc-checks__text"><?php echo function_exists( 'ccs_link_mentions' ) ? ccs_link_mentions( esc_html( $ccs_sb_item[1] ), 1, 'page' ) : esc_html( $ccs_sb_item[1] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped, then links added by ccs_link_mentions(). ?></p>
 										<?php else : ?>
 											<h3 class="cqc-checks__title"><?php echo esc_html( rtrim( $ccs_sb_item[1], '.' ) ); ?></h3>
 										<?php endif; ?>
@@ -437,6 +438,9 @@ $ccs_sb_contact = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us'
 								</li>
 							<?php endforeach; ?>
 						</ul>
+					<?php endif; ?>
+					<?php if ( 0 === $ccs_sb_n && $ccs_sb_plain ) : ?>
+						<p class="svc-help__action svc-help__action--after"><a class="btn btn-primary" href="<?php echo esc_url( $ccs_sb_contact ); ?>"><?php esc_html_e( 'Book a free consultation', 'ccs-wp-theme' ); ?></a></p>
 					<?php endif; ?>
 				</div>
 			<?php endforeach; ?>

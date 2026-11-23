@@ -151,7 +151,7 @@ $hero_switch_url  = function_exists( 'ccs_switch_url' ) ? ccs_switch_url() : hom
 $hero_hours       = get_theme_mod( 'ccs_office_hours', 'Mon–Fri 9am–5pm' );
 $hero_address     = get_theme_mod( 'ccs_contact_address', "The Maidstone Studios, New Cut Road\nMaidstone, Kent ME14 5NZ" );
 $hero_address_one = $hero_address ? trim( preg_replace( '/\s*\n\s*/', ', ', $hero_address ) ) : '';
-$hero_directions  = $hero_address_one ? 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( $hero_address_one ) : '';
+$hero_directions  = ccs_directions_url( $hero_address_one );
 ?>
 <?php
 /*

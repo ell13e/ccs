@@ -44,7 +44,7 @@ $ccs_address_line = $ccs_address ? trim( preg_replace( '/\s*\n\s*/', ', ', $ccs_
  * A plain link, not an embed: no third-party script or cookies load unless the
  * person chooses to follow it. The embed below is still used when one is set.
  */
-$ccs_directions = $ccs_address_line ? 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( $ccs_address_line ) : '';
+$ccs_directions = ccs_directions_url( $ccs_address_line );
 
 $ccs_privacy_url = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'privacy-policy' ) : home_url( '/privacy-policy/' );
 

@@ -346,6 +346,44 @@
 			}
 		}
 
+		// ---- A shadow cut off at a band's edge (client, Nov 2026: "this CAN'T
+		// happen"). A card with a soft shadow sat at the very foot of a section
+		// with no bottom padding; the next section's ground painted over the
+		// shadow and left a hard-edged strip. Flag any shadowed element whose
+		// shadow reaches past the bottom of its band into a band with a ground.
+		R.clippedShadows = [];
+		for (var ci = 0; ci < bands.length - 1; ci++) {
+			var band = bands[ci], nextBand = bands[ci + 1];
+			if (alpha(rgb(cs(nextBand).backgroundColor)) === 0) continue; // nothing paints over it
+			// Paint order: a positioned box with a z-index sits above an ordinary
+			// one that follows it, so its shadow is not covered (the homepage's
+			// route strip laps the band below it this way, on purpose).
+			var zOf = function (el) {
+				var st = cs(el);
+				if (st.position === 'static') return -1;
+				return st.zIndex === 'auto' ? 0 : parseInt(st.zIndex, 10) || 0;
+			};
+			var nextZ = zOf(nextBand);
+			var bandBottom = band.getBoundingClientRect().bottom;
+			Array.prototype.forEach.call(band.querySelectorAll('*'), function (e) {
+				var sh = cs(e).boxShadow;
+				if (!sh || sh === 'none' || !visible(e)) return;
+				var z = -1;
+				for (var up = e; up && up !== band.parentElement; up = up.parentElement) z = Math.max(z, zOf(up));
+				if (z > nextZ) return;
+				// Largest reach below the box: offset-y + blur + spread, per shadow layer.
+				var reach = 0;
+				sh.split(/,(?![^(]*\))/).forEach(function (layer) {
+					if (/inset/.test(layer)) return;
+					var n = (layer.replace(/rgba?\([^)]*\)|color\([^)]*\)|#[0-9a-f]+/gi, '').match(/-?[\d.]+px/g) || []).map(parseFloat);
+					if (n.length >= 2) reach = Math.max(reach, (n[1] || 0) + (n[2] || 0) + (n[3] || 0));
+				});
+				var over = e.getBoundingClientRect().bottom + reach - bandBottom;
+				// A few pixels of the faintest edge of a blur cannot be seen.
+				if (reach > 4 && over > reach * 0.5 && R.clippedShadows.length < 6) R.clippedShadows.push(label(e) + ' in ' + label(band) + ' (' + Math.round(over) + 'px of shadow under ' + label(nextBand) + ')');
+			});
+		}
+
 		// ---- 22: every control shows a focus indicator when focused by keyboard.
 		R.noFocusStyle = [];
 		var sample = controls.filter(function (e) { return !e.closest('.cqc-widget'); }).slice(0, 60);

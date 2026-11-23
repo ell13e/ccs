@@ -718,3 +718,134 @@
 		min-height: 26rem;
 	}
 }
+
+/* -------------------------------------------------------------------------
+   WHO TO CALL (Nov 2026)
+   Left: the heading, one line and our own number. Right: a row for each
+   situation, white on the tint, the number always in view as a button.
+   ------------------------------------------------------------------------- */
+
+.who-call__us {
+	margin: var(--space-lg) 0 0;
+}
+
+.who-list {
+	display: grid;
+	gap: var(--space-sm);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.who-row {
+	display: grid;
+	gap: var(--space-md);
+	align-items: center;
+	padding: var(--space-lg) clamp(1.25rem, 0.75rem + 1.5vw, 2rem);
+	border-radius: var(--radius-2xl);
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-card);
+}
+
+@media (min-width: 40rem) {
+	.who-row {
+		grid-template-columns: minmax(0, 1fr) auto;
+		column-gap: var(--space-lg);
+	}
+}
+
+.who-row__title {
+	margin: 0;
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.1875rem, 1.1rem + 0.35vw, 1.375rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.3;
+	color: var(--color-ink);
+}
+
+.who-row__first {
+	margin: 0.5rem 0 0;
+	font-size: var(--text-base);
+	font-weight: var(--font-weight-semibold);
+	line-height: 1.5;
+	color: var(--color-ink);
+}
+
+.who-row__org {
+	margin: 0.5rem 0 0;
+	font-size: var(--text-base);
+	font-weight: var(--font-weight-semibold);
+	line-height: 1.5;
+	color: var(--color-primary-dark);
+}
+
+.who-row__first + .who-row__org {
+	margin-top: 0.75rem;
+}
+
+.who-row__text {
+	margin: 0.125rem 0 0;
+	font-size: var(--text-base);
+	line-height: 1.6;
+	color: var(--color-ink-soft);
+}
+
+.who-row__hours {
+	margin: 0.25rem 0 0;
+	font-size: var(--text-sm);
+	line-height: 1.5;
+	color: var(--color-ink-soft);
+}
+
+.who-row__calls {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-xs);
+	margin: 0;
+}
+
+.who-row__call {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	white-space: nowrap;
+}
+
+/* A number never breaks across two lines. */
+.who-row__num {
+	white-space: nowrap;
+}
+
+.who-row__call .ccs-icon {
+	flex: none;
+	width: 1.125rem;
+	height: 1.125rem;
+}
+
+@media (max-width: 39.99rem) {
+	.who-row__call {
+		white-space: normal;
+		text-align: center;
+	}
+}
+
+/* Two numbers (a town between two hospitals): side by side under the words,
+   so the buttons do not squeeze the text into a narrow column. */
+@media (min-width: 40rem) {
+	.who-row:has(.who-row__call + .who-row__call) {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.who-row:has(.who-row__call + .who-row__call) .who-row__calls {
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+}
+
+.who-call__checked {
+	margin: var(--space-md) 0 0;
+	font-size: var(--text-sm);
+	line-height: 1.5;
+	color: var(--color-ink-soft);
+}

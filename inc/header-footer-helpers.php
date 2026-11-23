@@ -319,3 +319,23 @@ function ccs_menu_care_guides_to_hub( $items ) {
 // Not hooked since the guides got their own page back (Nov 2026, client:
 // Resources is a signpost page, not a hub).
 
+/**
+ * Link to the office in Google Maps: a pin on the address, with Google's
+ * own Directions button. No start point is set, so Google asks each visitor
+ * for theirs.
+ *
+ * The address alone, on purpose. Naming the business as well opens the
+ * company's Google profile, which was tried on 23 Nov 2026 and put back the
+ * same day at the client's request: the profile shows the Google rating to
+ * everyone who follows the link.
+ *
+ * @param string $address_line The office address on one line.
+ * @return string URL, or '' without an address.
+ */
+function ccs_directions_url( $address_line ) {
+	$address_line = trim( (string) $address_line );
+	if ( '' === $address_line ) {
+		return '';
+	}
+	return 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( $address_line );
+}

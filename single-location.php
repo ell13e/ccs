@@ -338,9 +338,29 @@ while ( have_posts() ) :
 	 * "could not calculate directions" whenever Google did not have one. Same
 	 * link as the Contact page.
 	 */
-	$ccs_directions = $ccs_office_line
-		? 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( $ccs_office_line )
-		: '';
+	$ccs_directions = ccs_directions_url( $ccs_office_line );
+	?>
+	<?php
+	/*
+	 * The shared steps, team and reviews sections that followed here were
+	 * removed (Nov 2026): repeated word for word on all six area pages, they
+	 * made up most of each page's text, and search engines treat pages that
+	 * similar as duplicates. Each area page now carries only its own facts.
+	 */
+	?>
+
+	<?php
+	$support_items = array();
+	foreach ( $support as $s ) {
+		$gname    = isset( $s['group_name'] ) ? trim( $s['group_name'] ) : '';
+		$gcontact = isset( $s['group_contact'] ) ? trim( $s['group_contact'] ) : '';
+		if ( '' !== $gname || '' !== $gcontact ) {
+			$support_items[] = array(
+				'name'    => $gname,
+				'contact' => $gcontact,
+			);
+		}
+	}
 	?>
 	<?php if ( $ccs_has_map ) : ?>
 		<section class="ccs-section location-map" aria-labelledby="location-map-heading">
@@ -413,55 +433,147 @@ while ( have_posts() ) :
 
 	<?php
 	/*
-	 * The shared steps, team and reviews sections that followed here were
-	 * removed (Nov 2026): repeated word for word on all six area pages, they
-	 * made up most of each page's text, and search engines treat pages that
-	 * similar as duplicates. Each area page now carries only its own facts.
+	 * Who to call (Nov 2026). The page's Local support groups (Areas > edit),
+	 * as a family would look for them. Three earlier forms were dropped: a
+	 * grid of white text boxes and a panel of rows (client: "I don't like
+	 * the styling of those"; both were a directory, ordered by organisation),
+	 * then an accordion beside the map, which a review of our own found
+	 * wanting: the company was missing from its own section, four of the
+	 * five numbers were hidden behind a tap, and the map had nothing to do
+	 * with the list. So:
+	 * - the section opens with us: not sure where to start, ring the office;
+	 * - each row is headed by the situation, in the family's words, with the
+	 *   organisation under it and its number always in view, as a button;
+	 * - the hospital row says 999 and 111 first;
+	 * - a line says when the details were last checked;
+	 * - the map has its own section again, about where we visit.
+	 *
+	 * The situation is chosen from the organisation's name; a row that
+	 * matches nothing is headed by the organisation's name.
 	 */
-	?>
-
-	<?php
-	$support_items = array();
-	foreach ( $support as $s ) {
-		$gname    = isset( $s['group_name'] ) ? trim( $s['group_name'] ) : '';
-		$gcontact = isset( $s['group_contact'] ) ? trim( $s['group_contact'] ) : '';
-		if ( '' !== $gname || '' !== $gcontact ) {
-			$support_items[] = array(
-				'name'    => $gname,
-				'contact' => $gcontact,
-			);
-		}
+	$ccs_support_rows = $support_items;
+	if ( $gp ) {
+		$ccs_support_rows[] = array(
+			'name'    => __( 'Community resources', 'ccs-wp-theme' ),
+			'contact' => $gp,
+		);
 	}
+	$ccs_support_kind = static function ( $name ) {
+		foreach ( array( 'council' => 'council', 'hospital|treatment' => 'hospital', 'carer' => 'carers', 'hospice' => 'hospice', 'age uk' => 'age' ) as $pattern => $kind ) {
+			if ( preg_match( '/' . $pattern . '/i', $name ) ) {
+				return $kind;
+			}
+		}
+		return '';
+	};
+	$ccs_support_heads = array(
+		'council'  => __( 'I need a care assessment from the council', 'ccs-wp-theme' ),
+		'hospital' => __( 'Someone needs hospital or urgent care', 'ccs-wp-theme' ),
+		'carers'   => __( 'I’m the one doing the caring', 'ccs-wp-theme' ),
+		'hospice'  => __( 'We’re thinking about care at the end of life', 'ccs-wp-theme' ),
+		'age'      => __( 'I’d like advice or local services for an older person', 'ccs-wp-theme' ),
+	);
+	$ccs_support_phone = '0\d{2,4}(?: \d{2,7}){1,3}';
+	$ccs_support_text  = static function ( $text ) use ( $ccs_support_phone ) {
+		return preg_replace_callback(
+			'/(?<!\d)' . $ccs_support_phone . '(?!\d)/',
+			static function ( $m ) {
+				return '<a href="tel:' . preg_replace( '/\D/', '', $m[0] ) . '">' . $m[0] . '</a>';
+			},
+			esc_html( $text )
+		);
+	};
+	$ccs_who_rows = array();
+	foreach ( $ccs_support_rows as $ccs_row ) {
+		$ccs_row_text  = array();
+		$ccs_row_hours = array();
+		$ccs_row_calls = array();
+		// A line that is only a number (an optional label before it, opening hours after) becomes the button; any other line is description.
+		foreach ( array_filter( array_map( 'trim', preg_split( '/\R/', (string) $ccs_row['contact'] ) ), 'strlen' ) as $ccs_row_line ) {
+			if ( preg_match( '/^([^\d]{0,40}?)(' . $ccs_support_phone . ')(?:,\s*(.+))?$/', $ccs_row_line, $ccs_row_m ) ) {
+				$ccs_row_calls[] = array( trim( $ccs_row_m[1] ), $ccs_row_m[2] );
+				if ( ! empty( $ccs_row_m[3] ) ) {
+					$ccs_row_hours[] = $ccs_row_m[3];
+				}
+			} else {
+				$ccs_row_text[] = $ccs_row_line;
+			}
+		}
+		$ccs_row_kind  = $ccs_support_kind( (string) $ccs_row['name'] );
+		$ccs_who_rows[] = array(
+			'kind'    => $ccs_row_kind,
+			'heading' => isset( $ccs_support_heads[ $ccs_row_kind ] ) ? $ccs_support_heads[ $ccs_row_kind ] : (string) $ccs_row['name'],
+			'org'     => isset( $ccs_support_heads[ $ccs_row_kind ] ) ? (string) $ccs_row['name'] : '',
+			'text'    => $ccs_row_text,
+			'hours'   => $ccs_row_hours,
+			'calls'   => $ccs_row_calls,
+		);
+	}
+	$ccs_who_us = function_exists( 'ccs_get_contact_info' ) ? ccs_get_contact_info() : array();
 	?>
-	<?php if ( ! empty( $support_items ) || $gp ) : ?>
-		<section class="ccs-section ccs-section--flush-bottom location-support" aria-labelledby="location-support-heading">
+	<?php if ( $ccs_who_rows ) : ?>
+		<section class="ccs-section ccs-section--tint ccs-section--flush-bottom who-call" aria-labelledby="who-call-heading">
 			<div class="container container--lg">
-				<header class="ccs-head">
-					<h2 id="location-support-heading" class="ccs-title">
-						<?php
-						/* translators: %s: town name. */
-						echo esc_html( sprintf( __( 'Local support in %s', 'ccs-wp-theme' ), $town ) );
-						?>
-					</h2>
-				</header>
-				<ul class="feature-grid" role="list">
-					<?php foreach ( $support_items as $item ) : ?>
-						<li class="feature-card">
-							<?php if ( $item['name'] ) : ?>
-								<h3 class="feature-card__title"><?php echo esc_html( $item['name'] ); ?></h3>
-							<?php endif; ?>
-							<?php if ( $item['contact'] ) : ?>
-								<p class="feature-card__text"><?php echo nl2br( esc_html( $item['contact'] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped, then line breaks added. ?></p>
-							<?php endif; ?>
-						</li>
-					<?php endforeach; ?>
-					<?php if ( $gp ) : ?>
-						<li class="feature-card">
-							<h3 class="feature-card__title"><?php esc_html_e( 'Community resources', 'ccs-wp-theme' ); ?></h3>
-							<p class="feature-card__text"><?php echo nl2br( esc_html( $gp ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped, then line breaks added. ?></p>
-						</li>
-					<?php endif; ?>
-				</ul>
+				<div class="ccs-split">
+					<header class="ccs-head">
+						<h2 id="who-call-heading" class="ccs-title">
+							<?php
+							/* translators: %s: town name. */
+							echo ccs_accent_text( sprintf( __( 'Who to *call* in %s', 'ccs-wp-theme' ), $town ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_accent_text().
+							?>
+						</h2>
+						<p class="ccs-lede"><?php esc_html_e( 'Not sure where to start? Ring us first. We will tell you what we can do, and point you to the right place for anything we can’t.', 'ccs-wp-theme' ); ?></p>
+						<?php if ( ! empty( $ccs_who_us['phone'] ) && ! empty( $ccs_who_us['phone_link'] ) ) : ?>
+							<p class="who-call__us">
+								<a class="btn btn-primary" href="<?php echo esc_url( $ccs_who_us['phone_link'] ); ?>">
+									<?php
+									/* translators: %s: phone number. */
+									echo esc_html( sprintf( __( 'Call us on %s', 'ccs-wp-theme' ), $ccs_who_us['phone'] ) );
+									?>
+								</a>
+							</p>
+						<?php endif; ?>
+					</header>
+					<div class="who-call__body">
+						<ul class="who-list" role="list">
+							<?php foreach ( $ccs_who_rows as $ccs_who ) : ?>
+								<li class="who-row">
+									<div class="who-row__words">
+										<h3 class="who-row__title"><?php echo esc_html( $ccs_who['heading'] ); ?></h3>
+										<?php if ( 'hospital' === $ccs_who['kind'] ) : ?>
+											<p class="who-row__first"><?php esc_html_e( 'In an emergency call 999. For urgent advice that is not an emergency, call NHS 111.', 'ccs-wp-theme' ); ?></p>
+										<?php endif; ?>
+										<?php if ( '' !== $ccs_who['org'] ) : ?>
+											<p class="who-row__org"><?php echo esc_html( $ccs_who['org'] ); ?></p>
+										<?php endif; ?>
+										<?php foreach ( $ccs_who['text'] as $ccs_who_line ) : ?>
+											<p class="who-row__text"><?php echo $ccs_support_text( $ccs_who_line ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped, then phone links added. ?></p>
+										<?php endforeach; ?>
+										<?php if ( $ccs_who['hours'] ) : ?>
+											<p class="who-row__hours"><?php echo esc_html( implode( ', ', $ccs_who['hours'] ) ); ?></p>
+										<?php endif; ?>
+									</div>
+									<?php if ( $ccs_who['calls'] ) : ?>
+										<p class="who-row__calls">
+											<?php foreach ( $ccs_who['calls'] as $ccs_who_call ) : ?>
+												<a class="btn btn-quiet who-row__call" href="tel:<?php echo esc_attr( preg_replace( '/\D/', '', $ccs_who_call[1] ) ); ?>">
+													<?php echo ccs_icon( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?>
+													<span><span class="screen-reader-text"><?php echo esc_html( '' !== $ccs_who['org'] ? $ccs_who['org'] : $ccs_who['heading'] ); ?>: </span><?php echo esc_html( '' !== $ccs_who_call[0] ? $ccs_who_call[0] . ' ' : '' ); ?><span class="who-row__num"><?php echo esc_html( $ccs_who_call[1] ); ?></span></span>
+												</a>
+											<?php endforeach; ?>
+										</p>
+									<?php endif; ?>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+						<p class="who-call__checked">
+							<?php
+							/* translators: %s: month and year the details were last checked. */
+							echo esc_html( sprintf( __( 'These are other organisations’ details, last checked in %s.', 'ccs-wp-theme' ), apply_filters( 'ccs_area_local_support_checked', __( 'November 2026', 'ccs-wp-theme' ) ) ) );
+							?>
+						</p>
+					</div>
+				</div>
 			</div>
 		</section>
 	<?php endif; ?>

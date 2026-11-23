@@ -87,6 +87,40 @@ function ccs_link_targets() {
 	$targets['registered manager']        = $page( 'who-youll-meet' );
 	$targets['office team']               = $page( 'who-youll-meet' );
 
+	/*
+	 * Shorter names people actually write (23 Nov 2026, after a second crawl:
+	 * twelve service pages had three links each, and answers named them
+	 * without the word "care"). Only phrases that mean the service or the
+	 * page; "dementia" alone is left out, because it is as often a diagnosis
+	 * in a sentence of advice as a kind of care.
+	 */
+	$service = static function ( $slug ) {
+		$post = get_page_by_path( $slug, OBJECT, 'service' );
+		return $post instanceof WP_Post && 'publish' === $post->post_status ? get_permalink( $post ) : '';
+	};
+	$aliases = array(
+		'overnight-care'     => array( 'waking night', 'sleep-in night', 'sleeping night' ),
+		'continuous-care'    => array( '24-hour care', 'round-the-clock care' ),
+		'palliative-care'    => array( 'end of life care', 'end-of-life care' ),
+		'parkinsons-care'    => array( "parkinson's" ),
+		'spinal-injury-care' => array( 'spinal cord injury', 'spinal injuries', 'spinal injury' ),
+		'brain-injury-care'  => array( 'acquired brain injury', 'brain injuries', 'brain injury' ),
+		'cerebral-palsy-care' => array( 'cerebral palsy' ),
+	);
+	foreach ( $aliases as $slug => $phrases ) {
+		$url = $service( $slug );
+		foreach ( $url ? $phrases : array() as $phrase ) {
+			$targets[ $phrase ] = $url;
+		}
+	}
+	$targets['continuing healthcare'] = $page( 'costs-and-funding' );
+	$targets['what care costs']       = $page( 'costs-and-funding' );
+	$targets['care certificate']      = $page( 'professional-development' );
+	$targets['case managers']         = $page( 'referral-information' );
+	$targets['case manager']          = $page( 'referral-information' );
+	$targets['care guides']           = $page( 'care-guides' );
+	$targets['join our team']         = $page( 'careers' );
+
 	uksort(
 		$targets,
 		static function ( $a, $b ) {
@@ -99,17 +133,26 @@ function ccs_link_targets() {
 /**
  * Link the first plain mention of each known page in a block of HTML.
  *
- * @param string $html HTML.
- * @param int    $max  Most links to add.
+ * @param string $html  HTML.
+ * @param int    $max   Most links to add.
+ * @param string $group Optional. Blocks sharing a group name link each page
+ *                      once between them on a page view: a list of forty
+ *                      answers links "care plan" in the first that says it,
+ *                      not in all of them.
  * @return string
  */
-function ccs_link_mentions( $html, $max = 4 ) {
+function ccs_link_mentions( $html, $max = 4, $group = '' ) {
+	static $seen = array();
 	$html = (string) $html;
 	if ( '' === trim( $html ) || is_admin() || is_feed() ) {
 		return $html;
 	}
-	$here    = untrailingslashit( (string) get_permalink() );
+	// The page being viewed, not whichever post a loop last set up.
+	$here    = untrailingslashit( (string) ( is_singular() && get_queried_object_id() ? get_permalink( get_queried_object_id() ) : get_permalink() ) );
 	$targets = ccs_link_targets();
+	if ( '' !== $group && ! isset( $seen[ $group ] ) ) {
+		$seen[ $group ] = array();
+	}
 
 	// Pages this block already links to are left alone.
 	$linked = array();
@@ -139,7 +182,7 @@ function ccs_link_mentions( $html, $max = 4 ) {
 		}
 		foreach ( $targets as $phrase => $url ) {
 			$bare = untrailingslashit( $url );
-			if ( $added >= $max || $bare === $here || in_array( $bare, $linked, true ) || isset( $used[ $bare ] ) ) {
+			if ( $added >= $max || $bare === $here || in_array( $bare, $linked, true ) || isset( $used[ $bare ] ) || ( '' !== $group && isset( $seen[ $group ][ $bare ] ) ) ) {
 				continue;
 			}
 			// Curly and straight apostrophes both match; whole words only.
@@ -149,6 +192,9 @@ function ccs_link_mentions( $html, $max = 4 ) {
 				// The text is now text and a link: stop here so a second phrase cannot land inside the new link.
 				$parts[ $i ]   = $next;
 				$used[ $bare ] = true;
+				if ( '' !== $group ) {
+					$seen[ $group ][ $bare ] = true;
+				}
 				++$added;
 				break;
 			}
@@ -157,7 +203,7 @@ function ccs_link_mentions( $html, $max = 4 ) {
 	$html = implode( '', $parts );
 	// One link is added per run of text at a time (so no phrase lands inside a new link); go round again for the rest, e.g. a sentence naming five towns.
 	if ( $added && $added < $max ) {
-		return ccs_link_mentions( $html, $max - $added );
+		return ccs_link_mentions( $html, $max - $added, $group );
 	}
 	return $html;
 }
