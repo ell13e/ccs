@@ -4410,8 +4410,21 @@ p + .link-line { margin-top: var(--space-2, 0.5rem); }
 		text-align: left;
 	}
 
+	/* Twelve towns as wrapping pills of different widths made a ragged
+	   block on a phone (client, Nov 2026: "looks messy on mobile"). Two even
+	   columns, every pill the width of its column. */
 	.svc-where__list {
-		justify-content: flex-start;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: var(--space-xs) var(--space-sm);
+	}
+
+	.svc-where__list .btn {
+		display: flex;
+		justify-content: center;
+		width: 100%;
+		padding-inline: var(--space-sm);
+		text-align: center;
 	}
 }
 

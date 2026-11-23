@@ -27,9 +27,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Area posts where a service is provided.
  *
  * Domiciliary, respite and complex care follow each area's location_services
- * setting. The area pages only name those three, so every other service is
- * listed for the areas that get everything (an empty setting) and nowhere
- * else.
+ * setting. Every other service is offered in every area (client, 23 Nov
+ * 2026: "all but domiciliary"). Before that, the other seventeen were listed
+ * only for the areas that get everything, so pages such as nursing care and
+ * brain injury care named Maidstone and Aylesford alone, which was wrong.
  *
  * @param string $slug Service slug.
  * @return WP_Post[]
@@ -48,7 +49,7 @@ function ccs_service_areas( $slug ) {
 	$out   = array();
 	foreach ( $areas as $area ) {
 		$only = array_filter( array_map( 'trim', explode( ',', (string) get_post_meta( $area->ID, 'location_services', true ) ) ) );
-		if ( ! $only || ( in_array( $slug, $named, true ) && in_array( $slug, $only, true ) ) ) {
+		if ( ! $only || ! in_array( $slug, $named, true ) || in_array( $slug, $only, true ) ) {
 			$out[] = $area;
 		}
 	}

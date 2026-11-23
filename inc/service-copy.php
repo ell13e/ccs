@@ -448,7 +448,7 @@ function ccs_service_copy( $slug ) {
 							),
 							array(
 								'',
-								'Epilepsy and seizure management',
+								'Epilepsy and seizure management, including buccal midazolam',
 							),
 							array(
 								'',
