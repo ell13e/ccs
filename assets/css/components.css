@@ -2015,6 +2015,13 @@ a.card {
 	color: var(--color-ink);
 }
 
+/* A line of help under a label, tied to its field with aria-describedby. */
+.ccs-field__hint {
+	margin: 0;
+	font-size: var(--text-sm);
+	color: var(--color-ink-soft);
+}
+
 .ccs-field__optional {
 	font-weight: var(--font-weight-normal);
 	color: var(--color-ink-soft);

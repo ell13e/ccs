@@ -40,6 +40,7 @@ class CCS_SEO_Optimizer {
 		add_action( 'wp_head', array( $this, 'output_open_graph' ), 2 );
 		add_action( 'wp_head', array( $this, 'output_twitter_card' ), 3 );
 		add_action( 'wp_head', array( $this, 'output_canonical' ), 4 );
+		add_action( 'wp_head', array( $this, 'output_search_console_tag' ), 1 );
 		// Core prints its own rel=canonical on singular pages; with ours that was
 		// two canonical tags on every page and post. Ours covers every case.
 		remove_action( 'wp_head', 'rel_canonical' );
@@ -48,6 +49,19 @@ class CCS_SEO_Optimizer {
 		add_filter( 'wp_sitemaps_post_types', array( $this, 'filter_sitemap_post_types' ), 10, 1 );
 		add_filter( 'wp_sitemaps_posts_entry', array( $this, 'filter_sitemap_posts_entry' ), 10, 3 );
 		add_filter( 'wp_sitemaps_exclude_post_ids', array( $this, 'exclude_sitemap_post_ids' ), 10, 2 );
+	}
+
+	/**
+	 * Google Search Console ownership tag (Customizer > Analytics), on the
+	 * front page only, which is all Google checks. Nothing prints until the
+	 * client pastes the code.
+	 */
+	public function output_search_console_tag() {
+		$code = (string) get_theme_mod( 'ccs_search_console_verification', '' );
+		if ( '' === $code || ! is_front_page() ) {
+			return;
+		}
+		echo '<meta name="google-site-verification" content="' . esc_attr( $code ) . '">' . "\n";
 	}
 
 	// -------------------------------------------------------------------------

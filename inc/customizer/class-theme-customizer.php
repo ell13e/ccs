@@ -260,6 +260,21 @@ class CCS_Theme_Customizer {
 	}
 
 	/**
+	 * Search Console code: the content of Google's verification tag only.
+	 *
+	 * @param string $value The whole tag or the code.
+	 * @return string
+	 */
+	public static function sanitize_search_console_code( $value ) {
+		$value = trim( (string) $value );
+		// Accept the whole <meta> tag Google gives, keeping only its content.
+		if ( preg_match( '/content=["\']([^"\']+)["\']/i', $value, $m ) ) {
+			$value = $m[1];
+		}
+		return preg_replace( '/[^A-Za-z0-9_\-]/', '', $value );
+	}
+
+	/**
 	 * Default fee schedule: the 1 September 2026 to 31 August 2027 rates
 	 * (assets/_Care Services Fees - 2026.pdf), newline separated.
 	 *
@@ -490,6 +505,21 @@ class CCS_Theme_Customizer {
 			'description' => __( 'Shows a cookie choice bar and loads tracking only after someone accepts. Leave this on unless you have legal advice that you do not need consent.', 'ccs-wp-theme' ),
 			'section'     => 'ccs_analytics',
 			'type'        => 'checkbox',
+		) );
+
+		// Search Console ownership check (Nov 2026). A meta tag, no cookies, so it
+		// is printed whatever the consent setting (ccs_print_search_console_tag()).
+		$wp_customize->add_setting( 'ccs_search_console_verification', array(
+			'type'              => 'theme_mod',
+			'capability'        => 'edit_theme_options',
+			'default'           => '',
+			'sanitize_callback' => array( __CLASS__, 'sanitize_search_console_code' ),
+		) );
+		$wp_customize->add_control( 'ccs_search_console_verification', array(
+			'label'       => __( 'Google Search Console verification code', 'ccs-wp-theme' ),
+			'description' => __( 'In Search Console choose "HTML tag" and paste the whole tag or just the code inside content="…". Then submit the sitemap: /wp-sitemap.xml', 'ccs-wp-theme' ),
+			'section'     => 'ccs_analytics',
+			'type'        => 'text',
 		) );
 
 		$wp_customize->add_setting( 'ccs_analytics_thank_you_page', array(

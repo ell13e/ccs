@@ -4477,3 +4477,36 @@ p + .link-line { margin-top: var(--space-2, 0.5rem); }
 		order: 2;
 	}
 }
+
+/* Which care is right for us? (Nov 2026, inc/care-finder.php). One form card
+   at reading width, the shared radio rows inside it, a generous gap between
+   questions (rule 9: tight within a group, generous between). */
+.care-finder__form {
+	max-width: 46rem;
+	display: grid;
+	gap: clamp(1.75rem, 1.4rem + 1.2vw, 2.5rem);
+}
+
+/* Each question is the thing being read, so it is larger than a form label. */
+.care-finder__form .ccs-choices > .ccs-field__label,
+.care-finder__cond > .ccs-field__label {
+	font-size: var(--text-lg);
+	margin-bottom: 0.75rem;
+}
+
+.care-finder__foot {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.75rem 1.25rem;
+}
+
+.care-finder__note {
+	margin: 0;
+	font-size: var(--text-sm);
+	color: var(--color-ink-soft);
+}
+
+.care-finder-result:focus {
+	outline: none;
+}

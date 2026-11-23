@@ -200,9 +200,12 @@ function ccs_area_copy_2026_11c_was() {
  *   offered here, with one link. A sentence of five links read as a list,
  *   and a block of seventeen link buttons under the cards was worse.
  *
+ * - Three areas close with where carers go out (ccs_area_outings_2026_11()).
+ *
+ * @param bool $with_outings False gives the wording before the outings were added.
  * @return array<string, array<string, string>>
  */
-function ccs_area_copy_2026_11() {
+function ccs_area_copy_2026_11( $with_outings = true ) {
 	$lines = array(
 		'west-malling'    => 'Carers for West Malling and the villages around it, from a team based just down the road in Maidstone.',
 		'snodland'        => 'Carers for Snodland and the villages along the Medway, from a small, consistent local team.',
@@ -229,6 +232,7 @@ function ccs_area_copy_2026_11() {
 	);
 	$hub   = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'home-care-services-kent' ) : home_url( '/home-care-services-kent/' );
 	$copy  = ccs_area_copy_2026_11_base();
+	$out   = $with_outings ? ccs_area_outings_2026_11() : array();
 	foreach ( $copy as $slug => $row ) {
 		$copy[ $slug ]['heading'] = preg_replace( '/^Respite and complex care in /', 'Care at home in ', $row['heading'] );
 		if ( isset( $lines[ $slug ] ) ) {
@@ -237,9 +241,49 @@ function ccs_area_copy_2026_11() {
 		if ( isset( $towns[ $slug ] ) ) {
 			$copy[ $slug ]['content'] = $row['content'] . "\n" . '<p>Alongside these we provide the rest of <a href="' . $hub . '">our services</a> in ' . $towns[ $slug ] . '.</p>';
 		}
+		if ( isset( $out[ $slug ] ) ) {
+			$copy[ $slug ]['content'] .= "\n" . '<p>' . $out[ $slug ] . '</p>';
+		}
 	}
 	return $copy;
 }
+
+/**
+ * Where carers go with the people they support, by area (Nov 2026, from the
+ * client: "we also take them out on walks or to the park no matter their
+ * age"; a client supported at Upz and Downz, another at Lainey's Care Farm;
+ * trips to Wildwood "every now and then"). The one thing on an area page a
+ * national provider could not write. Places checked on their own listings
+ * on 23 Nov 2026: Upz and Downz CIC, a day service for adults with learning
+ * disabilities, Tonbridge TN10; Laineys Care Farm, Wadd Farm, Frittenden
+ * TN17 (nearest area we cover: Paddock Wood); Wildwood Trust, Herne Common
+ * CT6. No client is named.
+ *
+ * @return array<string, string> slug => sentence(s), HTML.
+ */
+function ccs_area_outings_2026_11() {
+	$walks = 'Carers also go out with the people they support, whatever their age, for a walk or to the park.';
+	return array(
+		'tonbridge'    => $walks . ' In Tonbridge we have supported one of our clients at <a href="https://www.upzanddownz.com/">Upz and Downz</a>, the day service for adults with learning disabilities.',
+		'paddock-wood' => $walks . ' Nearby, we have supported one of our clients at Lainey’s Care Farm in Frittenden, a care farm for adults with learning disabilities.',
+		'herne-bay'    => $walks . ' Every now and then we go further, to <a href="https://kent.wildwoodtrust.org/">Wildwood</a>, the wildlife park at Herne Common.',
+	);
+}
+
+/**
+ * Existing sites: add the outings sentence to the three area pages, once,
+ * only where the page still holds exactly the wording before it.
+ */
+function ccs_area_copy_2026_11e() {
+	if ( get_option( 'ccs_area_copy_2026_11e' ) || ! get_option( 'ccs_area_copy_2026_11d' ) || ! post_type_exists( 'location' ) ) {
+		return;
+	}
+	if ( ! add_option( 'ccs_area_copy_2026_11e', '1', '', 'no' ) ) {
+		return;
+	}
+	ccs_area_copy_apply_2026_11( array( ccs_area_copy_2026_11( false ) ) );
+}
+add_action( 'init', 'ccs_area_copy_2026_11e', 39 );
 
 /**
  * Every service offered in an area, in the site's order: all of them, less
