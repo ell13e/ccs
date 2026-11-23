@@ -59,7 +59,7 @@ function ccs_team_members() {
 			'photo' => 'victoria-walker.jpg',
 			'intro' => __( 'Victoria is our Registered Manager and Company Director. In the video below she tells the story of how Continuity of Care started here in Kent, and what it set out to do differently.', 'ccs-wp-theme' ),
 			'video' => '7RJ-pdNh65o',
-			'bio'   => '<p>My name is Victoria Walker, I am the Managing Director and Registered Manager of Continuity of Care Services. I fell into care in 2008 and have never looked back.</p><p>I have previous experience as a Registered Manager and Director working for another company, but set up Continuity in April 2016, taking with me my ethos and the need to drive forward a change in the care industry.</p>',
+			'bio'   => '<p>My name is Victoria Walker, I am the Registered Manager and Company Director of Continuity of Care Services. I fell into care in 2008 and have never looked back.</p><p>I have previous experience as a Registered Manager and Director working for another company, but set up Continuity in April 2016, taking with me my ethos and the need to drive forward a change in the care industry.</p>',
 		),
 		array(
 			'name'  => 'Amanda Carter',
@@ -235,6 +235,37 @@ function ccs_create_team_profiles_2026_11() {
 	ccs_team_profile_page( '', true );
 }
 add_action( 'init', 'ccs_create_team_profiles_2026_11', 45 );
+
+/**
+ * Victoria's title in her own bio (Nov 2026, confirmed by Ellie): Registered
+ * Manager and Company Director, as on the rest of the site. The bio copied
+ * from the old website said "Managing Director and Registered Manager". Runs
+ * once, and changes only that phrase where the page still holds it, so
+ * anything edited since is left alone.
+ */
+function ccs_fix_victoria_title_2026_11() {
+	if ( get_option( 'ccs_victoria_title_2026_11' ) || ! get_option( 'ccs_team_profiles_2026_11' ) ) {
+		return;
+	}
+	$page = ccs_team_profile_page( 'victoria-walker' );
+	if ( ! $page ) {
+		return;
+	}
+	update_option( 'ccs_victoria_title_2026_11', '1', false );
+	$old = 'I am the Managing Director and Registered Manager of Continuity of Care Services.';
+	$new = 'I am the Registered Manager and Company Director of Continuity of Care Services.';
+	if ( false !== strpos( $page->post_content, $old ) ) {
+		wp_update_post(
+			wp_slash(
+				array(
+					'ID'           => $page->ID,
+					'post_content' => str_replace( $old, $new, $page->post_content ),
+				)
+			)
+		);
+	}
+}
+add_action( 'init', 'ccs_fix_victoria_title_2026_11', 47 );
 
 /**
  * Fill the editor of profiles created before the bios were added, once,

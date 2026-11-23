@@ -23,8 +23,8 @@ continuitycareservices.co.uk/home/who-youll-meet/ into their profile pages,
 so those four pages now show "About ..." and are open to search. Points to
 check in that wording (left as published):
 
-- Victoria's bio says "Managing Director"; the rest of the site says
-  "Registered Manager and Company Director".
+- Victoria's bio said "Managing Director"; corrected to "Registered Manager
+  and Company Director" (confirmed by Ellie, 23 Nov 2026).
 - Nikki's and Keelie's bios say "Clinical Manager"; the roster says "Senior
   Clinical Manager".
 - Victoria's ended "Learn more about my journey here!" (a link); left out,
@@ -32,7 +32,8 @@ check in that wording (left as published):
 - Small typos in Magdalena's: "joined CCS team", "straight forward",
   "full- cycle".
 
-Still needed: Amanda Carter, Shayna-Rae Fuller and Heidi Griffen.
+Still needed: Amanda Carter, Shayna-Rae Fuller, Heidi Griffen and Jacqueline
+Ellis (Field Care Supervisor, joined Nov 2026). Asked by email, 23 Nov 2026.
 
 ## What each person could write (two or three short paragraphs)
 
@@ -55,6 +56,7 @@ These lines use only facts the site already states. Change any that are wrong:
 | Keelie Varney | Keelie is our Care Manager. When you book a free consultation, you can ask to speak with her. |
 | Shayna-Rae Fuller | Shayna-Rae is one of our Field Care Supervisors. |
 | Heidi Griffen | Heidi is one of our Field Care Supervisors. |
+| Jacqueline Ellis | Jacqueline is one of our Field Care Supervisors. |
 | Magdalena Zoledz | Magdalena is our Recruitment Coordinator. |
 
 The lines live in `inc/team.php` with the rest of the roster.
