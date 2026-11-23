@@ -34,7 +34,8 @@ if ( empty( $ccs_cards ) ) {
 			$ccs_card_title = get_the_title( $ccs_card );
 		if ( '' !== $ccs_town ) {
 			/* translators: 1: service name, 2: town. */
-			$ccs_card_title = sprintf( __( '%1$s in %2$s', 'ccs-wp-theme' ), $ccs_card_title, $ccs_town );
+			// Sentence case, as the menu has it: "Respite care in Whitstable".
+			$ccs_card_title = sprintf( __( '%1$s in %2$s', 'ccs-wp-theme' ), function_exists( 'ccs_service_menu_label' ) ? ccs_service_menu_label( $ccs_card_title ) : $ccs_card_title, $ccs_town );
 			$ccs_card_text  = '';
 		}
 		?>

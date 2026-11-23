@@ -720,7 +720,8 @@
 }
 
 /* -------------------------------------------------------------------------
-   WHO TO CALL (Nov 2026)
+   WHO TO CALL (Nov 2026). Switched off in single-location.php until a form
+   is agreed; these rules apply only when it is switched back on.
    Left: the heading, one line and our own number. Right: a row for each
    situation, white on the tint, the number always in view as a button.
    ------------------------------------------------------------------------- */
@@ -729,12 +730,44 @@
 	margin: var(--space-lg) 0 0;
 }
 
-.who-list {
+.who-call__layout {
 	display: grid;
-	gap: var(--space-sm);
+	gap: var(--space-xl);
+}
+
+.who-call__head {
+	display: grid;
+	gap: var(--space-md);
+	max-width: none;
 	margin: 0;
-	padding: 0;
-	list-style: none;
+	text-align: left;
+}
+
+.who-call__head .ccs-title,
+.who-call__head .ccs-lede {
+	margin: 0;
+}
+
+@media (min-width: 900px) {
+	.who-call__head {
+		grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+		column-gap: clamp(2rem, 1rem + 4vw, 5rem);
+		align-items: end;
+	}
+}
+
+/* Two columns of rows; with an odd number the hospital row, which carries
+   the 999 line, runs the full width so no row is left alone. */
+@media (min-width: 62rem) {
+	.who-list {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		grid-auto-flow: dense;
+		gap: var(--space-md);
+	}
+
+	.who-list--odd .who-row--wide {
+		grid-column: 1 / -1;
+	}
 }
 
 .who-row {

@@ -154,16 +154,14 @@ function ccs_area_copy_2026_11_base() {
 }
 
 /**
- * The area wording as it stands (23 Nov 2026). The client confirmed that
- * every service except domiciliary care is offered in every area, so these
- * pages no longer present respite and complex care as all there is: the
- * heading and the hero line say "care at home", and a closing paragraph
- * points to the rest of the services. Respite and complex care keep their
- * own sentences and cards.
+ * The area wording as first changed on 23 Nov 2026, kept only so the update
+ * below can recognise a page that still holds it: "Care at home" in the
+ * heading and the hero line, and a closing paragraph of links to five other
+ * services.
  *
  * @return array<string, array<string, string>>
  */
-function ccs_area_copy_2026_11() {
+function ccs_area_copy_2026_11c_was() {
 	$towns = array(
 		'west-malling'    => 'West Malling',
 		'snodland'        => 'Snodland',
@@ -178,7 +176,6 @@ function ccs_area_copy_2026_11() {
 	);
 	$hub   = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'home-care-services-kent' ) : home_url( '/home-care-services-kent/' );
 	$copy  = ccs_area_copy_2026_11_base();
-	// Each service named is linked by hand: the automatic linker stops at four links a block.
 	$svc   = static function ( $slug, $text ) {
 		return '<a href="' . home_url( '/services/' . $slug . '/' ) . '">' . $text . '</a>';
 	};
@@ -189,6 +186,82 @@ function ccs_area_copy_2026_11() {
 		$copy[ $slug ]['content'] = $row['content'] . "\n" . '<p>Alongside these we provide the rest of <a href="' . $hub . '">our services</a> in ' . $town . ', including ' . $svc( 'overnight-care', 'overnight care' ) . ', ' . $svc( 'palliative-care', 'palliative care' ) . ', ' . $svc( 'dementia-care', 'dementia care' ) . ', ' . $svc( 'stroke-care', 'stroke care' ) . ' and ' . $svc( 'parkinsons-care', 'Parkinson’s care' ) . '.</p>';
 	}
 	return $copy;
+}
+
+/**
+ * The area wording as it stands (23 Nov 2026). The client confirmed that
+ * every service except domiciliary care is offered in every area, so these
+ * pages no longer present respite and complex care as all there is.
+ * - The heading is "Care at home in [town]".
+ * - The hero line no longer opens with the same words as the heading (a
+ *   review found "Care at home in Whitstable" twice in a row); each is made
+ *   from phrases the page already used, with nothing new claimed.
+ * - The body closes with one sentence saying the rest of the services are
+ *   offered here, with one link. A sentence of five links read as a list,
+ *   and a block of seventeen link buttons under the cards was worse.
+ *
+ * @return array<string, array<string, string>>
+ */
+function ccs_area_copy_2026_11() {
+	$lines = array(
+		'west-malling'    => 'Carers for West Malling and the villages around it, from a team based just down the road in Maidstone.',
+		'snodland'        => 'Carers for Snodland and the villages along the Medway, from a small, consistent local team.',
+		'tonbridge'       => 'A consistent, matched team of carers for Tonbridge and the surrounding villages.',
+		'tunbridge-wells' => 'Carers you’ll get to know, for Royal Tunbridge Wells and the villages around it.',
+		'ashford'         => 'A small team matched to you and kept the same, for Ashford and its neighbourhoods.',
+		'herne-bay'       => 'The same carers at every visit, in Herne Bay and along the north Kent coast.',
+		'whitstable'      => 'Carers you get to know, in Whitstable, Tankerton and Chestfield.',
+		'paddock-wood'    => 'A consistent, matched team of carers for Paddock Wood and the villages nearby.',
+		'thanet'          => 'Carers across Thanet, in Margate, Ramsgate, Broadstairs and the towns between them.',
+		'medway'          => 'Carers across Medway, in Chatham, Gillingham, Rochester, Strood and Rainham.',
+	);
+	$towns = array(
+		'west-malling'    => 'West Malling',
+		'snodland'        => 'Snodland',
+		'tonbridge'       => 'Tonbridge',
+		'tunbridge-wells' => 'Tunbridge Wells',
+		'ashford'         => 'Ashford',
+		'herne-bay'       => 'Herne Bay',
+		'whitstable'      => 'Whitstable',
+		'paddock-wood'    => 'Paddock Wood',
+		'thanet'          => 'Thanet',
+		'medway'          => 'Medway',
+	);
+	$hub   = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'home-care-services-kent' ) : home_url( '/home-care-services-kent/' );
+	$copy  = ccs_area_copy_2026_11_base();
+	foreach ( $copy as $slug => $row ) {
+		$copy[ $slug ]['heading'] = preg_replace( '/^Respite and complex care in /', 'Care at home in ', $row['heading'] );
+		if ( isset( $lines[ $slug ] ) ) {
+			$copy[ $slug ]['excerpt'] = $lines[ $slug ];
+		}
+		if ( isset( $towns[ $slug ] ) ) {
+			$copy[ $slug ]['content'] = $row['content'] . "\n" . '<p>Alongside these we provide the rest of <a href="' . $hub . '">our services</a> in ' . $towns[ $slug ] . '.</p>';
+		}
+	}
+	return $copy;
+}
+
+/**
+ * Every service offered in an area, in the site's order: all of them, less
+ * any of domiciliary, respite and complex care the area does not get.
+ *
+ * @param int $post_id Location post ID.
+ * @return WP_Post[]
+ */
+function ccs_area_offered_services( $post_id ) {
+	if ( ! function_exists( 'ccs_ordered_services' ) ) {
+		return array();
+	}
+	$named  = array( 'domiciliary-care', 'respite-care', 'complex-care' );
+	$gets   = ccs_location_services( $post_id );
+	$offers = array();
+	foreach ( ccs_ordered_services() as $service ) {
+		if ( in_array( $service->post_name, $named, true ) && ! in_array( $service->post_name, $gets, true ) ) {
+			continue;
+		}
+		$offers[] = $service;
+	}
+	return $offers;
 }
 
 /**
@@ -309,28 +382,59 @@ function ccs_area_copy_2026_11c() {
 	if ( ! add_option( 'ccs_area_copy_2026_11c', '1', '', 'no' ) ) {
 		return;
 	}
-	$before = ccs_area_copy_2026_11_base();
+	ccs_area_copy_apply_2026_11( array( ccs_area_copy_2026_11_base() ) );
+}
+add_action( 'init', 'ccs_area_copy_2026_11c', 37 );
+
+/**
+ * The same again for the second change that day (the hero line reworded,
+ * the paragraph of links removed): a site that had already taken the first
+ * change is brought to the current wording, once.
+ */
+function ccs_area_copy_2026_11d() {
+	if ( get_option( 'ccs_area_copy_2026_11d' ) || ! get_option( 'ccs_area_copy_2026_11c' ) || ! post_type_exists( 'location' ) ) {
+		return;
+	}
+	if ( ! add_option( 'ccs_area_copy_2026_11d', '1', '', 'no' ) ) {
+		return;
+	}
+	ccs_area_copy_apply_2026_11( array( ccs_area_copy_2026_11c_was() ) );
+}
+add_action( 'init', 'ccs_area_copy_2026_11d', 38 );
+
+/**
+ * Move the area pages to the current wording wherever a page still holds
+ * exactly one of the given earlier wordings.
+ *
+ * @param array<int, array<string, array<string, string>>> $earlier Earlier wordings, each slug => heading, excerpt, content.
+ */
+function ccs_area_copy_apply_2026_11( array $earlier ) {
 	foreach ( ccs_area_copy_2026_11() as $slug => $copy ) {
 		$post = get_page_by_path( $slug, OBJECT, 'location' );
-		if ( ! $post instanceof WP_Post || ! isset( $before[ $slug ] ) ) {
+		if ( ! $post instanceof WP_Post ) {
 			continue;
 		}
-		$update = array( 'ID' => $post->ID );
-		if ( ccs_area_copy_fingerprint( $post->post_content ) === ccs_area_copy_fingerprint( $before[ $slug ]['content'] ) ) {
-			$update['post_content'] = $copy['content'];
-		}
-		if ( ccs_area_copy_fingerprint( $post->post_excerpt ) === ccs_area_copy_fingerprint( $before[ $slug ]['excerpt'] ) ) {
-			$update['post_excerpt'] = $copy['excerpt'];
+		$update  = array( 'ID' => $post->ID );
+		$heading = (string) get_post_meta( $post->ID, 'location_heading', true );
+		foreach ( $earlier as $before ) {
+			if ( ! isset( $before[ $slug ] ) ) {
+				continue;
+			}
+			if ( ccs_area_copy_fingerprint( $post->post_content ) === ccs_area_copy_fingerprint( $before[ $slug ]['content'] ) ) {
+				$update['post_content'] = $copy['content'];
+			}
+			if ( ccs_area_copy_fingerprint( $post->post_excerpt ) === ccs_area_copy_fingerprint( $before[ $slug ]['excerpt'] ) ) {
+				$update['post_excerpt'] = $copy['excerpt'];
+			}
+			if ( $before[ $slug ]['heading'] === $heading ) {
+				update_post_meta( $post->ID, 'location_heading', $copy['heading'] );
+			}
 		}
 		if ( count( $update ) > 1 ) {
 			wp_update_post( wp_slash( $update ) );
 		}
-		if ( $before[ $slug ]['heading'] === (string) get_post_meta( $post->ID, 'location_heading', true ) ) {
-			update_post_meta( $post->ID, 'location_heading', $copy['heading'] );
-		}
 	}
 }
-add_action( 'init', 'ccs_area_copy_2026_11c', 37 );
 
 /**
  * Clear the line under each town in the main menu's Areas dropdown: the

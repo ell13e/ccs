@@ -281,6 +281,16 @@ while ( have_posts() ) :
 				);
 			}
 			get_template_part( 'template-parts/service-cards', null, $ccs_card_args );
+
+			?>
+			<?php
+			/*
+			 * A list of every other service offered here, as seventeen link
+			 * buttons under the cards, was tried on 23 Nov 2026 and removed the
+			 * same day (client: "it arguably looks worse now"). The page text
+			 * says in one sentence that the rest of the services are offered
+			 * here, with one link.
+			 */
 			?>
 			<div class="ccs-section-foot ccs-actions ccs-actions--center">
 				<a class="btn btn-quiet" href="<?php echo esc_url( $ccs_services_hub ); ?>"><?php esc_html_e( 'See all our services', 'ccs-wp-theme' ); ?></a>
@@ -511,17 +521,29 @@ while ( have_posts() ) :
 	}
 	$ccs_who_us = function_exists( 'ccs_get_contact_info' ) ? ccs_get_contact_info() : array();
 	?>
-	<?php if ( $ccs_who_rows ) : ?>
+	<?php
+	/*
+	 * Not shown (23 Nov 2026). The client saw four forms of this section in
+	 * a day and liked none ("it arguably looks worse now"): the area pages
+	 * were among the pages she was happy with, and this made them longer and
+	 * busier. The checked local details stay in each area's Local support
+	 * groups, and the section stays here, switched off, until a form is
+	 * agreed from sketches: add_filter( 'ccs_area_who_to_call', '__return_true' ).
+	 */
+	?>
+	<?php if ( $ccs_who_rows && apply_filters( 'ccs_area_who_to_call', false ) ) : ?>
 		<section class="ccs-section ccs-section--tint ccs-section--flush-bottom who-call" aria-labelledby="who-call-heading">
 			<div class="container container--lg">
-				<div class="ccs-split">
-					<header class="ccs-head">
+				<?php // The heading and our own number across the top, then the rows in two columns: stacked beside the heading they made the tallest section on the page. ?>
+				<div class="who-call__layout">
+					<header class="ccs-head who-call__head">
 						<h2 id="who-call-heading" class="ccs-title">
 							<?php
 							/* translators: %s: town name. */
 							echo ccs_accent_text( sprintf( __( 'Who to *call* in %s', 'ccs-wp-theme' ), $town ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_accent_text().
 							?>
 						</h2>
+						<div class="who-call__intro">
 						<p class="ccs-lede"><?php esc_html_e( 'Not sure where to start? Ring us first. We will tell you what we can do, and point you to the right place for anything we can’t.', 'ccs-wp-theme' ); ?></p>
 						<?php if ( ! empty( $ccs_who_us['phone'] ) && ! empty( $ccs_who_us['phone_link'] ) ) : ?>
 							<p class="who-call__us">
@@ -533,11 +555,12 @@ while ( have_posts() ) :
 								</a>
 							</p>
 						<?php endif; ?>
+						</div>
 					</header>
 					<div class="who-call__body">
-						<ul class="who-list" role="list">
+						<ul class="who-list<?php echo count( $ccs_who_rows ) % 2 ? ' who-list--odd' : ''; ?>" role="list">
 							<?php foreach ( $ccs_who_rows as $ccs_who ) : ?>
-								<li class="who-row">
+								<li class="who-row<?php echo 'hospital' === $ccs_who['kind'] ? ' who-row--wide' : ''; ?>">
 									<div class="who-row__words">
 										<h3 class="who-row__title"><?php echo esc_html( $ccs_who['heading'] ); ?></h3>
 										<?php if ( 'hospital' === $ccs_who['kind'] ) : ?>
