@@ -378,8 +378,9 @@ while ( have_posts() ) :
 				<header class="ccs-head ccs-head--center">
 					<h2 id="location-map-heading" class="ccs-title">
 						<?php
+						// "Where we visit around Herne Bay" (client, Nov 2026: "does this title make sense?"): "visit around" is not natural, and it sounded like sightseeing.
 						/* translators: %s: town name. */
-						echo ccs_accent_text( sprintf( __( 'Where we *visit* around %s', 'ccs-wp-theme' ), $town ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_accent_text().
+						echo ccs_accent_text( sprintf( __( 'In and *around* %s', 'ccs-wp-theme' ), $town ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_accent_text().
 						?>
 					</h2>
 				</header>
