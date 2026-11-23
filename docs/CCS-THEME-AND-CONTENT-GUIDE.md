@@ -285,12 +285,12 @@ Yes, we’re experts in clinical care. But we’re also committed to ensuring ou
 | Nikki Mackay | Senior Clinical Manager (named on consultation form) |
 | Keelie Varney | Care Manager (named on consultation form) |
 | Shayna-Rae Fuller | Field Care Supervisor |
-| Heidi Griffen | Field Care Supervisor |
+| Jacqueline Ellis | Field Care Supervisor |
 | Magdalena Zoledz | Recruitment Coordinator |
 
 **Not on this page but still CCS staff:** Trish Henley (Finance Assistant), Jennifer Boorman (Complex Care Assistant & Lead Healthcare Trainer) — internal roles, not featured on the public team page.
 
-**Have left CCS — do not use their names or photos anywhere on the site:** Hani Ahmed (formerly Care Manager — Keelie Varney now holds this title), Zoe Commons (formerly Domiciliary Care Manager).
+**Have left CCS — do not use their names or photos anywhere on the site:** Heidi Griffen (formerly Field Care Supervisor, left Nov 2026), Hani Ahmed (formerly Care Manager — Keelie Varney now holds this title), Zoe Commons (formerly Domiciliary Care Manager).
 
 Real staff photos for several current team members already exist in `assets/images/site-photos/` (e.g. `ccs-keelie-varney-care-manager.webp`, `ccs-nikki-mackay-clinical-manager.webp`, `ccs-victoria-walker-registered-manager.webp`, `Magdalena-Zoledz-scaled.png`). No photo yet identified for Heidi Griffen — will need one before this page ships.
 

@@ -32,8 +32,9 @@ check in that wording (left as published):
 - Small typos in Magdalena's: "joined CCS team", "straight forward",
   "full- cycle".
 
-Still needed: Amanda Carter, Shayna-Rae Fuller, Heidi Griffen and Jacqueline
-Ellis (Field Care Supervisor, joined Nov 2026). Asked by email, 23 Nov 2026.
+Still needed: Amanda Carter, Shayna-Rae Fuller and Jacqueline Ellis (Field Care
+Supervisor, joined Nov 2026). Asked by email, 23 Nov 2026. Heidi Griffen left
+in Nov 2026 and is off the site.
 
 ## What each person could write (two or three short paragraphs)
 
@@ -55,7 +56,6 @@ These lines use only facts the site already states. Change any that are wrong:
 | Nikki Mackay | Nikki is our Senior Clinical Manager. When you book a free consultation, you can ask to speak with her. |
 | Keelie Varney | Keelie is our Care Manager. When you book a free consultation, you can ask to speak with her. |
 | Shayna-Rae Fuller | Shayna-Rae is one of our Field Care Supervisors. |
-| Heidi Griffen | Heidi is one of our Field Care Supervisors. |
 | Jacqueline Ellis | Jacqueline is one of our Field Care Supervisors. |
 | Magdalena Zoledz | Magdalena is our Recruitment Coordinator. |
 

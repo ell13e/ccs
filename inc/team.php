@@ -7,13 +7,14 @@
  * joins or leaves.
  *
  * Roster confirmed with Ellie 2026-08-19. Jacqueline Ellis (Field Care
- * Supervisor) added 2026-11-16. Jacqueline's, Heidi's and Shayna-Rae's
+ * Supervisor) added 2026-11-16. Jacqueline's and Shayna-Rae's
  * photos were replaced the same day with versions the client edited (their
  * ID badge set, 1080x1350, kept as the underscore-named originals). The web
  * versions are cropped and resized only, framed by measured face size to
  * match the rest of the team: face about 48% of the width, its top about
- * 22% down, centred. Hani Ahmed (formerly Care Manager)
- * and Zoe Commons (formerly Domiciliary Care Manager) have left CCS and must not
+ * 22% down, centred. Hani Ahmed (formerly Care Manager),
+ * Zoe Commons (formerly Domiciliary Care Manager) and Heidi Griffen (formerly
+ * Field Care Supervisor, left Nov 2026) have left CCS and must not
  * appear anywhere on the site. Trish Henley and Jennifer Boorman are still staff
  * but are deliberately not featured on the public team page.
  *
@@ -86,12 +87,6 @@ function ccs_team_members() {
 			'role'  => __( 'Field Care Supervisor', 'ccs-wp-theme' ),
 			'photo' => 'shayna-rae-fuller.jpg',
 			'intro' => __( 'Shayna-Rae is one of our Field Care Supervisors.', 'ccs-wp-theme' ),
-		),
-		array(
-			'name'  => 'Heidi Griffen',
-			'role'  => __( 'Field Care Supervisor', 'ccs-wp-theme' ),
-			'photo' => 'heidi-griffen.jpg',
-			'intro' => __( 'Heidi is one of our Field Care Supervisors.', 'ccs-wp-theme' ),
 		),
 		array(
 			'name'  => 'Jacqueline Ellis',
@@ -266,6 +261,25 @@ function ccs_fix_victoria_title_2026_11() {
 	}
 }
 add_action( 'init', 'ccs_fix_victoria_title_2026_11', 47 );
+
+/**
+ * Heidi Griffen left in Nov 2026 (Ellie, 23 Nov 2026). She is off the roster
+ * above; on a site where her profile page was already created, move it to
+ * the bin once (it can be restored from there, and is never recreated,
+ * because her slug stays in the record of pages already handled).
+ */
+function ccs_remove_left_profile_2026_11() {
+	if ( get_option( 'ccs_left_profile_2026_11' ) || ! get_option( 'ccs_team_profiles_2026_11' ) ) {
+		return;
+	}
+	update_option( 'ccs_left_profile_2026_11', '1', false );
+	$page = get_page_by_path( 'who-youll-meet/heidi-griffen' );
+	if ( $page instanceof WP_Post && 'heidi-griffen' === get_post_meta( $page->ID, 'ccs_team_member', true ) ) {
+		wp_trash_post( $page->ID );
+		ccs_team_profile_page( '', true );
+	}
+}
+add_action( 'init', 'ccs_remove_left_profile_2026_11', 48 );
 
 /**
  * Fill the editor of profiles created before the bios were added, once,
