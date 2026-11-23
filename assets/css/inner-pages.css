@@ -4407,9 +4407,15 @@ p + .link-line { margin-top: var(--space-2, 0.5rem); }
 /* Stacked, the photo and its column fill the width in a wider frame (it was
    capped at 30rem, so on a tablet it stopped well short of the right edge). */
 @media (max-width: 959px) {
-	.svc-intro__side,
-	.svc-intro__photo {
+	.svc-intro__side {
 		max-width: none;
+	}
+
+	/* The frame fills the column, but never beyond the photo's own width
+	   (--photo-w, set in the template): a small photo stretched to fit was
+	   blurred. */
+	.svc-intro__photo {
+		max-width: var(--photo-w, none);
 	}
 
 	.svc-intro__photo {

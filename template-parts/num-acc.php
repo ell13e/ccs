@@ -35,7 +35,7 @@ $ccs_na_links = ! isset( $args['links'] ) || $args['links'];
 			<summary class="num-acc__q">
 				<span class="num-acc__title"><?php echo esc_html( $ccs_na_item['heading'] ); ?></span>
 			</summary>
-			<div class="num-acc__a"><?php echo ( $ccs_na_links && function_exists( 'ccs_link_mentions' ) ) ? ccs_link_mentions( $ccs_na_item['body'], 1, 'page' ) : $ccs_na_item['body']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content output or markup built and escaped by the caller. ?></div>
+			<div class="num-acc__a"><?php echo ( $ccs_na_links && function_exists( 'ccs_link_mentions' ) ) ? ccs_link_mentions( $ccs_na_item['body'], 2, 'page' ) : $ccs_na_item['body']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content output or markup built and escaped by the caller. ?></div>
 		</details>
 	<?php endforeach; ?>
 </div>

@@ -2598,7 +2598,12 @@ a.card {
 		grid-auto-columns: min(82%, 22rem);
 		gap: var(--space-md);
 		margin-inline: calc(var(--space-md) * -1);
-		padding: var(--space-xs) var(--space-md) var(--space-lg);
+		/* A box that scrolls sideways clips everything below its padding, so
+		   the cards' soft shadows ended in a hard line (client, Nov 2026).
+		   The padding below is now deeper than the deepest card shadow, and a
+		   matching negative margin keeps the space under the row as it was. */
+		padding: var(--space-xs) var(--space-md) 4rem;
+		margin-bottom: calc(var(--space-lg) - 4rem);
 		overflow-x: auto;
 		overscroll-behavior-x: contain;
 		scroll-snap-type: x mandatory;

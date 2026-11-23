@@ -49,7 +49,8 @@ function ccs_theme_image_variants( $rel ) {
 	$files   = glob( $pattern );
 
 	foreach ( is_array( $files ) ? $files : array() as $file ) {
-		if ( preg_match( '/-(\d+)w\.(?:webp|jpe?g|png|avif)$/i', $file, $m ) ) {
+		// The name must be this photo's name, a width and nothing else. "client-pottery" was picking up "client-pottery-wheel-300w", another photo's smaller copies (Nov 2026).
+		if ( preg_match( '/^' . preg_quote( $info['filename'], '/' ) . '-(\d+)w\.(?:webp|jpe?g|png|avif)$/i', basename( $file ), $m ) ) {
 			// rawurlencode each segment: the CQC artwork has spaces in its name.
 			$variants[ (int) $m[1] ] = $uri . $rel_dir . rawurlencode( basename( $file ) );
 		}

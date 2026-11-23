@@ -41,7 +41,6 @@ $why_photos = array(
 	'site-photos/client-boat-trip.webp',
 	'site-photos-extra/client-summer-party-laineys-care-farm.webp',
 	'site-photos/client-easter-activity.webp',
-	'site-photos/client-pottery-wheel.webp',
 );
 $why_photos = array_values(
 	array_filter(

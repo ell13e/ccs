@@ -121,6 +121,29 @@ function ccs_link_targets() {
 	$targets['care guides']           = $page( 'care-guides' );
 	$targets['join our team']         = $page( 'careers' );
 
+	/*
+	 * Other organisations' pages (24 Nov 2026, client: "identify external and
+	 * internal linking opportunities"). A benefit, a scheme or an assessment
+	 * named in passing links to the official page that explains it. Each
+	 * address was opened and read before it was added here; a phrase is left
+	 * out where no official page could be confirmed (Kent County Council's
+	 * adult social care landing page and cqc.org.uk both refused to load).
+	 * Phrases that already point to a page of this site (Continuing
+	 * Healthcare, end of life care, the Care Certificate) stay as they are.
+	 */
+	$targets['personal independence payment'] = 'https://www.gov.uk/pip';
+	$targets['attendance allowance']          = 'https://www.gov.uk/attendance-allowance';
+	$targets["carer's allowance"]             = 'https://www.gov.uk/carers-allowance';
+	$targets['direct payments']               = 'https://www.gov.uk/apply-direct-payments';
+	$targets['direct payment']                = 'https://www.gov.uk/apply-direct-payments';
+	$targets['personal health budget']        = 'https://www.nhs.uk/nhs-services/help-with-health-costs/what-is-a-personal-health-budget/';
+	$targets["carer's assessment"]            = 'https://www.nhs.uk/social-care-and-support/support-and-benefits-for-carers/carer-assessments/';
+	$targets['mental capacity act']           = 'https://www.nhs.uk/social-care-and-support/making-decisions-for-someone-else/mental-capacity-act/';
+	$targets['disability confident']          = 'https://www.gov.uk/government/collections/disability-confident-campaign';
+	$targets['dbs check']                     = 'https://www.gov.uk/government/organisations/disclosure-and-barring-service';
+	// Kent County Council's own page on asking for one (read 23 Nov 2026).
+	$targets['needs assessment']              = 'https://www.kent.gov.uk/social-care-and-health/adult-social-care/care-and-support/how-to-get-adult-social-care-support/care-needs-assessments';
+
 	uksort(
 		$targets,
 		static function ( $a, $b ) {
@@ -218,6 +241,7 @@ function ccs_link_mentions_in_content( $content ) {
 	if ( ! is_singular() || ! in_the_loop() ) {
 		return $content;
 	}
-	return ccs_link_mentions( $content );
+	// Up to six: a sentence naming five towns was left with two of them unlinked.
+	return ccs_link_mentions( $content, 6 );
 }
 add_filter( 'the_content', 'ccs_link_mentions_in_content', 25 );

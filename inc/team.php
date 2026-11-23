@@ -73,14 +73,23 @@ function ccs_team_members() {
 			'role'  => __( 'Senior Clinical Manager', 'ccs-wp-theme' ),
 			'photo' => 'nikki-mackay.jpg',
 			'intro' => __( 'Nikki is our Senior Clinical Manager. When you book a free consultation, you can ask to speak with her.', 'ccs-wp-theme' ),
-			'bio'   => '<p>My name is Nikki, and I am the Clinical Manager at Continuity Care Services, having joined in April 2023.</p><p>I began my care career in Residential Services in 1995 and qualified as a Registered Learning Disability Nurse in 2000, initially working within a challenging behaviour service. After completing the THORN degree in Mental Health, I became a Community Learning Disability Nurse in 2005, supporting individuals with health needs while they lived independently or in residential settings. Between 2012 and 2015, I worked as a Health Visitor before returning to support people with learning disabilities and complex needs in the Continuing Health Care team.</p><p>At CCS, I am focused on developing our new Nursing service, including funding Nursing Associates to support complex clients in the community. I work closely with the Care Manager and teams to ensure an excellent standard of care for those we support.</p>',
+			'bio'   => '<p>My name is Nikki, and I am the Senior Clinical Manager at Continuity Care Services, having joined in April 2023.</p><p>I began my care career in Residential Services in 1995 and qualified as a Registered Learning Disability Nurse in 2000, initially working within a challenging behaviour service. After completing the THORN degree in Mental Health, I became a Community Learning Disability Nurse in 2005, supporting individuals with health needs while they lived independently or in residential settings. Between 2012 and 2015, I worked as a Health Visitor before returning to support people with learning disabilities and complex needs in the Continuing Health Care team.</p><p>At CCS, I am focused on developing our new Nursing service, including funding Nursing Associates to support complex clients in the community. I work closely with the Care Manager and teams to ensure an excellent standard of care for those we support.</p>',
 		),
 		array(
 			'name'  => 'Keelie Varney',
 			'role'  => __( 'Care Manager', 'ccs-wp-theme' ),
 			'photo' => 'keelie-varney.jpg',
 			'intro' => __( 'Keelie is our Care Manager. When you book a free consultation, you can ask to speak with her.', 'ccs-wp-theme' ),
-			'bio'   => '<p>Hello, my name is Keelie, and I am the Care Manager at CCS. I began my journey with CCS in May 2023 as a Senior Support Worker and have over 20 years of experience in the care sector. After briefly working in sales management, I returned to care, where I find true job satisfaction.</p><p>My experience spans dementia care in nursing homes, home care for older people, and complex care for individuals with brain injuries and challenging behaviours. I have completed NVQs to progress from Care Worker to Senior level, and am now Care Manager. I thrive on supporting both clients and staff, ensuring person-centred care.</p><p>I collaborate closely with Nikki, our Clinical Manager, in developing tailored care plans and to ensure that families meet carers before services begin. These are digitised on our app for ease of use and accessibility for both families and staff. I’m also proud to champion skin integrity within the company.</p><p>One of my key achievements has been transitioning CCS from paper-based daily logs to a digital system, modernising our processes. Currently, I am working towards my Level 5 qualification – a testament to my dedication and commitment to providing exceptional care and support.</p>',
+			'bio'   => '<p>Hello, my name is Keelie, and I am the Care Manager at CCS. I began my journey with CCS in May 2023 as a Senior Support Worker and have over 20 years of experience in the care sector. After briefly working in sales management, I returned to care, where I find true job satisfaction.</p><p>My experience spans dementia care in nursing homes, home care for older people, and complex care for individuals with brain injuries and challenging behaviours. I have completed NVQs to progress from Care Worker to Senior level, and am now Care Manager. I thrive on supporting both clients and staff, ensuring person-centred care.</p><p>I collaborate closely with Nikki, our Senior Clinical Manager, in developing tailored care plans and to ensure that families meet carers before services begin. These are digitised on our app for ease of use and accessibility for both families and staff. I’m also proud to champion skin integrity within the company.</p><p>One of my key achievements has been transitioning CCS from paper-based daily logs to a digital system, modernising our processes. I have since completed my Level 5 Diploma in Leadership for Health and Social Care with a Distinction, and am now working towards becoming a Registered Manager.</p>',
+			// Her progression, in her own words (her email of 23 Nov 2026, unedited): shown as "My journey" on Professional Development.
+			'journey' => <<<'JOURNEY'
+I joined Continuity of Care Services in May 2023 as a Head Carer for a complex care package. Although the package already had an established team in place, CCS recognised my Level 3 qualification and experience in complex care and quickly identified other opportunities for me within the organisation. This led to me progressing into a Senior Head of Complex Support role, where I supported our Head Carers to lead their teams effectively, acted as a key point of contact between field staff, families and management, and contributed to reviewing and updating care plans. Working closely with the people we support allowed me to bring a more person-centred perspective to care planning and service delivery.
+
+After a year with CCS, I was promoted to Deputy Manager. From the beginning, I was keen to progress my career, and I felt that CCS's person-centred approach aligned with my own values and aspirations. The support I received from the organisation played a significant part in my development. While working as Deputy Manager, I was enrolled onto the Level 5 Diploma in Leadership for Health and Social Care. I was proud to achieve a Distinction, which further strengthened my knowledge, confidence and leadership skills. I have since progressed to the role of Care Manager and am currently working towards becoming a Registered Manager.
+
+For anyone considering a career in care, my advice would be to embrace every opportunity to learn and gain experience. Care is an incredibly rewarding profession where no two days are the same, and building strong relationships with the people you support is at the heart of everything you do. Stay open to feedback, never stop learning, and remember that progression is possible if you are willing to work hard and remain committed to providing high-quality, person-centred care. With the right support and determination, there are many opportunities to develop and grow within the sector.
+JOURNEY
+			,
 		),
 		array(
 			'name'  => 'Shayna-Rae Fuller',
@@ -261,6 +270,74 @@ function ccs_fix_victoria_title_2026_11() {
 	}
 }
 add_action( 'init', 'ccs_fix_victoria_title_2026_11', 47 );
+
+/**
+ * Keelie's Level 5 (her email of 23 Nov 2026): passed with a Distinction, so
+ * her bio no longer says she is working towards it. On a site where her
+ * profile already exists, that one sentence is replaced once, and only where
+ * the page still holds it.
+ */
+function ccs_fix_keelie_level5_2026_11() {
+	if ( get_option( 'ccs_keelie_level5_2026_11' ) || ! get_option( 'ccs_team_profiles_2026_11' ) ) {
+		return;
+	}
+	$page = ccs_team_profile_page( 'keelie-varney' );
+	if ( ! $page ) {
+		return;
+	}
+	update_option( 'ccs_keelie_level5_2026_11', '1', false );
+	$old = 'Currently, I am working towards my Level 5 qualification – a testament to my dedication and commitment to providing exceptional care and support.';
+	$new = 'I have since completed my Level 5 Diploma in Leadership for Health and Social Care with a Distinction, and am now working towards becoming a Registered Manager.';
+	if ( false !== strpos( $page->post_content, $old ) ) {
+		wp_update_post(
+			wp_slash(
+				array(
+					'ID'           => $page->ID,
+					'post_content' => str_replace( $old, $new, $page->post_content ),
+				)
+			)
+		);
+	}
+}
+add_action( 'init', 'ccs_fix_keelie_level5_2026_11', 47 );
+
+/**
+ * Nikki is Senior Clinical Manager (confirmed by Victoria Walker, 24 Nov
+ * 2026). Her own bio and Keelie's both said "Clinical Manager", copied from
+ * the old website. On a site where the profiles already exist, the two
+ * phrases are corrected once, and only where the page still holds them.
+ */
+function ccs_fix_nikki_title_2026_11() {
+	if ( get_option( 'ccs_nikki_title_2026_11' ) || ! get_option( 'ccs_team_profiles_2026_11' ) ) {
+		return;
+	}
+	$swaps = array(
+		'nikki-mackay'  => array( 'I am the Clinical Manager at Continuity Care Services', 'I am the Senior Clinical Manager at Continuity Care Services' ),
+		'keelie-varney' => array( 'Nikki, our Clinical Manager,', 'Nikki, our Senior Clinical Manager,' ),
+	);
+	$seen  = 0;
+	foreach ( $swaps as $slug => $swap ) {
+		$page = ccs_team_profile_page( $slug );
+		if ( ! $page ) {
+			continue;
+		}
+		++$seen;
+		if ( false !== strpos( $page->post_content, $swap[0] ) ) {
+			wp_update_post(
+				wp_slash(
+					array(
+						'ID'           => $page->ID,
+						'post_content' => str_replace( $swap[0], $swap[1], $page->post_content ),
+					)
+				)
+			);
+		}
+	}
+	if ( count( $swaps ) === $seen ) {
+		update_option( 'ccs_nikki_title_2026_11', '1', false );
+	}
+}
+add_action( 'init', 'ccs_fix_nikki_title_2026_11', 47 );
 
 /**
  * Heidi Griffen left in Nov 2026 (Ellie, 23 Nov 2026). She is off the roster

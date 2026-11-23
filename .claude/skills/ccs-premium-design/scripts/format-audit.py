@@ -45,6 +45,7 @@ LISTS = [
     ("missingAlt", "img without alt"),
     ("sameGroundBands", "same-ground bands touching"),
     ("clippedShadows", "shadow cut off at a band edge"),
+    ("clippedInScroller", "shadow cut off inside a scrolling row"),
     ("noFocusStyle", "no visible focus"),
 ]
 

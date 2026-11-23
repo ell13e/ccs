@@ -380,9 +380,38 @@
 				});
 				var over = e.getBoundingClientRect().bottom + reach - bandBottom;
 				// A few pixels of the faintest edge of a blur cannot be seen.
-				if (reach > 4 && over > reach * 0.5 && R.clippedShadows.length < 6) R.clippedShadows.push(label(e) + ' in ' + label(band) + ' (' + Math.round(over) + 'px of shadow under ' + label(nextBand) + ')');
+				if (reach > 4 && over > reach * 0.1 && R.clippedShadows.length < 6) R.clippedShadows.push(label(e) + ' in ' + label(band) + ' (' + Math.round(over) + 'px of shadow under ' + label(nextBand) + ')');
 			});
 		}
+
+		// The same fault inside a scrolling or clipping box (client, Nov 2026,
+		// twice more: "bROOOO", "eeek"). A row of cards that scrolls sideways
+		// clips everything below its own padding, so a card's soft shadow ended
+		// in a hard line. Flag a shadow that reaches past the bottom of the
+		// nearest ancestor that clips.
+		R.clippedInScroller = [];
+		Array.prototype.forEach.call(main.querySelectorAll('*'), function (e) {
+			if (R.clippedInScroller.length >= 6) return;
+			var sh = cs(e).boxShadow;
+			if (!sh || sh === 'none' || !visible(e)) return;
+			var reach = 0;
+			sh.split(/,(?![^(]*\))/).forEach(function (layer) {
+				if (/inset/.test(layer)) return;
+				var n = (layer.replace(/rgba?\([^)]*\)|color\([^)]*\)|#[0-9a-f]+/gi, '').match(/-?[\d.]+px/g) || []).map(parseFloat);
+				if (n.length >= 2) reach = Math.max(reach, (n[1] || 0) + (n[2] || 0) + (n[3] || 0));
+			});
+			if (reach <= 8) return;
+			// A small control drawn over a picture (the play button on a video) is not a card on a ground.
+			if (e.getBoundingClientRect().width < 120) return;
+			for (var up = e.parentElement; up && up !== main.parentElement; up = up.parentElement) {
+				var st = cs(up);
+				if (st.overflowX === 'visible' && st.overflowY === 'visible') continue;
+				var room = up.getBoundingClientRect().bottom - e.getBoundingClientRect().bottom;
+				// The cut shows unless nearly all of the shadow's reach fits below the card (29px of room for a 44px shadow was seen at once).
+				if (room >= 0 && room < reach * 0.9) R.clippedInScroller.push(label(e) + ' in ' + label(up) + ' (' + Math.round(room) + 'px of room for a ' + Math.round(reach) + 'px shadow)');
+				break;
+			}
+		});
 
 		// ---- 22: every control shows a focus indicator when focused by keyboard.
 		R.noFocusStyle = [];

@@ -129,8 +129,10 @@ $ccs_pd_name  = trim( (string) get_theme_mod( 'ccs_copy_pd_story_name', '' ) );
 					'I have completed NVQs to progress from Care Worker to Senior level, and am now Care Manager.',
 				);
 				$ccs_pd_bio   = wp_strip_all_tags( $ccs_pd_member['bio'] );
-				if ( false !== strpos( $ccs_pd_bio, $ccs_pd_lines[0] ) && false !== strpos( $ccs_pd_bio, $ccs_pd_lines[1] ) ) {
-					$ccs_pd_story = implode( "\n\n", $ccs_pd_lines );
+				// Her own account of her progression, written for this page (Nov 2026), comes first; the two lines from her profile are what stood in until she sent it.
+				$ccs_pd_own = isset( $ccs_pd_member['journey'] ) ? trim( (string) $ccs_pd_member['journey'] ) : '';
+				if ( '' !== $ccs_pd_own || ( false !== strpos( $ccs_pd_bio, $ccs_pd_lines[0] ) && false !== strpos( $ccs_pd_bio, $ccs_pd_lines[1] ) ) ) {
+					$ccs_pd_story = '' !== $ccs_pd_own ? $ccs_pd_own : implode( "\n\n", $ccs_pd_lines );
 					$ccs_pd_name  = $ccs_pd_member['name'];
 					$ccs_pd_role  = $ccs_pd_member['role'];
 					$ccs_pd_link  = function_exists( 'ccs_team_profile_url' ) ? ccs_team_profile_url( $ccs_pd_member ) : '';
@@ -144,7 +146,8 @@ $ccs_pd_name  = trim( (string) get_theme_mod( 'ccs_copy_pd_story_name', '' ) );
 		<?php if ( '' !== $ccs_pd_story && '' !== $ccs_pd_name ) : ?>
 			<section class="ccs-section ccs-section--flush-bottom careers-story" aria-labelledby="careers-story-heading">
 				<div class="container container--lg">
-					<figure class="careers-story__quote">
+					<?php // A few lines are set large and centred, as a quotation. A full account (Keelie's is three paragraphs) is set to be read: her name and photo beside it, the text as ordinary paragraphs. ?>
+					<figure class="careers-story__quote<?php echo str_word_count( $ccs_pd_story ) > 80 ? ' careers-story__quote--long' : ''; ?>">
 						<h2 id="careers-story-heading" class="careers-story__label"><?php esc_html_e( 'My journey', 'ccs-wp-theme' ); ?></h2>
 						<blockquote><?php echo wp_kses_post( wpautop( esc_html( $ccs_pd_story ) ) ); ?></blockquote>
 						<figcaption>

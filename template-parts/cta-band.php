@@ -51,6 +51,9 @@ if ( $ccs_is_careers ) {
 // A real CCS photo (Nov 2026). The hands-holding image used here looked like
 // stock and, with this band on every page, appeared 15 times across the site.
 /*
+ * Two photos in rotation since 24 Nov 2026: the pottery photos are removed
+ * from the site (client: "we can't use photos of this young man"), and no
+ * photo of him may be added back.
  * Three photos in rotation (Nov 2026). A design review found the pottery
  * photo closing about twenty pages, and repeated photos are something the
  * client has rejected. The page's address picks one, so a page always shows the
@@ -59,7 +62,6 @@ if ( $ccs_is_careers ) {
  * nowhere else on the site. Each entry: file, width, height, object-position.
  */
 $ccs_cta_photos    = array(
-	array( 'site-photos/client-pottery.webp', 800, 800, '55% 40%' ),
 	array( 'site-photos/client-afternoon-tea.webp', 1000, 667, '50% 30%' ),
 	array( 'site-photos/client-activity-laughing.webp', 1000, 667, '60% 40%' ),
 );

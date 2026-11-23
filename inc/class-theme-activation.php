@@ -634,7 +634,7 @@ class CCS_Theme_Activation {
 		$content = array(
 			'about-home-care-maidstone' => '<p>Reliably supporting adults and children across Maidstone and Kent, we\'re here to provide care that fits your life, day or night. <strong>Our local team supports families right across Kent.</strong></p>
 <p>We don\'t rush or rotate staff every other week. Instead, we take the time to get to know each person, not just their care plan. Our staff commit to discovering the quirks of every client, from how they like their toast to what puts them at ease on a tough day.</p>
-<p>We believe that the best care doesn\'t stop when the to-do list is ticked; it carries on in how our carers show up: familiar, unhurried and glad to see you. <strong>Learn more about our home care services</strong></p>',
+<p>We believe that the best care doesn\'t stop when the to-do list is ticked; it carries on in how our carers show up: familiar, unhurried and glad to see you. <a href="' . esc_url( home_url( '/home-care-services-kent/' ) ) . '">Learn more about our home care services</a></p>',
 			// The service list itself is rendered as a card grid by
 			// page-templates/template-services.php, so this intro no longer repeats it.
 			'home-care-services-kent' => '<p class="lead">We provide home care across Maidstone and the surrounding Kent towns.</p>
@@ -1413,21 +1413,6 @@ class CCS_Theme_Activation {
 <p>We write up a care plan and send it to you. You read it, tell us what we have got wrong, and we change it. Then we match you with a small team of carers and introduce them before they start, so the first visit is not the first time you meet.</p>
 <p>The plan is not fixed. We review it regularly and adjust as things change, which they do.</p>
 <p>You can see the <a href="' . $services_url . '">types of care we provide</a>, or <a href="' . $contact_url . '">arrange an assessment</a> whenever you are ready.</p>',
-			),
-			'summer-at-laineys-care-farm'         => array(
-				'title'    => 'A summer afternoon at Lainey\'s Care Farm',
-				'category' => 'Company News',
-				'image'    => 'assets/images/site-photos-extra/client-summer-party-laineys-care-farm.webp',
-				'days_ago' => 33,
-				'excerpt'  => 'Our summer party moved to Lainey\'s Care Farm this year — animals, a barbecue, and a good deal more dancing than anyone had planned for.',
-				'content'  => '<p>Every summer we get everyone together — the people we support, their families, and the carers who see them week in and week out. This year we spent the afternoon at Lainey\'s Care Farm, and it was comfortably the best one we have done.</p>
-<h2>How the day went</h2>
-<p>The animals did most of the work. There is something about a paddock full of goats that dissolves the awkwardness of a room full of people who know each other well in one context and not at all in another. Families who had only ever spoken to their relative\'s carer on a doorstep spent the afternoon talking properly for the first time.</p>
-<p>There was a barbecue, there was cake, and there was a stretch in the middle of the afternoon where somebody put music on and a good number of people who had firmly stated they would not be dancing were dancing.</p>
-<h2>Why we keep doing it</h2>
-<p>Home care is, by its nature, delivered one household at a time. That is the point of it — but it does mean the people we support can go a long time without meeting anyone else in the same position, and so can their families.</p>
-<p>One afternoon a year does not fix that. It does, though, give people a few hours of being somewhere with others who understand the shape of their week without needing it explained.</p>
-<p>Thank you to Lainey\'s Care Farm for having us, and to everyone who came. We are already looking at dates for next year.</p>',
 			),
 			'paying-for-home-care-in-kent'        => array(
 				'title'    => 'Paying for home care in Kent: the questions families ask us most',

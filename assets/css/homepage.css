@@ -473,7 +473,10 @@
 	font-size: var(--text-lg);
 	font-style: italic;
 	line-height: 1.45;
-	color: var(--color-accent);
+	/* Plum, as the accent words and the hero's italic line are. It was the
+	   greyer lavender of an older palette (client, Nov 2026: "is this colour
+	   random?"). */
+	color: var(--color-primary);
 	text-wrap: pretty;
 }
 
@@ -1454,6 +1457,14 @@ a.home-routes__main::after {
 	.home-routes__item {
 		gap: var(--space-sm);
 		padding: 1.25rem;
+	}
+
+	/* The supporting line may take two lines here. Held to one, "We plan the
+	   handover for you" ran into the divider and the office address ran off
+	   the card (client, Nov 2026: "fit?"). */
+	.home-routes__meta {
+		white-space: normal;
+		text-wrap: balance;
 	}
 
 	.home-routes__badge {

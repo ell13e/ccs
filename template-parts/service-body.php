@@ -344,7 +344,12 @@ if ( ! $ccs_sb_lines ) {
 				 * tab on three of them, a larger stand-in on the rest).
 				 */
 				?>
-				<figure class="svc-intro__photo" data-ccs-exception="rule 15: one photograph in its frame">
+				<?php
+				// Never shown wider than the file is (rule 15). Stacked on a tablet the frame filled the column, and a 550px photo stretched to 844px was plainly blurred (client, Nov 2026: "blurry af").
+				$ccs_sb_photo_src = wp_get_attachment_image_src( get_post_thumbnail_id( $ccs_sb_id ), 'full' );
+				$ccs_sb_photo_w   = is_array( $ccs_sb_photo_src ) && ! empty( $ccs_sb_photo_src[1] ) ? (int) $ccs_sb_photo_src[1] : 0;
+				?>
+				<figure class="svc-intro__photo"<?php echo $ccs_sb_photo_w ? ' style="--photo-w: ' . (int) $ccs_sb_photo_w . 'px;"' : ''; ?> data-ccs-exception="rule 15: one photograph in its frame">
 					<?php
 					echo wp_get_attachment_image(
 						get_post_thumbnail_id( $ccs_sb_id ),
@@ -423,7 +428,7 @@ $ccs_sb_contact = function_exists( 'ccs_page_url' ) ? ccs_page_url( 'contact-us'
 					<?php if ( $ccs_sb_plain ) : ?>
 						<ul class="svc-ticks" role="list" data-ccs-exception="rule 1: one checklist read together in one card">
 							<?php foreach ( $ccs_sb_items as $ccs_sb_item ) : ?>
-								<li class="svc-ticks__item"><span class="svc-ticks__mark" aria-hidden="true"><?php echo ccs_icon( 'check' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span><span><?php echo esc_html( rtrim( $ccs_sb_item[1], '.' ) ); ?></span></li>
+								<li class="svc-ticks__item"><span class="svc-ticks__mark" aria-hidden="true"><?php echo ccs_icon( 'check' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span><span><?php echo function_exists( 'ccs_link_mentions' ) ? ccs_link_mentions( esc_html( rtrim( $ccs_sb_item[1], '.' ) ), 1, 'page' ) : esc_html( rtrim( $ccs_sb_item[1], '.' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped, then links added by ccs_link_mentions(). ?></span></li>
 							<?php endforeach; ?>
 						</ul>
 					<?php elseif ( $ccs_sb_items ) : ?>

@@ -3078,6 +3078,70 @@
 	color: var(--color-ink);
 }
 
+/* A full account, not a line or two: read as text. The heading, photo and
+   name stand at the left (as the site's other split openings do), the words
+   at the right in the body face. Large centred serif suits two sentences;
+   three paragraphs of it ran to two screens. */
+.careers-story__quote--long {
+	display: grid;
+	gap: var(--space-lg);
+	max-width: none;
+	text-align: left;
+}
+
+.careers-story__quote--long .careers-story__label {
+	margin: 0;
+	font-family: var(--font-family-heading);
+	font-size: var(--section-title-size, clamp(2rem, 1.5rem + 2vw, 3rem));
+	font-weight: var(--font-weight-medium);
+	letter-spacing: 0;
+	line-height: 1.15;
+	text-transform: none;
+	color: var(--color-ink);
+}
+
+.careers-story__quote--long blockquote {
+	max-width: 46rem;
+	font-family: var(--font-family-body);
+	font-size: 1.125rem;
+	line-height: 1.7;
+	color: var(--color-ink-soft);
+}
+
+.careers-story__quote--long blockquote p + p {
+	margin-top: var(--space-md);
+}
+
+.careers-story__quote--long figcaption {
+	justify-items: start;
+	margin-top: 0;
+}
+
+@media (min-width: 900px) {
+	.careers-story__quote--long {
+		grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+		grid-template-rows: auto 1fr;
+		column-gap: clamp(3rem, 1rem + 5vw, 7rem);
+		row-gap: var(--space-lg);
+	}
+
+	.careers-story__quote--long .careers-story__label {
+		grid-column: 1;
+		grid-row: 1;
+	}
+
+	.careers-story__quote--long figcaption {
+		grid-column: 1;
+		grid-row: 2;
+		align-self: start;
+	}
+
+	.careers-story__quote--long blockquote {
+		grid-column: 2;
+		grid-row: 1 / span 2;
+	}
+}
+
 /* A feature card with a photo instead of the icon badge (careers "what you
    can expect"). Two across, the photo down the left of each card and the
    words beside it; stacked on phones. Four narrow columns with the photo on
@@ -3493,10 +3557,10 @@
 	text-align: center;
 }
 
-/* The closing-band photo (a client at the pottery wheel) is a portrait:
-   keep his face in frame when phones crop it to a wide strip. */
+/* The closing-band photo: a default focal point for when phones crop it
+   to a wide strip. Each photo sets its own in the template. */
 .cta-card__media img {
-	object-position: 55% 40%;
+	object-position: 50% 35%;
 }
 
 /* -------------------------------------------------------------------------
@@ -3533,12 +3597,19 @@
 		grid-auto-flow: column;
 		grid-auto-columns: min(46%, 26rem);
 		gap: var(--space-lg);
-		margin-inline: calc(var(--space-xl) * -1);
-		padding: var(--space-xs) var(--space-xl) var(--space-lg);
+		/* The row bleeds to the screen edge by exactly the page gutter, which
+		   is narrower below 1024px. With the wider value throughout, the row
+		   stuck out 16px and the whole page scrolled sideways between 860 and
+		   1023px (found Nov 2026). */
+		--row-gutter: var(--space-lg);
+		margin-inline: calc(var(--row-gutter) * -1);
+		/* Room below for the cards' shadows, as on phones (components.css). */
+		padding: var(--space-xs) var(--row-gutter) 4rem;
+		margin-bottom: calc(var(--space-lg) - 4rem);
 		overflow-x: auto;
 		overscroll-behavior-x: contain;
 		scroll-snap-type: x mandatory;
-		scroll-padding-inline: var(--space-xl);
+		scroll-padding-inline: var(--row-gutter);
 		scrollbar-width: none;
 	}
 
@@ -3549,6 +3620,12 @@
 	ul.home-reviews__list.ccs-swipe > * {
 		scroll-snap-align: start;
 		min-width: 0;
+	}
+}
+
+@media (min-width: 1024px) and (max-width: 1199px) {
+	ul.home-reviews__list.ccs-swipe {
+		--row-gutter: var(--space-xl);
 	}
 }
 

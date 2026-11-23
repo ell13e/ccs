@@ -9,7 +9,7 @@ site-photos/ccs-domiciliary-care.webp,,Ccs domiciliary care,,,inc/class-theme-ac
 site-photos/ccs-respite-care-guitar-1.webp,,Ccs respite care guitar 1,,,inc/class-theme-activation.php
 site-photos/ccs-victoria-walker-registered-manager.webp,,Ccs victoria walker registered manager,,,page-templates/template-about.php
 site-photos/client-activity-laughing.webp,,Client activity laughing,,,template-parts/cta-band.php
-site-photos/client-afternoon-tea.webp,,Client afternoon tea,,,template-parts/cta-band.php
+site-photos/client-afternoon-tea.webp,,Client afternoon tea,,,template-parts/cta-band.php; template-parts/home/closing-cta.php
 site-photos/client-baking-together.webp,,Client baking together,,,page-templates/template-getting-started.php
 site-photos/client-boat-trip.webp,,Client boat trip,,,template-parts/home/why-choose-us.php
 site-photos/client-cafe-counter.webp,,Client cafe counter,,,template-parts/resources-hub.php
@@ -21,8 +21,6 @@ site-photos/client-easter-activity.webp,,Client easter activity,,,inc/class-them
 site-photos/client-football-club-blanket.webp,"A young man in a wheelchair with a football club blanket over his knees, smiling",Client football club blanket,,,page-templates/template-costs.php
 site-photos/client-jigsaw.webp,,Client jigsaw,,,template-parts/resources-hub.php
 site-photos/client-picking-flowers.webp,Someone sitting in a meadow picking buttercups on a day out,Client picking flowers,,,template-parts/careers/what-to-expect.php
-site-photos/client-pottery-wheel.webp,,Client pottery wheel,,,template-parts/home/why-choose-us.php
-site-photos/client-pottery.webp,,Client pottery,,,template-parts/cta-band.php; template-parts/home/closing-cta.php
 site-photos/client-sewing.webp,,Client sewing,,,page-templates/template-getting-started.php
 site-photos/client-thank-you-flowers.webp,,Client thank you flowers,,,page-templates/template-getting-started.php
 site-photos/client-wheelchair-seafront-pier.webp,,Client wheelchair seafront pier,,,template-parts/home/differentiators.php

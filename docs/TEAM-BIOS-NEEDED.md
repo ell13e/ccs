@@ -25,8 +25,8 @@ check in that wording (left as published):
 
 - Victoria's bio said "Managing Director"; corrected to "Registered Manager
   and Company Director" (confirmed by Ellie, 23 Nov 2026).
-- Nikki's and Keelie's bios say "Clinical Manager"; the roster says "Senior
-  Clinical Manager".
+- Nikki's and Keelie's bios said "Clinical Manager"; corrected to "Senior
+  Clinical Manager" (confirmed by Victoria, 24 Nov 2026).
 - Victoria's ended "Learn more about my journey here!" (a link); left out,
   since her page has the story video.
 - Small typos in Magdalena's: "joined CCS team", "straight forward",

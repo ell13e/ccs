@@ -542,3 +542,45 @@ function ccs_working_with_us_redirect() {
 	}
 }
 add_action( 'template_redirect', 'ccs_working_with_us_redirect', 1 );
+
+/**
+ * The About page's closing line is a link (Nov 2026, client, pasting the
+ * sentence: it read as a prompt to click and went nowhere). An earlier
+ * update was meant to link it, but it looked for the line's older, longer
+ * wording, which new sites never had, so the line stayed bold text. It is
+ * linked once here, and only where it is still the plain bold line.
+ */
+function ccs_link_about_services_line_2026_11() {
+	if ( get_option( 'ccs_about_services_line_2026_11' ) ) {
+		return;
+	}
+	$found = get_posts( array( 'name' => 'about-home-care-maidstone', 'post_type' => 'page', 'post_status' => 'any', 'numberposts' => 1, 'suppress_filters' => true ) );
+	if ( ! $found ) {
+		return;
+	}
+	update_option( 'ccs_about_services_line_2026_11', 1, false );
+	$old = '<strong>Learn more about our home care services</strong>';
+	if ( false !== strpos( $found[0]->post_content, $old ) ) {
+		$new = '<a href="' . esc_url( home_url( '/home-care-services-kent/' ) ) . '">Learn more about our home care services</a>';
+		wp_update_post( wp_slash( array( 'ID' => $found[0]->ID, 'post_content' => str_replace( $old, $new, $found[0]->post_content ) ) ) );
+	}
+}
+add_action( 'init', 'ccs_link_about_services_line_2026_11', 50 );
+
+/**
+ * The news article about the summer party at Lainey's Care Farm is not
+ * wanted (client, 24 Nov 2026: "I don't need the Lainey's article"). New
+ * sites no longer get it; on a site that already has it, it goes to the bin
+ * once, where it can be restored.
+ */
+function ccs_remove_laineys_article_2026_11() {
+	if ( get_option( 'ccs_laineys_article_removed_2026_11' ) ) {
+		return;
+	}
+	update_option( 'ccs_laineys_article_removed_2026_11', 1, false );
+	$found = get_posts( array( 'name' => 'summer-at-laineys-care-farm', 'post_type' => 'post', 'post_status' => 'publish', 'numberposts' => 1, 'suppress_filters' => true ) );
+	if ( $found ) {
+		wp_trash_post( $found[0]->ID );
+	}
+}
+add_action( 'init', 'ccs_remove_laineys_article_2026_11', 60 );
