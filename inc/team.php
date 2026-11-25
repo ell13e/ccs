@@ -29,13 +29,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Team members shown on the public team page, in display order.
  *
  * `photo` is a filename in assets/images/team/ — square-cropped (512×512)
- * web versions generated from the raw uploads (also in assets/images/team/,
- * underscore-named e.g. `magdalena_zoledz.jpg`). Crop only — no brightness/
- * colour correction, per Ellie's instruction (2026-08-20).
- *
- * 2026-08-20: the raw `magdalena_zoledz.jpg` in the first upload batch was
- * actually a photo of Keelie Varney (mislabelled at source, confirmed by
- * comparison) — corrected once Ellie re-uploaded both under the right names.
+ * web versions of the raw uploads. Crop only — no brightness/colour
+ * correction, per Ellie's instruction (2026-08-20).
  *
  * Members without a photo fall back to an initials tile rather than an empty slot.
  *

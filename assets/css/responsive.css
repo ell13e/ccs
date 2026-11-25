@@ -163,7 +163,6 @@ iframe {
    ------------------------------------------------------------------------- */
 
 .home-services__grid,
-.home-scenarios__grid,
 .home-differentiators__grid {
 	display: grid;
 	grid-template-columns: 1fr;
@@ -210,7 +209,6 @@ iframe {
 	}
 
 	.home-services__heading,
-	.home-scenarios__heading,
 	.home-differentiators__heading {
 		font-size: var(--text-2xl);
 	}

@@ -2966,7 +2966,7 @@
 
 .pd-academy__lede {
 	max-width: 34rem;
-	margin: 0 0 var(--space-xl);
+	margin: 0 0 var(--space-lg);
 	font-size: var(--text-md);
 	line-height: 1.7;
 	color: var(--color-ink-soft);
@@ -5098,6 +5098,13 @@ p.costs-more {
 .pd-academy__note,
 .careers-benefits__note {
 	margin: var(--space-md) 0 var(--space-lg);
+}
+
+/* The pen line hangs below the note's box, so the button needs the extra
+   room to look as far from the note as the note is from the paragraph.
+   Scoped to the text column to win over .doodle-note, which loads later. */
+.pd-academy__text .pd-academy__note {
+	margin-bottom: var(--space-xl);
 }
 
 /* "What you can expect" cards by width (Nov 2026, client: "shit on mobile and

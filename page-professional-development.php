@@ -31,12 +31,12 @@ $ccs_pd_name  = trim( (string) get_theme_mod( 'ccs_copy_pd_story_name', '' ) );
 	while ( have_posts() ) :
 		the_post();
 		/*
-		 * Redesigned (Nov 2026). The heading-beside-a-photo intro is gone: the
-		 * page's opening paragraph now sits under the sections' heading, and the
-		 * sections further down are the homepage's numbered accordion, in
-		 * place of the boxed one.
+		 * Redesigned (Nov 2026). The heading-beside-a-photo intro is gone, and
+		 * the sections are the homepage's numbered accordion, in place of the
+		 * boxed one. The page's opening paragraph is not shown (client, Nov
+		 * 2026): the academy block above already says training is funded,
+		 * paid and in working hours.
 		 */
-		$ccs_pd_open    = ccs_content_sections( apply_filters( 'the_content', get_the_content() ) );
 		get_template_part( 'template-parts/page-header' );
 
 		/*
@@ -99,7 +99,6 @@ $ccs_pd_name  = trim( (string) get_theme_mod( 'ccs_copy_pd_story_name', '' ) );
 							'title'    => ccs_copy( 'pd_tabs_title' ),
 							'sections' => $ccs_pd_rest,
 							'numbered' => true,
-							'lede'     => $ccs_pd_open['intro'],
 						)
 					);
 					?>

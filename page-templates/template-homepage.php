@@ -4,10 +4,6 @@
  *
  * Full-width homepage per content guide §2b: hero, why choose us, differentiators, CQC, care options (services), info cards, partnerships, testimonial.
  *
- * Note: template-parts/home/scenarios.php exists but is deliberately NOT included here yet.
- * Its scenarios and links now match the site's URL structure and the "no rushed care" USP;
- * still needs a design pass before it's wired in.
- *
  * @package CCS_WP_Theme
  * @since 1.0.0
  */
