@@ -300,6 +300,9 @@ while ( have_posts() ) :
 			 */
 			$ccs_area_services = function_exists( 'ccs_location_services' ) ? ccs_location_services( $post_id ) : array();
 			$ccs_card_args     = array( 'town' => $town );
+			if ( function_exists( 'ccs_area_card_photos' ) ) {
+				$ccs_card_args['photos'] = ccs_area_card_photos( get_post_field( 'post_name', $post_id ) );
+			}
 			if ( $ccs_area_services && function_exists( 'ccs_ordered_services' ) ) {
 				$ccs_main_missing          = array_diff( array( 'domiciliary-care', 'respite-care', 'complex-care' ), $ccs_area_services );
 				$ccs_card_args['services'] = array_values(

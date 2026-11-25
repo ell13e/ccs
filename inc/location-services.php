@@ -547,3 +547,33 @@ function ccs_area_copy_review_notice() {
 	echo '<div class="notice notice-warning"><p>' . esc_html__( 'These area pages still mention domiciliary care, which is not offered there. Their wording was edited, so it was not changed automatically:', 'ccs-wp-theme' ) . ' ' . implode( ', ', $links ) . '</p></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above.
 }
 add_action( 'admin_notices', 'ccs_area_copy_review_notice' );
+
+/**
+ * Each area's own photos for its main service cards (client, 25 Nov 2026:
+ * "use different photos on each area page"). Every area page used to show
+ * the same nineteen photos; now respite, complex and (where offered)
+ * domiciliary care each have a photo used on no other area page, from the
+ * client's own photos (all with consent; crop and resize only), and the
+ * other services show their icon. The service pages, hub and homepage keep
+ * each service's usual photo.
+ *
+ * @param string $area Area slug.
+ * @return array<string, string> Service slug => path inside assets/images.
+ */
+function ccs_area_card_photos( $area ) {
+	$photos = array(
+		'maidstone'       => array( 'respite-care' => 'site-photos-extra/area-maidstone-respite.webp', 'complex-care' => 'site-photos-extra/area-maidstone-complex.webp', 'domiciliary-care' => 'site-photos-extra/area-maidstone-domiciliary.webp' ),
+		'aylesford'       => array( 'respite-care' => 'site-photos-extra/area-aylesford-respite.webp', 'complex-care' => 'site-photos-extra/area-aylesford-complex.webp', 'domiciliary-care' => 'site-photos-extra/area-aylesford-domiciliary.webp' ),
+		'ashford'         => array( 'respite-care' => 'site-photos-extra/area-ashford-respite.webp', 'complex-care' => 'site-photos-extra/area-ashford-complex.webp' ),
+		'herne-bay'       => array( 'respite-care' => 'site-photos-extra/area-herne-bay-respite.webp', 'complex-care' => 'site-photos-extra/area-herne-bay-complex.webp' ),
+		'whitstable'      => array( 'respite-care' => 'site-photos-extra/area-whitstable-respite.webp', 'complex-care' => 'site-photos-extra/area-whitstable-complex.webp' ),
+		'paddock-wood'    => array( 'respite-care' => 'site-photos-extra/area-paddock-wood-respite.webp', 'complex-care' => 'site-photos-extra/area-paddock-wood-complex.webp' ),
+		'thanet'          => array( 'respite-care' => 'site-photos-extra/area-thanet-respite.webp', 'complex-care' => 'site-photos-extra/area-thanet-complex.webp' ),
+		'medway'          => array( 'respite-care' => 'site-photos-extra/area-medway-respite.webp', 'complex-care' => 'site-photos-extra/area-medway-complex.webp' ),
+		'west-malling'    => array( 'respite-care' => 'site-photos-extra/area-west-malling-respite.webp', 'complex-care' => 'site-photos-extra/area-west-malling-complex.webp' ),
+		'snodland'        => array( 'respite-care' => 'site-photos-extra/area-snodland-respite.webp', 'complex-care' => 'site-photos-extra/area-snodland-complex.webp' ),
+		'tonbridge'       => array( 'respite-care' => 'site-photos-extra/area-tonbridge-respite.webp', 'complex-care' => 'site-photos-extra/area-tonbridge-complex.webp' ),
+		'tunbridge-wells' => array( 'respite-care' => 'site-photos-extra/area-tunbridge-wells-respite.webp', 'complex-care' => 'site-photos-extra/area-tunbridge-wells-complex.webp' ),
+	);
+	return isset( $photos[ $area ] ) ? $photos[ $area ] : array();
+}

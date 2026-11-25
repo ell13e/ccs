@@ -10,6 +10,9 @@
  *   care in Tonbridge") and the card carries no excerpt, only the price tag
  *   on its photo. The same excerpts on all six area pages made them read as
  *   near-duplicates to search engines (Nov 2026).
+ * - photos (array) On an area page: service slug => photo path inside
+ *   assets/images, used instead of the service's own photo; every other
+ *   card shows the service's icon (ccs_area_card_photos(), Nov 2026).
  *
  * @package CCS_WP_Theme
  */
@@ -20,6 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $ccs_cards = isset( $args['services'] ) && is_array( $args['services'] ) ? $args['services'] : ccs_ordered_services();
 $ccs_town  = isset( $args['town'] ) ? trim( (string) $args['town'] ) : '';
+$ccs_area_photos = isset( $args['photos'] ) && is_array( $args['photos'] ) ? $args['photos'] : null;
 
 if ( empty( $ccs_cards ) ) {
 	return;
@@ -40,7 +44,25 @@ if ( empty( $ccs_cards ) ) {
 		}
 		?>
 		<li class="svc-card">
-			<?php if ( has_post_thumbnail( $ccs_card ) ) : ?>
+			<?php if ( null !== $ccs_area_photos && ! empty( $ccs_area_photos[ $ccs_card->post_name ] ) && file_exists( get_template_directory() . '/assets/images/' . $ccs_area_photos[ $ccs_card->post_name ] ) ) : ?>
+				<?php
+				$ccs_area_photo = $ccs_area_photos[ $ccs_card->post_name ];
+				$ccs_area_size  = wp_getimagesize( get_template_directory() . '/assets/images/' . $ccs_area_photo );
+				?>
+				<div class="svc-card__media">
+					<?php
+					printf(
+						'<img src="%1$s" alt="" width="%2$d" height="%3$d" loading="lazy" decoding="async"%4$s>',
+						esc_url( get_template_directory_uri() . '/assets/images/' . $ccs_area_photo ),
+						is_array( $ccs_area_size ) ? (int) $ccs_area_size[0] : 900,
+						is_array( $ccs_area_size ) ? (int) $ccs_area_size[1] : 675,
+						ccs_theme_image_srcset( $ccs_area_photo, '(min-width: 1280px) 400px, (min-width: 860px) 31vw, 92vw' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset().
+					);
+					?>
+				</div>
+			<?php elseif ( null !== $ccs_area_photos ) : ?>
+				<div class="svc-card__media svc-card__media--icon" aria-hidden="true" data-ccs-exception="rule 1: an area page shows its own photos on the main services and the icon on the rest, so no photo repeats from area to area; the whole card is the link"><?php echo ccs_icon( ccs_service_icon( $ccs_card->post_name ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></div>
+			<?php elseif ( has_post_thumbnail( $ccs_card ) ) : ?>
 				<div class="svc-card__media">
 					<?php
 					echo wp_get_attachment_image(
