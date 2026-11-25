@@ -111,7 +111,6 @@ function ccs_apply_content_updates() {
 		update_option( 'ccs_content_updates_done', $done, false );
 	}
 }
-add_action( 'admin_init', 'ccs_apply_content_updates' );
 
 /**
  * One-time featured-image swaps (Nov 2026). Each applies only while the post
@@ -147,7 +146,6 @@ function ccs_apply_thumbnail_updates() {
 	}
 	update_option( 'ccs_thumbnail_updates_2026_11', 1, false );
 }
-add_action( 'admin_init', 'ccs_apply_thumbnail_updates' );
 
 /**
  * Current Vacancies hero (Nov 2026). It showed the same summer-party photo as
@@ -204,7 +202,6 @@ function ccs_apply_vacancies_hero_update() {
 
 	set_post_thumbnail( $page->ID, $att );
 }
-add_action( 'admin_init', 'ccs_apply_vacancies_hero_update' );
 
 /**
  * Costs extras as "charge | price" rows (Nov 2026, costs section redesign).
@@ -233,7 +230,6 @@ function ccs_apply_cost_extras_update() {
 
 	update_option( 'ccs_cost_extras_rows_done', 1, false );
 }
-add_action( 'admin_init', 'ccs_apply_cost_extras_update' );
 
 /**
  * "Working for Us" becomes "Working with us" (Nov 2026, user). The page title
@@ -262,7 +258,6 @@ function ccs_apply_working_with_us_rename() {
 	}
 	update_option( 'ccs_working_with_us_renamed', 1, false );
 }
-add_action( 'admin_init', 'ccs_apply_working_with_us_rename' );
 
 /**
  * Shorter careers-menu labels (Nov 2026, user: "nav bar is still cramped").
@@ -306,7 +301,6 @@ function ccs_apply_short_careers_menu_labels() {
 	}
 	update_option( 'ccs_short_careers_menu_labels_v2', 1, false );
 }
-add_action( 'admin_init', 'ccs_apply_short_careers_menu_labels' );
 
 /**
  * Friendlier opening on "Working with us" (Nov 2026, user: "the para could be
@@ -326,7 +320,6 @@ function ccs_apply_working_intro_reword() {
 	}
 	update_option( 'ccs_working_intro_reworded', 1, false );
 }
-add_action( 'admin_init', 'ccs_apply_working_intro_reword' );
 
 /**
  * The services hub no longer says "three kinds of home care" (Nov 2026, user
@@ -356,7 +349,6 @@ function ccs_apply_services_intro_reword() {
 	}
 	update_option( 'ccs_services_intro_reword_2026_11', 1, false );
 }
-add_action( 'admin_init', 'ccs_apply_services_intro_reword' );
 
 /**
  * The client's notes on the services wording (Nov 2026). Once, and each
@@ -411,7 +403,6 @@ function ccs_apply_services_wording_2026_11h() {
 	);
 	update_option( 'ccs_services_wording_2026_11m', 1, false );
 }
-add_action( 'admin_init', 'ccs_apply_services_wording_2026_11h' );
 
 /**
  * The About page's closing link, shortened to fit one line (Nov 2026, client:
@@ -437,7 +428,6 @@ function ccs_apply_about_link_shorten_2026_11() {
 	}
 	update_option( 'ccs_about_link_shortened_2026_11', 1, false );
 }
-add_action( 'admin_init', 'ccs_apply_about_link_shorten_2026_11' );
 
 /**
  * Shorter heading on the careers hub (Nov 2026, user: "too long"). The
@@ -455,7 +445,6 @@ function ccs_apply_careers_heading_shorten() {
 	}
 	update_option( 'ccs_careers_heading_shortened', 1, false );
 }
-add_action( 'admin_init', 'ccs_apply_careers_heading_shorten' );
 
 /**
  * No named qualifications (Nov 2026, user: "we don't know the specific
@@ -490,7 +479,6 @@ function ccs_apply_unnamed_qualifications() {
 	}
 	update_option( 'ccs_unnamed_qualifications', 1, false );
 }
-add_action( 'admin_init', 'ccs_apply_unnamed_qualifications' );
 
 
 /**
@@ -570,3 +558,89 @@ function ccs_remove_laineys_article_2026_11() {
 	}
 }
 add_action( 'init', 'ccs_remove_laineys_article_2026_11', 60 );
+
+/**
+ * Every one-time update in this file, in the order they were written.
+ *
+ * Each checks the site before it changes anything and records that it ran,
+ * so running the list again changes nothing. Add new updates to the end.
+ *
+ * @return string[] Function names.
+ */
+function ccs_content_update_steps() {
+	return array(
+		'ccs_apply_content_updates',
+		'ccs_apply_thumbnail_updates',
+		'ccs_apply_vacancies_hero_update',
+		'ccs_apply_cost_extras_update',
+		'ccs_apply_working_with_us_rename',
+		'ccs_apply_short_careers_menu_labels',
+		'ccs_apply_working_intro_reword',
+		'ccs_apply_services_intro_reword',
+		'ccs_apply_services_wording_2026_11h',
+		'ccs_apply_about_link_shorten_2026_11',
+		'ccs_apply_careers_heading_shorten',
+		'ccs_apply_unnamed_qualifications',
+	);
+}
+
+/**
+ * Run every one-time update.
+ *
+ * @return void
+ */
+function ccs_run_content_updates() {
+	foreach ( ccs_content_update_steps() as $step ) {
+		if ( function_exists( $step ) ) {
+			$step();
+		}
+	}
+}
+add_action( 'admin_init', 'ccs_run_content_updates' );
+
+/**
+ * Run the updates once on the first ordinary visit after the theme is set up
+ * or updated, as well as when the admin is opened (Nov 2026).
+ *
+ * They used to run only when someone opened the admin, so a fresh site showed
+ * older wording until then: Professional Development kept its em dashes after
+ * the clean-up that removes them. This waits until setup has finished (its
+ * page list is saved and its lock released), so an update never looks for a
+ * page that is still being created, and runs again only when this file
+ * changes. One request at a time: the others carry on as normal.
+ *
+ * @return void
+ */
+function ccs_run_content_updates_on_visit() {
+	if ( is_admin() || wp_doing_ajax() || wp_doing_cron() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+		return;
+	}
+	$signature = (string) filemtime( __FILE__ ) . '-' . (string) filesize( __FILE__ ) . '-' . md5( implode( ',', ccs_content_update_steps() ) );
+	if ( get_option( 'ccs_content_updates_signature' ) === $signature ) {
+		return;
+	}
+	if ( ! get_option( 'ccs_theme_activation_page_ids' ) || false !== get_option( 'ccs_theme_activation_lock', false ) ) {
+		return;
+	}
+
+	global $wpdb;
+	$lock = 'ccs_content_updates_lock';
+	// One atomic insert, as the activation lock does: only one request wins.
+	$won = $wpdb->query( $wpdb->prepare( "INSERT IGNORE INTO `{$wpdb->options}` ( `option_name`, `option_value`, `autoload` ) VALUES ( %s, %s, 'no' )", $lock, (string) time() ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+	if ( ! $won ) {
+		$since = (int) $wpdb->get_var( $wpdb->prepare( "SELECT `option_value` FROM `{$wpdb->options}` WHERE `option_name` = %s", $lock ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		if ( $since > time() - 300 ) {
+			return;
+		}
+		$wpdb->delete( $wpdb->options, array( 'option_name' => $lock ) ); // A lock left by a crashed run.
+		return;
+	}
+	try {
+		ccs_run_content_updates();
+		update_option( 'ccs_content_updates_signature', $signature, true );
+	} finally {
+		$wpdb->delete( $wpdb->options, array( 'option_name' => $lock ) );
+		wp_cache_delete( $lock, 'options' );
+	}
+}
+add_action( 'wp_loaded', 'ccs_run_content_updates_on_visit' );
