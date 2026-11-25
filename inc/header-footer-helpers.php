@@ -175,7 +175,7 @@ function ccs_primary_menu_fallback_items() {
 function ccs_primary_menu_fallback() {
 	$items = ccs_primary_menu_fallback_items();
 	$link_class = 'nav-link';
-	echo '<ul id="primary-menu" class="nav-list" role="menubar">';
+	echo '<ul id="primary-menu" class="nav-list">';
 	foreach ( $items as $item ) {
 		if ( ! empty( $item['children'] ) ) {
 			echo '<li class="menu-item menu-item-has-children">';

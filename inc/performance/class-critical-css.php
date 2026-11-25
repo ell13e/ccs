@@ -67,15 +67,17 @@ class CCS_Critical_CSS {
 		 * gzipped together; the header is above the fold on every page, so there
 		 * is nothing to gain by painting it before its styles exist. Cascade
 		 * order is set by <link> order either way, so the settled page is
-		 * unchanged.
+		 * unchanged. The homepage's and contact page's styles load normally too
+		 * (Nov 2026): both style what is on screen at first paint, and while they
+		 * were deferred the homepage hero (Lighthouse layout shift up to 0.68)
+		 * and the contact page's ways-to-reach-us row (0.32) snapped into place
+		 * after the page was shown.
 		 */
 		$this->deferred_handles = apply_filters( 'ccs_deferred_style_handles', array(
 			'ccs-responsive',
 			'ccs-theme-style',
-			'ccs-homepage',
 			'ccs-service-page',
 			'ccs-location-page',
-			'ccs-contact-page',
 		) );
 
 		if ( is_admin() ) {
@@ -88,15 +90,18 @@ class CCS_Critical_CSS {
 	}
 
 	/**
-	 * Preload the two upright font files every page uses above the fold.
+	 * Preload the font files every page uses above the fold.
 	 *
 	 * Fonts are self-hosted (@font-face in design-system.css). This used to
 	 * preconnect to and preload Google Fonts, which the theme's own CSP blocked,
-	 * so the brand typefaces never reached visitors. Italics are left to load on
-	 * demand: they are only used for a few accents.
+	 * so the brand typefaces never reached visitors. Lora italic is here too
+	 * (Nov 2026): every page title has an italic accent word, and when that
+	 * font arrived late the title rewrapped and the page below it jumped
+	 * (Lighthouse layout shift 0.32 on Contact). Open Sans italic still loads
+	 * on demand.
 	 */
 	public function preload_fonts() {
-		$fonts = apply_filters( 'ccs_preload_fonts', array( 'lora-latin.woff2', 'open-sans-latin.woff2' ) );
+		$fonts = apply_filters( 'ccs_preload_fonts', array( 'lora-latin.woff2', 'lora-italic-latin.woff2', 'open-sans-latin.woff2' ) );
 
 		foreach ( (array) $fonts as $file ) {
 			if ( ! file_exists( get_template_directory() . '/assets/fonts/' . $file ) ) {

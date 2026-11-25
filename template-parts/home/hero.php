@@ -70,12 +70,17 @@ $hero_photos = apply_filters(
 			'file'  => 'site-photos-extra/kent-summer-party-hero.webp',
 			'alt'   => __( 'A young woman in a flower crown, laughing at a summer party', 'ccs-wp-theme' ),
 			'class' => 'home-hero__photo--left',
+			// The frame is taller than it is wide, so this 16:9 photo is cropped
+			// from a picture about 1.8 times the frame's height in width.
+			'sizes' => '(min-width: 1200px) 47vw, 97vw',
 		),
 		'right' => array(
 			'src'   => $hero_image ? $hero_image : ( $hero_has_fallback ? $hero_img_base . $hero_default_file : '' ),
 			'file'  => $hero_image ? '' : 'site-photos/' . $hero_default_file,
 			'alt'   => $hero_image ? $hero_alt : __( 'An older woman smiling with her carer, who holds her hand', 'ccs-wp-theme' ),
 			'class' => 'home-hero__photo--right',
+			// A 3:2 photo in the same frame: about 1.9 times the frame's width.
+			'sizes' => '(min-width: 1200px) 40vw, 82vw',
 		),
 	)
 );
@@ -132,7 +137,7 @@ $hero_photos = apply_filters(
 		<?php foreach ( $hero_photos as $hero_photo ) : ?>
 			<?php if ( ! empty( $hero_photo['src'] ) ) : ?>
 				<figure class="home-hero__photo <?php echo esc_attr( $hero_photo['class'] ); ?>">
-					<img src="<?php echo esc_url( $hero_photo['src'] ); ?>" alt="<?php echo esc_attr( $hero_photo['alt'] ); ?>"<?php echo ! empty( $hero_photo['file'] ) ? ccs_theme_image_srcset( $hero_photo['file'], '(min-width: 1200px) 18vw, 50vw' ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset(). ?> fetchpriority="high" decoding="async">
+					<img src="<?php echo esc_url( $hero_photo['src'] ); ?>" alt="<?php echo esc_attr( $hero_photo['alt'] ); ?>"<?php echo ! empty( $hero_photo['file'] ) ? ccs_theme_image_srcset( $hero_photo['file'], isset( $hero_photo['sizes'] ) ? $hero_photo['sizes'] : '50vw' ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset(). ?> fetchpriority="high" decoding="async">
 				</figure>
 			<?php endif; ?>
 		<?php endforeach; ?>

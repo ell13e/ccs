@@ -3974,6 +3974,15 @@ p + .link-line { margin-top: var(--space-2, 0.5rem); }
 	--hand-edge: var(--color-band-tint);
 }
 
+/* A note never wraps, so on the narrowest phones (and at 400% zoom) the
+   longest ones ran past the screen edge: "a call after week one" on Getting
+   started at 320px. A size smaller there keeps every note on screen. */
+@media (max-width: 22.5rem) {
+	.hand-note {
+		font-size: 1.125rem;
+	}
+}
+
 /* A note on two lines: each line is a note with its own pen line. */
 .hand-note-stack {
 	display: inline-flex;

@@ -147,7 +147,7 @@ $ccs_emergency       = $ccs_emergency_on && ( $ccs_emergency_text || $ccs_phone 
 							'menu_class'      => 'nav-list',
 							'container'       => false,
 							'fallback_cb'     => false,
-							'items_wrap'      => '<ul id="%1$s" class="%2$s" role="menubar">%3$s</ul>',
+							'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
 							'link_class'      => 'nav-link',
 						)
 					);
@@ -159,7 +159,7 @@ $ccs_emergency       = $ccs_emergency_on && ( $ccs_emergency_text || $ccs_phone 
 							'menu_class'      => 'nav-list',
 							'container'       => false,
 							'fallback_cb'     => false,
-							'items_wrap'      => '<ul id="%1$s" class="%2$s" role="menubar">%3$s</ul>',
+							'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
 							'link_class'      => 'nav-link',
 						)
 					);

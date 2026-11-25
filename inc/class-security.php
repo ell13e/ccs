@@ -20,6 +20,64 @@ class CCS_Security {
 	public function __construct() {
 		add_action( 'template_redirect', array( $this, 'send_security_headers' ), 0 );
 		add_action( 'ccs_security_event', array( $this, 'log_security_event' ), 10, 2 );
+
+		/*
+		 * Close off the usual ways of finding the site's login name or guessing
+		 * its password (security check, Nov 2026). XML-RPC accepted logins and
+		 * hundreds of guesses in one request; the public users list and the
+		 * ?author=1 archive both gave away the login "admin"; the generator tag
+		 * named the WordPress version. The site uses none of them: there are no
+		 * plugins, and its posts carry no author pages.
+		 */
+		add_filter( 'xmlrpc_enabled', '__return_false' );
+		add_filter( 'wp_headers', array( $this, 'remove_pingback_header' ) );
+		remove_action( 'wp_head', 'rsd_link' );
+		remove_action( 'wp_head', 'wp_generator' );
+		add_filter( 'rest_endpoints', array( $this, 'hide_users_endpoints' ) );
+		add_action( 'template_redirect', array( $this, 'redirect_author_archives' ), 1 );
+	}
+
+	/**
+	 * Drop the X-Pingback header, which points at the disabled XML-RPC.
+	 *
+	 * @param array $headers Response headers.
+	 * @return array
+	 */
+	public function remove_pingback_header( $headers ) {
+		unset( $headers['X-Pingback'] );
+		return $headers;
+	}
+
+	/**
+	 * Hide the REST API's users list from visitors who are not logged in.
+	 * The editor still has it, because editors are logged in.
+	 *
+	 * @param array $endpoints REST routes.
+	 * @return array
+	 */
+	public function hide_users_endpoints( $endpoints ) {
+		if ( is_user_logged_in() ) {
+			return $endpoints;
+		}
+		foreach ( array_keys( $endpoints ) as $route ) {
+			if ( 0 === strpos( $route, '/wp/v2/users' ) ) {
+				unset( $endpoints[ $route ] );
+			}
+		}
+		return $endpoints;
+	}
+
+	/**
+	 * Send author archives (and ?author=1) to the home page, so they no
+	 * longer reveal login names. The site has no author pages.
+	 *
+	 * @return void
+	 */
+	public function redirect_author_archives() {
+		if ( is_author() || isset( $_GET['author'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read only, to redirect.
+			wp_safe_redirect( home_url( '/' ), 301 );
+			exit;
+		}
 	}
 
 	/**
