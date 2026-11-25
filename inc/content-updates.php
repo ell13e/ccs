@@ -560,6 +560,72 @@ function ccs_remove_laineys_article_2026_11() {
 add_action( 'init', 'ccs_remove_laineys_article_2026_11', 60 );
 
 /**
+ * The old website's articles instead of the ones written for this build
+ * (client, 25 Nov 2026: "copy over these articles instead of the ones we've
+ * made up"). Moves the seven written articles to the bin (restorable from
+ * Posts > Bin) and adds the old site's shopping article if it is missing,
+ * word for word, with its old date and image. The other three old articles
+ * and Keelie's are untouched.
+ *
+ * @return void
+ */
+function ccs_retire_written_articles_2026_11() {
+	if ( get_option( 'ccs_retire_written_articles_2026_11' ) ) {
+		return;
+	}
+	$written = array(
+		'signs-a-relative-needs-help-at-home',
+		'what-happens-at-a-care-assessment',
+		'paying-for-home-care-in-kent',
+		'home-care-or-a-care-home',
+		'nhs-continuing-healthcare-explained',
+		'coming-home-from-hospital-kent',
+		'what-home-care-costs-kent-examples',
+	);
+	foreach ( $written as $slug ) {
+		$found = get_posts( array( 'name' => $slug, 'post_type' => 'post', 'post_status' => array( 'publish', 'draft', 'private', 'future' ), 'numberposts' => 1, 'fields' => 'ids' ) );
+		if ( $found ) {
+			wp_trash_post( (int) $found[0] );
+		}
+	}
+
+	$slug = 'stay-safe-online-shopping-tips';
+	if ( ! get_posts( array( 'name' => $slug, 'post_type' => 'post', 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids' ) ) ) {
+		$admins = get_users( array( 'role' => 'administrator', 'number' => 1, 'orderby' => 'ID' ) );
+		$id     = wp_insert_post(
+			array(
+				'post_type'     => 'post',
+				'post_status'   => 'publish',
+				'post_author'   => $admins ? (int) $admins[0]->ID : 1,
+				'post_title'    => 'Stay Safe While Shopping Online',
+				'post_name'     => $slug,
+				'post_date'     => '2024-11-27 12:43:42',
+				'post_excerpt'  => 'As Black Friday and the holiday shopping season approach, online scams are on the rise.',
+				'post_content'  => '<p>As Black Friday and the holiday shopping season approach, online scams are on the rise. In 2023 alone, £85.9 million was lost to online purchase scams, with 92% of these frauds originating on the internet. To help you stay safe while shopping online, we’ve compiled a list of essential tips. Protect your finances, personal information, and peace of mind with these guidelines.</p>',
+			),
+			true
+		);
+		if ( ! is_wp_error( $id ) ) {
+			$term = get_term_by( 'name', 'News', 'category' );
+			if ( ! $term instanceof WP_Term ) {
+				$made = wp_insert_term( 'News', 'category' );
+				$term = is_wp_error( $made ) ? null : get_term( (int) $made['term_id'], 'category' );
+			}
+			if ( $term instanceof WP_Term ) {
+				wp_set_post_categories( $id, array( (int) $term->term_id ), false );
+			}
+			if ( function_exists( 'ccs_articles_import_photo' ) ) {
+				$photo = ccs_articles_import_photo( 'assets/images/site-photos-extra/cyber-safe-with-ccs.webp', 'Cyber safe with CCS' );
+				if ( $photo ) {
+					set_post_thumbnail( $id, $photo );
+				}
+			}
+		}
+	}
+	update_option( 'ccs_retire_written_articles_2026_11', '1', false );
+}
+
+/**
  * Every one-time update in this file, in the order they were written.
  *
  * Each checks the site before it changes anything and records that it ran,
@@ -581,6 +647,7 @@ function ccs_content_update_steps() {
 		'ccs_apply_about_link_shorten_2026_11',
 		'ccs_apply_careers_heading_shorten',
 		'ccs_apply_unnamed_qualifications',
+		'ccs_retire_written_articles_2026_11',
 	);
 }
 

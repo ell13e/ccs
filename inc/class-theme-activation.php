@@ -1323,19 +1323,16 @@ class CCS_Theme_Activation {
 	 * @return array<string, array<string, mixed>>
 	 */
 	private function get_news_posts() {
-		$funding_url  = home_url( '/resources/referral-information/' );
-		$contact_url  = home_url( '/contact-us/' );
-		$services_url = home_url( '/home-care-services-kent/' );
-		$started_url  = home_url( '/getting-started/' );
-
 		return array(
 			/*
-			 * Three articles from the website this theme replaces, brought across
-			 * word for word at their old addresses and with their old dates (Nov
-			 * 2026, client: "bring them over"), so links to them keep working. The
-			 * wording is the authors' own, typing slips included: it is the
-			 * client's to edit. The fourth old article (Black Friday shopping tips,
-			 * 2024) is not carried over; its address goes to News (inc/seo/redirects.php).
+			 * The four articles from the website this theme replaces, brought
+			 * across word for word at their old addresses and with their old dates
+			 * (Nov 2026, client: "bring them over"; the shopping article followed on
+			 * 25 Nov with "copy over these articles instead of the ones we've made
+			 * up", which retired the three advice articles written for this build).
+			 * The wording is the authors' own, typing slips included: it is the
+			 * client's to edit. The shopping article is one paragraph on the old
+			 * site too; the tips it mentions were never published there.
 			 */
 			'proud-to-be-a-nurse-maidstone' => array(
 				'title'    => 'Why I am proud to be a nurse',
@@ -1383,77 +1380,13 @@ class CCS_Theme_Activation {
 <p>If concerns were raised then this could be picked up quickly as it was the same team that were going into Mrs T, the company was able to work with the other professionals to ensure that Mrs T had a pain free passing and no pressure sores or marks which is so important.</p>
 <p>Now in 2021, we have set up a specialist Palliative care department with trained staff specifically working the NHS and the local hospice to help assist with end of life care.</p>',
 			),
-			'signs-a-relative-needs-help-at-home' => array(
-				'title'    => 'The quiet signs a relative may need help at home',
-				'category' => 'Care Advice',
-				'image'    => 'assets/images/site-photos-extra/caregiver-supporting-patient.webp',
-				'days_ago' => 6,
-				'excerpt'  => 'Most families do not notice a single moment when a parent starts to struggle. It shows up in small things — the post piling up, the fridge half empty, the same story twice in one visit.',
-				'content'  => '<p>Almost nobody rings us because of one dramatic event. Far more often it is a daughter who has driven home from a Sunday visit with a nagging feeling she cannot quite name, and who spends the week wondering whether she is worrying about nothing.</p>
-<p>She usually is not. The early signs that someone is finding home harder are small, and they are easy to explain away one at a time.</p>
-<h2>What families tend to notice first</h2>
-<ul>
-<li><strong>The house changes before the person does.</strong> Post stacking up unopened, bins not going out, a fridge with very little in it or a lot that is out of date.</li>
-<li><strong>Meals get simpler.</strong> Toast and biscuits replace cooked food. Weight comes off slowly enough that it is only obvious in photographs.</li>
-<li><strong>Repetition inside one conversation.</strong> Not forgetting a name — everyone does that — but telling you the same story twice in an afternoon.</li>
-<li><strong>Clothes stay on longer.</strong> The same jumper on three visits running usually means washing and dressing have become an effort worth avoiding.</li>
-<li><strong>Unexplained bruising,</strong> or a new habit of holding onto furniture while crossing a room.</li>
-<li><strong>The world gets smaller.</strong> Clubs dropped, friends not rung, the car used less and less.</li>
-</ul>
-<h2>Why it is so hard to raise</h2>
-<p>Because the person concerned is very often managing, and knows it, and does not want the conversation any more than you do. Independence is not a small thing to be asked to hand over, and most people push back hard the first time it is suggested — not because they disagree, but because of what agreeing seems to mean.</p>
-<p>It helps to talk about the specific task rather than the general decline. "Shall we get someone in to help with the shower, because the bath is getting risky" is a conversation about a shower. "I think you need care" is a conversation about the rest of someone\'s life.</p>
-<h2>Starting small usually works better</h2>
-<p>A couple of hours a week is a real option, and it is where a lot of the families we support begin. It gives everyone a way to test the idea without anything feeling permanent, and it is far easier to increase support later than to recover from an arrangement that was pushed too fast.</p>
-<p>If you are at the stage of wondering rather than deciding, our <a href="' . $started_url . '">getting started guide</a> walks through what happens next, and you are welcome to <a href="' . $contact_url . '">talk it through with us</a> without committing to anything.</p>',
-			),
-			'what-happens-at-a-care-assessment'   => array(
-				'title'    => 'What actually happens at a home care assessment',
-				'category' => 'Getting Started',
-				'image'    => 'assets/images/site-photos/ccs-domiciliary-care.webp',
-				'days_ago' => 19,
-				'excerpt'  => 'People often expect something clinical and formal. In practice it is a conversation in your front room, usually over a cup of tea, about how you like your day to go.',
-				'content'  => '<p>"Assessment" is an unhelpful word for what this is. It sounds like a test, and it makes people tidy the house and worry about giving the wrong answer. There is no wrong answer, and we are not marking anything.</p>
-<p>What actually happens is that one of our managers comes to you, sits down, and asks about your day.</p>
-<h2>What we talk about</h2>
-<ul>
-<li><strong>How your day runs now.</strong> When you like to get up, when you eat, what you can manage comfortably and what has started to take longer than it used to.</li>
-<li><strong>Where help would make the most difference.</strong> This is often not what families expect. Sometimes it is the shower; sometimes it is having someone there while a spouse goes to their own hospital appointments.</li>
-<li><strong>Health and medication,</strong> including anything a district nurse, GP or hospital team is already involved in, so nothing gets duplicated or missed.</li>
-<li><strong>The house itself</strong> — stairs, the bathroom, where the trip hazards are, whether a small change to the layout would remove a risk entirely.</li>
-<li><strong>Who else is around.</strong> Family nearby, neighbours who look in, anyone who already helps.</li>
-<li><strong>What you would like the carer to be like.</strong> This matters more than people expect, and it is the part of the conversation we spend the most time on.</li>
-</ul>
-<h2>How long it takes</h2>
-<p>Usually about an hour. Nothing is signed on the day, and there is no obligation at the end of it — a fair number of the assessments we do end with us pointing someone toward a different kind of support entirely, because that is what they actually needed.</p>
-<h2>What happens afterwards</h2>
-<p>We write up a care plan and send it to you. You read it, tell us what we have got wrong, and we change it. Then we match you with a small team of carers and introduce them before they start, so the first visit is not the first time you meet.</p>
-<p>The plan is not fixed. We review it regularly and adjust as things change, which they do.</p>
-<p>You can see the <a href="' . $services_url . '">types of care we provide</a>, or <a href="' . $contact_url . '">arrange an assessment</a> whenever you are ready.</p>',
-			),
-			'paying-for-home-care-in-kent'        => array(
-				'title'    => 'Paying for home care in Kent: the questions families ask us most',
-				'category' => 'Funding & Costs',
-				'image'    => 'assets/images/site-photos-extra/client-creative-activity-autumn-leaves.webp',
-				'days_ago' => 47,
-				'excerpt'  => 'Cost is usually the first question and the one people feel most awkward asking. Here is how funding for home care in Kent actually works, in plain terms.',
-				'content'  => '<p>People apologise for asking about money. They should not — it is a sensible question, it is usually the thing standing between a family and a decision, and a provider who is vague about it is telling you something.</p>
-<p>Our rates are published in full on our homepage, including what is charged at a higher rate and what is not charged for at all. Below is the part that is less obvious: where the money comes from.</p>
-<h2>The three ways home care gets paid for</h2>
-<h3>1. Privately</h3>
-<p>You arrange care directly and pay for it yourself. Most straightforward, and the fastest to set up — care can usually start within days rather than weeks.</p>
-<h3>2. Through the local authority</h3>
-<p>Kent County Council can arrange a needs assessment, which is free and which anyone can request. If you are assessed as needing care, a separate financial assessment decides how much of it the council contributes toward. Savings and capital above the national threshold generally mean paying in full; below it, the council contributes on a sliding scale.</p>
-<p>Worth knowing: the needs assessment and the financial assessment are separate things. Having savings does not disqualify you from being assessed, and the assessment itself is useful even if you end up paying privately, because it puts what you need on record.</p>
-<h3>3. Through the NHS</h3>
-<p>Where someone\'s needs are primarily health-related rather than social, NHS Continuing Healthcare may cover the cost of care in full. It is assessed differently from local authority funding and is not means-tested. Complex care packages are the most common route to it.</p>
-<h2>What tends to trip people up</h2>
-<ul>
-<li><strong>Assuming savings rule you out of everything.</strong> They affect local authority contributions. They do not affect NHS Continuing Healthcare, and they do not stop you having a needs assessment.</li>
-<li><strong>Waiting for a crisis.</strong> Assessments take time. Starting the conversation before care is urgent gives you options that an emergency does not.</li>
-<li><strong>Comparing hourly rates alone.</strong> Ask what is charged on bank holidays, what happens if a visit runs over, and whether there is a fee to set the package up. Those are where quoted rates and actual invoices tend to part company.</li>
-</ul>
-<p>We will talk you through which of these applies to your situation, including when the answer is that another provider or another kind of support fits you better. Our <a href="' . $funding_url . '">referral information</a> covers the process for professionals, and you can <a href="' . $contact_url . '">ask us directly</a> at any point.</p>',
+			'stay-safe-online-shopping-tips' => array(
+				'title'    => 'Stay Safe While Shopping Online',
+				'category' => 'News',
+				'image'    => 'assets/images/site-photos-extra/cyber-safe-with-ccs.webp',
+				'date'     => '2024-11-27 12:43:42',
+				'excerpt'  => 'As Black Friday and the holiday shopping season approach, online scams are on the rise.',
+				'content'  => '<p>As Black Friday and the holiday shopping season approach, online scams are on the rise. In 2023 alone, £85.9 million was lost to online purchase scams, with 92% of these frauds originating on the internet. To help you stay safe while shopping online, we’ve compiled a list of essential tips. Protect your finances, personal information, and peace of mind with these guidelines.</p>',
 			),
 		);
 	}

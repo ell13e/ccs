@@ -53,7 +53,6 @@ function ccs_old_site_redirects() {
 		'/home/under-construction/'             => '/',
 		'/sitemap/'                             => '/',
 		// One old article is not carried over (seasonal advice from 2024). The other three live at their old addresses (class-theme-activation.php).
-		'/stay-safe-online-shopping-tips/'      => '/news-and-updates/',
 		// This site's own earlier address for Working with us.
 		'/careers/working-for-us/'              => '/careers/working-with-us/',
 	);
