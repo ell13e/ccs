@@ -215,10 +215,11 @@
 
 		if (consentRequired) initConsent();
 
-		// Thank you page: fire conversion once.
+		// Thank you page: one event. It also sent 'conversion', and each of the two
+		// counted as a Google Ads conversion and a Facebook lead, so one visit
+		// counted twice (fixed 25 Nov 2026).
 		if (isThankYouPage) {
 			sendEvent('thank_you_page', { page: 'thank_you' });
-			sendEvent('conversion', { type: 'thank_you_page' });
 		}
 
 		document.addEventListener('click', function (e) {
