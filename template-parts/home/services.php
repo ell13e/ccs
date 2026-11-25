@@ -93,12 +93,12 @@ foreach ( $services as $i => $svc ) {
  * nothing was using.
  *
  * A service post's own featured image wins when it has one; otherwise fall back
- * to the packaged asset. Cards render around 400px wide, so the 550px fallbacks
- * hold up here in a way they would not in a full-bleed hero.
+ * to the packaged asset. The domiciliary and respite photos were 550px files, soft on
+ * sharp screens; the client's 25 Nov 2026 photos replaced them.
  */
 $ccs_service_fallback_images = array(
-	'domiciliary-care' => 'site-photos/ccs-domiciliary-care.webp',
-	'respite-care'     => 'site-photos-extra/ccs-respite-care-guitar.webp',
+	'domiciliary-care' => 'site-photos-extra/domiciliary-care-birthday-at-home.webp',
+	'respite-care'     => 'site-photos-extra/respite-care-day-out-at-the-castle.webp',
 	'complex-care'     => 'site-photos/ccs-complex-care-maidstone-24-7.webp',
 );
 

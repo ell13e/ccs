@@ -5,11 +5,9 @@ site-photos/carer-and-client-selfie.webp,Two women smiling together for a selfie
 site-photos/carer-with-older-gentleman-selfie.webp,A smiling woman taking a selfie with an older man in a cardigan and tie,Carer with older gentleman selfie,,,page-templates/template-getting-started.php
 site-photos/ccs-complex-care-maidstone-24-7.webp,"An older man wrapped in a blanket on a stretcher by a river, with two crew members in green uniforms beside him",Ccs complex care maidstone 24 7,,,inc/class-theme-activation.php; template-parts/home/services.php
 site-photos/ccs-complex-care-wheelchair-1.webp,"Two women sitting together in the sun on a patio, smiling",Ccs complex care wheelchair 1,,,page-templates/template-cqc.php
-site-photos/ccs-domiciliary-care.webp,An older woman in a sun hat sitting out in her garden with a blanket over her knees and a walking frame beside her,Ccs domiciliary care,,,inc/class-theme-activation.php; template-parts/home/services.php
-site-photos/ccs-respite-care-guitar-1.webp,"A young woman wearing ear defenders, smiling as she plays a pink ukulele",Ccs respite care guitar 1,,,inc/class-theme-activation.php
+site-photos/ccs-domiciliary-care.webp,An older woman in a sun hat sitting out in her garden with a blanket over her knees and a walking frame beside her,Ccs domiciliary care,,,inc/content-updates.php
+site-photos/ccs-respite-care-guitar-1.webp,"A young woman wearing ear defenders, smiling as she plays a pink ukulele",Ccs respite care guitar 1,,,inc/content-updates.php
 site-photos/ccs-victoria-walker-registered-manager.webp,"Victoria Walker, Registered Manager and Company Director",Ccs victoria walker registered manager,,,page-templates/template-about.php
-site-photos/client-activity-laughing.webp,"Three women laughing together at a group activity, one wearing a paper crown",Client activity laughing,,,template-parts/cta-band.php
-site-photos/client-afternoon-tea.webp,A woman in a fur hat and long coat smiling from her wheelchair,Client afternoon tea,,,template-parts/cta-band.php; template-parts/home/closing-cta.php
 site-photos/client-baking-together.webp,Two women giving a thumbs up beside a tray of homemade pastry twists,Client baking together,,,page-templates/template-getting-started.php
 site-photos/client-boat-trip.webp,Two women in life jackets smiling for a selfie on a boat trip,Client boat trip,,,template-parts/home/why-choose-us.php
 site-photos/client-cafe-counter.webp,Two women giving a thumbs up behind a café counter with plates of food and bunting,Client cafe counter,,,template-parts/resources-hub.php
@@ -31,12 +29,25 @@ site-photos/team-celebration-flowers-party-hats.webp,"Two women celebrating, one
 site-photos/team-meeting-around-table.jpeg,Three women talking around a table with folders and notes,Team meeting around table,,,template-parts/resources-hub.php
 site-photos/team-member-writing-at-event.jpg,A woman writing on a large sheet of paper at a training session while a colleague looks on,Team member writing at event,,,page-templates/template-getting-started.php
 site-photos/team-talking-through-care-notes.webp,Members of the team talking through care notes together,Team talking through care notes,,,template-parts/careers/what-to-expect.php
-site-photos-extra/caregiver-supporting-patient.webp,Close-up of one person's hands gently holding another's,Caregiver supporting patient,,,inc/class-theme-activation.php
-site-photos-extra/ccs-respite-care-guitar.webp,"A young woman wearing ear defenders, smiling as she plays a pink ukulele",Ccs respite care guitar,,,template-parts/home/services.php
+site-photos-extra/article-friends-on-the-sofa.webp,"Two women smiling together on a sofa, one opening a present",Article friends on the sofa,,,inc/class-theme-activation.php; inc/content-updates.php
+site-photos-extra/article-nurse-training-session.webp,Members of the team gathered round a care bed during a training session,Article nurse training session,,,inc/class-theme-activation.php; inc/content-updates.php
+site-photos-extra/band-afternoon-tea.webp,A woman in a fur hat and long coat smiling from her wheelchair,Band afternoon tea,,,template-parts/cta-band.php; template-parts/home/closing-cta.php
+site-photos-extra/band-care-farm-hug.webp,A carer and a young woman in a cap hugging and laughing at a care farm,Band care farm hug,,,template-parts/cta-band.php
+site-photos-extra/band-easter-ears.webp,"Three people in bunny ears smiling together at home, one holding an Easter egg",Band easter ears,,,template-parts/cta-band.php
+site-photos-extra/band-flower-crown-thumbs-up.webp,A young woman in a flower crown giving two thumbs up on a sunny day out,Band flower crown thumbs up,,,template-parts/cta-band.php
+site-photos-extra/band-fountain-day-out.webp,"A young woman in pink ear defenders smiling, with her carer leaning in beside her at a fountain on a sunny day",Band fountain day out,,,template-parts/cta-band.php
+site-photos-extra/band-garden-afternoon.webp,Someone in a wheelchair enjoying the sunshine on a garden lawn,Band garden afternoon,,,template-parts/cta-band.php
+site-photos-extra/band-garden-doorway.webp,"Someone in a wheelchair at open patio doors, looking out at a sunny garden",Band garden doorway,,,template-parts/cta-band.php
+site-photos-extra/band-tambourine-and-pompom.webp,A smiling woman in her wheelchair holding a tambourine and a sparkly pompom,Band tambourine and pompom,,,template-parts/cta-band.php
+site-photos-extra/band-waving-on-a-walk.webp,Someone in a wheelchair waving on a walk along a quiet street,Band waving on a walk,,,template-parts/cta-band.php
+site-photos-extra/caregiver-supporting-patient.webp,Close-up of one person's hands gently holding another's,Caregiver supporting patient,,,inc/class-theme-activation.php; inc/content-updates.php
 site-photos-extra/client-creative-activity-autumn-leaves.webp,Autumn leaves laid out on newspaper for a craft activity,Client creative activity autumn leaves,,,inc/class-theme-activation.php
 site-photos-extra/client-summer-party-laineys-care-farm.webp,A young woman in a flower crown laughing at a summer party outdoors,Client summer party laineys care farm,,,inc/class-theme-activation.php; template-parts/home/why-choose-us.php
+site-photos-extra/cyber-safe-with-ccs.webp,"Graphic headed Cyber safe with CCS: 85.9 million pounds was stolen through purchase scams in 2023, and 92% originated online",Cyber safe with ccs,,,inc/class-theme-activation.php; inc/content-updates.php
+site-photos-extra/domiciliary-care-birthday-at-home.webp,"A smiling woman in her wheelchair at home, holding a Happy 60th Birthday balloon",Domiciliary care birthday at home,,,inc/class-theme-activation.php; inc/content-updates.php; template-parts/home/services.php
 site-photos-extra/kent-summer-party-hero.webp,"A young woman in a flower crown, laughing at a summer party",Kent summer party hero,,,template-parts/home/hero.php
-site-photos-extra/team-group-office-window.webp,Six members of the Continuity Care Services team together at the office,Team group office window,,,page-working-with-us.php
+site-photos-extra/respite-care-day-out-at-the-castle.webp,"A young woman in her wheelchair on a sunny day out, in front of a castle and its striped lawn",Respite care day out at the castle,,,inc/class-theme-activation.php; inc/content-updates.php; template-parts/home/services.php
+site-photos-extra/team-group-office-window.webp,Six members of the Continuity Care Services team together at the office,Team group office window,,,inc/article-keelie-2026-11.php; page-working-with-us.php
 careers/flipchart.webp,A trainer writing on a flipchart during a session,Flipchart,,,template-parts/service-body.php
 careers/hoist-practice.webp,Two members of the team practising with a hoist in the training room,Hoist practice,,,template-parts/service-body.php
 careers/infant-cpr.webp,A trainer showing infant resuscitation on a training manikin,Infant cpr,,,page-professional-development.php
@@ -68,7 +79,7 @@ stock/wheelchair-and-chess.webp,A man leaning in to help an older gentleman in a
 stock/woman-with-her-dog.webp,"A woman in a headscarf on her sofa, stroking a black dog resting on her lap",Woman with her dog,,,inc/theme-images.php
 team/amanda-carter.jpg,"Amanda Carter, General Manager",Amanda carter,,,inc/team.php
 team/jacqueline-ellis.jpg,"Jacqueline Ellis, Field Care Supervisor",Jacqueline ellis,,,inc/team.php
-team/keelie-varney.jpg,"Keelie Varney, Care Manager",Keelie varney,,,inc/team.php
+team/keelie-varney.jpg,"Keelie Varney, Care Manager",Keelie varney,,,inc/article-keelie-2026-11.php; inc/team.php
 team/magdalena-zoledz.jpg,"Magdalena Zoledz, Recruitment Coordinator",Magdalena zoledz,,,inc/team.php
 team/nikki-mackay.jpg,"Nikki Mackay, Senior Clinical Manager",Nikki mackay,,,inc/team.php
 team/shayna-rae-fuller.jpg,"Shayna-Rae Fuller, Field Care Supervisor",Shayna rae fuller,,,inc/team.php

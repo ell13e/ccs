@@ -47,7 +47,15 @@ if ( $ccs_is_careers ) {
 // A real CCS photo (Nov 2026). The hands-holding image used here looked like
 // stock and, with this band on every page, appeared 15 times across the site.
 /*
- * Two photos in rotation since 24 Nov 2026: the pottery photos are removed
+ * Nine portrait photos since 25 Nov 2026 (client: "the footer photos are all
+ * so insanely blurry", and the same ones repeated across the site). On wide
+ * screens the photo slot is tall (about 474x597), so the 1000x667 landscape
+ * files were enlarged nearly three times. These are portrait crops of the
+ * client's own photos at full size (crop and resize only, rule 15), each
+ * with a focus point for the wide slot on tablets, and nine in rotation put
+ * each on about seven pages.
+ *
+ * Earlier: two photos in rotation since 24 Nov 2026: the pottery photos are removed
  * from the site (client: "we can't use photos of this young man"), and no
  * photo of him may be added back.
  * Three photos in rotation (Nov 2026). A design review found the pottery
@@ -58,8 +66,15 @@ if ( $ccs_is_careers ) {
  * nowhere else on the site. Each entry: file, width, height, object-position.
  */
 $ccs_cta_photos    = array(
-	array( 'site-photos/client-afternoon-tea.webp', 1000, 667, '50% 30%' ),
-	array( 'site-photos/client-activity-laughing.webp', 1000, 667, '60% 40%' ),
+	array( 'site-photos-extra/band-afternoon-tea.webp', 1200, 1500, '50% 22%' ),
+	array( 'site-photos-extra/band-tambourine-and-pompom.webp', 1080, 1350, '45% 35%' ),
+	array( 'site-photos-extra/band-flower-crown-thumbs-up.webp', 1074, 1342, '50% 30%' ),
+	array( 'site-photos-extra/band-care-farm-hug.webp', 1168, 1460, '50% 50%' ),
+	array( 'site-photos-extra/band-easter-ears.webp', 986, 1232, '50% 25%' ),
+	array( 'site-photos-extra/band-garden-afternoon.webp', 1054, 1318, '60% 50%' ),
+	array( 'site-photos-extra/band-garden-doorway.webp', 963, 1204, '50% 45%' ),
+	array( 'site-photos-extra/band-waving-on-a-walk.webp', 1029, 1286, '45% 45%' ),
+	array( 'site-photos-extra/band-fountain-day-out.webp', 942, 1178, '55% 35%' ),
 );
 // Keyed on the page's address, so archives (no ID) take part in the rotation too.
 // The 'f' prefix is only a seed: of those tried, it spread today's pages most evenly (8, 8 and 9).

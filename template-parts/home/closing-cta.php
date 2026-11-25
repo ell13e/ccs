@@ -24,7 +24,9 @@ $ccs_cta_phone   = function_exists( 'ccs_get_contact_info' ) ? ccs_get_contact_i
 // A real CCS photo (Nov 2026). The hands-holding image used here looked like
 // stock and, with this band on every page, appeared 15 times across the site.
 // 24 Nov 2026: the pottery photo that was here is removed from the site (client: "we can't use photos of this young man").
-$ccs_cta_photo_rel = 'site-photos/client-afternoon-tea.webp';
+// 25 Nov 2026: the same photo as a full-size portrait crop. The slot is tall on
+// wide screens, and the 1000x667 landscape file was enlarged until it blurred.
+$ccs_cta_photo_rel = 'site-photos-extra/band-afternoon-tea.webp';
 $ccs_cta_photo     = file_exists( get_template_directory() . '/assets/images/' . $ccs_cta_photo_rel );
 ?>
 
@@ -71,8 +73,8 @@ $ccs_cta_photo     = file_exists( get_template_directory() . '/assets/images/' .
 					<img
 						src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/' . $ccs_cta_photo_rel ); ?>"
 						alt=""
-						width="1000"
-						height="667"
+						width="1200"
+						height="1500"
 						style="object-position: 50% 30%;"
 						<?php echo ccs_theme_image_srcset( $ccs_cta_photo_rel, '(min-width: 900px) 450px, 100vw' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset(). ?>
 						loading="lazy"

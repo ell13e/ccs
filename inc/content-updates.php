@@ -682,6 +682,69 @@ function ccs_retire_written_articles_2026_11() {
 }
 
 /**
+ * Sharper photos for the domiciliary and respite services (client's photos,
+ * 25 Nov 2026, all with consent). The old ones were 550px files shown on
+ * about 34 pages. Swapped once, only where the service still has the old
+ * photo (or none), so a photo picked in WordPress is kept.
+ *
+ * @return void
+ */
+function ccs_swap_service_photos_2026_11() {
+	if ( get_option( 'ccs_swap_service_photos_2026_11' ) || ! function_exists( 'ccs_articles_import_photo' ) ) {
+		return;
+	}
+	$swaps = array(
+		'domiciliary-care' => array( 'assets/images/site-photos/ccs-domiciliary-care.webp', 'assets/images/site-photos-extra/domiciliary-care-birthday-at-home.webp', 'Domiciliary care: a birthday at home' ),
+		'respite-care'     => array( 'assets/images/site-photos/ccs-respite-care-guitar-1.webp', 'assets/images/site-photos-extra/respite-care-day-out-at-the-castle.webp', 'Respite care: a day out at the castle' ),
+	);
+	foreach ( $swaps as $slug => $swap ) {
+		$found = get_posts( array( 'name' => $slug, 'post_type' => 'service', 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids' ) );
+		if ( ! $found ) {
+			continue;
+		}
+		$current = (int) get_post_thumbnail_id( $found[0] );
+		if ( $current && get_post_meta( $current, '_ccs_source_theme_path', true ) !== $swap[0] ) {
+			continue;
+		}
+		$photo = ccs_articles_import_photo( $swap[1], $swap[2] );
+		if ( $photo ) {
+			set_post_thumbnail( (int) $found[0], $photo );
+		}
+	}
+	update_option( 'ccs_swap_service_photos_2026_11', '1', false );
+}
+
+/**
+ * Photos for the three old-site articles that had none (client's photos, 25
+ * Nov 2026, all with consent; the old site's own two were an apprenticeship
+ * fair and an awards night, unrelated to the articles). Set once, only on an
+ * article with no photo, so one picked in WordPress is kept.
+ *
+ * @return void
+ */
+function ccs_article_photos_2026_11() {
+	if ( get_option( 'ccs_article_photos_2026_11' ) || ! function_exists( 'ccs_articles_import_photo' ) ) {
+		return;
+	}
+	$photos = array(
+		'proud-to-be-a-nurse-maidstone'         => array( 'assets/images/site-photos-extra/article-nurse-training-session.webp', 'Team training around a care bed' ),
+		'the-right-person-makes-the-difference' => array( 'assets/images/site-photos-extra/article-friends-on-the-sofa.webp', 'Two friends on the sofa' ),
+		'end-of-life-care-experience'           => array( 'assets/images/site-photos-extra/caregiver-supporting-patient.webp', 'Hands held in support' ),
+	);
+	foreach ( $photos as $slug => $photo ) {
+		$found = get_posts( array( 'name' => $slug, 'post_type' => 'post', 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids' ) );
+		if ( ! $found || has_post_thumbnail( $found[0] ) ) {
+			continue;
+		}
+		$id = ccs_articles_import_photo( $photo[0], $photo[1] );
+		if ( $id ) {
+			set_post_thumbnail( (int) $found[0], $id );
+		}
+	}
+	update_option( 'ccs_article_photos_2026_11', '1', false );
+}
+
+/**
  * Every one-time update in this file, in the order they were written.
  *
  * Each checks the site before it changes anything and records that it ran,
@@ -705,6 +768,8 @@ function ccs_content_update_steps() {
 		'ccs_apply_unnamed_qualifications',
 		'ccs_retire_written_articles_2026_11',
 		'ccs_expand_shopping_article_2026_11',
+		'ccs_swap_service_photos_2026_11',
+		'ccs_article_photos_2026_11',
 	);
 }
 

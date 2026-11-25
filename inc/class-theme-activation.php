@@ -176,7 +176,7 @@ class CCS_Theme_Activation {
 		$this->services = array(
 			'domiciliary-care' => array(
 				'title'   => 'Domiciliary Care',
-				'image'   => 'assets/images/site-photos/ccs-domiciliary-care.webp',
+				'image'   => 'assets/images/site-photos-extra/domiciliary-care-birthday-at-home.webp',
 				'excerpt' => 'Domiciliary care in Maidstone and across Kent — gentle, unhurried help with everyday tasks at home, from carers who come back to you visit after visit.',
 				'content' => "<p>Domiciliary care is everyday help at home — getting dressed, making breakfast, remembering the right medication at the right time. Continuity of Care Services provides domiciliary care in Maidstone and across Kent, and our carers give you steady, unhurried support rather than rushing through a checklist.</p>
 <h2>What We Help With:</h2>
@@ -195,7 +195,7 @@ class CCS_Theme_Activation {
 			),
 			'respite-care' => array(
 				'title'   => 'Respite Care',
-				'image'   => 'assets/images/site-photos/ccs-respite-care-guitar-1.webp',
+				'image'   => 'assets/images/site-photos-extra/respite-care-day-out-at-the-castle.webp',
 				'excerpt' => "Respite care in Maidstone and across Kent, for a few hours or a few days. A carer steps in so you can rest, and meets the person you care for beforehand wherever possible.",
 				'content' => "<p>Caring for someone you love is rewarding, and it's also exhausting. Everyone needs a break. Continuity of Care Services provides respite care in Maidstone and throughout Kent, giving family carers the time they need to rest, recharge, or simply take care of themselves.</p>
 <h2>Flexible Respite Options:</h2>
@@ -1338,7 +1338,7 @@ class CCS_Theme_Activation {
 			'proud-to-be-a-nurse-maidstone' => array(
 				'title'    => 'Why I am proud to be a nurse',
 				'category' => 'From the team',
-				'image'    => '',
+				'image'    => 'assets/images/site-photos-extra/article-nurse-training-session.webp',
 				'date'     => '2021-05-13 09:00:00',
 				'excerpt'  => 'Thirty-five years of dedicated care have led to a profound reflection on the privilege of shared compassion and experiencing life-changing moments.',
 				'content'  => '<p>Today is international National Nurses Day and every year I celebrate this along with all my nursing colleagues, especially since the beginning of the covid pandemic during which we have seen many loses of the people who care for people.</p>
@@ -1356,7 +1356,7 @@ class CCS_Theme_Activation {
 			'the-right-person-makes-the-difference' => array(
 				'title'    => 'The right person makes the difference',
 				'category' => 'From the team',
-				'image'    => '',
+				'image'    => 'assets/images/site-photos-extra/article-friends-on-the-sofa.webp',
 				'date'     => '2021-06-08 09:00:00',
 				'excerpt'  => 'Human beings, by nature, are a social species. While some individuals enjoy solitude (myself included), extended periods without social interaction can strain both mental and physical well-being.',
 				'content'  => '<p>Human beings, by nature, are a social species. While some individuals enjoy solitude (myself included), extended periods without social interaction can strain both mental and physical well-being.</p>
@@ -1369,7 +1369,7 @@ class CCS_Theme_Activation {
 			'end-of-life-care-experience' => array(
 				'title'    => 'My first experience of end of life care',
 				'category' => 'From the team',
-				'image'    => '',
+				'image'    => 'assets/images/site-photos-extra/caregiver-supporting-patient.webp',
 				'date'     => '2021-06-08 10:00:00',
 				'excerpt'  => 'Back in 2013 I had just started in the care industry working for a company and was approached by a lady who worked at the NHS to support a lady in her own home who was very poorly.',
 				'content'  => '<p>Back in 2013 I had just started in the care industry working for a company and was approached by a lady who worked at the NHS to support a lady in her own home who was very poorly. The lady in question was trying to find hospice care and needed a company to support until a bed was made available.</p>

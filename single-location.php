@@ -289,17 +289,24 @@ while ( have_posts() ) :
 			</header>
 			<?php
 			/*
-			 * Only the services offered in this area (location_services, a
-			 * comma-separated list of service slugs; see inc/location-services.php).
+			 * Every service offered in this area. location_services records only
+			 * which of the three main services (domiciliary, respite, complex) an
+			 * area gets; every other service is offered everywhere (client, 23 Nov
+			 * 2026). These cards used to show just the listed main services, so
+			 * ten areas showed two cards while Maidstone showed all twenty
+			 * (client, 25 Nov 2026: "some areas dont show all the services we
+			 * provide there"). Now only a main service the area does not get is
+			 * left out.
 			 */
-			$ccs_area_services = array_filter( array_map( 'trim', explode( ',', (string) get_post_meta( $post_id, 'location_services', true ) ) ) );
+			$ccs_area_services = function_exists( 'ccs_location_services' ) ? ccs_location_services( $post_id ) : array();
 			$ccs_card_args     = array( 'town' => $town );
 			if ( $ccs_area_services && function_exists( 'ccs_ordered_services' ) ) {
+				$ccs_main_missing          = array_diff( array( 'domiciliary-care', 'respite-care', 'complex-care' ), $ccs_area_services );
 				$ccs_card_args['services'] = array_values(
 					array_filter(
 						ccs_ordered_services(),
-						static function ( $svc ) use ( $ccs_area_services ) {
-							return in_array( $svc->post_name, $ccs_area_services, true );
+						static function ( $svc ) use ( $ccs_main_missing ) {
+							return ! in_array( $svc->post_name, $ccs_main_missing, true );
 						}
 					)
 				);
