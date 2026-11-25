@@ -269,14 +269,45 @@ class CCS_SEO_Optimizer {
 		$desc = '';
 		if ( is_singular() ) {
 			$desc = $this->get_meta_description();
+			// Pages built from templates (Switch to us, Costs and funding) have no
+			// body text to summarise; their banner intro says what they are.
+			if ( $desc === '' ) {
+				$desc = $this->intro_description( get_queried_object_id() );
+			}
 		} elseif ( is_front_page() ) {
 			$desc = get_bloginfo( 'description', 'display' );
 			$desc = is_string( $desc ) && trim( $desc ) !== '' ? $this->truncate( trim( $desc ), self::DESC_MAX ) : '';
+		} elseif ( is_home() ) {
+			// The news index (pre-launch audit, Nov 2026: it had no description).
+			$posts_page = (int) get_option( 'page_for_posts' );
+			$custom     = $posts_page ? (string) get_post_meta( $posts_page, self::META_DESCRIPTION, true ) : '';
+			$desc       = trim( $custom ) !== '' ? $this->truncate( trim( $custom ), self::DESC_MAX ) : $this->intro_description( $posts_page );
+			if ( $desc === '' ) {
+				$desc = __( 'News, stories and advice from the Continuity of Care Services team, home care in Maidstone and across Kent.', 'ccs-wp-theme' );
+			}
+		} elseif ( is_category() ) {
+			$term = trim( wp_strip_all_tags( (string) term_description() ) );
+			/* translators: %s: topic name. */
+			$desc = $term !== '' ? $this->truncate( $term, self::DESC_MAX ) : sprintf( __( '%s: articles from Continuity of Care Services, home care in Maidstone and across Kent.', 'ccs-wp-theme' ), single_cat_title( '', false ) );
 		}
 		if ( $desc === '' ) {
 			return;
 		}
 		echo '<meta name="description" content="' . esc_attr( $desc ) . '">' . "\n";
+	}
+
+	/**
+	 * A page's banner intro (ccs_page_intro) as a description, or ''.
+	 *
+	 * @param int $post_id Page ID.
+	 * @return string
+	 */
+	private function intro_description( $post_id ) {
+		$intro = $post_id ? get_post_meta( $post_id, 'ccs_page_intro', true ) : '';
+		// A page whose intro lives in the theme's own copy can supply it here; the
+		// SEO code never calls theme functions directly (CLAUDE.md, inc/seo/).
+		$intro = apply_filters( 'ccs_seo_page_intro', is_string( $intro ) ? $intro : '', (int) $post_id );
+		return is_string( $intro ) && trim( $intro ) !== '' ? $this->truncate( trim( wp_strip_all_tags( $intro ) ), self::DESC_MAX ) : '';
 	}
 
 	/**

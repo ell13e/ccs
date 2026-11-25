@@ -17,6 +17,9 @@
 
 	var config = window.ccsAnalyticsConfig || {};
 	var ga4Id = config.ga4Id || '';
+	// Tag Manager container (Nov 2026). When set, GA4 runs as a tag inside it, so
+	// ga4Id arrives empty and this file only feeds GTM the data layer events.
+	var gtmId = config.gtmId || '';
 	var fbPixelId = config.fbPixelId || '';
 	var gadsId = config.gadsId || '';
 	var gadsLabel = config.gadsLabel || '';
@@ -49,10 +52,14 @@
 			return;
 		}
 
-		// Data layer (for GTM or debugging).
+		// Data layer (for GTM or debugging). ccs_event_name is the GA4 event
+		// name without the prefix, and ccs_params its parameters, so one GA4
+		// event tag in GTM can forward every event (trigger: ^ccs_).
 		window.dataLayer = window.dataLayer || [];
 		window.dataLayer.push({
 			event: 'ccs_' + eventName,
+			ccs_event_name: eventName,
+			ccs_params: eventParams,
 			eventParams: eventParams
 		});
 
@@ -211,7 +218,7 @@
 	}
 
 	function init() {
-		if (!ga4Id && !fbPixelId && !gadsId) return;
+		if (!ga4Id && !gtmId && !fbPixelId && !gadsId) return;
 
 		if (consentRequired) initConsent();
 
@@ -259,8 +266,17 @@
 	};
 
 	// When consent is required, scripts are not in the page yet; provide a loader for when consent is given.
-	if (consentRequired && (ga4Id || fbPixelId || gadsId)) {
+	if (consentRequired && (ga4Id || gtmId || fbPixelId || gadsId)) {
 		window.ccsAnalyticsLoadScripts = function () {
+			if (gtmId && !window.ccsGtmLoaded) {
+				window.ccsGtmLoaded = true;
+				window.dataLayer = window.dataLayer || [];
+				window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+				var g = document.createElement('script');
+				g.async = true;
+				g.src = 'https://www.googletagmanager.com/gtm.js?id=' + encodeURIComponent(gtmId);
+				document.head.appendChild(g);
+			}
 			var firstGtagId = ga4Id || gadsId;
 			if (firstGtagId && typeof gtag === 'undefined') {
 				window.dataLayer = window.dataLayer || [];

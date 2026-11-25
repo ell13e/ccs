@@ -30,7 +30,8 @@ check in that wording (left as published):
 - Victoria's ended "Learn more about my journey here!" (a link); left out,
   since her page has the story video.
 - Small typos in Magdalena's: "joined CCS team", "straight forward",
-  "full- cycle".
+  "full- cycle". Magdalena reviewed her bio and is happy with the wording as
+  published (email to Ellie, 25 Nov 2026), so it stays word for word.
 
 Still needed: Amanda Carter, Shayna-Rae Fuller and Jacqueline Ellis (Field Care
 Supervisor, joined Nov 2026). Asked by email, 23 Nov 2026. Heidi Griffen left

@@ -92,3 +92,21 @@ function ccs_switch_timing_options() {
 		'not-sure'   => __( 'Not sure', 'ccs-wp-theme' ),
 	);
 }
+
+/**
+ * The Switch to us intro as the page's search description: the page is built
+ * from its template, so there is no body text to summarise (pre-launch audit,
+ * Nov 2026). Answers the SEO code's ccs_seo_page_intro filter.
+ *
+ * @param string $intro   Intro found so far.
+ * @param int    $post_id Page ID.
+ * @return string
+ */
+function ccs_switch_seo_intro( $intro, $post_id ) {
+	if ( '' !== trim( (string) $intro ) || 'page-templates/template-switch.php' !== get_page_template_slug( $post_id ) || ! function_exists( 'ccs_copy' ) ) {
+		return $intro;
+	}
+	return (string) ccs_copy( 'switch_intro' );
+}
+add_filter( 'ccs_seo_page_intro', 'ccs_switch_seo_intro', 10, 2 );
+

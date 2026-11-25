@@ -64,6 +64,8 @@ require_once THEME_DIR . '/inc/internal-links.php';
 require_once THEME_DIR . '/inc/forms.php';
 require_once THEME_DIR . '/inc/content-updates.php';
 require_once THEME_DIR . '/inc/seo/redirects.php';
+require_once THEME_DIR . '/inc/seo/robots-ai.php';
+require_once THEME_DIR . '/inc/seo/indexnow.php';
 require_once THEME_DIR . '/inc/content-sections.php';
 
 /**

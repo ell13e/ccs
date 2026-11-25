@@ -478,16 +478,15 @@ while ( have_posts() ) :
 
 <?php
 	// Schema.org: Service + FAQPage
+	// Same @id as the Service in the site's schema graph (inc/seo/class-structured-data.php),
+	// so search engines read one service, not two (pre-launch audit, Nov 2026).
 	$schema_service = array(
 		'@context' => 'https://schema.org',
 		'@type'    => 'Service',
+		'@id'      => get_permalink() . '#service',
 		'name'     => get_the_title(),
 		'description' => $short_desc ?: wp_trim_words( get_the_content(), 30 ),
-		'provider' => array(
-			'@type' => 'Organization',
-			'name'  => get_bloginfo( 'name' ),
-			'url'   => home_url( '/' ),
-		),
+		'provider' => array( '@id' => home_url( '/' ) . '#organization' ),
 	);
 	if ( $has_price && $price_from !== '' && (float) $price_from > 0 ) {
 		$schema_service['offers'] = array(

@@ -30,6 +30,7 @@ class CCS_Theme_Customizer {
 	const LINKEDIN_URL          = 'ccs_linkedin_url';
 	const TWITTER_URL           = 'ccs_twitter_url';
 	const GA4_ID                = 'ccs_analytics_ga4_id';
+	const GTM_ID                = 'ccs_analytics_gtm_id';
 	const FB_PIXEL_ID           = 'ccs_analytics_fb_pixel_id';
 	const GADS_ID               = 'ccs_analytics_gads_id';
 	const GADS_LABEL            = 'ccs_analytics_gads_label';
@@ -449,6 +450,20 @@ class CCS_Theme_Customizer {
 			'section'     => 'ccs_analytics',
 			'type'        => 'text',
 			'input_attrs' => array( 'placeholder' => 'G-XXXXXXXXXX' ),
+		) );
+
+		$wp_customize->add_setting( self::GTM_ID, array(
+			'type'              => 'theme_mod',
+			'capability'        => 'edit_theme_options',
+			'default'           => '',
+			'sanitize_callback' => 'sanitize_text_field',
+		) );
+		$wp_customize->add_control( self::GTM_ID, array(
+			'label'       => __( 'Google Tag Manager container ID', 'ccs-wp-theme' ),
+			'description' => __( 'e.g. GTM-XXXXXXX. When set, GA4 is loaded through Tag Manager (set it up there) instead of from the GA4 ID above, and only after someone accepts analytics cookies.', 'ccs-wp-theme' ),
+			'section'     => 'ccs_analytics',
+			'type'        => 'text',
+			'input_attrs' => array( 'placeholder' => 'GTM-XXXXXXX' ),
 		) );
 
 		$wp_customize->add_setting( self::FB_PIXEL_ID, array(

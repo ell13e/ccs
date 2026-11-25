@@ -20,6 +20,7 @@ class CCS_Analytics {
 	 * Theme mod keys for tracking IDs and options.
 	 */
 	const MOD_GA4_ID           = 'ccs_analytics_ga4_id';
+	const MOD_GTM_ID           = 'ccs_analytics_gtm_id';
 	const MOD_FB_PIXEL_ID      = 'ccs_analytics_fb_pixel_id';
 	const MOD_GADS_ID          = 'ccs_analytics_gads_id';
 	const MOD_GADS_LABEL       = 'ccs_analytics_gads_label';
@@ -53,7 +54,8 @@ class CCS_Analytics {
 	 * the markup; analytics-events.js shows it only when no choice is stored.
 	 */
 	public function render_consent_bar() {
-		$has_any = '' !== (string) get_theme_mod( self::MOD_GA4_ID, '' )
+		$has_any = '' !== self::gtm_id()
+			|| '' !== (string) get_theme_mod( self::MOD_GA4_ID, '' )
 			|| '' !== (string) get_theme_mod( self::MOD_FB_PIXEL_ID, '' )
 			|| '' !== (string) get_theme_mod( self::MOD_GADS_ID, '' );
 
@@ -97,6 +99,13 @@ class CCS_Analytics {
 	public function allow_tracking_hosts( $policy ) {
 		$add = array();
 
+		if ( '' !== self::gtm_id() ) {
+			// Tag Manager, the tags it loads, and its Preview mode (Tag Assistant).
+			$add['script-src'][]  = 'https://*.googletagmanager.com https://tagmanager.google.com';
+			$add['style-src'][]   = 'https://tagmanager.google.com https://fonts.googleapis.com';
+			$add['connect-src'][] = 'https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com';
+			$add['frame-src'][]   = 'https://www.googletagmanager.com';
+		}
 		if ( '' !== (string) get_theme_mod( self::MOD_GA4_ID, '' ) || '' !== (string) get_theme_mod( self::MOD_GADS_ID, '' ) ) {
 			$add['script-src'][]  = 'https://*.googletagmanager.com';
 			$add['connect-src'][] = 'https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com';
@@ -137,7 +146,13 @@ class CCS_Analytics {
 		$consent   = (bool) get_theme_mod( self::MOD_REQUIRE_CONSENT, true );
 		$thank_you = get_theme_mod( self::MOD_THANK_YOU_PAGE, '' );
 
-		$has_any = ( $ga4_id !== '' || $fb_id !== '' || $gads_id !== '' );
+		$gtm_id    = self::gtm_id();
+		// With Tag Manager, GA4 is one of its tags: loading it here too would count everything twice.
+		if ( '' !== $gtm_id ) {
+			$ga4_id = '';
+		}
+
+		$has_any = ( $ga4_id !== '' || $fb_id !== '' || $gads_id !== '' || $gtm_id !== '' );
 		if ( ! $has_any ) {
 			return;
 		}
@@ -160,6 +175,10 @@ class CCS_Analytics {
 		// If consent required, do not output third-party scripts; analytics-events.js will load them when consent is given.
 		if ( $consent ) {
 			return;
+		}
+
+		if ( $gtm_id !== '' ) {
+			$this->output_gtm_script( $gtm_id );
 		}
 
 		// Google Analytics 4 (with IP anonymization).
@@ -251,6 +270,27 @@ class CCS_Analytics {
 	}
 
 	/**
+	 * The Tag Manager container ID, or '' (Nov 2026). Filterable for testing.
+	 *
+	 * @return string
+	 */
+	public static function gtm_id() {
+		$id = (string) apply_filters( 'ccs_gtm_id', (string) get_theme_mod( self::MOD_GTM_ID, '' ) );
+		return preg_match( '/^GTM-[A-Z0-9]+$/', strtoupper( trim( $id ) ) ) ? strtoupper( trim( $id ) ) : '';
+	}
+
+	/**
+	 * Tag Manager's container snippet, for when consent is not required.
+	 *
+	 * @param string $gtm_id Container ID.
+	 */
+	private function output_gtm_script( $gtm_id ) {
+		?>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','<?php echo esc_js( $gtm_id ); ?>');</script>
+		<?php
+	}
+
+	/**
 	 * Check if current request is the thank you page (for conversion).
 	 *
 	 * @param string $thank_you_slug Page slug or path from theme mod.
@@ -283,7 +323,12 @@ class CCS_Analytics {
 		$consent   = (bool) get_theme_mod( self::MOD_REQUIRE_CONSENT, true );
 		$thank_you = get_theme_mod( self::MOD_THANK_YOU_PAGE, '' );
 
-		$has_any = ( $ga4_id !== '' || $fb_id !== '' || $gads_id !== '' );
+		$gtm_id    = self::gtm_id();
+		if ( '' !== $gtm_id ) {
+			$ga4_id = '';
+		}
+
+		$has_any = ( $ga4_id !== '' || $fb_id !== '' || $gads_id !== '' || $gtm_id !== '' );
 		if ( ! $has_any ) {
 			return;
 		}
@@ -300,6 +345,7 @@ class CCS_Analytics {
 
 		wp_localize_script( 'ccs-analytics-events', 'ccsAnalyticsConfig', array(
 			'ga4Id'           => $ga4_id,
+			'gtmId'           => $gtm_id,
 			'fbPixelId'       => $fb_id,
 			'gadsId'          => $gads_id,
 			'gadsLabel'       => $gads_lbl,
