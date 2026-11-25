@@ -201,8 +201,14 @@ class CCS_SEO_Optimizer {
 	}
 
 	/**
-	 * Service meta title: custom or "[Service] | [Site Name]" (site name added by WP).
-	 * Format "[Service] in [Location] | [Site Name]" if a location meta is added later.
+	 * Service meta title: the custom one if set, otherwise "[Service] in Kent"
+	 * (site name added by WP, and dropped by the truncate filter when the two
+	 * together pass 60 characters).
+	 *
+	 * The place is in the title because people search for care with a place
+	 * in it ("complex care Kent"), and the service titles were the only ones
+	 * on the site without one (Nov 2026). Kent, not a town: every service is
+	 * offered across the areas we cover, and each area page names its town.
 	 *
 	 * @return string Title part.
 	 */
@@ -215,7 +221,11 @@ class CCS_SEO_Optimizer {
 		if ( is_string( $custom ) && trim( $custom ) !== '' ) {
 			return trim( $custom );
 		}
-		return get_the_title( $post->ID );
+		$title = get_the_title( $post->ID );
+		if ( '' === $title || false !== stripos( $title, self::DEFAULT_COUNTY ) ) {
+			return $title;
+		}
+		return $title . ' in ' . self::DEFAULT_COUNTY;
 	}
 
 	/**
