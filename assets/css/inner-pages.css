@@ -1010,9 +1010,11 @@
 	text-align: center;
 }
 
-/* Three across from 640px, so on a tablet the steps sit under their centred
-   heading and not in a left-hand column beside it. */
-@media (min-width: 640px) {
+/* Three across from 900px. Below that the section heading is left-aligned
+   (components.css), and three narrow centred columns of uneven text under a
+   left heading looked messy on tablets (client, 25 Nov 2026), so tablets
+   take the phone layout: one step per row, the drawing beside the text. */
+@media (min-width: 900px) {
 	.flow-steps {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 		gap: clamp(2rem, 5vw, 4.5rem);
@@ -1078,7 +1080,7 @@
 	display: none;
 }
 
-@media (min-width: 860px) {
+@media (min-width: 900px) {
 	.flow-step .flow-step__arrow {
 		display: block;
 		position: absolute;
@@ -1117,7 +1119,7 @@
 	color: var(--color-ink-soft);
 }
 
-@media (max-width: 639px) {
+@media (max-width: 899px) {
 	.flow-steps {
 		text-align: left;
 	}
@@ -4518,4 +4520,298 @@ p + .link-line { margin-top: var(--space-2, 0.5rem); }
 
 .care-finder-result:focus {
 	outline: none;
+}
+
+/* =========================================================================
+   News hub: topics on the left, one list of stories (Nov 2026, client picked
+   option B, after myhomelife.org.uk's news hub). Used by the news index and
+   its topic archives (template-parts/news-list.php).
+   ========================================================================= */
+
+.news-hub__inner {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-lg);
+}
+
+@media (min-width: 960px) {
+	.news-hub__inner {
+		grid-template-columns: 13rem minmax(0, 1fr);
+		gap: var(--space-2xl);
+		align-items: start;
+	}
+
+	/* The menu stays in reach while the list scrolls past it. */
+	.news-topics {
+		position: sticky;
+		top: calc(var(--header-height, 5rem) + var(--space-md));
+	}
+}
+
+.news-topics__title {
+	margin: 0 0 var(--space-xs);
+	font-family: var(--font-family-heading);
+	font-size: var(--text-md);
+	font-weight: var(--font-weight-medium);
+	color: var(--color-ink);
+}
+
+.news-topics__list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-xs);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+/* Phones and tablets: the topics wrap as pills above the list (rule 14: 44px,
+   with space between, and no sideways scrolling). */
+.news-topics__link {
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
+	padding: 0 var(--space-sm);
+	border: 1px solid var(--color-hairline-strong);
+	border-radius: 999px;
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-primary-dark);
+	text-decoration: none;
+	transition: border-color var(--duration-normal) var(--ease-out), color var(--duration-normal) var(--ease-out);
+}
+
+.news-topics__link:hover {
+	border-color: var(--color-primary);
+	color: var(--color-primary);
+}
+
+/* Phones and tablets: one row of pills that scrolls sideways, however many
+   topics there are (client, Nov 2026: scroll, don't stack). Same approach as
+   .ccs-swipe: the row runs to the screen edges, so a pill cut off at the edge
+   says there is more this way. Native scrolling, nothing scripted; the page
+   itself never scrolls sideways (rule 14). */
+@media (max-width: 959px) {
+	.news-topics__list {
+		--news-gutter: var(--space-md);
+		flex-wrap: nowrap;
+		margin-inline: calc(var(--news-gutter) * -1);
+		/* Vertical padding keeps the focus ring from being clipped by the
+		   scroll box. */
+		padding: 4px var(--news-gutter);
+		overflow-x: auto;
+		overscroll-behavior-x: contain;
+		scroll-padding-inline: var(--news-gutter);
+		scrollbar-width: none;
+	}
+
+	.news-topics__list::-webkit-scrollbar {
+		display: none;
+	}
+
+	.news-topics__list > li {
+		flex: none;
+	}
+
+	.news-topics__link {
+		white-space: nowrap;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 959px) {
+	.news-topics__list {
+		--news-gutter: var(--space-lg);
+	}
+}
+
+.news-topics__link[aria-current="page"] {
+	background: var(--color-primary);
+	border-color: var(--color-primary);
+	color: #fff;
+}
+
+/* Desktop: a plain vertical menu; the current topic has the plum "you are
+   here" bar used across the site (rule 2), and the others a hairline track. */
+@media (min-width: 960px) {
+	.news-topics__list {
+		flex-direction: column;
+		gap: 0;
+		border-left: 2px solid var(--color-hairline);
+	}
+
+	.news-topics__link {
+		display: flex;
+		margin-left: -2px;
+		padding: 0 var(--space-sm);
+		border: 0;
+		border-left: 2px solid transparent;
+		border-radius: 0;
+		font-size: var(--text-base);
+		font-weight: var(--font-weight-normal);
+		color: var(--color-ink-soft);
+	}
+
+	.news-topics__link:hover {
+		color: var(--color-primary);
+	}
+
+	.news-topics__link[aria-current="page"] {
+		background: none;
+		border-left-color: var(--color-primary);
+		color: var(--color-primary-dark);
+		font-weight: var(--font-weight-semibold);
+	}
+}
+
+.news-topics__link:focus-visible {
+	outline: var(--focus-ring);
+	outline-offset: var(--focus-ring-offset);
+}
+
+/* ---- The list ---------------------------------------------------------- */
+
+.news-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-top: 1px solid var(--color-hairline);
+}
+
+.post-row {
+	position: relative;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 7rem;
+	gap: var(--space-md);
+	align-items: start;
+	padding-block: var(--space-lg);
+	border-bottom: 1px solid var(--color-hairline);
+}
+
+@media (min-width: 768px) {
+	.post-row {
+		grid-template-columns: minmax(0, 1fr) 15rem;
+		gap: var(--space-xl);
+		align-items: center;
+	}
+}
+
+/* No photo: the text keeps a reading measure (rule 10) instead of running
+   the full width of the list. */
+.post-row--no-image {
+	grid-template-columns: minmax(0, 46rem);
+}
+
+.post-row__meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0 var(--space-sm);
+	margin: 0 0 var(--space-xs);
+	font-size: var(--text-sm);
+	color: var(--color-ink-soft);
+}
+
+.post-row__category {
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-primary);
+}
+
+.post-row__title {
+	margin: 0 0 var(--space-xs);
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.1875rem, 1.05rem + 0.6vw, 1.5rem);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.3;
+	text-wrap: balance;
+}
+
+.post-row__title a {
+	color: var(--color-ink);
+	text-decoration: none;
+}
+
+/* Whole row clickable; the title is the only tab stop. */
+.post-row__title a::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+}
+
+.post-row:hover .post-row__title a,
+.post-row__title a:focus-visible {
+	color: var(--color-primary);
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.2em;
+}
+
+.post-row:focus-within {
+	outline: var(--focus-ring);
+	outline-offset: var(--focus-ring-offset);
+	border-radius: var(--radius-sm);
+}
+
+.post-row__title a:focus-visible {
+	outline: none;
+}
+
+/* Two lines, so every row with a photo is roughly the photo's height. */
+.post-row__excerpt {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	overflow: hidden;
+	margin: 0;
+	font-size: var(--text-base);
+	line-height: 1.6;
+	color: var(--color-ink-soft);
+}
+
+/* Phones: the summary goes; title and date are enough beside a thumbnail.
+   Topic and date always stack, so no row wraps differently from the next. */
+@media (max-width: 599px) {
+	.post-row__excerpt {
+		display: none;
+	}
+
+	.post-row__meta {
+		flex-direction: column;
+	}
+}
+
+.post-row__media {
+	aspect-ratio: 3 / 2;
+	overflow: hidden;
+	border-radius: var(--radius-lg);
+	background: var(--color-band-tint);
+}
+
+@media (max-width: 767px) {
+	.post-row__media {
+		aspect-ratio: 1;
+		border-radius: var(--radius-md);
+	}
+}
+
+.post-row__img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform var(--duration-slow, 400ms) var(--ease-out);
+}
+
+.post-row:hover .post-row__img {
+	transform: scale(1.03);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.post-row__img,
+	.post-row:hover .post-row__img {
+		transform: none;
+		transition: none;
+	}
+}
+
+.news-hub .pagination {
+	margin-top: var(--space-xl);
 }

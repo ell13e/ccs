@@ -169,6 +169,18 @@
 	 * @param {HTMLFormElement} form
 	 * @returns {string} A same-site URL, or '' when they came straight to the form.
 	 */
+	function previousPage() {
+		var ref = document.referrer || '';
+		try {
+			var url = new URL(ref);
+			if (url.host !== window.location.host) return '';
+			if (url.href.split('#')[0] === window.location.href.split('#')[0]) return '';
+			return url.href;
+		} catch (e) {
+			return '';
+		}
+	}
+
 	function bookedFromPage(form) {
 		var here = window.location.href.split('#')[0];
 		if (form.getAttribute('data-ccs-context') !== 'referrer') return here;
@@ -201,6 +213,10 @@
 		var bookedFrom = bookedFromPage(form);
 		formData.set('enquiry_booked_from', bookedFrom);
 		formData.set('enquiry_form_page', window.location.href.split('#')[0]);
+		// The page before this one, so an enquiry on a service page reached from
+		// an area page says which area (client, 25 Nov 2026). Same-site only;
+		// the server keeps it only when it is an area page.
+		formData.set('enquiry_arrived_from', previousPage());
 
 		setLoading(form, true);
 		showMessage(form, '', 'success');

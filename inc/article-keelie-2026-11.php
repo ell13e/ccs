@@ -86,11 +86,48 @@ function ccs_ensure_keelie_article_2026_11() {
 	if ( is_wp_error( $id ) ) {
 		return;
 	}
+	ccs_keelie_article_topic( $id );
+}
+
+/**
+ * File the article under From the team, creating the topic if setup has not
+ * made it yet: on a fresh site the article can be created first, and it
+ * landed in Uncategorised.
+ *
+ * @param int $id Post ID.
+ * @return void
+ */
+function ccs_keelie_article_topic( $id ) {
 	$term = get_term_by( 'slug', 'from-the-team', 'category' );
+	if ( ! $term instanceof WP_Term ) {
+		$made = wp_insert_term( 'From the team', 'category', array( 'slug' => 'from-the-team' ) );
+		$term = is_wp_error( $made ) ? null : get_term( (int) $made['term_id'], 'category' );
+	}
 	if ( $term instanceof WP_Term ) {
 		wp_set_post_categories( $id, array( (int) $term->term_id ), false );
 	}
 }
+
+/**
+ * Once: move the article out of Uncategorised where it was filed there.
+ *
+ * @return void
+ */
+function ccs_keelie_article_topic_fix_2026_11() {
+	if ( get_option( 'ccs_keelie_article_topic_2026_11' ) ) {
+		return;
+	}
+	$article = get_posts( array( 'name' => CCS_KEELIE_ARTICLE_SLUG, 'post_type' => 'post', 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids' ) );
+	if ( ! $article ) {
+		return;
+	}
+	$cats = wp_get_post_categories( (int) $article[0] );
+	if ( array( (int) get_option( 'default_category' ) ) === array_map( 'intval', $cats ) ) {
+		ccs_keelie_article_topic( (int) $article[0] );
+	}
+	update_option( 'ccs_keelie_article_topic_2026_11', '1', false );
+}
+add_action( 'init', 'ccs_keelie_article_topic_fix_2026_11', 53 );
 add_action( 'init', 'ccs_ensure_keelie_article_2026_11', 50 );
 
 /**
@@ -134,7 +171,9 @@ function ccs_link_keelie_article_2026_11() {
 	if ( ! $article || ! $profile || ! $careers ) {
 		return;
 	}
-	$url   = get_permalink( $article[0] );
+	// Built from the slug, not get_permalink(): on a fresh site this can run
+	// before setup sets the address style, which gave a dated address.
+	$url   = home_url( '/' . CCS_KEELIE_ARTICLE_SLUG . '/' );
 	$lines = array(
 		array( $profile, '<p>Read <a href="' . esc_url( $url ) . '">Keelie’s talk on why she chose care</a>.</p>' ),
 		array( $careers, '<p>Not sure care is for you? Read <a href="' . esc_url( $url ) . '">our Care Manager Keelie’s story</a>.</p>' ),
@@ -147,3 +186,27 @@ function ccs_link_keelie_article_2026_11() {
 	update_option( 'ccs_keelie_article_links_2026_11', '1', false );
 }
 add_action( 'init', 'ccs_link_keelie_article_2026_11', 51 );
+
+/**
+ * Once: correct the two links where they were written with a dated address
+ * (/2026/11/25/why-care-keelies-story/), which only redirected.
+ *
+ * @return void
+ */
+function ccs_keelie_article_link_fix_2026_11() {
+	if ( get_option( 'ccs_keelie_article_link_fix_2026_11' ) || ! get_option( 'ccs_keelie_article_links_2026_11' ) ) {
+		return;
+	}
+	$pages = array( function_exists( 'ccs_team_profile_page' ) ? ccs_team_profile_page( 'keelie-varney' ) : null, get_page_by_path( 'careers' ) );
+	foreach ( $pages as $page ) {
+		if ( ! $page instanceof WP_Post ) {
+			continue;
+		}
+		$fixed = preg_replace( '~/\d{4}/\d{2}/\d{2}/' . CCS_KEELIE_ARTICLE_SLUG . '/~', '/' . CCS_KEELIE_ARTICLE_SLUG . '/', $page->post_content );
+		if ( is_string( $fixed ) && $fixed !== $page->post_content ) {
+			wp_update_post( wp_slash( array( 'ID' => $page->ID, 'post_content' => $fixed ) ) );
+		}
+	}
+	update_option( 'ccs_keelie_article_link_fix_2026_11', '1', false );
+}
+add_action( 'init', 'ccs_keelie_article_link_fix_2026_11', 54 );

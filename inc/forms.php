@@ -119,7 +119,22 @@ function ccs_enquiry_booked_from() {
 		);
 	}
 
-	return array( 'label' => ccs_enquiry_page_label( $raw ), 'url' => strtok( $raw, '?#' ) );
+	$label = ccs_enquiry_page_label( $raw );
+
+	// The area page they came through, when the form is on a later page
+	// (client, 25 Nov 2026: someone who goes from Herne Bay to "Domiciliary
+	// care in Herne Bay" and enquires there should show as from Herne Bay).
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- each handler verifies its own nonce before calling this.
+	$before = isset( $_POST['enquiry_arrived_from'] ) ? esc_url_raw( wp_unslash( $_POST['enquiry_arrived_from'] ) ) : '';
+	if ( $same_site( $before ) && strtok( $before, '?#' ) !== strtok( $raw, '?#' ) ) {
+		$before_id = url_to_postid( strtok( $before, '?#' ) );
+		if ( $before_id && 'location' === get_post_type( $before_id ) ) {
+			/* translators: 1: page the form was sent from, 2: area page before it. */
+			$label = sprintf( __( '%1$s, arrived from %2$s', 'ccs-wp-theme' ), $label, ccs_enquiry_page_label( $before ) );
+		}
+	}
+
+	return array( 'label' => $label, 'url' => strtok( $raw, '?#' ) );
 }
 
 /**

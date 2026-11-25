@@ -74,7 +74,15 @@ if ( is_singular() ) {
 		: ( $posts_page_id ? get_the_title( $posts_page_id ) : __( 'News & Updates', 'ccs-wp-theme' ) );
 	$items[]       = array( 'label' => $label, 'url' => '' );
 } elseif ( is_category() ) {
-	$cat = get_queried_object();
+	// A topic sits inside the news page, so the crumb leads back to it.
+	$posts_page_id = (int) get_option( 'page_for_posts' );
+	if ( $posts_page_id ) {
+		$news_label = get_post_meta( $posts_page_id, 'ccs_page_heading', true );
+		$items[]    = array(
+			'label' => ( is_string( $news_label ) && trim( $news_label ) !== '' ) ? trim( $news_label ) : get_the_title( $posts_page_id ),
+			'url'   => get_permalink( $posts_page_id ),
+		);
+	}
 	$items[] = array( 'label' => single_cat_title( '', false ), 'url' => '' );
 } elseif ( is_search() ) {
 	$items[] = array( 'label' => sprintf( __( 'Search results for: %s', 'ccs-wp-theme' ), get_search_query() ), 'url' => '' );

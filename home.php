@@ -35,47 +35,7 @@ $ccs_intro         = $ccs_posts_page_id ? get_post_meta( $ccs_posts_page_id, 'cc
 		</div>
 	</header>
 
-	<div class="post-list-section">
-		<div class="container container--lg">
-			<?php if ( have_posts() ) : ?>
-				<ul class="post-list" role="list">
-					<?php
-					/*
-					 * The newest post on page one leads. Only on page one, and
-					 * only when there is more than one post: promoting the sole
-					 * item on an otherwise empty index, or the fourth-newest
-					 * post at the top of page two, would both be lying about
-					 * what "lead story" means.
-					 */
-					$ccs_lead = ! is_paged() && $wp_query->post_count > 1;
-					$ccs_i    = 0;
-
-					while ( have_posts() ) :
-						the_post();
-						get_template_part(
-							'template-parts/post-card',
-							null,
-							array( 'featured' => ( $ccs_lead && 0 === $ccs_i ) )
-						);
-						++$ccs_i;
-					endwhile;
-					?>
-				</ul>
-
-				<?php
-				the_posts_pagination(
-					array(
-						'mid_size'  => 1,
-						'prev_text' => __( '&larr; Newer', 'ccs-wp-theme' ),
-						'next_text' => __( 'Older &rarr;', 'ccs-wp-theme' ),
-					)
-				);
-				?>
-			<?php else : ?>
-				<p class="post-list__empty"><?php esc_html_e( 'Nothing here just yet. Check back soon.', 'ccs-wp-theme' ); ?></p>
-			<?php endif; ?>
-		</div>
-	</div>
+	<?php get_template_part( 'template-parts/news-list' ); ?>
 
 	<?php get_template_part( 'template-parts/cta-band' ); ?>
 </main>

@@ -107,9 +107,10 @@ $ccs_op_lead = ! empty( $ccs_op_stats ) ? array_shift( $ccs_op_stats ) : null;
 			<div class="careers-proof__media">
 				<?php
 				ccs_section_photo(
-					'careers/training-room.webp',
+					// The client's training photos (25 Nov 2026); the training room photo is also on About.
+					'careers/training-session-round-the-bed.webp',
 					array(
-						'alt'   => __( 'New members of staff listening during a session in the training room', 'ccs-wp-theme' ),
+						'alt'   => __( 'Members of the team round a care bed during a training session', 'ccs-wp-theme' ),
 						'sizes' => '(min-width: 900px) 480px, 92vw',
 						'class' => 'careers-proof__photo',
 					)

@@ -17,7 +17,7 @@ get_header();
 	<header class="page-hero">
 		<div class="page-hero__inner container container--lg">
 			<?php get_template_part( 'template-parts/breadcrumb' ); ?>
-			<h1 class="page-hero__title"><?php echo esc_html( wp_strip_all_tags( get_the_archive_title() ) ); ?></h1>
+			<h1 class="page-hero__title"><?php echo esc_html( is_category() ? single_cat_title( '', false ) : wp_strip_all_tags( get_the_archive_title() ) ); // A topic page is headed by the topic, not "Category: …". ?></h1>
 			<?php
 			$ccs_archive_desc = get_the_archive_description();
 			if ( $ccs_archive_desc ) :
@@ -27,6 +27,15 @@ get_header();
 		</div>
 	</header>
 
+	<?php
+	/*
+	 * Posts archives (topics, tags, dates, authors) use the news hub so they
+	 * match the news index. Other post types keep the card grid.
+	 */
+	if ( ! is_post_type_archive() && ! is_tax() ) :
+		get_template_part( 'template-parts/news-list' );
+	else :
+		?>
 	<div class="post-list-section">
 		<div class="container container--lg">
 			<?php if ( have_posts() ) : ?>
@@ -53,6 +62,8 @@ get_header();
 			<?php endif; ?>
 		</div>
 	</div>
+
+	<?php endif; ?>
 
 	<?php get_template_part( 'template-parts/cta-band' ); ?>
 </main>

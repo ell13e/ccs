@@ -16,9 +16,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $items = array(
 	array(
-		'photo' => 'careers/trainer-with-learner.webp',
-		'pos'   => '50% 12%',
-		'alt'   => __( 'A trainer helping a new member of staff at a laptop', 'ccs-wp-theme' ),
+		// The client's training photos (25 Nov 2026): a newer session with new faces.
+		'photo' => 'careers/team-at-the-training-bed.webp',
+		'pos'   => '50% 35%',
+		'alt'   => __( 'Members of the team gathered round a care bed at a training session', 'ccs-wp-theme' ),
 		'title' => __( 'Support from day one', 'ccs-wp-theme' ),
 		'body'  => __( "Practical training, a team you can rely on, and a manager who means it when they ask how you're doing.", 'ccs-wp-theme' ),
 	),
@@ -38,9 +39,9 @@ $items = array(
 		'body'  => __( "The people who deliver care often see problems first. If something's not right, we want to know.", 'ccs-wp-theme' ),
 	),
 	array(
-		'photo' => 'careers/learner-notes.webp',
-		'pos'   => '60% 20%',
-		'alt'   => __( 'A learner taking notes during a practical training session', 'ccs-wp-theme' ),
+		'photo' => 'careers/practising-with-a-care-bed.webp',
+		'pos'   => '50% 35%',
+		'alt'   => __( 'Members of the team practising with a care bed during training', 'ccs-wp-theme' ),
 		'title' => __( 'Room to grow', 'ccs-wp-theme' ),
 		'body'  => __( 'After the Care Certificate, you can take health and social care qualifications or train in a new area of care.', 'ccs-wp-theme' ),
 	),

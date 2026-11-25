@@ -603,7 +603,9 @@ function ccs_services_menu_extras( $html, $args ) {
 	$line    = preg_split( '/(?<=\?)\s+/', ccs_copy( 'services_cta_line' ), 2 );
 	$feature = '<li class="nav-feature"><a class="nav-feature__link" href="' . esc_url( $hub ) . '"><span class="nav-feature__title">' . esc_html__( 'Your team. Your time.', 'ccs-wp-theme' ) . ' <em>' . esc_html__( 'Your life.', 'ccs-wp-theme' ) . '</em></span><span class="nav-feature__text">' . esc_html__( 'From everyday help at home to complex and specialist care, across Maidstone and Kent.', 'ccs-wp-theme' ) . '</span><span class="nav-feature__cue">' . esc_html__( 'See all our services', 'ccs-wp-theme' ) . ' <span aria-hidden="true">&rarr;</span></span></a></li>';
 	// The question alone, as a link (client, Nov 2026: a shorter line). It was the question, a second sentence and a button.
-	$help    = '<li class="nav-help"><a class="nav-help__link" href="' . esc_url( $contact ) . '">' . esc_html( $line[0] ) . '</a></li>';
+	// It answers the question with the care finder (client, 25 Nov 2026: "should that not link from here?"); contact if that page is missing.
+	$finder  = function_exists( 'ccs_care_finder_url' ) ? ccs_care_finder_url() : '';
+	$help    = '<li class="nav-help"><a class="nav-help__link" href="' . esc_url( $finder ? $finder : $contact ) . '">' . esc_html( $line[0] ) . '</a></li>';
 
 	$html = preg_replace( '#(nav-mega--services[^>]*>\s*<a[^>]*>.*?</a>.*?<ul class="sub-menu">)#s', '$1' . $feature, $html, 1 );
 	$html = preg_replace( '#(<li[^>]*class="[^"]*nav-secondary)#', $help . '$1', $html, 1 );
