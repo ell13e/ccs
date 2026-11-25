@@ -143,6 +143,11 @@ function ccs_link_targets() {
 	$targets['dbs check']                     = 'https://www.gov.uk/government/organisations/disclosure-and-barring-service';
 	// Kent County Council's own page on asking for one (read 23 Nov 2026).
 	$targets['needs assessment']              = 'https://www.kent.gov.uk/social-care-and-health/adult-social-care/care-and-support/how-to-get-adult-social-care-support/care-needs-assessments';
+	// The law behind "As the CQC outlines…" on Domiciliary care: section 10 of
+	// the Health and Social Care Act 2008 makes carrying on a regulated activity
+	// unregistered an offence (personal care where people live is one: the 2014
+	// Regulations, Schedule 1). Read 25 Nov 2026; cqc.org.uk still refuses to load.
+	$targets['legally required to register'] = 'https://www.legislation.gov.uk/ukpga/2008/14/section/10';
 	// Places and companies the site names (client, Nov 2026: links for
 	// backlinks, internal and external linking). Each address opened and read
 	// on 23 Nov 2026. The care farm spells itself without the apostrophe too.
