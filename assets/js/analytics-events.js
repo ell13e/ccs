@@ -3,7 +3,9 @@
  *
  * Respects cookie consent: when consentRequired is true, tracking scripts
  * load only after ccsAnalytics.enableTracking() is called (e.g. from consent banner).
- * Events: phone_click, email_click, form_start, form_submit, button_click, scroll_depth,
+ * Events: phone_click, email_click, form_start, generate_lead (GA4's recommended
+ * name for an enquiry, renamed from form_submit on 25 Nov 2026 so GA4's lead
+ * reports pick it up), button_click, scroll_depth,
  * thank_you_page (conversion).
  *
  * @package CCS_WP_Theme
@@ -66,7 +68,7 @@
 		}
 
 		// Google Ads conversion (for conversion events only).
-		if (gadsId && (eventName === 'conversion' || eventName === 'form_submit' || eventName === 'thank_you_page')) {
+		if (gadsId && (eventName === 'conversion' || eventName === 'generate_lead' || eventName === 'thank_you_page')) {
 			if (typeof gtag === 'function') {
 				var sendTo = gadsLabel ? gadsId + '/' + gadsLabel : gadsId;
 				gtag('event', 'conversion', { send_to: sendTo });
@@ -76,8 +78,9 @@
 
 	function mapToFbEvent(eventName) {
 		var map = {
-			form_submit: 'Lead',
-			form_start: 'Lead',
+			generate_lead: 'Lead',
+			// No form_start: starting a form is not a lead, and counting it as one
+			// inflated Facebook's lead numbers (removed 25 Nov 2026).
 			phone_click: 'Contact',
 			email_click: 'Contact',
 			thank_you_page: 'Lead',
@@ -133,7 +136,7 @@
 		// validation as conversions.
 		if (form.hasAttribute('data-ccs-action')) return;
 		var action = form.getAttribute('data-ccs-action') || form.action || '';
-		sendEvent('form_submit', { form_action: action });
+		sendEvent('generate_lead', { form_action: action });
 	}
 
 	/**
@@ -226,10 +229,10 @@
 
 		document.addEventListener('focusin', onFormStart);
 
-		// AJAX form success: form-handler.js dispatches ccs_form_success; we track form_submit + conversion.
+		// AJAX form success: form-handler.js dispatches ccs_form_success; we track generate_lead + conversion.
 		document.addEventListener('ccs_form_success', function (e) {
 			var action = (e.detail && e.detail.action) || '';
-			sendEvent('form_submit', { form_action: action });
+			sendEvent('generate_lead', { form_action: action });
 		});
 
 		// Non-AJAX form submit (fallback).
