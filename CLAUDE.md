@@ -173,6 +173,24 @@ signed off by the client):
   text with small marks reads as unfinished. Rule 1 allows a box here when the
   alternative is that.
 
+## SEO code lives in `inc/seo/` (Nov 2026)
+
+The theme is staying, but its SEO should be able to move into its own plugin
+later as a folder move, not an untangling job. So:
+
+- **All SEO code goes in `inc/seo/`:** titles, descriptions, sharing tags,
+  canonical, robots, sitemap rules, site-wide schema, the page SEO box,
+  redirects, Search Console. Nothing outside that folder prints SEO tags in
+  the page head or hooks `wp_robots`, `document_title_*` or `wp_sitemaps_*`.
+  Schema that describes one page's own content (a service, an area, the FAQ
+  block) may stay in that template or block.
+- **Code in `inc/seo/` uses theme code defensively.** Wrap calls to theme
+  functions in `function_exists()` (as the plugin switch does), so the
+  folder still runs if the theme's helpers are missing.
+- **SEO plugins win.** Anything new that prints SEO output checks
+  `ccs_seo_plugin_active()` first and steps aside when Yoast, Rank Math or
+  similar is on, so the site never carries two sets of tags.
+
 ## Standing constraints
 
 - **The homepage hero keeps its current energy and tone.** Tiny polish only,

@@ -67,7 +67,7 @@ CCS/
 | | `inc/theme-setup.php` | Supports, menus, enqueue, meta boxes, email/form handlers |
 | | `inc/header-footer-helpers.php` | Contact info, footer fallback menus |
 | | `inc/block-patterns.php` | Block patterns (CCS category) |
-| | `inc/page-editor-enhancements.php` | Classic editor for pages, SEO meta box |
+| | `inc/seo/page-seo-box.php` | Page SEO box: meta title, description, noindex, nofollow |
 | **Resources (care guides)** | `inc/resource-downloads.php` | CPT `ccs_resource`, taxonomy, download table, metaboxes |
 | | `inc/resource-download-ajax.php` | AJAX handler, email delivery, tokenised download URL |
 | **Forms / contact** | `inc/class-contact-form.php` | Shortcode `[ccs_consultation_form]`, AJAX, CPT `ccs_enquiry`, emails |

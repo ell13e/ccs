@@ -62,7 +62,7 @@ require_once THEME_DIR . '/inc/care-finder.php';
 require_once THEME_DIR . '/inc/internal-links.php';
 require_once THEME_DIR . '/inc/forms.php';
 require_once THEME_DIR . '/inc/content-updates.php';
-require_once THEME_DIR . '/inc/redirects.php';
+require_once THEME_DIR . '/inc/seo/redirects.php';
 require_once THEME_DIR . '/inc/content-sections.php';
 
 /**
@@ -78,7 +78,7 @@ require_once THEME_DIR . '/inc/block-patterns.php';
 /**
  * Page editor enhancements (classic editor for pages, SEO meta box).
  */
-require_once THEME_DIR . '/inc/page-editor-enhancements.php';
+require_once THEME_DIR . '/inc/seo/page-seo-box.php';
 
 /**
  * Resource downloads: CPT ccs_resource, taxonomy, download table, metaboxes (care guides).

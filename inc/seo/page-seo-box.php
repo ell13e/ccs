@@ -1,9 +1,8 @@
 <?php
 /**
- * Page editor enhancements: classic editor for pages, SEO meta box.
+ * The SEO box on pages (Pages > edit), and what its fields do on the site.
  *
- * - Uses classic editor for pages (filter in theme-setup.php).
- * - Adds an SEO meta box: meta title and description (the fields the site's
+ * - Meta title and description (the fields the site's
  *   titles and descriptions are read from), noindex and nofollow.
  *
  * @package CCS_WP_Theme

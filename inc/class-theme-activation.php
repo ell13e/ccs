@@ -1335,7 +1335,7 @@ class CCS_Theme_Activation {
 			 * 2026, client: "bring them over"), so links to them keep working. The
 			 * wording is the authors' own, typing slips included: it is the
 			 * client's to edit. The fourth old article (Black Friday shopping tips,
-			 * 2024) is not carried over; its address goes to News (inc/redirects.php).
+			 * 2024) is not carried over; its address goes to News (inc/seo/redirects.php).
 			 */
 			'proud-to-be-a-nurse-maidstone' => array(
 				'title'    => 'Why I am proud to be a nurse',

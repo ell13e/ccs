@@ -527,7 +527,7 @@ function ccs_working_with_us_address() {
 }
 add_action( 'init', 'ccs_working_with_us_address', 5 );
 
-// The old address is sent to the new one in inc/redirects.php, with the old website's addresses.
+// The old address is sent to the new one in inc/seo/redirects.php, with the old website's addresses.
 
 /**
  * The About page's closing line is a link (Nov 2026, client, pasting the

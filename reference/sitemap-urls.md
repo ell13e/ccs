@@ -1,6 +1,6 @@
 # Sitemap & Build Tracker
 
-> **Superseded, Nov 2026.** The redirects are built: see `inc/redirects.php`, which
+> **Superseded, Nov 2026.** The redirects are built: see `inc/seo/redirects.php`, which
 > maps the old site's twenty addresses to the pages that exist on the new site
 > (its addresses differ from the plan below). `bin/qa.sh` tests every one.
 
