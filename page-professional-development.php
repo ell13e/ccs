@@ -124,7 +124,7 @@ $ccs_pd_name  = trim( (string) get_theme_mod( 'ccs_copy_pd_story_name', '' ) );
 					continue;
 				}
 				$ccs_pd_lines = array(
-					'I began my journey with CCS in May 2023 as a Senior Support Worker and have over 20 years of experience in the care sector.',
+					'I began my journey with CCS in May 2023 as a Head Carer and have over 20 years of experience in the care sector.',
 					'I have completed NVQs to progress from Care Worker to Senior level, and am now Care Manager.',
 				);
 				$ccs_pd_bio   = wp_strip_all_tags( $ccs_pd_member['bio'] );

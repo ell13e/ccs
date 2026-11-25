@@ -75,7 +75,7 @@ function ccs_team_members() {
 			'role'  => __( 'Care Manager', 'ccs-wp-theme' ),
 			'photo' => 'keelie-varney.jpg',
 			'intro' => __( 'Keelie is our Care Manager. When you book a free consultation, you can ask to speak with her.', 'ccs-wp-theme' ),
-			'bio'   => '<p>Hello, my name is Keelie, and I am the Care Manager at CCS. I began my journey with CCS in May 2023 as a Senior Support Worker and have over 20 years of experience in the care sector. After briefly working in sales management, I returned to care, where I find true job satisfaction.</p><p>My experience spans dementia care in nursing homes, home care for older people, and complex care for individuals with brain injuries and challenging behaviours. I have completed NVQs to progress from Care Worker to Senior level, and am now Care Manager. I thrive on supporting both clients and staff, ensuring person-centred care.</p><p>I collaborate closely with Nikki, our Senior Clinical Manager, in developing tailored care plans and to ensure that families meet carers before services begin. These are digitised on our app for ease of use and accessibility for both families and staff. I’m also proud to champion skin integrity within the company.</p><p>One of my key achievements has been transitioning CCS from paper-based daily logs to a digital system, modernising our processes. I have since completed my Level 5 Diploma in Leadership for Health and Social Care with a Distinction, and am now working towards becoming a Registered Manager.</p>',
+			'bio'   => '<p>Hello, my name is Keelie, and I am the Care Manager at CCS. I began my journey with CCS in May 2023 as a Head Carer and have over 20 years of experience in the care sector. After briefly working in sales management, I returned to care, where I find true job satisfaction.</p><p>My experience spans dementia care in nursing homes, home care for older people, and complex care for individuals with brain injuries and challenging behaviours. I have completed NVQs to progress from Care Worker to Senior level, and am now Care Manager. I thrive on supporting both clients and staff, ensuring person-centred care.</p><p>I collaborate closely with Nikki, our Senior Clinical Manager, in developing tailored care plans and to ensure that families meet carers before services begin. These are digitised on our app for ease of use and accessibility for both families and staff. I’m also proud to champion skin integrity within the company.</p><p>One of my key achievements has been transitioning CCS from paper-based daily logs to a digital system, modernising our processes. I have since completed my Level 5 Diploma in Leadership for Health and Social Care with a Distinction, and am now working towards becoming a Registered Manager.</p>',
 			// Her progression, in her own words (her email of 23 Nov 2026, unedited): shown as "My journey" on Professional Development.
 			'journey' => <<<'JOURNEY'
 I joined Continuity of Care Services in May 2023 as a Head Carer for a complex care package. Although the package already had an established team in place, CCS recognised my Level 3 qualification and experience in complex care and quickly identified other opportunities for me within the organisation. This led to me progressing into a Senior Head of Complex Support role, where I supported our Head Carers to lead their teams effectively, acted as a key point of contact between field staff, families and management, and contributed to reviewing and updating care plans. Working closely with the people we support allowed me to bring a more person-centred perspective to care planning and service delivery.
@@ -333,6 +333,35 @@ function ccs_fix_nikki_title_2026_11() {
 	}
 }
 add_action( 'init', 'ccs_fix_nikki_title_2026_11', 47 );
+
+/**
+ * Keelie joined as a Head Carer, not a Senior Support Worker (Ellie, 25 Nov
+ * 2026, matching Keelie's own account of her journey). Her profile page was
+ * created from the old bio, so correct the wording there once, only where
+ * the old sentence is still in place.
+ */
+function ccs_fix_keelie_start_2026_11() {
+	if ( get_option( 'ccs_keelie_start_2026_11' ) || ! get_option( 'ccs_team_profiles_2026_11' ) ) {
+		return;
+	}
+	$page = ccs_team_profile_page( 'keelie-varney' );
+	if ( ! $page ) {
+		return;
+	}
+	$old = 'in May 2023 as a Senior Support Worker and have';
+	if ( false !== strpos( $page->post_content, $old ) ) {
+		wp_update_post(
+			wp_slash(
+				array(
+					'ID'           => $page->ID,
+					'post_content' => str_replace( $old, 'in May 2023 as a Head Carer and have', $page->post_content ),
+				)
+			)
+		);
+	}
+	update_option( 'ccs_keelie_start_2026_11', '1', false );
+}
+add_action( 'init', 'ccs_fix_keelie_start_2026_11', 47 );
 
 /**
  * Heidi Griffen left in Nov 2026 (Ellie, 23 Nov 2026). She is off the roster
