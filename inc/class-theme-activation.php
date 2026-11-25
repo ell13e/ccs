@@ -579,7 +579,7 @@ class CCS_Theme_Activation {
 	 */
 	private function ensure_general_settings() {
 		if ( self::is_placeholder_site_value( get_option( 'blogname', '' ) ) ) {
-			update_option( 'blogname', 'Continuity Care Services' );
+			update_option( 'blogname', 'Continuity of Care Services' );
 		}
 		if ( self::is_placeholder_site_value( get_option( 'blogdescription', '' ) ) ) {
 			update_option( 'blogdescription', 'Home Care in Maidstone & Kent - Your Team, Your Time, Your Life' );
@@ -738,10 +738,10 @@ class CCS_Theme_Activation {
 <p>Contact us by phone or email with the person\'s details and, where possible, a summary of needs or care plan. We will arrange an assessment and provide a written plan and costings. We are happy to attend meetings or speak with other professionals with the client\'s or family\'s consent.</p>
 <h2>Contact</h2>
 <p>For referrals or professional enquiries, please <a href="' . esc_url( home_url( '/contact-us/' ) ) . '">contact us</a>. We aim to respond within one working day.</p>',
-			'news-and-updates' => '<p>News, updates and articles from Continuity Care Services. We share practical tips, service updates and stories from our team and the people we support across Maidstone and Kent.</p>
+			'news-and-updates' => '<p>News, updates and articles from Continuity of Care Services. We share practical tips, service updates and stories from our team and the people we support across Maidstone and Kent.</p>
 <p>For the latest vacancies and careers news, visit our <a href="' . esc_url( home_url( '/careers/' ) ) . '">Careers</a> section. For care enquiries, <a href="' . esc_url( home_url( '/contact-us/' ) ) . '">get in touch</a>.</p>',
 			'privacy-policy' => '<h2>Who we are</h2>
-<p>Continuity Care Services ("we", "us", "our") is a home care provider. This privacy policy explains how we collect, use, store and protect your personal data when you use our website, contact us, or receive our care services. We are committed to protecting your privacy and complying with UK data protection law (UK GDPR and the Data Protection Act 2018).</p>
+<p>Continuity of Care Services ("we", "us", "our") is a home care provider. This privacy policy explains how we collect, use, store and protect your personal data when you use our website, contact us, or receive our care services. We are committed to protecting your privacy and complying with UK data protection law (UK GDPR and the Data Protection Act 2018).</p>
 <h2>Data we collect</h2>
 <p>We may collect: name, address, phone number, email address; information about your care needs and preferences; relevant health or next-of-kin information where necessary to provide care; and technical data (e.g. IP address) when you use our website. We collect this when you enquire, when we assess and deliver care, and when you use our contact forms or sign up to communications.</p>
 <h2>How we use your data</h2>
@@ -757,13 +757,13 @@ class CCS_Theme_Activation {
 <h2>Changes</h2>
 <p>We may update this policy from time to time. The latest version will be on this page.</p>',
 			'terms-and-conditions' => '<h2>Use of this website</h2>
-<p>By using the Continuity Care Services website you agree to these terms. If you do not agree, please do not use the site. We may change these terms at any time; continued use after changes means you accept the updated terms.</p>
+<p>By using the Continuity of Care Services website you agree to these terms. If you do not agree, please do not use the site. We may change these terms at any time; continued use after changes means you accept the updated terms.</p>
 <h2>Information on the site</h2>
 <p>We aim to keep the information on this website accurate and up to date, but we do not guarantee that it is complete or current. Content is for general information only and does not replace professional advice. You should contact us directly for care enquiries and confirm any details that affect your decisions.</p>
 <h2>Care services</h2>
 <p>Care services are subject to separate agreements, care plans and our policies. Nothing on this website constitutes a binding offer until we have agreed terms with you in writing. Fees, scope of care and conditions will be set out in your care agreement.</p>
 <h2>Intellectual property</h2>
-<p>All content on this site (text, images, logos) is owned by Continuity Care Services or our licensors. You may not copy, reproduce or use it for commercial purposes without our written permission.</p>
+<p>All content on this site (text, images, logos) is owned by Continuity of Care Services or our licensors. You may not copy, reproduce or use it for commercial purposes without our written permission.</p>
 <h2>Links</h2>
 <p>Our site may link to other websites. We are not responsible for their content or privacy practices. Links are not an endorsement.</p>
 <h2>Liability</h2>
@@ -771,7 +771,7 @@ class CCS_Theme_Activation {
 <h2>Contact</h2>
 <p>For questions about these terms, please <a href="' . esc_url( home_url( '/contact-us/' ) ) . '">contact us</a>.</p>',
 			'accessibility-statement' => '<h2>Our commitment</h2>
-<p>Continuity Care Services is committed to making our website accessible to as many people as possible, in line with the Equality Act 2010 and WCAG 2.1 Level AA where practicable. We want everyone to be able to find information about our home care services and contact us easily.</p>
+<p>Continuity of Care Services is committed to making our website accessible to as many people as possible, in line with the Equality Act 2010 and WCAG 2.1 Level AA where practicable. We want everyone to be able to find information about our home care services and contact us easily.</p>
 <h2>What we do</h2>
 <p>We use clear headings and structure, descriptive link text, sufficient colour contrast, and we aim to ensure the site is usable with keyboard navigation and screen readers. We test our pages on different devices and with accessibility in mind.</p>
 <h2>Known limitations</h2>
@@ -844,7 +844,7 @@ class CCS_Theme_Activation {
 
 <h2>Open roles</h2>
 <p>' . '<a href="' . esc_url( home_url( '/careers/current-vacancies/' ) ) . '">Current vacancies</a>' . ' lists what we are currently recruiting for. If nothing fits but you would like us to keep your details, send them anyway — turnover in the sector means roles open regularly.</p>',
-			'cqc-and-our-care' => '<p>Continuity Care Services is registered with the Care Quality Commission (CQC). We are committed to delivering safe, effective, caring, responsive and well-led care. Our CQC rating reflects how we\'re performing.</p>
+			'cqc-and-our-care' => '<p>Continuity of Care Services is registered with the Care Quality Commission (CQC). We are committed to delivering safe, effective, caring, responsive and well-led care. Our CQC rating reflects how we\'re performing.</p>
 <p>We believe the best care doesn\'t stop at the checklist – it shows in our carers turning up in a way that feels friendly and familiar. If you\'d like to know more about how we work or our latest inspection, view our CQC profile below or get in touch.</p>',
 			'getting-started' => '<p class="lead">Most people ring us because something has shifted. A fall, a hospital discharge letter, a parent who is managing but not quite as well as last year. You do not need to have worked out what you want before you get in touch — that is what the first conversation is for.</p>
 
@@ -1688,7 +1688,7 @@ class CCS_Theme_Activation {
 		}
 
 		$name = get_option( 'blogname', '' );
-		$name = is_string( $name ) && trim( $name ) !== '' ? trim( $name ) : 'Continuity Care Services';
+		$name = is_string( $name ) && trim( $name ) !== '' ? trim( $name ) : 'Continuity of Care Services';
 
 		wp_update_user( array(
 			'ID'           => $user_id,

@@ -133,7 +133,7 @@ Removed: "Reliably supporting…", "Our staff commit to discovering the quirks",
 
 ## CQC and Our Care page, intro
 
-> Continuity Care Services is registered with the Care Quality Commission (CQC), which inspects whether care is safe, effective, caring, responsive and well-led. Our current rating and the full report are below.
+> Continuity of Care Services is registered with the Care Quality Commission (CQC), which inspects whether care is safe, effective, caring, responsive and well-led. Our current rating and the full report are below.
 
 Removed: "We are committed to delivering…", and the "We believe the best care doesn't stop at the checklist" line repeated from About.
 

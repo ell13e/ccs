@@ -147,7 +147,7 @@ function ccs_keelie_article_photo_2026_11() {
 	}
 	$current = (int) get_post_thumbnail_id( $article[0] );
 	if ( ! $current || 'assets/images/team/keelie-varney.jpg' === get_post_meta( $current, '_ccs_source_theme_path', true ) ) {
-		$photo = ccs_articles_import_photo( 'assets/images/site-photos-extra/team-group-office-window.webp', 'The Continuity Care Services team at the office' );
+		$photo = ccs_articles_import_photo( 'assets/images/site-photos-extra/team-group-office-window.webp', 'The Continuity of Care Services team at the office' );
 		if ( $photo ) {
 			set_post_thumbnail( $article[0]->ID, $photo );
 		}

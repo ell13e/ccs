@@ -157,7 +157,7 @@ Getting dressed. Making breakfast. Remembering the right meds at the right time.
 
 **Full content:**
 
-At Continuity Care Services, we understand that sometimes you just need a helping hand with daily tasks. Our domiciliary care services provide compassionate support in the comfort of your own home.
+At Continuity of Care Services, we understand that sometimes you just need a helping hand with daily tasks. Our domiciliary care services provide compassionate support in the comfort of your own home.
 
 **What We Help With:**
 - Personal care (washing, dressing, grooming)
@@ -220,7 +220,7 @@ From epilepsy care to PEG and mobility support, we provide complex care in the c
 
 **Full content:**
 
-Complex care requires specialist knowledge, clinical skills, and unwavering attention to detail. At Continuity Care Services, our trained care team provides expert support for individuals with complex health needs.
+Complex care requires specialist knowledge, clinical skills, and unwavering attention to detail. At Continuity of Care Services, our trained care team provides expert support for individuals with complex health needs.
 
 **Conditions We Support:**
 - Epilepsy and seizure management
@@ -347,7 +347,7 @@ About Us | Services | Careers | FAQs | Contact Us | Privacy Policy | Terms & Con
 ## 8. WordPress settings
 
 **General:**  
-Site Title: **Continuity Care Services**  
+Site Title: **Continuity of Care Services**  
 Tagline: **Home Care in Maidstone & Kent - Your Team, Your Time, Your Life**  
 Email: **office@continuitycareservices.co.uk**
 

@@ -37,4 +37,4 @@ Pre-launch audit, 25 November 2026. Checked against the launch checklist and the
 5. Set event data retention to 14 months, then define the office IP and set the internal traffic filter to Active.
 6. Server: turn WP_DEBUG off, force HTTPS, and check HSTS.
 7. Run Lighthouse on the live homepage, an area page and the contact page. Do a quick VoiceOver pass.
-8. Choose one business name and use it everywhere: on the site, the Google Business Profile and directories. The audit found both "Continuity Care Services" and "Continuity of Care Services (Limited)"; the logo uses the second.
+8. The site now uses "Continuity of Care Services" everywhere (25 Nov 2026). Make the Google Business Profile, social profiles and directory listings match. Web and email addresses stay as they are.

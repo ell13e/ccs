@@ -355,7 +355,7 @@ class CCS_Email_Notifications {
 	}
 
 	/**
-	 * Logo HTML: image URL from theme mod/filter, or text "Continuity Care Services".
+	 * Logo HTML: image URL from theme mod/filter, or text "Continuity of Care Services".
 	 *
 	 * @return string
 	 */

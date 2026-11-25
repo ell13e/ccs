@@ -745,6 +745,93 @@ function ccs_article_photos_2026_11() {
 }
 
 /**
+ * Use one business name everywhere: "Continuity of Care Services" (client,
+ * 25 Nov 2026). Replaces "Continuity Care Services" in saved content once:
+ * page and post titles, text and excerpts, image alt text and captions, the
+ * theme's own fields (ccs_ meta), the site title and the Customizer copy.
+ * Web and email addresses contain no spaces, so they never match.
+ *
+ * @return void
+ */
+function ccs_business_name_2026_11() {
+	if ( get_option( 'ccs_business_name_2026_11' ) ) {
+		return;
+	}
+	global $wpdb;
+	$old = 'Continuity Care Services';
+	$new = 'Continuity of Care Services';
+	$like = '%' . $wpdb->esc_like( $old ) . '%';
+
+	foreach ( array( 'post_title', 'post_content', 'post_excerpt' ) as $col ) {
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->posts} SET {$col} = REPLACE({$col}, %s, %s) WHERE {$col} LIKE %s", $old, $new, $like ) );
+	}
+
+	// Meta may be serialised, so go through the API rather than REPLACE().
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+	$rows = $wpdb->get_results( $wpdb->prepare( "SELECT meta_id, post_id, meta_key FROM {$wpdb->postmeta} WHERE meta_value LIKE %s AND ( meta_key LIKE %s OR meta_key = '_wp_attachment_image_alt' )", $like, $wpdb->esc_like( 'ccs_' ) . '%' ) );
+	$swap = static function ( $value ) use ( &$swap, $old, $new ) {
+		if ( is_string( $value ) ) {
+			return str_replace( $old, $new, $value );
+		}
+		if ( is_array( $value ) ) {
+			return array_map( $swap, $value );
+		}
+		return $value;
+	};
+	foreach ( (array) $rows as $row ) {
+		$value = get_metadata_by_mid( 'post', (int) $row->meta_id );
+		if ( $value ) {
+			update_metadata_by_mid( 'post', (int) $row->meta_id, $swap( $value->meta_value ) );
+		}
+	}
+
+	foreach ( array( 'blogname', 'blogdescription' ) as $option ) {
+		$value = get_option( $option );
+		if ( is_string( $value ) && false !== strpos( $value, $old ) ) {
+			update_option( $option, str_replace( $old, $new, $value ) );
+		}
+	}
+	$mods = get_theme_mods();
+	if ( is_array( $mods ) ) {
+		$changed = $swap( $mods );
+		if ( $changed !== $mods ) {
+			update_option( 'theme_mods_' . get_option( 'stylesheet' ), $changed );
+		}
+	}
+
+	clean_post_cache( 0 );
+	wp_cache_flush();
+	update_option( 'ccs_business_name_2026_11', '1', false );
+}
+
+/**
+ * The same name change for user names, which articles show as their author
+ * (and in their schema): display name, nickname, first and last name.
+ *
+ * @return void
+ */
+function ccs_business_name_users_2026_11() {
+	if ( get_option( 'ccs_business_name_users_2026_11' ) ) {
+		return;
+	}
+	$old = 'Continuity Care Services';
+	$new = 'Continuity of Care Services';
+	foreach ( get_users( array( 'search' => '*Continuity*', 'search_columns' => array( 'display_name', 'user_nicename', 'user_login' ) ) ) as $user ) {
+		if ( false !== strpos( $user->display_name, $old ) ) {
+			wp_update_user( array( 'ID' => $user->ID, 'display_name' => str_replace( $old, $new, $user->display_name ) ) );
+		}
+	}
+	global $wpdb;
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+	$rows = $wpdb->get_results( $wpdb->prepare( "SELECT user_id, meta_key, meta_value FROM {$wpdb->usermeta} WHERE meta_key IN ('nickname','first_name','last_name') AND meta_value LIKE %s", '%' . $wpdb->esc_like( $old ) . '%' ) );
+	foreach ( (array) $rows as $row ) {
+		update_user_meta( (int) $row->user_id, $row->meta_key, str_replace( $old, $new, $row->meta_value ) );
+	}
+	update_option( 'ccs_business_name_users_2026_11', '1', false );
+}
+
+/**
  * Every one-time update in this file, in the order they were written.
  *
  * Each checks the site before it changes anything and records that it ran,
@@ -770,6 +857,8 @@ function ccs_content_update_steps() {
 		'ccs_expand_shopping_article_2026_11',
 		'ccs_swap_service_photos_2026_11',
 		'ccs_article_photos_2026_11',
+		'ccs_business_name_2026_11',
+		'ccs_business_name_users_2026_11',
 	);
 }
 

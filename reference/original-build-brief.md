@@ -1,6 +1,6 @@
 # CCS WordPress Theme — Complete Build Brief
 
-This file is the single source of truth for building the Continuity Care Services WordPress theme from scratch. Read this entire file before writing any code.
+This file is the single source of truth for building the Continuity of Care Services WordPress theme from scratch. Read this entire file before writing any code.
 
 ---
 
@@ -23,7 +23,7 @@ This file is the single source of truth for building the Continuity Care Service
 
 ## THE BUSINESS
 
-**Company:** Continuity Care Services (CCS)
+**Company:** Continuity of Care Services (CCS)
 **Type:** CQC-regulated domiciliary and complex care provider
 **Location:** Maidstone, Kent
 **Website:** https://www.continuitycareservices.co.uk
@@ -414,7 +414,7 @@ A family deciding whether to let a stranger into their parent's home will look a
 - Permalinks: Post name `/%postname%/`
 
 ### WordPress General Settings
-- Site Title: `Continuity Care Services`
+- Site Title: `Continuity of Care Services`
 - Tagline: `Home Care in Maidstone & Kent - Your Team, Your Time, Your Life`
 - Email: `office@continuitycareservices.co.uk`
 

@@ -1,6 +1,6 @@
 # CCS Design System — Master
 
-**Continuity Care Services** — Wellness / care services (Kent-based home care).  
+**Continuity of Care Services** — Wellness / care services (Kent-based home care).  
 Single source of truth for the **currently implemented** brand, UI style, typography, and WCAG 2.1 AA compliance. Every token below is verified against the live theme (`theme.json`, `assets/css/design-system.css`) — if this doc and the CSS ever disagree, treat the CSS as the bug and fix it to match this file.
 
 **Design intent:** Warmth, trust, and approachability for a healthcare context. Purple remains the brand colour but is used deliberately; teal and cream carry most of the visual weight so the experience feels calm and supportive.

@@ -60,7 +60,7 @@ get_header();
 					ccs_section_photo(
 						$ccs_wf_photo,
 						array(
-							'alt'      => __( 'Six members of the Continuity Care Services team together at the office', 'ccs-wp-theme' ),
+							'alt'      => __( 'Six members of the Continuity of Care Services team together at the office', 'ccs-wp-theme' ),
 							'class'    => 'ccs-photo--wide',
 							'position' => '58% 50%',
 							'sizes'    => '(min-width: 900px) 620px, 92vw',

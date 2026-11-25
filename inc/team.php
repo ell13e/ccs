@@ -68,7 +68,7 @@ function ccs_team_members() {
 			'role'  => __( 'Senior Clinical Manager', 'ccs-wp-theme' ),
 			'photo' => 'nikki-mackay.jpg',
 			'intro' => __( 'Nikki is our Senior Clinical Manager. When you book a free consultation, you can ask to speak with her.', 'ccs-wp-theme' ),
-			'bio'   => '<p>My name is Nikki, and I am the Senior Clinical Manager at Continuity Care Services, having joined in April 2023.</p><p>I began my care career in Residential Services in 1995 and qualified as a Registered Learning Disability Nurse in 2000, initially working within a challenging behaviour service. After completing the THORN degree in Mental Health, I became a Community Learning Disability Nurse in 2005, supporting individuals with health needs while they lived independently or in residential settings. Between 2012 and 2015, I worked as a Health Visitor before returning to support people with learning disabilities and complex needs in the Continuing Health Care team.</p><p>At CCS, I am focused on developing our new Nursing service, including funding Nursing Associates to support complex clients in the community. I work closely with the Care Manager and teams to ensure an excellent standard of care for those we support.</p>',
+			'bio'   => '<p>My name is Nikki, and I am the Senior Clinical Manager at Continuity of Care Services, having joined in April 2023.</p><p>I began my care career in Residential Services in 1995 and qualified as a Registered Learning Disability Nurse in 2000, initially working within a challenging behaviour service. After completing the THORN degree in Mental Health, I became a Community Learning Disability Nurse in 2005, supporting individuals with health needs while they lived independently or in residential settings. Between 2012 and 2015, I worked as a Health Visitor before returning to support people with learning disabilities and complex needs in the Continuing Health Care team.</p><p>At CCS, I am focused on developing our new Nursing service, including funding Nursing Associates to support complex clients in the community. I work closely with the Care Manager and teams to ensure an excellent standard of care for those we support.</p>',
 		),
 		array(
 			'name'  => 'Keelie Varney',
@@ -307,7 +307,7 @@ function ccs_fix_nikki_title_2026_11() {
 		return;
 	}
 	$swaps = array(
-		'nikki-mackay'  => array( 'I am the Clinical Manager at Continuity Care Services', 'I am the Senior Clinical Manager at Continuity Care Services' ),
+		'nikki-mackay'  => array( 'I am the Clinical Manager at Continuity Care Services', 'I am the Senior Clinical Manager at Continuity of Care Services' ),
 		'keelie-varney' => array( 'Nikki, our Clinical Manager,', 'Nikki, our Senior Clinical Manager,' ),
 	);
 	$seen  = 0;

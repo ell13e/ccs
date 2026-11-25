@@ -348,7 +348,7 @@ Home care sites need to balance **emotional warmth** (calming design, compassion
 
 **The ideal approach:** "Calm straight-talking neighbor" tone delivered through a technically solid, accessible platform.
 
-### For Continuity Care Services Specifically
+### For Continuity of Care Services Specifically
 
 **Emphasize:**
 - Local Maidstone/Kent presence

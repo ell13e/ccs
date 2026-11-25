@@ -1,6 +1,6 @@
 # CCS theme: working rules
 
-Continuity Care Services: home care in Maidstone and Kent. The people reading
+Continuity of Care Services: home care in Maidstone and Kent. The people reading
 this site are often older, or worried about someone who is, and often on a
 phone. The site should feel warm, established, personal and calm, never like a
 tech product. The bar is a premium agency build (ElderlyCare X is the

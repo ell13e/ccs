@@ -1,7 +1,7 @@
 <?php
 /**
  * Block patterns – pre-built content blocks for the block editor.
- * Category: CCS Patterns (Continuity Care Services).
+ * Category: CCS Patterns (Continuity of Care Services).
  *
  * @package CCS_WP_Theme
  * @since 1.0.0
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function ccs_register_block_pattern_category() {
 	register_block_pattern_category( 'ccs-patterns', array(
 		'label'       => __( 'CCS Patterns', 'ccs-wp-theme' ),
-		'description' => __( 'Pre-designed content blocks for Continuity Care Services.', 'ccs-wp-theme' ),
+		'description' => __( 'Pre-designed content blocks for Continuity of Care Services.', 'ccs-wp-theme' ),
 	) );
 }
 add_action( 'init', 'ccs_register_block_pattern_category' );

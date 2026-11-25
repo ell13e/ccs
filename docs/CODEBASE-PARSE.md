@@ -1,6 +1,6 @@
 # CCS codebase parse
 
-Single-document structural parse of the **CCS** WordPress theme (Continuity Care Services – Kent-based home care). Use this to orient in the repo, find where features live, and follow data/UI flow.
+Single-document structural parse of the **CCS** WordPress theme (Continuity of Care Services – Kent-based home care). Use this to orient in the repo, find where features live, and follow data/UI flow.
 
 ---
 
@@ -11,7 +11,7 @@ Single-document structural parse of the **CCS** WordPress theme (Continuity Care
 | **Name** | Kent Care Provider / CCS WP Theme |
 | **Text domain** | `ccs-wp-theme` |
 | **Type** | WordPress classic + block hybrid theme (block styles + theme.json; pages use classic editor) |
-| **Brand** | Continuity Care Services – home care, CQC-regulated; tagline “Your Team, Your Time, Your Life” |
+| **Brand** | Continuity of Care Services – home care, CQC-regulated; tagline “Your Team, Your Time, Your Life” |
 | **Design** | `design-system/MASTER.md` + `theme.json` + `assets/css/design-system.css` |
 
 **Constants (in `functions.php`):** `THEME_VERSION`, `THEME_DIR`, `THEME_URL`.

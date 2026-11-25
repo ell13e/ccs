@@ -13,7 +13,7 @@
 
 </aside>
 
-This page defines the five layers of how Continuity Care Services looks and feels online. It is the single source of truth for visual decisions: the UI lab file (`reference/continuity-ui-mock.html`) demonstrates these rules, and the Cursor rules file enforces them. Synthesised from thirteen competitor and concept references (Home Instead, Right at Home, Comfort Keepers, Visiting Angels, Nurse Next Door, Griswold, FirstLantic, plus agency concepts including Aims Homecare, Premier Homecare, Blue Water and Elite).
+This page defines the five layers of how Continuity of Care Services looks and feels online. It is the single source of truth for visual decisions: the UI lab file (`reference/continuity-ui-mock.html`) demonstrates these rules, and the Cursor rules file enforces them. Synthesised from thirteen competitor and concept references (Home Instead, Right at Home, Comfort Keepers, Visiting Angels, Nurse Next Door, Griswold, FirstLantic, plus agency concepts including Aims Homecare, Premier Homecare, Blue Water and Elite).
 
 ## 1 · Visual identity
 
