@@ -29,7 +29,27 @@ if ( empty( $ccs_cards ) ) {
 	return;
 }
 
+/*
+ * On an area page the services with the area's own photo are full cards and
+ * the rest are compact tiles underneath (client, 25 Nov 2026): nineteen
+ * full-height cards, most of them only an icon, made the section about
+ * 2,900px tall on desktop.
+ */
+$ccs_mini_cards = array();
+if ( null !== $ccs_area_photos ) {
+	$ccs_photo_cards = array();
+	foreach ( $ccs_cards as $ccs_card ) {
+		if ( ! empty( $ccs_area_photos[ $ccs_card->post_name ] ) && file_exists( get_template_directory() . '/assets/images/' . $ccs_area_photos[ $ccs_card->post_name ] ) ) {
+			$ccs_photo_cards[] = $ccs_card;
+		} else {
+			$ccs_mini_cards[] = $ccs_card;
+		}
+	}
+	$ccs_cards = $ccs_photo_cards;
+}
+
 ?>
+<?php if ( $ccs_cards ) : ?>
 <ul class="svc-grid ccs-swipe" role="list">
 	<?php foreach ( $ccs_cards as $ccs_card ) : ?>
 		<?php
@@ -43,7 +63,7 @@ if ( empty( $ccs_cards ) ) {
 			$ccs_card_text  = '';
 		}
 		?>
-		<li class="svc-card">
+		<li class="svc-card<?php echo null !== $ccs_area_photos ? ' svc-card--area' : ''; ?>">
 			<?php if ( null !== $ccs_area_photos && ! empty( $ccs_area_photos[ $ccs_card->post_name ] ) && file_exists( get_template_directory() . '/assets/images/' . $ccs_area_photos[ $ccs_card->post_name ] ) ) : ?>
 				<?php
 				$ccs_area_photo = $ccs_area_photos[ $ccs_card->post_name ];
@@ -102,3 +122,25 @@ if ( empty( $ccs_cards ) ) {
 		</li>
 	<?php endforeach; ?>
 </ul>
+<?php endif; ?>
+<?php if ( $ccs_mini_cards ) : ?>
+<ul class="svc-mini" role="list">
+	<?php foreach ( $ccs_mini_cards as $ccs_card ) : ?>
+		<?php
+		$ccs_card_title = get_the_title( $ccs_card );
+		if ( '' !== $ccs_town ) {
+			/* translators: 1: service name, 2: town. */
+			$ccs_card_title = sprintf( __( '%1$s in %2$s', 'ccs-wp-theme' ), function_exists( 'ccs_service_menu_label' ) ? ccs_service_menu_label( $ccs_card_title ) : $ccs_card_title, $ccs_town );
+		}
+		?>
+		<li class="svc-mini__item">
+			<span class="ccs-badge svc-mini__icon"><?php echo ccs_icon( ccs_service_icon( $ccs_card->post_name ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from ccs_icon(). ?></span>
+			<span class="svc-mini__text">
+				<a class="svc-mini__link" href="<?php echo esc_url( get_permalink( $ccs_card ) ); ?>"><?php echo esc_html( $ccs_card_title ); ?></a>
+				<?php echo function_exists( 'ccs_service_price_tag' ) ? ccs_service_price_tag( $ccs_card->post_name ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the helper. ?>
+			</span>
+			<span class="svc-mini__arrow" aria-hidden="true">&rarr;</span>
+		</li>
+	<?php endforeach; ?>
+</ul>
+<?php endif; ?>

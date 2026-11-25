@@ -126,14 +126,20 @@ get_header();
 				'5' => 'speech-bubble',
 				'6' => 'journal',
 			);
-			// Photos used nowhere else on the site (client, Nov 2026: "make sure we arent repeating photos"). Which photo sits with which step is the client's call.
+			/*
+			 * One photo per step, chosen for what the step describes (client, 25 Nov
+			 * 2026: "this page needs better photos"): the office, a visit at home,
+			 * the plan being written, the team, a carer with a client, a thank-you.
+			 * The frames are 3:2, so each is a 3:2 crop around the faces (crop and
+			 * resize only); the tall photos used before showed as a thin strip.
+			 */
 			$ccs_gs_photos = array(
-				array( 'site-photos/client-baking-together.webp', '50% 35%' ),
-				array( 'site-photos/client-sewing.webp', '50% 30%' ),
-				array( 'site-photos/team-member-writing-at-event.jpg', '50% 45%' ),
-				array( 'site-photos/carer-with-older-gentleman-selfie.webp', '50% 30%' ),
-				array( 'site-photos/client-cooking-prep.webp', '50% 45%' ),
-				array( 'site-photos/client-thank-you-flowers.webp', '50% 30%' ),
+				array( 'site-photos-extra/gs-step-1-first-call.webp', '50% 50%' ),
+				array( 'site-photos-extra/gs-step-2-assessment-visit.webp', '50% 50%' ),
+				array( 'site-photos-extra/gs-step-3-care-plan.webp', '50% 50%' ),
+				array( 'site-photos-extra/gs-step-4-meet-the-team.webp', '50% 50%' ),
+				array( 'site-photos-extra/gs-step-5-first-week.webp', '50% 50%' ),
+				array( 'site-photos-extra/gs-step-6-keeping-in-touch.webp', '50% 50%' ),
 			);
 			?>
 			<?php

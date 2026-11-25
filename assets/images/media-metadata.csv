@@ -2,59 +2,53 @@ filename,alt_text,title,caption,description,used_in
 site-photos/careers-apprenticeships-fair.webp,A woman standing beside an Apprenticeships Live display board at a careers fair,Careers apprenticeships fair,,,inc/class-theme-activation.php; inc/content-updates.php
 site-photos/carer-and-client-football-ground.webp,"A carer leaning in beside a young man in a wheelchair at a football ground, both smiling",Carer and client football ground,,,page-templates/template-services.php
 site-photos/carer-and-client-selfie.webp,Two women smiling together for a selfie,Carer and client selfie,,,template-parts/careers/benefits.php
-site-photos/carer-with-older-gentleman-selfie.webp,A smiling woman taking a selfie with an older man in a cardigan and tie,Carer with older gentleman selfie,,,page-templates/template-getting-started.php
 site-photos/ccs-complex-care-maidstone-24-7.webp,"An older man wrapped in a blanket on a stretcher by a river, with two crew members in green uniforms beside him",Ccs complex care maidstone 24 7,,,inc/class-theme-activation.php; template-parts/home/services.php
 site-photos/ccs-complex-care-wheelchair-1.webp,"Two women sitting together in the sun on a patio, smiling",Ccs complex care wheelchair 1,,,page-templates/template-cqc.php
 site-photos/ccs-domiciliary-care.webp,An older woman in a sun hat sitting out in her garden with a blanket over her knees and a walking frame beside her,Ccs domiciliary care,,,inc/content-updates.php
 site-photos/ccs-respite-care-guitar-1.webp,"A young woman wearing ear defenders, smiling as she plays a pink ukulele",Ccs respite care guitar 1,,,inc/content-updates.php
 site-photos/ccs-victoria-walker-registered-manager.webp,"Victoria Walker, Registered Manager and Company Director",Ccs victoria walker registered manager,,,page-templates/template-about.php
-site-photos/client-baking-together.webp,Two women giving a thumbs up beside a tray of homemade pastry twists,Client baking together,,,page-templates/template-getting-started.php
 site-photos/client-boat-trip.webp,Two women in life jackets smiling for a selfie on a boat trip,Client boat trip,,,template-parts/home/why-choose-us.php
 site-photos/client-cafe-counter.webp,Two women giving a thumbs up behind a café counter with plates of food and bunting,Client cafe counter,,,template-parts/resources-hub.php
 site-photos/client-care-farm-chores.webp,A young woman doing chores beside a chicken coop at a care farm,Client care farm chores,,,template-parts/resources-hub.php
 site-photos/client-carer-boat-trip-lifejackets.webp,Two women in red life jackets hugging and smiling on a boat,Client carer boat trip lifejackets,,,template-parts/resources-hub.php
 site-photos/client-cooking-hob.webp,A young woman stirring a pan on the hob in a kitchen,Client cooking hob,,,template-parts/resources-hub.php
-site-photos/client-cooking-prep.webp,A young woman chopping courgettes on a chopping board,Client cooking prep,,,page-templates/template-getting-started.php
 site-photos/client-easter-activity.webp,"Two older women with plates of food at an Easter get-together, one wearing bunny ears",Client easter activity,,,inc/class-theme-activation.php; template-parts/home/why-choose-us.php
 site-photos/client-football-club-blanket.webp,"A young man in a wheelchair with a football club blanket over his knees, smiling",Client football club blanket,,,page-templates/template-costs.php
 site-photos/client-jigsaw.webp,A young woman doing a jigsaw puzzle at a table,Client jigsaw,,,template-parts/resources-hub.php
 site-photos/client-picking-flowers.webp,Someone sitting in a meadow picking buttercups on a day out,Client picking flowers,,,template-parts/careers/what-to-expect.php
-site-photos/client-sewing.webp,A woman at a sewing machine with a young woman sitting beside her,Client sewing,,,page-templates/template-getting-started.php
-site-photos/client-thank-you-flowers.webp,"A woman in a paper crown holding a bouquet of flowers, beside a woman in a Mad Hatter costume giving a thumbs up",Client thank you flowers,,,page-templates/template-getting-started.php
 site-photos/client-wheelchair-seafront-pier.webp,"Someone in a wheelchair on the seafront at Herne Bay, looking out towards the pier",Client wheelchair seafront pier,,,template-parts/home/differentiators.php
 site-photos/clients-tea-and-cake-ribbon-hat.webp,"Two women smiling over tea and cake, one wearing a hat decorated with ribbons",Clients tea and cake ribbon hat,,,assets/css/header.css; page-templates/template-about.php
 site-photos/home-hero-family.jpg,"An older woman smiling with her carer, who holds her hand",Home hero family,,,inc/seo/class-seo-optimizer.php; inc/theme-images.php; template-parts/home/hero.php
 site-photos/services-hero-desktop.webp,"Two young women smiling for a photo outdoors, one wearing pink ear defenders",Services hero desktop,,,inc/class-theme-activation.php
 site-photos/team-celebration-flowers-party-hats.webp,"Two women celebrating, one in a paper crown holding flowers and one in a Mad Hatter costume",Team celebration flowers party hats,,,inc/class-theme-activation.php
 site-photos/team-meeting-around-table.jpeg,Three women talking around a table with folders and notes,Team meeting around table,,,template-parts/resources-hub.php
-site-photos/team-member-writing-at-event.jpg,A woman writing on a large sheet of paper at a training session while a colleague looks on,Team member writing at event,,,page-templates/template-getting-started.php
 site-photos/team-talking-through-care-notes.webp,Members of the team talking through care notes together,Team talking through care notes,,,template-parts/careers/what-to-expect.php
-site-photos-extra/area-ashford-complex.webp,A smiling woman in a Halloween headband with pumpkins on it,Area ashford complex,,,inc/location-services.php
-site-photos-extra/area-ashford-respite.webp,Someone in a wheelchair with a companion on a sunny seafront by the lifeboat station,Area ashford respite,,,inc/location-services.php
-site-photos-extra/area-aylesford-complex.webp,"A young man in a hospital bed in a Christmas hat, with his carer dressed as an elf",Area aylesford complex,,,inc/location-services.php
-site-photos-extra/area-aylesford-domiciliary.webp,A young woman in heart-shaped sunglasses in her garden,Area aylesford domiciliary,,,inc/location-services.php
-site-photos-extra/area-aylesford-respite.webp,A young woman giving a thumbs up while picking buttercups in a meadow,Area aylesford respite,,,inc/location-services.php
-site-photos-extra/area-herne-bay-complex.webp,A man wearing an oxygen mask smiling for a selfie with a young woman on a sunny day,Area herne bay complex,,,inc/location-services.php
-site-photos-extra/area-herne-bay-respite.webp,A carer giving a thumbs up beside a young woman in ear defenders by a lake,Area herne bay respite,,,inc/location-services.php
-site-photos-extra/area-maidstone-complex.webp,A young man in his wheelchair at a table with a stand of birthday cupcakes,Area maidstone complex,,,inc/location-services.php
-site-photos-extra/area-maidstone-domiciliary.webp,Three women smiling together at a table at home,Area maidstone domiciliary,,,inc/location-services.php
-site-photos-extra/area-maidstone-respite.webp,A young woman in pink ear defenders with a tray of chips on a day out in town,Area maidstone respite,,,inc/location-services.php
-site-photos-extra/area-medway-complex.webp,Members of the team gathered round a care bed at a training session,Area medway complex,,,inc/location-services.php
-site-photos-extra/area-medway-respite.webp,A young woman and her carer smiling for a selfie at a farm,Area medway respite,,,inc/location-services.php
-site-photos-extra/area-paddock-wood-complex.webp,Members of the team practising with a care bed during training,Area paddock wood complex,,,inc/location-services.php
-site-photos-extra/area-paddock-wood-respite.webp,Two women pushing a wheelbarrow of straw together at a care farm,Area paddock wood respite,,,inc/location-services.php
-site-photos-extra/area-snodland-complex.webp,"Two women cheek to cheek, smiling outside a house",Area snodland complex,,,inc/location-services.php
-site-photos-extra/area-snodland-respite.webp,Two people in sunglasses taking a selfie on a sunny day,Area snodland respite,,,inc/location-services.php
-site-photos-extra/area-thanet-complex.webp,Someone in a wheelchair looking out to sea from the seafront on a sunny day,Area thanet complex,,,inc/location-services.php
-site-photos-extra/area-thanet-respite.webp,"Two women laughing together on a bench at a care farm, beside a scarecrow",Area thanet respite,,,inc/location-services.php
-site-photos-extra/area-tonbridge-complex.webp,"A young man in his wheelchair with a football club blanket, smiling beside a footballer",Area tonbridge complex,,,inc/location-services.php
-site-photos-extra/area-tonbridge-respite.webp,"A young woman holding a fluffy white chicken, with her carer smiling beside her",Area tonbridge respite,,,inc/location-services.php
-site-photos-extra/area-tunbridge-wells-complex.webp,"A young man in his wheelchair with a football club blanket, smiling among footballers",Area tunbridge wells complex,,,inc/location-services.php
-site-photos-extra/area-tunbridge-wells-respite.webp,Friends smiling for a selfie in a theatre audience,Area tunbridge wells respite,,,inc/location-services.php
-site-photos-extra/area-west-malling-complex.webp,Two women hugging and smiling on a sofa,Area west malling complex,,,inc/location-services.php
-site-photos-extra/area-west-malling-respite.webp,A carer and a young woman in a woolly hat laughing for a selfie outdoors in winter,Area west malling respite,,,inc/location-services.php
-site-photos-extra/area-whitstable-complex.webp,Someone in a wheelchair on a shady woodland path,Area whitstable complex,,,inc/location-services.php
-site-photos-extra/area-whitstable-respite.webp,A young woman holding a guinea pig on her lap on a day out,Area whitstable respite,,,inc/location-services.php
+site-photos-extra/area-card-ashford-complex.webp,A smiling woman in a Halloween headband with pumpkins on it,Area card ashford complex,,,inc/location-services.php
+site-photos-extra/area-card-ashford-respite.webp,Someone in a wheelchair with a companion on a sunny seafront by the lifeboat station,Area card ashford respite,,,inc/location-services.php
+site-photos-extra/area-card-aylesford-complex.webp,"A young man in a hospital bed in a Christmas hat, with his carer dressed as an elf",Area card aylesford complex,,,inc/location-services.php
+site-photos-extra/area-card-aylesford-domiciliary.webp,A young woman in heart-shaped sunglasses in her garden,Area card aylesford domiciliary,,,inc/location-services.php
+site-photos-extra/area-card-aylesford-respite.webp,A young woman giving a thumbs up while picking buttercups in a meadow,Area card aylesford respite,,,inc/location-services.php
+site-photos-extra/area-card-herne-bay-complex.webp,Someone in a wheelchair enjoying the sunshine on a garden lawn,Area card herne bay complex,,,inc/location-services.php
+site-photos-extra/area-card-herne-bay-respite.webp,A carer giving a thumbs up beside a young woman in ear defenders by a lake,Area card herne bay respite,,,inc/location-services.php
+site-photos-extra/area-card-maidstone-complex.webp,A young man in his wheelchair at a table with a stand of birthday cupcakes,Area card maidstone complex,,,inc/location-services.php
+site-photos-extra/area-card-maidstone-domiciliary.webp,"Three people in bunny ears smiling together at home, one holding an Easter egg",Area card maidstone domiciliary,,,inc/location-services.php
+site-photos-extra/area-card-maidstone-respite.webp,"A young woman in pink ear defenders smiling, with her carer leaning in beside her at a fountain on a sunny day",Area card maidstone respite,,,inc/location-services.php
+site-photos-extra/area-card-medway-complex.webp,Members of the team gathered round a care bed at a training session,Area card medway complex,,,inc/location-services.php
+site-photos-extra/area-card-medway-respite.webp,A young woman and her carer smiling for a selfie at a farm,Area card medway respite,,,inc/location-services.php
+site-photos-extra/area-card-paddock-wood-complex.webp,Members of the team practising with a care bed during training,Area card paddock wood complex,,,inc/location-services.php
+site-photos-extra/area-card-paddock-wood-respite.webp,Two women pushing a wheelbarrow of straw together at a care farm,Area card paddock wood respite,,,inc/location-services.php
+site-photos-extra/area-card-snodland-complex.webp,"Two women cheek to cheek, smiling outside a house",Area card snodland complex,,,inc/location-services.php
+site-photos-extra/area-card-snodland-respite.webp,Two people in sunglasses taking a selfie on a sunny day,Area card snodland respite,,,inc/location-services.php
+site-photos-extra/area-card-thanet-complex.webp,Someone in a wheelchair looking out to sea from the seafront on a sunny day,Area card thanet complex,,,inc/location-services.php
+site-photos-extra/area-card-thanet-respite.webp,"Two women laughing together on a bench at a care farm, beside a scarecrow",Area card thanet respite,,,inc/location-services.php
+site-photos-extra/area-card-tonbridge-complex.webp,"A young man in his wheelchair with a football club blanket, smiling beside a footballer",Area card tonbridge complex,,,inc/location-services.php
+site-photos-extra/area-card-tonbridge-respite.webp,A smiling woman in her wheelchair holding a tambourine and a sparkly pompom,Area card tonbridge respite,,,inc/location-services.php
+site-photos-extra/area-card-tunbridge-wells-complex.webp,"Someone in a wheelchair at open patio doors, looking out at a sunny garden",Area card tunbridge wells complex,,,inc/location-services.php
+site-photos-extra/area-card-tunbridge-wells-respite.webp,Someone in a wheelchair waving on a walk along a quiet street,Area card tunbridge wells respite,,,inc/location-services.php
+site-photos-extra/area-card-west-malling-complex.webp,Two women hugging and smiling on a sofa,Area card west malling complex,,,inc/location-services.php
+site-photos-extra/area-card-west-malling-respite.webp,A young woman in a flower crown giving two thumbs up on a sunny day out,Area card west malling respite,,,inc/location-services.php
+site-photos-extra/area-card-whitstable-complex.webp,Someone in a wheelchair on a shady woodland path,Area card whitstable complex,,,inc/location-services.php
+site-photos-extra/area-card-whitstable-respite.webp,A young woman holding a guinea pig on her lap on a day out,Area card whitstable respite,,,inc/location-services.php
 site-photos-extra/article-friends-on-the-sofa.webp,"Two women smiling together on a sofa, one opening a present",Article friends on the sofa,,,inc/class-theme-activation.php; inc/content-updates.php
 site-photos-extra/article-nurse-training-session.webp,Members of the team gathered round a care bed during a training session,Article nurse training session,,,inc/class-theme-activation.php; inc/content-updates.php
 site-photos-extra/band-afternoon-tea.webp,A woman in a fur hat and long coat smiling from her wheelchair,Band afternoon tea,,,template-parts/cta-band.php; template-parts/home/closing-cta.php
@@ -71,6 +65,12 @@ site-photos-extra/client-creative-activity-autumn-leaves.webp,Autumn leaves laid
 site-photos-extra/client-summer-party-laineys-care-farm.webp,A young woman in a flower crown laughing at a summer party outdoors,Client summer party laineys care farm,,,inc/class-theme-activation.php; template-parts/home/why-choose-us.php
 site-photos-extra/cyber-safe-with-ccs.webp,"Graphic headed Cyber safe with CCS: 85.9 million pounds was stolen through purchase scams in 2023, and 92% originated online",Cyber safe with ccs,,,inc/class-theme-activation.php; inc/content-updates.php
 site-photos-extra/domiciliary-care-birthday-at-home.webp,"A smiling woman in her wheelchair at home, holding a Happy 60th Birthday balloon",Domiciliary care birthday at home,,,inc/class-theme-activation.php; inc/content-updates.php; template-parts/home/services.php
+site-photos-extra/gs-step-1-first-call.webp,A member of the office team smiling at her desk,Gs step 1 first call,,,page-templates/template-getting-started.php
+site-photos-extra/gs-step-2-assessment-visit.webp,"Two women smiling together on a sofa at home, one opening a present",Gs step 2 assessment visit,,,page-templates/template-getting-started.php
+site-photos-extra/gs-step-3-care-plan.webp,A hand writing notes on a large sheet of paper with a marker pen,Gs step 3 care plan,,,page-templates/template-getting-started.php
+site-photos-extra/gs-step-4-meet-the-team.webp,Members of the team chatting and laughing together on the sofas,Gs step 4 meet the team,,,page-templates/template-getting-started.php
+site-photos-extra/gs-step-5-first-week.webp,A smiling carer taking a selfie with an older gentleman in a cardigan and tie,Gs step 5 first week,,,page-templates/template-getting-started.php
+site-photos-extra/gs-step-6-keeping-in-touch.webp,"A woman in a paper crown holding a bouquet of flowers, beside a woman in a Mad Hatter costume giving a thumbs up",Gs step 6 keeping in touch,,,page-templates/template-getting-started.php
 site-photos-extra/kent-summer-party-hero.webp,"A young woman in a flower crown, laughing at a summer party",Kent summer party hero,,,template-parts/home/hero.php
 site-photos-extra/respite-care-day-out-at-the-castle.webp,"A young woman in her wheelchair on a sunny day out, in front of a castle and its striped lawn",Respite care day out at the castle,,,inc/class-theme-activation.php; inc/content-updates.php; template-parts/home/services.php
 site-photos-extra/team-group-office-window.webp,Six members of the Continuity Care Services team together at the office,Team group office window,,,inc/article-keelie-2026-11.php; page-working-with-us.php
@@ -88,7 +88,7 @@ journey/restwell-bungalow.webp,"The Restwell Retreats bungalow in Whitstable, se
 journey/restwell-garden.webp,The garden and patio at Restwell Retreats in Whitstable,Restwell garden,,,page-templates/template-about.php
 stock/at-the-dressing-table.webp,"A woman leaning in beside an older woman at her dressing table, both smiling",At the dressing table,,,inc/theme-images.php
 stock/baking-at-the-table.webp,A woman and a young man laughing as they bake at a kitchen table,Baking at the table,,,inc/theme-images.php
-stock/baking-together.webp,Two women laughing as they fill cake cases at a kitchen worktop,Baking together,,,inc/theme-images.php; page-templates/template-getting-started.php
+stock/baking-together.webp,Two women laughing as they fill cake cases at a kitchen worktop,Baking together,,,inc/theme-images.php
 stock/bedside-visit.webp,An older woman resting in bed with someone sitting close beside her,Bedside visit,,,inc/theme-images.php
 stock/guitar-at-home.webp,An older man laughing on his sofa as a younger man plays the guitar,Guitar at home,,,inc/theme-images.php
 stock/help-with-tablets.webp,A woman sitting beside an older woman in an armchair as she takes her tablets with a glass of water,Help with tablets,,,inc/theme-images.php

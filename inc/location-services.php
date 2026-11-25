@@ -562,18 +562,18 @@ add_action( 'admin_notices', 'ccs_area_copy_review_notice' );
  */
 function ccs_area_card_photos( $area ) {
 	$photos = array(
-		'maidstone'       => array( 'respite-care' => 'site-photos-extra/area-maidstone-respite.webp', 'complex-care' => 'site-photos-extra/area-maidstone-complex.webp', 'domiciliary-care' => 'site-photos-extra/area-maidstone-domiciliary.webp' ),
-		'aylesford'       => array( 'respite-care' => 'site-photos-extra/area-aylesford-respite.webp', 'complex-care' => 'site-photos-extra/area-aylesford-complex.webp', 'domiciliary-care' => 'site-photos-extra/area-aylesford-domiciliary.webp' ),
-		'ashford'         => array( 'respite-care' => 'site-photos-extra/area-ashford-respite.webp', 'complex-care' => 'site-photos-extra/area-ashford-complex.webp' ),
-		'herne-bay'       => array( 'respite-care' => 'site-photos-extra/area-herne-bay-respite.webp', 'complex-care' => 'site-photos-extra/area-herne-bay-complex.webp' ),
-		'whitstable'      => array( 'respite-care' => 'site-photos-extra/area-whitstable-respite.webp', 'complex-care' => 'site-photos-extra/area-whitstable-complex.webp' ),
-		'paddock-wood'    => array( 'respite-care' => 'site-photos-extra/area-paddock-wood-respite.webp', 'complex-care' => 'site-photos-extra/area-paddock-wood-complex.webp' ),
-		'thanet'          => array( 'respite-care' => 'site-photos-extra/area-thanet-respite.webp', 'complex-care' => 'site-photos-extra/area-thanet-complex.webp' ),
-		'medway'          => array( 'respite-care' => 'site-photos-extra/area-medway-respite.webp', 'complex-care' => 'site-photos-extra/area-medway-complex.webp' ),
-		'west-malling'    => array( 'respite-care' => 'site-photos-extra/area-west-malling-respite.webp', 'complex-care' => 'site-photos-extra/area-west-malling-complex.webp' ),
-		'snodland'        => array( 'respite-care' => 'site-photos-extra/area-snodland-respite.webp', 'complex-care' => 'site-photos-extra/area-snodland-complex.webp' ),
-		'tonbridge'       => array( 'respite-care' => 'site-photos-extra/area-tonbridge-respite.webp', 'complex-care' => 'site-photos-extra/area-tonbridge-complex.webp' ),
-		'tunbridge-wells' => array( 'respite-care' => 'site-photos-extra/area-tunbridge-wells-respite.webp', 'complex-care' => 'site-photos-extra/area-tunbridge-wells-complex.webp' ),
+		'maidstone'       => array( 'respite-care' => 'site-photos-extra/area-card-maidstone-respite.webp', 'complex-care' => 'site-photos-extra/area-card-maidstone-complex.webp', 'domiciliary-care' => 'site-photos-extra/area-card-maidstone-domiciliary.webp' ),
+		'aylesford'       => array( 'respite-care' => 'site-photos-extra/area-card-aylesford-respite.webp', 'complex-care' => 'site-photos-extra/area-card-aylesford-complex.webp', 'domiciliary-care' => 'site-photos-extra/area-card-aylesford-domiciliary.webp' ),
+		'ashford'         => array( 'respite-care' => 'site-photos-extra/area-card-ashford-respite.webp', 'complex-care' => 'site-photos-extra/area-card-ashford-complex.webp' ),
+		'herne-bay'       => array( 'respite-care' => 'site-photos-extra/area-card-herne-bay-respite.webp', 'complex-care' => 'site-photos-extra/area-card-herne-bay-complex.webp' ),
+		'whitstable'      => array( 'respite-care' => 'site-photos-extra/area-card-whitstable-respite.webp', 'complex-care' => 'site-photos-extra/area-card-whitstable-complex.webp' ),
+		'paddock-wood'    => array( 'respite-care' => 'site-photos-extra/area-card-paddock-wood-respite.webp', 'complex-care' => 'site-photos-extra/area-card-paddock-wood-complex.webp' ),
+		'thanet'          => array( 'respite-care' => 'site-photos-extra/area-card-thanet-respite.webp', 'complex-care' => 'site-photos-extra/area-card-thanet-complex.webp' ),
+		'medway'          => array( 'respite-care' => 'site-photos-extra/area-card-medway-respite.webp', 'complex-care' => 'site-photos-extra/area-card-medway-complex.webp' ),
+		'west-malling'    => array( 'respite-care' => 'site-photos-extra/area-card-west-malling-respite.webp', 'complex-care' => 'site-photos-extra/area-card-west-malling-complex.webp' ),
+		'snodland'        => array( 'respite-care' => 'site-photos-extra/area-card-snodland-respite.webp', 'complex-care' => 'site-photos-extra/area-card-snodland-complex.webp' ),
+		'tonbridge'       => array( 'respite-care' => 'site-photos-extra/area-card-tonbridge-respite.webp', 'complex-care' => 'site-photos-extra/area-card-tonbridge-complex.webp' ),
+		'tunbridge-wells' => array( 'respite-care' => 'site-photos-extra/area-card-tunbridge-wells-respite.webp', 'complex-care' => 'site-photos-extra/area-card-tunbridge-wells-complex.webp' ),
 	);
 	return isset( $photos[ $area ] ) ? $photos[ $area ] : array();
 }
