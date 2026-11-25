@@ -1331,8 +1331,9 @@ class CCS_Theme_Activation {
 			 * 25 Nov with "copy over these articles instead of the ones we've made
 			 * up", which retired the three advice articles written for this build).
 			 * The wording is the authors' own, typing slips included: it is the
-			 * client's to edit. The shopping article is one paragraph on the old
-			 * site too; the tips it mentions were never published there.
+			 * client's to edit. The shopping article stopped after its first
+			 * paragraph on the old site; the tips it promised were added on 25 Nov
+			 * 2026 at the client's request (ccs_shopping_article_content()).
 			 */
 			'proud-to-be-a-nurse-maidstone' => array(
 				'title'    => 'Why I am proud to be a nurse',
@@ -1386,7 +1387,7 @@ class CCS_Theme_Activation {
 				'image'    => 'assets/images/site-photos-extra/cyber-safe-with-ccs.webp',
 				'date'     => '2024-11-27 12:43:42',
 				'excerpt'  => 'As Black Friday and the holiday shopping season approach, online scams are on the rise.',
-				'content'  => '<p>As Black Friday and the holiday shopping season approach, online scams are on the rise. In 2023 alone, £85.9 million was lost to online purchase scams, with 92% of these frauds originating on the internet. To help you stay safe while shopping online, we’ve compiled a list of essential tips. Protect your finances, personal information, and peace of mind with these guidelines.</p>',
+				'content'  => function_exists( 'ccs_shopping_article_content' ) ? ccs_shopping_article_content() : '<p>As Black Friday and the holiday shopping season approach, online scams are on the rise. In 2023 alone, £85.9 million was lost to online purchase scams, with 92% of these frauds originating on the internet. To help you stay safe while shopping online, we’ve compiled a list of essential tips. Protect your finances, personal information, and peace of mind with these guidelines.</p>',
 			),
 		);
 	}

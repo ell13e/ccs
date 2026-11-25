@@ -560,6 +560,62 @@ function ccs_remove_laineys_article_2026_11() {
 add_action( 'init', 'ccs_remove_laineys_article_2026_11', 60 );
 
 /**
+ * The shopping article's text (25 Nov 2026, client: "expand articles not
+ * fully written"). The old site's article stopped after promising "a list
+ * of essential tips". The first paragraph is the author's, unchanged; the
+ * tips follow the NCSC's "Shopping and paying safely online" (reviewed 24
+ * Nov 2026), Citizens Advice on card refunds, and Report Fraud, which
+ * replaced Action Fraud for England, Wales and Northern Ireland.
+ *
+ * @param bool $expanded False for the old site's single paragraph.
+ * @return string HTML.
+ */
+function ccs_shopping_article_content( $expanded = true ) {
+	$first = '<p>As Black Friday and the holiday shopping season approach, online scams are on the rise. In 2023 alone, £85.9 million was lost to online purchase scams, with 92% of these frauds originating on the internet. To help you stay safe while shopping online, we’ve compiled a list of essential tips. Protect your finances, personal information, and peace of mind with these guidelines.</p>';
+	if ( ! $expanded ) {
+		return $first;
+	}
+	$link = static function ( $url, $text ) {
+		return '<a href="' . esc_url( $url ) . '">' . $text . '</a>';
+	};
+	return $first . '
+<h2>Check the shop is real</h2>
+<p>If you haven’t bought from a shop before, look it up and read what people say about it on websites you trust. Go to the shop by typing its address or searching for it yourself, rather than following a link in an email, text or advert. If a deal looks too good to be true, take a moment before you buy.</p>
+<h2>Be wary of links in emails and texts</h2>
+<p>If a message doesn’t feel right, don’t click the link. You can forward suspicious emails to report@phishing.gov.uk and suspicious texts to 7726.</p>
+<h2>Keep your accounts secure</h2>
+<p>Use a strong password that you don’t use anywhere else for your shopping, email and bank accounts, and turn on two-step verification where it’s offered. Some websites now let you sign in with a passkey, which is safer still.</p>
+<h2>Only give the details they need</h2>
+<p>Fill in only what’s needed to complete the order, and check out as a guest if you don’t need an account. Rather than saving your card with every shop, you can keep it in your phone, browser or password manager.</p>
+<h2>Pay in a way that protects you</h2>
+<p>A credit card gives you the most protection. If a single item costs more than £100 and no more than £30,000, the card company can be responsible along with the seller if something goes wrong. Debit card payments can often be reversed through chargeback. Never pay a shop you don’t know by bank transfer. ' . $link( 'https://www.citizensadvice.org.uk/consumer/somethings-gone-wrong-with-a-purchase/getting-your-money-back-if-you-paid-by-card-or-paypal/', 'Citizens Advice explains how to get your money back' ) . '.</p>
+<h2>If something goes wrong</h2>
+<p>Contact your bank straight away, using the number on the back of your card or its official app. Then report it to ' . $link( 'https://www.reportfraud.police.uk/', 'Report Fraud' ) . ' if you live in England, Wales or Northern Ireland, or to Police Scotland on 101 if you live in Scotland.</p>
+<p>If you help an older relative or someone you care for with their shopping, these are worth going through together.</p>
+<p>This advice is based on guidance from the ' . $link( 'https://www.ncsc.gov.uk/guidance/shopping-online-securely', 'National Cyber Security Centre' ) . '.</p>';
+}
+
+/**
+ * Give an existing site the expanded shopping article, once, only where the
+ * article still holds the old site's single paragraph.
+ *
+ * @return void
+ */
+function ccs_expand_shopping_article_2026_11() {
+	if ( get_option( 'ccs_expand_shopping_article_2026_11' ) ) {
+		return;
+	}
+	$found = get_posts( array( 'name' => 'stay-safe-online-shopping-tips', 'post_type' => 'post', 'post_status' => 'any', 'numberposts' => 1 ) );
+	if ( ! $found ) {
+		return;
+	}
+	if ( trim( $found[0]->post_content ) === ccs_shopping_article_content( false ) ) {
+		wp_update_post( wp_slash( array( 'ID' => $found[0]->ID, 'post_content' => ccs_shopping_article_content() ) ) );
+	}
+	update_option( 'ccs_expand_shopping_article_2026_11', '1', false );
+}
+
+/**
  * The old website's articles instead of the ones written for this build
  * (client, 25 Nov 2026: "copy over these articles instead of the ones we've
  * made up"). Moves the seven written articles to the bin (restorable from
@@ -601,7 +657,7 @@ function ccs_retire_written_articles_2026_11() {
 				'post_name'     => $slug,
 				'post_date'     => '2024-11-27 12:43:42',
 				'post_excerpt'  => 'As Black Friday and the holiday shopping season approach, online scams are on the rise.',
-				'post_content'  => '<p>As Black Friday and the holiday shopping season approach, online scams are on the rise. In 2023 alone, £85.9 million was lost to online purchase scams, with 92% of these frauds originating on the internet. To help you stay safe while shopping online, we’ve compiled a list of essential tips. Protect your finances, personal information, and peace of mind with these guidelines.</p>',
+				'post_content'  => ccs_shopping_article_content(),
 			),
 			true
 		);
@@ -648,6 +704,7 @@ function ccs_content_update_steps() {
 		'ccs_apply_careers_heading_shorten',
 		'ccs_apply_unnamed_qualifications',
 		'ccs_retire_written_articles_2026_11',
+		'ccs_expand_shopping_article_2026_11',
 	);
 }
 
