@@ -47,6 +47,12 @@ class CCS_SEO_Optimizer {
 		// Structured data: output only from CCS_Structured_Data (class-structured-data.php) to avoid duplicate JSON-LD.
 
 		add_filter( 'wp_sitemaps_post_types', array( $this, 'filter_sitemap_post_types' ), 10, 1 );
+		// The users list names the site's WordPress logins, which are not pages
+		// for Google. This class starts after WordPress has registered its
+		// sitemap providers, so the list is emptied rather than unregistered:
+		// with no pages it leaves the sitemap index and its address 404s.
+		add_filter( 'wp_sitemaps_users_pre_max_num_pages', '__return_zero' );
+		add_filter( 'wp_sitemaps_users_pre_url_list', '__return_empty_array' );
 		add_filter( 'wp_sitemaps_posts_entry', array( $this, 'filter_sitemap_posts_entry' ), 10, 3 );
 		// WordPress has no "exclude these IDs" sitemap filter (the one this used
 		// to hook, wp_sitemaps_exclude_post_ids, does not exist, so nothing was

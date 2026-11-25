@@ -1,8 +1,8 @@
-# Kent Care Provider – WordPress Theme
+# Continuity of Care Services – WordPress Theme
 
 Custom WordPress theme for a Kent-based home care provider. Built for speed, conversions, and SEO, with all copy in English (UK).
 
-**Theme name:** Kent Care Provider  
+**Theme name:** Continuity of Care Services  
 **Text domain:** `ccs-wp-theme`  
 **Version:** 1.0.0
 
@@ -16,7 +16,7 @@ Custom WordPress theme for a Kent-based home care provider. Built for speed, con
 
 2. **From project folder (development)**
    - Copy or symlink this folder into `wp-content/themes/` of your WordPress install.
-   - In **Appearance → Themes**, find “Kent Care Provider” and click **Activate**.
+   - In **Appearance → Themes**, find “Continuity of Care Services” and click **Activate**.
 
 ---
 
