@@ -526,11 +526,44 @@
 	list-style: none;
 }
 
-/* One column on tablets: the card stops at the width its photo was cut for
-   (550px), not the full 704px column, which stretched it (rule 15). */
+/* Tablets: a swipe-across row, as .ccs-swipe rows are (components.css).
+   One card per row stopped at the width its photo was cut for (550px) and
+   left a gap at the right margin (client, Nov 2026: "the width of the photo
+   not reaching the margin"); full width stretched the photo (rule 15). Two
+   cards across, the third peeking in, fill the width and keep it sharp.
+   Phones keep the stacked cards. */
 @media (min-width: 600px) and (max-width: 859px) {
 	.home-services__grid {
-		max-width: 34rem;
+		position: relative;
+		grid-template-columns: none;
+		grid-auto-flow: column;
+		grid-auto-columns: min(46%, 22rem);
+		gap: var(--space-md);
+		margin-inline: calc(var(--space-md) * -1);
+		padding: var(--space-xs) var(--space-md) 4rem;
+		margin-bottom: calc(var(--space-lg) - 4rem);
+		overflow-x: auto;
+		overscroll-behavior-x: contain;
+		scroll-snap-type: x mandatory;
+		scroll-padding-inline: var(--space-md);
+		scrollbar-width: none;
+	}
+
+	.home-services__grid::-webkit-scrollbar {
+		display: none;
+	}
+
+	.home-services__grid > * {
+		scroll-snap-align: start;
+		min-width: 0;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 859px) {
+	.home-services__grid {
+		margin-inline: calc(var(--space-lg) * -1);
+		padding-inline: var(--space-lg);
+		scroll-padding-inline: var(--space-lg);
 	}
 }
 

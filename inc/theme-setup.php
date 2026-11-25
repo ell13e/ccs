@@ -764,6 +764,122 @@ add_filter( 'style_loader_src', 'ccs_version_theme_asset_by_mtime', 20 );
 add_filter( 'script_loader_src', 'ccs_version_theme_asset_by_mtime', 20 );
 
 /**
+ * Strip comments and spare whitespace from CSS, changing nothing else.
+ *
+ * The stylesheets carry long design notes, which made them about twice the
+ * size of their rules. Only comments go and runs of whitespace become one
+ * space (none beside { } or ;); quoted strings are left exactly as written,
+ * so selectors, values and content are unchanged. A comment that starts
+ * with /*! is kept.
+ *
+ * @param string $css Stylesheet text.
+ * @return string
+ */
+function ccs_minify_css( $css ) {
+	$css = (string) $css;
+	$out = preg_replace_callback(
+		'~("(?:[^"\\\\\n]|\\\\.)*"|\'(?:[^\'\\\\\n]|\\\\.)*\')|(/\*.*?\*/)|(\s+)~s',
+		static function ( $m ) {
+			if ( '' !== $m[1] ) {
+				return $m[1];
+			}
+			if ( isset( $m[2] ) && '' !== $m[2] ) {
+				return 0 === strpos( $m[2], '/*!' ) ? $m[2] : ' ';
+			}
+			return ' ';
+		},
+		$css
+	);
+	if ( null === $out ) {
+		return $css;
+	}
+	$parts = preg_split( '~("(?:[^"\\\\\n]|\\\\.)*"|\'(?:[^\'\\\\\n]|\\\\.)*\')~', $out, -1, PREG_SPLIT_DELIM_CAPTURE );
+	if ( false === $parts ) {
+		return $css;
+	}
+	foreach ( $parts as $i => $part ) {
+		if ( 0 === $i % 2 ) {
+			$part        = preg_replace( '~ {2,}~', ' ', $part );
+			$parts[ $i ] = preg_replace( '~ ?([{};]) ?~', '$1', $part );
+		}
+	}
+	return trim( implode( '', $parts ) ) . "\n";
+}
+
+/**
+ * Serve a minified copy of each theme stylesheet (Nov 2026).
+ *
+ * Phones waited on about 340KB of stylesheets before drawing anything, half
+ * of it comments. The first request for a stylesheet writes a minified copy
+ * to uploads/ccs-css/, named after a hash of the source file's path, date and
+ * size, so an edited stylesheet gets a fresh copy at a new address and a
+ * stale one is never served. Relative url()s are made absolute, since the
+ * copy lives elsewhere. If uploads cannot be written, the original is used.
+ * Off when SCRIPT_DEBUG is on, or through the ccs_minify_css filter.
+ *
+ * @param string $src Stylesheet URL as enqueued (after ccs_version_theme_asset_by_mtime).
+ * @return string
+ */
+function ccs_minified_style_src( $src ) {
+	if ( ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) || ! apply_filters( 'ccs_minify_css', true ) ) {
+		return $src;
+	}
+	$theme_uri = get_template_directory_uri();
+	$clean     = strtok( (string) $src, '?' );
+	if ( ! is_string( $clean ) || 0 !== strpos( $clean, $theme_uri . '/assets/css/' ) || '.css' !== substr( $clean, -4 ) ) {
+		return $src;
+	}
+	$path = get_template_directory() . substr( $clean, strlen( $theme_uri ) );
+	if ( ! is_file( $path ) ) {
+		return $src;
+	}
+
+	$uploads = wp_upload_dir( null, false );
+	if ( ! empty( $uploads['error'] ) ) {
+		return $src;
+	}
+	$name = basename( $path, '.css' );
+	$hash = substr( md5( $path . '|' . filemtime( $path ) . '|' . filesize( $path ) ), 0, 10 );
+	$dir  = trailingslashit( $uploads['basedir'] ) . 'ccs-css';
+	$file = $dir . '/' . $name . '.' . $hash . '.css';
+	$url  = trailingslashit( $uploads['baseurl'] ) . 'ccs-css/' . $name . '.' . $hash . '.css';
+
+	if ( ! is_file( $file ) ) {
+		if ( ! wp_mkdir_p( $dir ) ) {
+			return $src;
+		}
+		$css = file_get_contents( $path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- a theme file.
+		if ( false === $css ) {
+			return $src;
+		}
+		$base = trailingslashit( dirname( $clean ) );
+		$css  = preg_replace_callback(
+			'~url\(\s*([\'"]?)(?![\'"]?(?:data:|https?:|/|#))([^\'")]+)\1\s*\)~i',
+			static function ( $m ) use ( $base ) {
+				$abs = $base . $m[2];
+				while ( preg_match( '~/[^/]+/\.\./~', $abs ) ) {
+					$abs = preg_replace( '~/[^/]+/\.\./~', '/', $abs, 1 );
+				}
+				return 'url("' . $abs . '")';
+			},
+			$css
+		);
+		// Older copies of this stylesheet are no longer referenced.
+		foreach ( (array) glob( $dir . '/' . $name . '.*.css' ) as $old ) {
+			wp_delete_file( $old );
+		}
+		$tmp = $file . '.' . wp_generate_password( 6, false ) . '.tmp';
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- a cache file in uploads.
+		if ( false === file_put_contents( $tmp, ccs_minify_css( $css ) ) || ! rename( $tmp, $file ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.rename_rename
+			wp_delete_file( $tmp );
+			return $src;
+		}
+	}
+	return $url;
+}
+add_filter( 'style_loader_src', 'ccs_minified_style_src', 30 );
+
+/**
  * Drop WordPress's emoji script and styles. Every browser the site supports
  * draws emoji itself, and the script's test starts a worker that the site's
  * Content-Security-Policy blocks, which logged an error on every page.

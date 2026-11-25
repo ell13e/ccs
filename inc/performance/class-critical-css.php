@@ -210,6 +210,12 @@ class CCS_Critical_CSS {
 			return;
 		}
 
+		// Comments and spare whitespace off, as for the linked stylesheets
+		// (ccs_minified_style_src() in theme-setup.php).
+		if ( function_exists( 'ccs_minify_css' ) && ! ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) && apply_filters( 'ccs_minify_css', true ) ) {
+			$css = ccs_minify_css( $css );
+		}
+
 		// Prevent breaking out of <style> (stored/file CSS is trusted; escape for safety).
 		$css = str_replace( '</style>', '<\/style>', $css );
 
