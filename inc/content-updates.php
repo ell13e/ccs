@@ -936,7 +936,34 @@ function ccs_content_update_steps() {
 		'ccs_keelie_article_photo_2026_11',
 		'ccs_keelie_article_photo_2026_11b',
 		'ccs_share_images_2026_11',
+		'ccs_news_heading_2026_11',
 	);
+}
+
+/**
+ * Homepage news heading (client, 27 Nov 2026): "Advice from our team" became
+ * "Latest news and updates", and "See all articles" became "See all news and
+ * updates", to match the News & Updates page they link to. The new wording is
+ * the default in ccs_copy_fields(); this clears a saved copy of the old
+ * wording only if it's exactly the old text, so anything the client has
+ * written themselves stays.
+ *
+ * @return void
+ */
+function ccs_news_heading_2026_11() {
+	if ( get_option( 'ccs_news_heading_2026_11' ) ) {
+		return;
+	}
+	$old = array(
+		'news_title'  => 'Advice from *our team*',
+		'news_button' => 'See all articles',
+	);
+	foreach ( $old as $key => $text ) {
+		if ( trim( (string) get_theme_mod( 'ccs_copy_' . $key, '' ) ) === $text ) {
+			remove_theme_mod( 'ccs_copy_' . $key );
+		}
+	}
+	update_option( 'ccs_news_heading_2026_11', '1', false );
 }
 
 /**

@@ -3,11 +3,13 @@
  * Homepage: the three newest articles (Nov 2026).
  *
  * The client pointed to ultimacare.co.uk, whose homepage ends on its latest
- * news. CCS publishes practical guides for families (paying for care, what
- * an assessment involves, signs someone needs help), so showing the newest
- * three tells a visitor the company is active and knows its subject. Same
+ * news. Showing the newest three tells a visitor the company is active. Same
  * cards as the blog index (template-parts/post-card.php). Hidden when there
  * are no posts.
+ *
+ * The heading names what the link leads to, the News & Updates page (client,
+ * 27 Nov 2026): it was "Advice from our team", which didn't fit a mix of news
+ * and staff stories, or the page it linked to.
  *
  * @package CCS_WP_Theme
  */
