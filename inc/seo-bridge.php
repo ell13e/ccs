@@ -101,10 +101,11 @@ function ccs_seo_bridge_setting_default( $default, $key ) {
 			// incorporated on 16 Feb 2015; the year the business gives is used.
 			return '2016';
 		case 'org_type':
-			// LocalBusiness only: "HomeHealthCareService" is not a schema.org type
-			// (schema.org/HomeHealthCareService is a 404, checked 27 Nov 2026), so
-			// search engines ignored it. The settings page offers real types only.
-			return 'LocalBusiness';
+			// MedicalBusiness ("health or care provider"), the client's choice on
+			// 27 Nov 2026: a real schema.org type (health-lifesci section, a kind of
+			// LocalBusiness). "HomeHealthCareService", used before, isn't a
+			// schema.org type at all (schema.org returns 404), so it was dropped.
+			return 'MedicalBusiness';
 		case 'separator':
 			return '|';
 		case 'phone':
@@ -338,6 +339,23 @@ function ccs_seo_bridge_share_image( $url ) {
 	return $url;
 }
 add_filter( 'ccs_seo_fallback_share_image', 'ccs_seo_bridge_share_image' );
+
+/**
+ * What a theme photo used as the sharing image shows, from the photo sheet
+ * (assets/images/media-metadata.csv), for og:image:alt.
+ *
+ * @param string $alt Description from the media library, or ''.
+ * @param string $url Image URL.
+ * @return string
+ */
+function ccs_seo_bridge_share_image_alt( $alt, $url ) {
+	$base = get_template_directory_uri() . '/assets/images/';
+	if ( '' !== $alt || 0 !== strpos( $url, $base ) || ! function_exists( 'ccs_photo_sheet_value' ) ) {
+		return $alt;
+	}
+	return ccs_photo_sheet_value( substr( $url, strlen( $base ) ), 'alt_text' );
+}
+add_filter( 'ccs_seo_share_image_alt', 'ccs_seo_bridge_share_image_alt', 10, 2 );
 
 // -----------------------------------------------------------------------------
 // Sitemap.

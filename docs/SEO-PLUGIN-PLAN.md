@@ -128,7 +128,7 @@ Stage 1 as built:
 - **Plugin:** settings page (SEO in the admin menu); SEO box on pages, posts and areas (services keep their own box); title, description, sharing tags, canonical, Google and Bing verification, schema, sitemap rules, redirects, robots.txt with switches for AI training bots, IndexNow.
 - **Theme:** `inc/seo-bridge.php` hands over this site's details through filters. `inc/old-site-redirects.php` holds the old website's addresses. Theme setup switches the plugin on.
 - **Check:** the head of all 68 pages compared before and after the move. Titles, descriptions, sharing tags, canonicals and schema are identical (publish and update dates aside, as the preview is rebuilt on restart). Sitemaps, robots.txt and the old-site redirects are identical too.
-- **Fixed:** the business was typed `LocalBusiness` + `HomeHealthCareService`, but `HomeHealthCareService` isn't a schema.org type (schema.org returns 404), so search engines ignored it. It's now `LocalBusiness`, and the settings page offers only real types.
+- **Fixed:** the business was typed `LocalBusiness` + `HomeHealthCareService`, but `HomeHealthCareService` isn't a schema.org type (schema.org returns 404), so search engines ignored it. It's now `MedicalBusiness` ("Health or care provider"), the client's choice on 27 Nov 2026. That's a real schema.org type and a kind of LocalBusiness, so Google's local business features still apply. The settings page offers only real types.
 - **Made easy (client, 27 Nov 2026: "as easy as possible"):** settings use choices, not codes. Organisation type is a plain-English dropdown, country a dropdown, office hours day and time pickers, founded a year box, the separator radio buttons with a preview, one box per social network, and verification accepts the whole pasted tag.
 - **New, but nothing on the site uses them yet:** nosnippet in the SEO box, Bing verification, alternate site name, company number, founding date, training-bot switches.
 
@@ -156,7 +156,14 @@ Stage 2 progress:
   - **Screen:** "Visited by people" by default, with everything (bots included) one click away. Shows hits, who, last seen, and "linked from", where a broken link on the site itself is flagged and kept over outside sources.
   - **Actions:** Add redirect (opens the form filled in; the entry leaves the log once redirected), Ignore, Remove, Empty the log.
   - **Menu:** a badge counts new addresses people hit this week. Settings are on/off, days, and addresses never to log.
-- Next: previews, needs-attention list.
+- **Previews: built 27 Nov 2026 (plugin 0.4.0).** Sources were read on 27 Nov 2026; each is listed with how current it is:
+  - Google Search Central on title links and snippets (each page dated Dec 2025 to Jul 2026): shortened "to fit the device width", and Google may rewrite them. No fixed lengths are published, so the previews are labelled approximate.
+  - Meta, "Images in link shares" (updated 30 Jun 2026): 1200 × 630 best, 600 × 315 for the large card, 200 × 200 minimum, about 1.91:1. Images are cached by address; refresh with the Sharing Debugger.
+  - LinkedIn Help, "Make your website shareable" (the page says it was last updated about three years ago, so around 2023; it's LinkedIn's current official page): 1200 × 627 minimum, 1.91:1, under 5 MB; images under 401 px wide show as thumbnails.
+  - The Open Graph protocol (ogp.me): og:image:alt is "a description of what is in the image (not a caption)".
+  - **In the SEO box:** tabs for Google on a computer, Google on a phone, and When shared. They update as the title and description are typed (and with the post title and featured image in the block editor), using the same fallbacks as the live page. The share card flags images that are too small or the wrong shape, or have no alt text. Links to the Facebook Sharing Debugger and LinkedIn Post Inspector.
+  - **Fixed on the live site:** og:image:alt was the page title; it's now the image's own description (media library alt text, or the theme's photo sheet). The share image is now the smallest copy at least 1200 px wide, not WordPress's 1024 px "large", and its width and height are stated.
+- Next: needs-attention list.
 
 **Stage 3: nice to have**
 - A writing checklist (keyphrase in title, description length, headings, internal links).
