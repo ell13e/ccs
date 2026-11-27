@@ -28,7 +28,7 @@ $poster      = 'https://i.ytimg.com/vi/' . rawurlencode( $video_id ) . '/maxresd
 ?>
 <div class="video-embed" data-video-id="<?php echo esc_attr( $video_id ); ?>" data-video-title="<?php echo esc_attr( $video_title ); ?>">
 	<button type="button" class="video-embed__trigger" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: video title */ __( 'Play: %s', 'ccs-wp-theme' ), $video_title ) ); ?>">
-		<img src="<?php echo esc_url( $poster ); ?>" alt="" class="video-embed__poster" loading="lazy" decoding="async">
+		<img src="<?php echo esc_url( $poster ); ?>" alt="" class="video-embed__poster" width="1280" height="720" loading="lazy" decoding="async"><?php // YouTube's maxresdefault poster is 1280 x 720; the styles still set the size. ?>
 		<span class="video-embed__play" aria-hidden="true"></span>
 	</button>
 </div>

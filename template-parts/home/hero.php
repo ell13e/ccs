@@ -136,8 +136,15 @@ $hero_photos = apply_filters(
 	<div class="home-hero__photos">
 		<?php foreach ( $hero_photos as $hero_photo ) : ?>
 			<?php if ( ! empty( $hero_photo['src'] ) ) : ?>
+				<?php
+				// The photo's own width and height (SEO check, Nov 2026: images
+				// without them can make a page jump as it loads). The frame's
+				// styles still set the size; these only give the shape early.
+				$hero_dims = ! empty( $hero_photo['file'] ) && file_exists( get_template_directory() . '/assets/images/' . $hero_photo['file'] ) ? wp_getimagesize( get_template_directory() . '/assets/images/' . $hero_photo['file'] ) : false;
+				$hero_dims = is_array( $hero_dims ) && ! empty( $hero_dims[0] ) ? ' width="' . (int) $hero_dims[0] . '" height="' . (int) $hero_dims[1] . '"' : '';
+				?>
 				<figure class="home-hero__photo <?php echo esc_attr( $hero_photo['class'] ); ?>">
-					<img src="<?php echo esc_url( $hero_photo['src'] ); ?>" alt="<?php echo esc_attr( $hero_photo['alt'] ); ?>"<?php echo ! empty( $hero_photo['file'] ) ? ccs_theme_image_srcset( $hero_photo['file'], isset( $hero_photo['sizes'] ) ? $hero_photo['sizes'] : '50vw' ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset(). ?> fetchpriority="high" decoding="async">
+					<img src="<?php echo esc_url( $hero_photo['src'] ); ?>" alt="<?php echo esc_attr( $hero_photo['alt'] ); ?>"<?php echo $hero_dims; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- integers only. ?><?php echo ! empty( $hero_photo['file'] ) ? ccs_theme_image_srcset( $hero_photo['file'], isset( $hero_photo['sizes'] ) ? $hero_photo['sizes'] : '50vw' ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in ccs_theme_image_srcset(). ?> fetchpriority="high" decoding="async">
 				</figure>
 			<?php endif; ?>
 		<?php endforeach; ?>
