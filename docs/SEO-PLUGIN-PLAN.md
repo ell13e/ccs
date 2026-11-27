@@ -140,6 +140,17 @@ Stage 1 as built:
 - A "needs attention" list: missing titles or descriptions, noindex pages, missing alt text, orphaned pages, with quick editing.
 - AI bot toggles.
 
+Stage 2 progress:
+- **Redirect manager: built 27 Nov 2026 (plugin 0.2.0).** Designed from Google's status code and soft 404 guidance, Rank Math's redirections guide and Yoast's redirect manager.
+  - **Choices:** "moved for good" (301), "for now" (302, or 307 under More options), "gone" (410), legal (451).
+  - **Matching:** this address only, everything under it, or a pattern.
+  - **Inputs:** a pasted full link is cleaned up; the new-address box suggests the site's pages.
+  - **List:** hit counts and last used, "Added by" (you, automatic, Old website), switch off, bulk actions, search, CSV import and export.
+  - **Automatic:** when a published page's address changes, a redirect is added (child pages too), and any redirect that would hide the new address is removed.
+  - **Safety:** chains are flattened, and the homepage, loops and bad patterns are refused.
+  - **Old website:** its addresses were copied in once. Two with no successor (`/home/under-construction/`, `/sitemap/`) and unknown `/home/...` addresses now answer 410 instead of redirecting to the homepage (Google's soft 404 guidance).
+- Next: 404 log, previews, needs-attention list.
+
 **Stage 3: nice to have**
 - A writing checklist (keyphrase in title, description length, headings, internal links).
 - Internal link suggestions.

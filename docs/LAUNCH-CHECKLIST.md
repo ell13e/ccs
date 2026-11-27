@@ -7,7 +7,7 @@ Pre-launch audit, 25 November 2026. Checked against the launch checklist and the
 - **Crawl:** all 66 sitemap URLs return 200. None is noindex, canonicals are correct, titles are unique, and each page has one h1.
 - **Meta descriptions:** the 5 pages that were missing one now get one, taken from the page intro, the News page or the category.
 - **robots.txt:** blocks /wp-admin/ only and lists the sitemap. The users sitemap is off.
-- **Old-site redirects:** all 20 old URLs reach a live page in one hop.
+- **Old-site redirects:** the old site's addresses reach their new page in one hop. Two with no successor, plus unknown `/home/...` addresses, answer 410 (gone) rather than sending people to the homepage. All of them are listed and editable under SEO → Redirects.
 - **Structured data:** the JSON-LD is valid. The service and area schema now point at one shared organisation (@id), so Google no longer sees duplicates.
 - **Rendering:** all content is in the HTML the server sends. Nothing depends on JavaScript.
 - **QA:** PHP syntax, design audit at 4 widths and internal links all pass.

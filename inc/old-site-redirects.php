@@ -19,7 +19,11 @@
  *
  * - An address in the list goes where the list says.
  * - Any other address under /home/ goes to the same address without /home/
- *   when a page lives there, and to the homepage when one does not.
+ *   when a page lives there, and answers "gone" (410) when one does not.
+ * - 'gone' means the page has no successor: the CCS SEO plugin answers 410.
+ *
+ * The plugin copies this list into SEO > Redirects once, where it can be
+ * seen and edited ("Added by: Old website").
  *
  * Three of the old site's four articles are carried over at their old
  * addresses, so they need no redirect. The fourth goes to News.
@@ -53,9 +57,10 @@ function ccs_old_site_redirects() {
 		// Pages whose name changed.
 		'/home/cookie-policy/'                  => '/cookies/',
 		'/home/care-careers-maidstone-kent/'    => '/careers/',
-		// Pages with no successor.
-		'/home/under-construction/'             => '/',
-		'/sitemap/'                             => '/',
+		// Pages with no successor: "gone" (410), not the homepage. Google treats
+		// a redirect to an unrelated page as a soft 404 (Search Central, Nov 2026).
+		'/home/under-construction/'             => 'gone',
+		'/sitemap/'                             => 'gone',
 		// One old article is not carried over (seasonal advice from 2024). The other three live at their old addresses (class-theme-activation.php).
 		// This site's own earlier address for Working with us.
 		'/careers/working-for-us/'              => '/careers/working-with-us/',
@@ -73,7 +78,7 @@ function ccs_old_site_redirects() {
  * Where an old /home/ address should go when the list doesn't name it, or ''.
  *
  * @param string $path The path asked for, e.g. "/home/contact-us/".
- * @return string New path, or ''.
+ * @return string New path, 'gone', or ''.
  */
 function ccs_old_site_redirect_target( $path ) {
 	$path = '/' . trim( strtolower( (string) $path ), '/' ) . '/';
@@ -87,7 +92,7 @@ function ccs_old_site_redirect_target( $path ) {
 		if ( '/' !== $rest && url_to_postid( home_url( $rest ) ) ) {
 			return $rest;
 		}
-		return '/';
+		return 'gone';
 	}
 	return '';
 }

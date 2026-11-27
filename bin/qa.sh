@@ -52,11 +52,17 @@ print -r -- "$LINKS" | tail -5
 print -r -- "$LINKS" | tail -1 | grep -q ', 0 not 200$' || FAIL=1
 
 echo "== Old-site redirects"
-# Every old address in inc/old-site-redirects.php must answer 301 to its target, and the target must load.
+# Every old address in inc/old-site-redirects.php must answer 301 to its target, and the target must load;
+# addresses marked 'gone' must answer 410.
 BASE=${CCS_BASE:-http://127.0.0.1:9401}
 RBAD=0; RN=0
 php -r 'define("ABSPATH","/"); function apply_filters($t,$v){return $v;} function add_action(){} require "inc/old-site-redirects.php"; foreach (ccs_old_site_redirects() as $from => $to) { echo $from, " ", $to, "\n"; }' | while read -r FROM TO; do
 	GOT=$(curl -s -m 30 -o /dev/null -w '%{http_code} %{redirect_url}' "$BASE$FROM")
+	if [ "$TO" = "gone" ]; then
+		# No successor: the page must answer 410 (gone), not redirect.
+		[ "${GOT%% *}" = "410" ] || echo "  $FROM: got $GOT (wanted 410 gone)"
+		continue
+	fi
 	END=$(curl -s -m 30 -o /dev/null -w '%{http_code}' "$BASE$TO")
 	if [ "$GOT" != "301 $BASE$TO" ] || [ "$END" != "200" ]; then echo "  $FROM: got $GOT, target answers $END (wanted 301 $TO, 200)"; fi
 done > /tmp/ccs-redirects.$$ 2>&1

@@ -96,8 +96,9 @@ function ccs_seo_bridge_setting_default( $default, $key ) {
 			// Companies House: CONTINUITY OF CARE SERVICES LIMITED, checked 27 Nov 2026.
 			return '09440482';
 		case 'org_founding_date':
-			// The About page timeline: "2016 | Where it began". (Companies House shows
-			// the company incorporated on 16 Feb 2015; the site's own year is used.)
+			// 2016, confirmed by the client on 27 Nov 2026, as the About page timeline
+			// says ("2016 | Where it began"). Companies House shows the company was
+			// incorporated on 16 Feb 2015; the year the business gives is used.
 			return '2016';
 		case 'org_type':
 			// LocalBusiness only: "HomeHealthCareService" is not a schema.org type
@@ -780,6 +781,14 @@ add_filter(
 	},
 	10,
 	2
+);
+
+add_filter(
+	'ccs_seo_redirect_origin_labels',
+	static function ( $labels ) {
+		$labels['code'] = __( 'Old website', 'ccs-wp-theme' );
+		return $labels;
+	}
 );
 
 // -----------------------------------------------------------------------------
