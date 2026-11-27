@@ -149,7 +149,14 @@ Stage 2 progress:
   - **Automatic:** when a published page's address changes, a redirect is added (child pages too), and any redirect that would hide the new address is removed.
   - **Safety:** chains are flattened, and the homepage, loops and bad patterns are refused.
   - **Old website:** its addresses were copied in once. Two with no successor (`/home/under-construction/`, `/sitemap/`) and unknown `/home/...` addresses now answer 410 instead of redirecting to the homepage (Google's soft 404 guidance).
-- Next: 404 log, previews, needs-attention list.
+- **404 log: built 27 Nov 2026 (plugin 0.3.0).** Designed from Rank Math's 404 monitor guide (address, hits and last seen; the advanced mode adds referrer and browser; log limit; exclusions) and the ICO's definition of personal data, where online identifiers such as IP addresses count.
+  - **Collects only:** address, hits, visits by people, first and last seen, the linking page (no query string), and person / search engine / bot. Never an IP address or browser string.
+  - **Clean-up:** entries clear after 30, 90 (default), 180 or 365 days unseen, with a cap of 2,000.
+  - **Not logged:** hacking probes, and addresses that already answer "gone".
+  - **Screen:** "Visited by people" by default, with everything (bots included) one click away. Shows hits, who, last seen, and "linked from", where a broken link on the site itself is flagged and kept over outside sources.
+  - **Actions:** Add redirect (opens the form filled in; the entry leaves the log once redirected), Ignore, Remove, Empty the log.
+  - **Menu:** a badge counts new addresses people hit this week. Settings are on/off, days, and addresses never to log.
+- Next: previews, needs-attention list.
 
 **Stage 3: nice to have**
 - A writing checklist (keyphrase in title, description length, headings, internal links).
