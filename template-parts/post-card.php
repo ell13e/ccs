@@ -54,7 +54,8 @@ $ccs_classes  = $ccs_featured ? 'post-card post-card--featured' : 'post-card';
 			<?php if ( $ccs_category ) : ?>
 				<span class="post-card__category"><?php echo esc_html( $ccs_category->name ); ?></span>
 			<?php endif; ?>
-			<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( get_the_date() ); ?></time>
+			<?php // Short UK date (client, Nov 2026): "27 Nov 2026" leaves the category room on one line, where "November 27, 2026" cut "From the team" short. ?>
+			<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( get_the_date( 'j M Y' ) ); ?></time>
 			<?php // The read time is shown on the article only, not on cards (Nov 2026 eyebrow review). ?>
 		</p>
 		<h2 class="post-card__title">

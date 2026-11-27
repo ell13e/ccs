@@ -33,7 +33,7 @@ get_header();
 		 */
 		$ccs_art      = ccs_content_anchors( apply_filters( 'the_content', get_the_content() ) );
 		$ccs_art_toc  = count( $ccs_art['toc'] ) >= 3;
-		$ccs_art_meta = array( get_the_date() );
+		$ccs_art_meta = array( get_the_date( 'j F Y' ) ); // UK order, as on the article list (post-row.php).
 		if ( function_exists( 'ccs_reading_time_label' ) ) {
 			$ccs_art_meta[] = ccs_reading_time_label();
 		}
@@ -51,7 +51,7 @@ get_header();
 					<?php endif; ?>
 					<h1 class="page-hero__title"><?php the_title(); ?></h1>
 					<p class="page-hero__meta">
-						<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( get_the_date() ); ?></time>
+						<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( get_the_date( 'j F Y' ) ); ?></time>
 						<?php foreach ( array_slice( $ccs_art_meta, 1 ) as $ccs_art_m ) : ?>
 							<span class="page-hero__meta-item"><?php echo esc_html( $ccs_art_m ); ?></span>
 						<?php endforeach; ?>
