@@ -90,7 +90,7 @@ add_action( 'save_post_page', 'ccs_coming_soon_save' );
 
 /**
  * Hidden from search engines while "coming soon" (the SEO plugin applies it to
- * the robots tag, the sitemap and its Needs attention list).
+ * the robots tag, the sitemap and its SEO check).
  *
  * @param bool $noindex Whether hidden already.
  * @param int  $post_id Post ID.
