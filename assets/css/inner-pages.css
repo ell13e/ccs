@@ -4004,6 +4004,25 @@ p + .link-line { margin-top: var(--space-2, 0.5rem); }
 	overflow: visible;
 }
 
+/* When a browser darkens the site for the reader (marked by inc/auto-dark.php;
+   the theme has no dark design of its own), it turns the page dark but treats
+   the letters' background-coloured edge as text and makes it light, so every
+   letter got a 2px pale outline and looked bold (client, Nov 2026: "too thick
+   in dark mode"). Then the edge goes, and the pen line sits a little lower so
+   it clears the tails of letters such as "g", "p" and "y" instead of crossing
+   them. The normal light site is unchanged, in dark mode or not. */
+:is(html.ccs-auto-dark, html[data-darkreader-scheme="dark"]) :is(.hand-note, .cqc-scale__note) {
+	-webkit-text-stroke: 0;
+}
+
+:is(html.ccs-auto-dark, html[data-darkreader-scheme="dark"]) .hand-note__line {
+	bottom: -0.6rem;
+}
+
+:is(html.ccs-auto-dark, html[data-darkreader-scheme="dark"]) .cqc-scale__note .cqc-scale__underline {
+	bottom: -0.65rem;
+}
+
 /* Getting started: the note sits between a step's name and its text. */
 .gs-path__note {
 	display: flex;

@@ -588,3 +588,36 @@ button:not(:disabled):not(.is-disabled),
 .ds-root :where(h4), .heading-4 { font-family: var(--font-family-body); font-size: var(--text-xl); font-weight: var(--font-weight-bold); line-height: var(--leading-normal); }
 .ds-root :where(h5), .heading-5 { font-family: var(--font-family-body); font-size: var(--text-lg); font-weight: var(--font-weight-bold); line-height: var(--leading-normal); }
 .ds-root :where(h6), .heading-6 { font-family: var(--font-family-body); font-size: var(--text-md); font-weight: var(--font-weight-semibold); line-height: var(--leading-normal); }
+
+/* -------------------------------------------------------------------------
+   When a browser darkens the site for the reader (Nov 2026; marked by
+   inc/auto-dark.php). It recolours what the stylesheets paint, inline SVG
+   icons included, but leaves images alone, so the plum doodles and logo
+   stayed plum on a near-black page and almost disappeared (client: "the
+   icons look too dark on the dark background"). Those images turn to a
+   light version of the same plum, the way the browser treats the text:
+   invert lightness, then turn the hue back. Not .ccs-icon: Chrome already
+   lightens those, and a second flip made them dark again (tested). Photos,
+   and other organisations' logos (CQC, partners), are left as they are.
+   The normal light site is unchanged.
+   ------------------------------------------------------------------------- */
+:is(html.ccs-auto-dark, html[data-darkreader-scheme="dark"]) :is(.doodle, .header-logo__img, .ftp__logo img) {
+	filter: invert(1) hue-rotate(180deg);
+}
+
+/* The CQC widget is the regulator's own design: it stays a white rounded
+   card even when a browser darkens the rest of the site (client, Nov 2026).
+   color-scheme: only light is Chrome's documented per-element opt-out from
+   Auto Dark Theme; it changes nothing on the normal light site. */
+:is(.hero-cqc, .page-cqc) {
+	color-scheme: only light;
+}
+
+/* On the light site the widget sits on a white card, so its own edge can't
+   be seen. On a darkened page it needs that white card back, rounded and
+   with room round the text, or it reads as a bare white rectangle. */
+:is(html.ccs-auto-dark, html[data-darkreader-scheme="dark"]) :is(.hero-cqc, .page-cqc) {
+	padding: var(--space-sm);
+	border-radius: var(--radius-lg);
+	background: #fff;
+}
