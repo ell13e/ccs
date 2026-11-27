@@ -770,8 +770,15 @@ function ccs_minify_css( $css ) {
  * of it comments. The first request for a stylesheet writes a minified copy
  * to uploads/ccs-css/, named after a hash of the source file's path, date and
  * size, so an edited stylesheet gets a fresh copy at a new address and a
- * stale one is never served. Relative url()s are made absolute, since the
- * copy lives elsewhere. If uploads cannot be written, the original is used.
+ * stale one is never served. Relative url()s are rewritten from the site
+ * root, since the copy lives elsewhere. If uploads cannot be written, the
+ * original is used.
+ *
+ * Both the copy's address and the url()s inside it are root-relative
+ * (/wp-content/...), never http://host/... (Nov 2026: on a Local Live Link
+ * the page is https but these kept the Mac's http address, so browsers
+ * blocked every stylesheet and the site showed unstyled). Root-relative
+ * works on any host and scheme: the preview, a Live Link, the live domain.
  * Off when SCRIPT_DEBUG is on, or through the ccs_minify_css filter.
  *
  * @param string $src Stylesheet URL as enqueued (after ccs_version_theme_asset_by_mtime).
@@ -796,10 +803,11 @@ function ccs_minified_style_src( $src ) {
 		return $src;
 	}
 	$name = basename( $path, '.css' );
-	$hash = substr( md5( $path . '|' . filemtime( $path ) . '|' . filesize( $path ) ), 0, 10 );
+	// "|rel" retires copies written with full http:// addresses inside.
+	$hash = substr( md5( $path . '|' . filemtime( $path ) . '|' . filesize( $path ) . '|rel' ), 0, 10 );
 	$dir  = trailingslashit( $uploads['basedir'] ) . 'ccs-css';
 	$file = $dir . '/' . $name . '.' . $hash . '.css';
-	$url  = trailingslashit( $uploads['baseurl'] ) . 'ccs-css/' . $name . '.' . $hash . '.css';
+	$url  = wp_make_link_relative( trailingslashit( $uploads['baseurl'] ) . 'ccs-css/' . $name . '.' . $hash . '.css' );
 
 	if ( ! is_file( $file ) ) {
 		if ( ! wp_mkdir_p( $dir ) ) {
@@ -809,7 +817,7 @@ function ccs_minified_style_src( $src ) {
 		if ( false === $css ) {
 			return $src;
 		}
-		$base = trailingslashit( dirname( $clean ) );
+		$base = trailingslashit( wp_make_link_relative( dirname( $clean ) ) );
 		$css  = preg_replace_callback(
 			'~url\(\s*([\'"]?)(?![\'"]?(?:data:|https?:|/|#))([^\'")]+)\1\s*\)~i',
 			static function ( $m ) use ( $base ) {
