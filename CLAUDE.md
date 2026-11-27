@@ -173,23 +173,25 @@ signed off by the client):
   text with small marks reads as unfinished. Rule 1 allows a box here when the
   alternative is that.
 
-## SEO code lives in `inc/seo/` (Nov 2026)
+## SEO lives in the CCS SEO plugin (Nov 2026)
 
-The theme is staying, but its SEO should be able to move into its own plugin
-later as a folder move, not an untangling job. So:
+The client wants her own SEO plugin, benchmarked on Rank Math Pro and Yoast
+SEO Premium, usable on other sites. It lives beside the theme in
+`../ccs-seo/` (plan and decisions: `docs/SEO-PLUGIN-PLAN.md`). So:
 
-- **All SEO code goes in `inc/seo/`:** titles, descriptions, sharing tags,
-  canonical, robots, sitemap rules, site-wide schema, the page SEO box,
-  redirects, Search Console. Nothing outside that folder prints SEO tags in
-  the page head or hooks `wp_robots`, `document_title_*` or `wp_sitemaps_*`.
-  Schema that describes one page's own content (a service, an area, the FAQ
-  block) may stay in that template or block.
-- **Code in `inc/seo/` uses theme code defensively.** Wrap calls to theme
-  functions in `function_exists()` (as the plugin switch does), so the
-  folder still runs if the theme's helpers are missing.
-- **SEO plugins win.** Anything new that prints SEO output checks
-  `ccs_seo_plugin_active()` first and steps aside when Yoast, Rank Math or
-  similar is on, so the site never carries two sets of tags.
+- **All SEO code goes in the plugin:** titles, descriptions, sharing tags,
+  canonical, robots, sitemap rules, schema, the SEO box, redirects,
+  robots.txt, IndexNow, verification. The theme prints no SEO tags and hooks
+  no `wp_robots`, `document_title_*` or `wp_sitemaps_*` filters.
+- **The plugin knows nothing about this site.** Anything specific to
+  Continuity of Care Services (contact details, CQC, service and area
+  wording, services/areas/FAQ schema, old-site redirects) reaches it through
+  the plugin's filters, answered in `inc/seo-bridge.php`. Never call theme
+  functions from the plugin.
+- **Other SEO plugins win.** The plugin steps aside (except redirects) when
+  Yoast, Rank Math or similar is on: `ccs_seo_other_plugin_active()`.
+- **The preview mounts the plugin** (`.claude/launch.json`); theme setup
+  switches it on. Without it the admin shows an error notice.
 
 ## Standing constraints
 

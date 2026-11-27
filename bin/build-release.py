@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a clean theme zip for upload to WordPress.
+"""Build a clean theme zip for upload to WordPress, and the CCS SEO plugin's zip.
 
     python3 bin/build-release.py            # writes ../ccs-theme-<version>.zip
     python3 bin/build-release.py --list     # only print what would be left out
@@ -79,6 +79,28 @@ def main():
     with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as archive:
         for f in sorted(keep):
             archive.write(os.path.join(ROOT, f), FOLDER + '/' + f)
+    print('wrote %s (%.1fMB)' % (out, os.path.getsize(out) / 1e6))
+    build_seo_plugin()
+
+
+def build_seo_plugin():
+    """The site's SEO lives in the CCS SEO plugin beside the theme (../ccs-seo); zip it too."""
+    plugin = os.path.join(os.path.dirname(ROOT), 'ccs-seo')
+    main_file = os.path.join(plugin, 'ccs-seo.php')
+    if not os.path.isfile(main_file):
+        print('CCS SEO plugin not found at %s: upload it separately' % plugin)
+        return
+    match = re.search(r"define\(\s*'CCS_SEO_VERSION',\s*'([^']+)'", open(main_file, encoding='utf-8').read())
+    version = match.group(1) if match else '0.0.0'
+    out = os.path.join(os.path.dirname(ROOT), 'ccs-seo-%s.zip' % version)
+    with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as archive:
+        for folder, dirs, files in os.walk(plugin):
+            dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+            for name in sorted(files):
+                if name in SKIP_FILES or name.startswith('._') or os.path.splitext(name)[1].lower() in {'.zip', '.log'}:
+                    continue
+                path = os.path.join(folder, name)
+                archive.write(path, 'ccs-seo/' + os.path.relpath(path, plugin))
     print('wrote %s (%.1fMB)' % (out, os.path.getsize(out) / 1e6))
 
 

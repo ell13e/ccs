@@ -35,7 +35,8 @@ function ccs_reading_time( $post = null ) {
 		return 1;
 	}
 
-	$words = class_exists( 'CCS_Structured_Data' ) ? CCS_Structured_Data::count_words( $post ) : 0;
+	$text  = trim( (string) preg_replace( '/\s+/u', ' ', wp_strip_all_tags( strip_shortcodes( (string) $post->post_content ) ) ) );
+	$words = '' === $text ? 0 : count( preg_split( '/\s+/u', $text, -1, PREG_SPLIT_NO_EMPTY ) );
 	if ( $words < 1 ) {
 		return 1;
 	}

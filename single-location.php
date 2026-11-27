@@ -641,40 +641,9 @@ while ( have_posts() ) :
 </main>
 
 	<?php
-	// Schema.org LocalBusiness (service area / location).
-	// Same @id as the area's entry in the site's schema graph (inc/seo/class-structured-data.php),
-	// so search engines read one place, not two (pre-launch audit, Nov 2026).
-	$schema = array(
-		'@context'    => 'https://schema.org',
-		'@type'       => 'LocalBusiness',
-		'@id'         => get_permalink() . '#location',
-		'name'        => get_bloginfo( 'name' ) . ' – ' . $town,
-		/* translators: %s: town name. */
-		'description' => wp_trim_words( wp_strip_all_tags( get_the_content() ), 40 ) ?: sprintf( __( 'Care services in %s and surrounding areas.', 'ccs-wp-theme' ), $town ),
-		'url'         => get_permalink(),
-		'areaServed'  => array(
-			'@type' => 'City',
-			'name'  => $town,
-		),
-	);
-	if ( $county ) {
-		$schema['areaServed']['containedInPlace'] = array(
-			'@type' => 'AdministrativeArea',
-			'name'  => $county,
-		);
-	}
-	if ( $ccs_phone_tel ) {
-		$schema['telephone'] = $ccs_phone_tel;
-	}
-	if ( $lat && $lng ) {
-		$schema['geo'] = array(
-			'@type'     => 'GeoCoordinates',
-			'latitude'  => (float) $lat,
-			'longitude' => (float) $lng,
-		);
-	}
+	// This area's schema (the home care service in this town) is in the site's
+	// one graph (CCS SEO plugin + inc/seo-bridge.php), not in this template.
 	?>
-<script type="application/ld+json"><?php echo wp_json_encode( $schema ); ?></script>
 
 	<?php
 endwhile;

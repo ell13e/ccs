@@ -1,6 +1,10 @@
 <?php
 /**
- * Redirects from the old website's addresses (Nov 2026).
+ * The old website's addresses (Nov 2026), for the CCS SEO plugin's redirects.
+ *
+ * The plugin does the redirecting (ccs-seo/includes/redirects.php); this file
+ * only says where each old address goes, through its ccs_seo_redirects and
+ * ccs_seo_redirect_target filters (inc/seo-bridge.php).
  *
  * The site this theme replaces (continuitycareservices.co.uk, Nov 2026) kept
  * most of its pages under /home/ and had four articles at the top level.
@@ -66,7 +70,7 @@ function ccs_old_site_redirects() {
 }
 
 /**
- * Where an address WordPress could not find should go, or '' for nowhere.
+ * Where an old /home/ address should go when the list doesn't name it, or ''.
  *
  * @param string $path The path asked for, e.g. "/home/contact-us/".
  * @return string New path, or ''.
@@ -87,35 +91,3 @@ function ccs_old_site_redirect_target( $path ) {
 	}
 	return '';
 }
-
-/**
- * Send an old address to its new page.
- */
-function ccs_old_site_redirect() {
-	$request = isset( $_SERVER['REQUEST_URI'] ) ? (string) wp_parse_url( esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ), PHP_URL_PATH ) : '';
-	// A site in a sub-folder: compare the part after the folder.
-	$base = (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH );
-	if ( '' !== $base && '/' !== $base && 0 === strpos( $request, $base ) ) {
-		$request = '/' . ltrim( substr( $request, strlen( $base ) ), '/' );
-	}
-	$target = ccs_old_site_redirect_target( $request );
-	if ( '' === $target ) {
-		return;
-	}
-	/*
-	 * Not only on "page not found": WordPress reads some old addresses
-	 * (/home/resources/faqs/) as the front page with extra words after it and
-	 * sends them to the homepage itself, so waiting for a 404 lost them. The
-	 * one thing that stops a redirect is a real page living at the address.
-	 */
-	if ( ! is_404() && is_singular() ) {
-		$here = (string) wp_parse_url( (string) get_permalink( get_queried_object_id() ), PHP_URL_PATH );
-		if ( trailingslashit( strtolower( $here ) ) === trailingslashit( strtolower( $request ) ) ) {
-			return;
-		}
-	}
-	wp_safe_redirect( home_url( $target ), 301 );
-	exit;
-}
-// Before WordPress's own guess at a moved page (priority 10), which can pick a different one.
-add_action( 'template_redirect', 'ccs_old_site_redirect', 1 );

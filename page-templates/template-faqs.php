@@ -11,7 +11,7 @@
  * heading is its answer (ccs_content_sections(), inc/content-sections.php).
  * Anything before the first heading is the intro. If a
  * page has no headings at all it falls back to plain prose, so nothing an
- * editor writes can disappear. inc/seo/class-structured-data.php reads the same
+ * editor writes can disappear. inc/seo-bridge.php (CCS SEO plugin) reads the same
  * h2 + paragraph pairs for the FAQPage schema.
  *
  * @package CCS_WP_Theme

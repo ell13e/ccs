@@ -515,7 +515,7 @@ function ccs_working_with_us_address() {
 }
 add_action( 'init', 'ccs_working_with_us_address', 5 );
 
-// The old address is sent to the new one in inc/seo/redirects.php, with the old website's addresses.
+// The old address is sent to the new one in inc/old-site-redirects.php, with the old website's addresses.
 
 /**
  * The About page's closing line is a link (Nov 2026, client, pasting the
@@ -832,6 +832,42 @@ function ccs_business_name_users_2026_11() {
 }
 
 /**
+ * One list of enquiries (Nov 2026): move anything the old consultation form
+ * saved ("Consultation Enquiries", post type ccs_enquiry) into Enquiries,
+ * where every form on the site saves. The two use the same field names, so
+ * each entry keeps its details; it is marked as coming from the old form.
+ * Also clears the old form's shortcode from the Contact page.
+ *
+ * @return void
+ */
+function ccs_merge_consultation_enquiries_2026_11() {
+	if ( get_option( 'ccs_merge_consultation_enquiries_2026_11' ) ) {
+		return;
+	}
+	global $wpdb;
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+	$ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_type = %s", 'ccs_enquiry' ) );
+	foreach ( (array) $ids as $id ) {
+		$id = (int) $id;
+		set_post_type( $id, 'enquiry' );
+		if ( '' === (string) get_post_meta( $id, 'enquiry_source', true ) ) {
+			update_post_meta( $id, 'enquiry_source', 'Old consultation form' );
+		}
+	}
+	$contact = get_page_by_path( 'contact-us' );
+	if ( $contact && '[ccs_consultation_form]' === trim( $contact->post_content ) ) {
+		wp_update_post(
+			array(
+				'ID'           => $contact->ID,
+				'post_content' => '',
+			)
+		);
+	}
+	delete_transient( 'ccs_dashboard_stats' ); // The dashboard widget's counts (CCS_Dashboard_Widget::TRANSIENT).
+	update_option( 'ccs_merge_consultation_enquiries_2026_11', '1', false );
+}
+
+/**
  * Every one-time update in this file, in the order they were written.
  *
  * Each checks the site before it changes anything and records that it ran,
@@ -859,6 +895,8 @@ function ccs_content_update_steps() {
 		'ccs_article_photos_2026_11',
 		'ccs_business_name_2026_11',
 		'ccs_business_name_users_2026_11',
+		'ccs_activate_seo_plugin_2026_11',
+		'ccs_merge_consultation_enquiries_2026_11',
 	);
 }
 

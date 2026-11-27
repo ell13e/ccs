@@ -47,7 +47,6 @@ class CCS_Email_Notifications {
 	 */
 	public function __construct() {
 		add_action( 'ccs_enquiry_created', array( $this, 'on_enquiry_created' ), 10, 1 );
-		add_action( 'ccs_consultation_enquiry_created', array( $this, 'on_consultation_enquiry_created' ), 10, 1 );
 		/*
 		 * Service-page call-back requests were saved but never emailed (found
 		 * Nov 2026), so the office only saw them by opening the inbox. They
@@ -63,16 +62,6 @@ class CCS_Email_Notifications {
 	 * @param int $post_id Enquiry post ID.
 	 */
 	public function on_enquiry_created( $post_id ) {
-		$this->send_admin_notification( $post_id );
-		$this->send_user_confirmation( $post_id );
-	}
-
-	/**
-	 * Fired when consultation form creates a ccs_enquiry post.
-	 *
-	 * @param int $post_id Enquiry post ID.
-	 */
-	public function on_consultation_enquiry_created( $post_id ) {
 		$this->send_admin_notification( $post_id );
 		$this->send_user_confirmation( $post_id );
 	}

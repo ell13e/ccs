@@ -609,6 +609,11 @@ class CCS_Theme_Activation {
 		if ( get_option( 'timezone_string', '' ) === '' ) {
 			update_option( 'timezone_string', 'Europe/London' );
 		}
+
+		// The site's SEO lives in the CCS SEO plugin (inc/seo-bridge.php): switch it on if it's installed.
+		if ( function_exists( 'ccs_activate_seo_plugin' ) ) {
+			ccs_activate_seo_plugin();
+		}
 	}
 
 	/**
@@ -1096,7 +1101,7 @@ class CCS_Theme_Activation {
 	/**
 	 * Set SEO title/description post meta from a page definition, if present.
 	 *
-	 * Read by CCS_SEO_Optimizer via the ccs_seo_title / ccs_meta_description meta
+	 * Read by the CCS SEO plugin via the ccs_seo_title / ccs_meta_description meta
 	 * keys. Without this, pages fall back to WordPress's raw post title and output
 	 * no meta description at all — confirmed missing on Home before this fix
 	 * (2026-08-19). Only writes keys that are defined, so hand-edited values in
@@ -1129,26 +1134,24 @@ class CCS_Theme_Activation {
 	}
 
 	/**
-	 * Set Contact page content to consultation form shortcode (auto-insert on activation).
+	 * The Contact page's form comes from its template (template-contact.php).
+	 * Clear the old consultation form shortcode if the page still holds it
+	 * (removed Nov 2026), so it can never print as raw text.
 	 */
 	private function ensure_contact_page_content() {
 		$slug = 'contact-us';
 		if ( ! isset( $this->page_ids[ $slug ] ) ) {
 			return;
 		}
-		$id = (int) $this->page_ids[ $slug ];
-		$content = '[ccs_consultation_form]';
-		$page = get_post( $id );
-		if ( ! $page || $page->post_type !== 'page' ) {
-			return;
+		$page = get_post( (int) $this->page_ids[ $slug ] );
+		if ( $page && 'page' === $page->post_type && '[ccs_consultation_form]' === trim( $page->post_content ) ) {
+			wp_update_post(
+				array(
+					'ID'           => $page->ID,
+					'post_content' => '',
+				)
+			);
 		}
-		if ( $page->post_content === $content ) {
-			return;
-		}
-		wp_update_post( array(
-			'ID'           => $id,
-			'post_content' => $content,
-		) );
 	}
 
 	/**

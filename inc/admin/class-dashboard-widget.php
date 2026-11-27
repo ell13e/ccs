@@ -1,7 +1,7 @@
 <?php
 /**
  * Custom admin dashboard widget: enquiry stats, by-service bar chart, recent enquiries, quick actions.
- * Uses ccs_enquiry post type. Cached with transients (1 hour). No Chart.js or external deps.
+ * Uses the enquiry post type (Enquiries). Cached with transients (1 hour). No Chart.js or external deps.
  *
  * @package CCS_WP_Theme
  * @since 1.0.0
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class CCS_Dashboard_Widget {
 
 	const WIDGET_ID   = 'ccs_care_dashboard';
-	const POST_TYPE  = 'ccs_enquiry';
+	const POST_TYPE  = 'enquiry'; // The list every form saves to (was the unused old one until Nov 2026).
 	const TRANSIENT  = 'ccs_dashboard_stats';
 	const CACHE_TTL  = HOUR_IN_SECONDS;
 	const EXPORT_ACTION = 'ccs_dashboard_export_month';

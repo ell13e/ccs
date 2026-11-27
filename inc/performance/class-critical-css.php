@@ -10,7 +10,7 @@
  *
  * Asset optimization:
  * - Non-critical styles are deferred (filter ccs_deferred_style_handles to extend).
- * - Script defer is applied in theme-setup (ccs-navigation, ccs-form-handler, ccs-consultation-form).
+ * - Script defer is applied in theme-setup (ccs-navigation, ccs-form-handler).
  *
  * Regenerate stored CSS via WP-CLI: wp ccs regenerate-critical-css
  * For true above-the-fold extraction use Critical (https://github.com/addyosmani/critical)

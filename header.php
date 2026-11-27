@@ -288,10 +288,10 @@ $ccs_emergency       = $ccs_emergency_on && ( $ccs_emergency_text || $ccs_phone 
 /*
  * The inline Organization JSON-LD that used to sit here was removed on
  * 2026-08-23. It emitted a third, untyped-@id Organization node describing the
- * same business that CCS_Structured_Data already publishes as
+ * same business that the CCS SEO plugin already publishes as
  * #organization, so search engines received three overlapping descriptions of
  * one entity with no way to reconcile them. All structured data now comes from
- * inc/seo/class-structured-data.php in a single @graph. Add nothing here — use
+ * inc/seo-bridge.php (CCS SEO plugin) in a single @graph. Add nothing here — use
  * the ccs_structured_data_organization filter instead.
  */
 ?>

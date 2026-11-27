@@ -547,7 +547,7 @@ add_action( 'wp_enqueue_scripts', 'ccs_theme_scripts' );
  * Defer non-critical scripts for better LCP (they run after HTML parse; no document.write).
  */
 function ccs_defer_scripts( $tag, $handle, $src ) {
-	$defer_handles = array( 'ccs-navigation', 'ccs-form-handler', 'ccs-consultation-form', 'ccs-resource-download' );
+	$defer_handles = array( 'ccs-navigation', 'ccs-form-handler', 'ccs-resource-download' );
 	if ( in_array( $handle, $defer_handles, true ) ) {
 		return str_replace( ' src', ' defer src', $tag );
 	}
@@ -577,51 +577,8 @@ function ccs_register_enquiry_manager() {
 }
 add_action( 'init', 'ccs_register_enquiry_manager', 20 );
 
-/**
- * Whether a dedicated SEO plugin is switched on (Yoast SEO, Rank Math, All in
- * One SEO, SEOPress or The SEO Framework).
- *
- * The theme prints its own titles, descriptions, sharing tags, canonical and
- * site-wide schema. With one of these plugins also on, every page would carry
- * two of each, so the theme steps aside and the plugin takes over (Nov 2026).
- * The schema written into single service and area templates, and the FAQ
- * block's, describe that page alone and stay.
- *
- * @return bool
- */
-function ccs_seo_plugin_active() {
-	$active = defined( 'WPSEO_VERSION' )
-		|| defined( 'RANK_MATH_VERSION' )
-		|| defined( 'AIOSEO_VERSION' )
-		|| defined( 'SEOPRESS_VERSION' )
-		|| defined( 'THE_SEO_FRAMEWORK_VERSION' );
-	/**
-	 * Filters whether the theme treats an SEO plugin as in charge.
-	 *
-	 * @param bool $active True when a known SEO plugin is on.
-	 */
-	return (bool) apply_filters( 'ccs_seo_plugin_active', $active );
-}
-
-/**
- * Output Schema.org JSON-LD structured data (Organization, WebSite, Service, Location, ContactPage, FAQPage, BreadcrumbList).
- */
-function ccs_register_structured_data() {
-	if ( ! is_admin() && ! ccs_seo_plugin_active() ) {
-		new CCS_Structured_Data();
-	}
-}
-add_action( 'init', 'ccs_register_structured_data', 15 );
-
-/**
- * On-page SEO: meta titles, meta descriptions, Open Graph, Twitter Card, canonical, sitemap.
- */
-function ccs_register_seo_optimizer() {
-	if ( ! is_admin() && ! ccs_seo_plugin_active() ) {
-		new CCS_SEO_Optimizer();
-	}
-}
-add_action( 'init', 'ccs_register_seo_optimizer', 15 );
+// SEO (titles, descriptions, schema, sitemap rules, redirects) lives in the
+// CCS SEO plugin since Nov 2026; this site's details reach it from inc/seo-bridge.php.
 
 /**
  * Native lazy loading for images (content, thumbnails, attachment images) with JS fallback for older browsers.

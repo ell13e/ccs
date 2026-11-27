@@ -18,23 +18,24 @@ Pre-launch audit, 25 November 2026. Checked against the launch checklist and the
 
 | Setting | Now | Recommended |
 |---|---|---|
-| Event data retention | 2 months | 14 months, so year-on-year Explorations work |
+| Event data retention | 14 months (changed 27 Nov 2026) | Done |
 | Internal traffic filter | Exists, but in **Testing** | Set it to **Active** once the office IP is defined in the data stream |
 | Search Console link | None | Link it after Search Console is verified |
 
-## Added before launch (in inc/seo/, the future plugin)
+## Added before launch (now in the CCS SEO plugin)
 
-- **AI search crawlers in robots.txt** (`inc/seo/robots-ai.php`): OAI-SearchBot, Claude-SearchBot and PerplexityBot are named and allowed, so AI answers can cite the site and link to it. The training bots (GPTBot, ClaudeBot, CCBot, Google-Extended) are left alone because blocking them is a business decision. To block them, use the `ccs_seo_ai_blocked_bots` filter.
-- **IndexNow** (`inc/seo/indexnow.php`): when a page or article is published, updated or taken down, Bing, Yandex, Seznam, Naver and Yep are told straight away. Google doesn't take part. It runs only on the live domain, never locally, on staging or when an SEO plugin is on. The key file is served at `/{key}.txt`.
+- **AI search crawlers in robots.txt:** OAI-SearchBot, Claude-SearchBot and PerplexityBot are named and allowed, so AI answers can cite the site and link to it. The training bots (GPTBot, ClaudeBot, CCBot, Google-Extended) are left alone because blocking them is a business decision. To block any of them, tick them under SEO → Settings → AI crawlers.
+- **IndexNow:** when a page or article is published, updated or taken down, Bing, Yandex, Seznam, Naver and Yep are told straight away. Google doesn't take part. It runs only on the live domain, never locally, on staging or when an SEO plugin is on. The key file is served at `/{key}.txt`.
 - **Not added:** llms.txt. Google says it doesn't use it, and Lighthouse lists it only as an optional, experimental check.
 
 ## Launch day (your jobs)
 
+0. Upload and activate the **CCS SEO** plugin alongside the theme (without it: no descriptions, schema or old-site redirects).
 1. In the Customizer, enter **GTM-TGWL555X**. Publish the GTM container first.
 2. Send one test enquiry, then mark **generate_lead** as a key event in GA4.
 3. Verify Search Console as a Domain property (a DNS TXT record), submit `/wp-sitemap.xml`, then link it to GA4.
 4. Add the site to Bing Webmaster Tools (it can import from Search Console). After the first page update, check its IndexNow report to confirm pings are arriving.
-5. Set event data retention to 14 months, then define the office IP and set the internal traffic filter to Active.
+5. Event data retention is set to 14 months (done 27 Nov 2026). From the office: search "what is my IP", add that address under the data stream's internal traffic rules, then set the Internal Traffic filter to Active. Check whether the office broadband keeps a fixed IP address.
 6. Server: turn WP_DEBUG off, force HTTPS, and check HSTS.
 7. Run Lighthouse on the live homepage, an area page and the contact page. Do a quick VoiceOver pass.
 8. The site now uses "Continuity of Care Services" everywhere (25 Nov 2026). Make the Google Business Profile, social profiles and directory listings match. Web and email addresses stay as they are.

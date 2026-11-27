@@ -13,7 +13,7 @@
  *
  * Not marked up as Review/AggregateRating JSON-LD: reviews.md says never to
  * mark third-party reviews up in schema. The CQC rating travels in the
- * organisation schema instead (inc/seo/class-structured-data.php).
+ * organisation schema instead (inc/seo-bridge.php (CCS SEO plugin)).
  *
  * @package CCS_WP_Theme
  */

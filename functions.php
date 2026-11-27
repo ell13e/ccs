@@ -63,9 +63,8 @@ require_once THEME_DIR . '/inc/care-finder.php';
 require_once THEME_DIR . '/inc/internal-links.php';
 require_once THEME_DIR . '/inc/forms.php';
 require_once THEME_DIR . '/inc/content-updates.php';
-require_once THEME_DIR . '/inc/seo/redirects.php';
-require_once THEME_DIR . '/inc/seo/robots-ai.php';
-require_once THEME_DIR . '/inc/seo/indexnow.php';
+require_once THEME_DIR . '/inc/old-site-redirects.php';
+require_once THEME_DIR . '/inc/seo-bridge.php';
 require_once THEME_DIR . '/inc/content-sections.php';
 
 /**
@@ -77,11 +76,6 @@ require_once THEME_DIR . '/inc/news-helpers.php';
  * Block patterns (CCS Patterns category).
  */
 require_once THEME_DIR . '/inc/block-patterns.php';
-
-/**
- * Page editor enhancements (classic editor for pages, SEO meta box).
- */
-require_once THEME_DIR . '/inc/seo/page-seo-box.php';
 
 /**
  * Resource downloads: CPT ccs_resource, taxonomy, download table, metaboxes (care guides).
@@ -103,10 +97,10 @@ new CCS_Theme_Activation();
  */
 new CCS_Welcome_Screen();
 
-/**
- * Consultation form: shortcode [ccs_consultation_form], AJAX handler, CPT ccs_enquiry, emails.
- */
-new CCS_Contact_Form();
+// The old consultation form (shortcode [ccs_consultation_form], list
+// "Consultation Enquiries") was removed in Nov 2026: no page showed it, and
+// every form on the site saves to Enquiries (inc/api/class-ccs-form-handlers.php).
+// Old entries are moved across by ccs_merge_consultation_enquiries_2026_11().
 
 /**
  * WP-CLI: wp ccs regenerate-critical-css (only when running via WP-CLI).

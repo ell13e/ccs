@@ -477,56 +477,9 @@ while ( have_posts() ) :
 </main>
 
 <?php
-	// Schema.org: Service + FAQPage
-	// Same @id as the Service in the site's schema graph (inc/seo/class-structured-data.php),
-	// so search engines read one service, not two (pre-launch audit, Nov 2026).
-	$schema_service = array(
-		'@context' => 'https://schema.org',
-		'@type'    => 'Service',
-		'@id'      => get_permalink() . '#service',
-		'name'     => get_the_title(),
-		'description' => $short_desc ?: wp_trim_words( get_the_content(), 30 ),
-		'provider' => array( '@id' => home_url( '/' ) . '#organization' ),
-	);
-	if ( $has_price && $price_from !== '' && (float) $price_from > 0 ) {
-		$schema_service['offers'] = array(
-			'@type'         => 'Offer',
-			'price'         => (float) $price_from,
-			'priceCurrency' => 'GBP',
-		);
-	}
-
-	$schema_faq = array();
-	if ( ! empty( $faqs ) ) {
-		$faq_entries = array();
-		foreach ( $faqs as $faq ) {
-			$q = isset( $faq['question'] ) ? trim( $faq['question'] ) : '';
-			$a = isset( $faq['answer'] ) ? trim( $faq['answer'] ) : '';
-			if ( $q === '' ) {
-				continue;
-			}
-			$faq_entries[] = array(
-				'@type'          => 'Question',
-				'name'           => $q,
-				'acceptedAnswer' => array(
-					'@type' => 'Answer',
-					'text'  => $a,
-				),
-			);
-		}
-		if ( ! empty( $faq_entries ) ) {
-			$schema_faq = array(
-				'@context'   => 'https://schema.org',
-				'@type'      => 'FAQPage',
-				'mainEntity' => $faq_entries,
-			);
-		}
-	}
+	// The Service and its FAQs reach search engines in the site's one schema
+	// graph (CCS SEO plugin + inc/seo-bridge.php), not from this template.
 ?>
-<script type="application/ld+json"><?php echo wp_json_encode( $schema_service ); ?></script>
-<?php if ( ! empty( $schema_faq ) ) : ?>
-<script type="application/ld+json"><?php echo wp_json_encode( $schema_faq ); ?></script>
-<?php endif; ?>
 
 <?php
 endwhile;

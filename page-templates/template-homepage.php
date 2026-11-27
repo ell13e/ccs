@@ -65,10 +65,10 @@ $ccs_phone_tel = $ccs_phone ? preg_replace( '/\s+/', '', $ccs_phone ) : '';
 /*
  * The WebPage + WebSite + LocalBusiness graph that used to be emitted here was
  * removed on 2026-08-23. It declared #organization as LocalBusiness while
- * CCS_Structured_Data simultaneously declared the same @id as
+ * the theme's schema class simultaneously declared the same @id as
  * HomeHealthCareService, and #website twice — so the homepage published two
  * conflicting definitions of the same two entities. All three node types are
- * now produced by inc/seo/class-structured-data.php inside one @graph, with
+ * now produced by inc/seo-bridge.php (CCS SEO plugin) inside one @graph, with
  * #organization carrying both types as an array.
  */
 get_footer();

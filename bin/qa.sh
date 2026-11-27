@@ -52,15 +52,15 @@ print -r -- "$LINKS" | tail -5
 print -r -- "$LINKS" | tail -1 | grep -q ', 0 not 200$' || FAIL=1
 
 echo "== Old-site redirects"
-# Every old address in inc/seo/redirects.php must answer 301 to its target, and the target must load.
+# Every old address in inc/old-site-redirects.php must answer 301 to its target, and the target must load.
 BASE=${CCS_BASE:-http://127.0.0.1:9401}
 RBAD=0; RN=0
-php -r 'define("ABSPATH","/"); function apply_filters($t,$v){return $v;} function add_action(){} require "inc/seo/redirects.php"; foreach (ccs_old_site_redirects() as $from => $to) { echo $from, " ", $to, "\n"; }' | while read -r FROM TO; do
+php -r 'define("ABSPATH","/"); function apply_filters($t,$v){return $v;} function add_action(){} require "inc/old-site-redirects.php"; foreach (ccs_old_site_redirects() as $from => $to) { echo $from, " ", $to, "\n"; }' | while read -r FROM TO; do
 	GOT=$(curl -s -m 30 -o /dev/null -w '%{http_code} %{redirect_url}' "$BASE$FROM")
 	END=$(curl -s -m 30 -o /dev/null -w '%{http_code}' "$BASE$TO")
 	if [ "$GOT" != "301 $BASE$TO" ] || [ "$END" != "200" ]; then echo "  $FROM: got $GOT, target answers $END (wanted 301 $TO, 200)"; fi
 done > /tmp/ccs-redirects.$$ 2>&1
-RN=$(php -r 'define("ABSPATH","/"); function apply_filters($t,$v){return $v;} function add_action(){} require "inc/seo/redirects.php"; echo count(ccs_old_site_redirects());')
+RN=$(php -r 'define("ABSPATH","/"); function apply_filters($t,$v){return $v;} function add_action(){} require "inc/old-site-redirects.php"; echo count(ccs_old_site_redirects());')
 if [ -s /tmp/ccs-redirects.$$ ]; then cat /tmp/ccs-redirects.$$; FAIL=1; else echo "ok: $RN redirects"; fi
 rm -f /tmp/ccs-redirects.$$
 

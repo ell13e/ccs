@@ -67,7 +67,6 @@ CCS/
 | | `inc/theme-setup.php` | Supports, menus, enqueue, meta boxes, email/form handlers |
 | | `inc/header-footer-helpers.php` | Contact info, footer fallback menus |
 | | `inc/block-patterns.php` | Block patterns (CCS category) |
-| | `inc/seo/page-seo-box.php` | Page SEO box: meta title, description, noindex, nofollow |
 | **Resources (care guides)** | `inc/resource-downloads.php` | CPT `ccs_resource`, taxonomy, download table, metaboxes |
 | | `inc/resource-download-ajax.php` | AJAX handler, email delivery, tokenised download URL |
 | **Forms / contact** | `inc/class-contact-form.php` | Shortcode `[ccs_consultation_form]`, AJAX, CPT `ccs_enquiry`, emails |
@@ -84,8 +83,9 @@ CCS/
 | | `inc/custom-fields/class-enquiry-meta-box.php` | Enquiry meta box |
 | **Integrations** | `inc/integrations/class-email-notifications.php` | Admin/user/urgent (Slack/SMS/on-call) notifications |
 | | `inc/integrations/class-analytics.php` | Analytics integration |
-| **SEO** | `inc/seo/class-seo-optimizer.php` | SEO optimisation |
-| | `inc/seo/class-structured-data.php` | Schema/structured data |
+| **SEO** | `../ccs-seo/` (CCS SEO plugin) | Titles, descriptions, sharing, canonical, schema, SEO box, redirects, robots.txt, IndexNow |
+| | `inc/seo-bridge.php` | This site's details for the plugin (contact, CQC, services/areas schema, wording) |
+| | `inc/old-site-redirects.php` | The old website's addresses |
 | **Performance** | `inc/performance/class-critical-css.php` | Critical CSS |
 | | `inc/performance/class-cache-control.php` | Cache headers |
 | | `inc/performance/class-image-optimization.php` | Image optimisation |
@@ -179,7 +179,7 @@ Enqueue logic and dependencies live in `inc/theme-setup.php`.
 | New CPT or taxonomy | `inc/post-types/class-register-post-types.php`, `inc/taxonomies/class-register-taxonomies.php`; meta boxes in `inc/custom-fields/` |
 | Colours, type, spacing | `design-system/MASTER.md`, `theme.json`, `assets/css/design-system.css` |
 | Block patterns | `inc/block-patterns.php` |
-| SEO / schema | `inc/seo/class-seo-optimizer.php`, `inc/seo/class-structured-data.php` |
+| SEO / schema | CCS SEO plugin (`../ccs-seo/`), `inc/seo-bridge.php` |
 
 ---
 
