@@ -48,7 +48,7 @@ Read in the browser on 27 Nov 2026 from their own pages: Rank Math's free-vs-pro
 | Search Console and GA4 data in WordPress | Free (more in Pro) | Through Site Kit | No | Stage 3 |
 | Rank tracking | Pro (paid data) | Through Semrush/Wincher | No | Skip: needs a paid data source |
 | AI writing (titles, descriptions, content ideas) | Content AI subscription | Premium | No | Skip for now: needs an AI account and costs per use |
-| Import from Yoast, Rank Math, AIOSEO | Free | Free | No | Stage 3 (it's going on other sites) |
+| Import from Yoast, Rank Math, AIOSEO | Free | Free | Yes (0.6.0) | Done |
 | News and video sitemaps, WooCommerce, Elementor, Divi, podcasts, AdSense | Pro | Premium add-ons | n/a | Skip |
 
 ## What the Semrush guide adds
@@ -171,6 +171,7 @@ Stage 2 progress:
   - Each item has a Fix button, and the menu shows a badge counting the "fix first" items.
 - **Per-page sharing image (0.5.1, 27 Nov 2026):** a "Sharing image" picker in the SEO box, used before the featured image, as Yoast and Rank Math do. The five pages the list flagged now share 1200 × 630 crops of real CCS photos (theme `assets/images/share/`), and their banner photos are unchanged.
 - **Sharing image on services (0.5.2, 27 Nov 2026):** post types without the full SEO box (on CCS, services) get the same picker as a small "Sharing image" box in the editor sidebar, so a service can share its own picture. Which types get it: `ccs_seo_share_box_post_types`.
+- **Importer (0.6.0, 27 Nov 2026):** SEO > Import copies from Yoast SEO, Rank Math or All in One SEO. Storage read from each plugin's own source code on GitHub (all updated 25–27 Nov 2026): Yoast `inc/class-wpseo-meta.php` (`_yoast_wpseo_*` meta; noindex '1' hidden, '2' shown, '0' type default; redirects in `wpseo-premium-redirects-base`), Rank Math `includes/class-installer.php` and its redirections module (`rank_math_*` meta, `rank_math_robots` array, `rank_math_redirections` table), AIOSEO `app/Common/Models/Post.php` (`aioseo_posts` table; robots flags count only when `robots_default` is off) and Rank Math's own AIOSEO importer for the `aioseo_redirects` columns (that table is in AIOSEO Pro, not the public repo). Decisions: fill only empty fields, so it can run again; titles keep only the part before the site name ("%%title%% %%sep%% %%sitename%%" means the default, so it stays blank); variables that change over time (current year) aren't frozen, the page is listed to check; whole-post-type settings aren't copied; a canonical pointing elsewhere is listed, since CCS SEO always self-canonicalises; other plugins' regexes match without the leading slash, so an anchored one gets it back. Tested on the preview with sample data for all three, then removed. Found and fixed on the way: a pattern redirect filling "$1" doubled the closing slash.
 - **Stage 2 is complete.**
 
 **Stage 3: nice to have**
