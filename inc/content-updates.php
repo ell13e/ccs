@@ -897,6 +897,7 @@ function ccs_content_update_steps() {
 		'ccs_business_name_users_2026_11',
 		'ccs_activate_seo_plugin_2026_11',
 		'ccs_merge_consultation_enquiries_2026_11',
+		'ccs_care_guides_coming_soon_2026_11',
 	);
 }
 

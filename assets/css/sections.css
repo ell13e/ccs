@@ -516,6 +516,7 @@
 	font-weight: var(--font-weight-medium);
 	line-height: 1.25;
 	color: var(--color-ink);
+	transition: color var(--duration-normal) var(--ease-out);
 }
 
 .info-card__link {
@@ -561,17 +562,29 @@
 	transition: transform var(--duration-fast) var(--ease-out);
 }
 
+/*
+ * Hover and focus: the card keeps its lilac and gains a plum edge, lifts, and
+ * its title turns plum (the site's link colour). It used to turn white, which
+ * on a white section made it vanish into the ground (client, Nov 2026: "they
+ * blend into the bg too much"). CCS/CLAUDE.md rule 16: layers stay apart.
+ */
 .info-card:focus-within {
 	transform: translateY(-3px);
-	background-color: var(--color-background);
-	box-shadow: var(--shadow-float-hover);
+	box-shadow: inset 0 0 0 2px var(--color-primary), var(--shadow-float-hover);
+}
+
+.info-card:focus-within .info-card__title {
+	color: var(--color-primary);
 }
 
 @media (hover: hover) {
 	.info-card:hover {
 		transform: translateY(-3px);
-		background-color: var(--color-background);
-		box-shadow: var(--shadow-float-hover);
+		box-shadow: inset 0 0 0 2px var(--color-primary), var(--shadow-float-hover);
+	}
+
+	.info-card:hover .info-card__title {
+		color: var(--color-primary);
 	}
 
 	.info-card:hover .info-card__arrow {
@@ -619,6 +632,34 @@
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+}
+
+/* Under the photo strip, 700 to 1099px: heading left, text and buttons right.
+   The text keeps its 48ch measure, so on its own it filled only the left half
+   of a wide plum card and left the right half empty (client, Nov 2026: "the
+   elements in here look strange at this width"). Same title-left, text-right
+   split as .ccs-head--split (CCS/CLAUDE.md rule 10). */
+@media (min-width: 700px) and (max-width: 1099.98px) {
+	.cta-card--photo .cta-card__body {
+		display: grid;
+		grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+		column-gap: var(--space-2xl);
+		align-items: start;
+	}
+
+	.cta-card--photo .cta-card__body > * {
+		grid-column: 2;
+	}
+
+	.cta-card--photo .cta-card__body > .ccs-title {
+		grid-column: 1;
+		grid-row: 1 / span 4;
+		margin-bottom: 0;
+	}
+
+	.cta-card--photo .cta-card__body > .ccs-lede:first-of-type {
+		margin-top: 0;
+	}
 }
 
 /* Side by side from 1100px. Between 900 and 1099 the photo's column was a
@@ -1169,7 +1210,9 @@
 }
 
 /* Link cards: the badge is the card's one spot of solid colour, and the card
-   lifts when pointed at, so it reads as something to press. */
+   lifts when pointed at, so it reads as something to press. It keeps its lilac
+   and gains a plum edge (the rule above): turning white made it vanish on a
+   white section (client, Nov 2026). */
 .info-card .ccs-badge {
 	background-color: var(--color-primary);
 	color: #fff;
@@ -1178,8 +1221,7 @@
 @media (hover: hover) {
 	.info-card:hover {
 		transform: translateY(-4px);
-		background-color: var(--color-background);
-		box-shadow: var(--shadow-float);
+		box-shadow: inset 0 0 0 2px var(--color-primary), var(--shadow-float);
 	}
 }
 

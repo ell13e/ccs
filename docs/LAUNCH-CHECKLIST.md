@@ -38,4 +38,5 @@ Pre-launch audit, 25 November 2026. Checked against the launch checklist and the
 5. Event data retention is set to 14 months (done 27 Nov 2026). From the office: search "what is my IP", add that address under the data stream's internal traffic rules, then set the Internal Traffic filter to Active. Check whether the office broadband keeps a fixed IP address.
 6. Server: turn WP_DEBUG off, force HTTPS, and check HSTS.
 7. Run Lighthouse on the live homepage, an area page and the contact page. Do a quick VoiceOver pass.
-8. The site now uses "Continuity of Care Services" everywhere (25 Nov 2026). Make the Google Business Profile, social profiles and directory listings match. Web and email addresses stay as they are.
+8. **Care guides** launches as "coming soon". The page shows a short "being written" note with links to FAQs, Costs and funding and the care finder, and is hidden from Google. When the guides are approved, untick "Coming soon" on the page (Pages → Care Guides).
+9. The site now uses "Continuity of Care Services" everywhere (25 Nov 2026). Make the Google Business Profile, social profiles and directory listings match. Web and email addresses stay as they are.

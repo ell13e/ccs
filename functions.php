@@ -65,6 +65,7 @@ require_once THEME_DIR . '/inc/forms.php';
 require_once THEME_DIR . '/inc/content-updates.php';
 require_once THEME_DIR . '/inc/old-site-redirects.php';
 require_once THEME_DIR . '/inc/seo-bridge.php';
+require_once THEME_DIR . '/inc/coming-soon.php';
 require_once THEME_DIR . '/inc/content-sections.php';
 
 /**

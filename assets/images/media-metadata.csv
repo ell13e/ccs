@@ -18,7 +18,7 @@ site-photos/client-jigsaw.webp,A young woman doing a jigsaw puzzle at a table,Cl
 site-photos/client-picking-flowers.webp,Someone sitting in a meadow picking buttercups on a day out,Client picking flowers,,,template-parts/careers/what-to-expect.php
 site-photos/client-wheelchair-seafront-pier.webp,"Someone in a wheelchair on the seafront at Herne Bay, looking out towards the pier",Client wheelchair seafront pier,,,template-parts/home/differentiators.php
 site-photos/clients-tea-and-cake-ribbon-hat.webp,"Two women smiling over tea and cake, one wearing a hat decorated with ribbons",Clients tea and cake ribbon hat,,,assets/css/header.css; page-templates/template-about.php
-site-photos/home-hero-family.jpg,"An older woman smiling with her carer, who holds her hand",Home hero family,,,inc/seo/class-seo-optimizer.php; inc/theme-images.php; template-parts/home/hero.php
+site-photos/home-hero-family.jpg,"An older woman smiling with her carer, who holds her hand",Home hero family,,,inc/seo-bridge.php; inc/theme-images.php; template-parts/home/hero.php
 site-photos/services-hero-desktop.webp,"Two young women smiling for a photo outdoors, one wearing pink ear defenders",Services hero desktop,,,inc/class-theme-activation.php
 site-photos/team-celebration-flowers-party-hats.webp,"Two women celebrating, one in a paper crown holding flowers and one in a Mad Hatter costume",Team celebration flowers party hats,,,inc/class-theme-activation.php
 site-photos/team-meeting-around-table.jpeg,Three women talking around a table with folders and notes,Team meeting around table,,,template-parts/resources-hub.php
@@ -71,6 +71,7 @@ site-photos-extra/gs-step-3-care-plan.webp,A hand writing notes on a large sheet
 site-photos-extra/gs-step-4-meet-the-team.webp,Members of the team chatting and laughing together on the sofas,Gs step 4 meet the team,,,page-templates/template-getting-started.php
 site-photos-extra/gs-step-5-first-week.webp,A smiling carer taking a selfie with an older gentleman in a cardigan and tie,Gs step 5 first week,,,page-templates/template-getting-started.php
 site-photos-extra/gs-step-6-keeping-in-touch.webp,"A woman in a paper crown holding a bouquet of flowers, beside a woman in a Mad Hatter costume giving a thumbs up",Gs step 6 keeping in touch,,,page-templates/template-getting-started.php
+site-photos-extra/keelie-straw-care-farm.webp,"Keelie and a young woman smiling, each holding an armful of straw outdoors on a sunny day",Keelie straw care farm,,,inc/article-keelie-2026-11.php
 site-photos-extra/kent-summer-party-hero.webp,"A young woman in a flower crown, laughing at a summer party",Kent summer party hero,,,template-parts/home/hero.php
 site-photos-extra/respite-care-day-out-at-the-castle.webp,"A young woman in her wheelchair on a sunny day out, in front of a castle and its striped lawn",Respite care day out at the castle,,,inc/class-theme-activation.php; inc/content-updates.php; template-parts/home/services.php
 site-photos-extra/team-group-office-window.webp,Six members of the Continuity of Care Services team together at the office,Team group office window,,,inc/article-keelie-2026-11.php; page-working-with-us.php

@@ -163,7 +163,13 @@ Stage 2 progress:
   - The Open Graph protocol (ogp.me): og:image:alt is "a description of what is in the image (not a caption)".
   - **In the SEO box:** tabs for Google on a computer, Google on a phone, and When shared. They update as the title and description are typed (and with the post title and featured image in the block editor), using the same fallbacks as the live page. The share card flags images that are too small or the wrong shape, or have no alt text. Links to the Facebook Sharing Debugger and LinkedIn Post Inspector.
   - **Fixed on the live site:** og:image:alt was the page title; it's now the image's own description (media library alt text, or the theme's photo sheet). The share image is now the smallest copy at least 1200 px wide, not WordPress's 1024 px "large", and its width and height are stated.
-- Next: needs-attention list.
+- **Needs attention: built 27 Nov 2026 (plugin 0.5.0).** Designed from Yoast's orphaned content filter (pages with no links to them) and Google's guidance, read 27 Nov 2026: unique titles (title links), unique descriptions (snippets), alt text (image SEO), and "Link best practices" (updated 10 Dec 2025: "Every page you care about should have a link from at least one other page on your site"; only real `<a href>` links count).
+  - **Fix first:** the site hidden from search engines; duplicate titles; missing or duplicate descriptions; images in use (featured or in the text) without alt text.
+  - **Worth a look:** titles cut short (over 60 characters), pages set to hidden (to confirm), share images under LinkedIn's 1200 × 627, and pages nothing links to.
+  - **Link check:** reads every page as a visitor sees it, menus and templates included, in batches. Yoast counts only links in the text, which would wrongly flag most pages here, because their links come from menus and cards.
+  - **On the preview:** the 3 team pages awaiting bios have no description, and 6 share images are small. There are no duplicates and no images without alt text. The link check read all pages and found no orphans.
+  - Each item has a Fix button, and the menu shows a badge counting the "fix first" items.
+- **Stage 2 is complete.**
 
 **Stage 3: nice to have**
 - A writing checklist (keyphrase in title, description length, headings, internal links).

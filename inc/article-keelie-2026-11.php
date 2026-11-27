@@ -210,3 +210,34 @@ function ccs_keelie_article_link_fix_2026_11() {
 	update_option( 'ccs_keelie_article_link_fix_2026_11', '1', false );
 }
 add_action( 'init', 'ccs_keelie_article_link_fix_2026_11', 54 );
+
+/**
+ * The article's photo, second choice (client, 27 Nov 2026: the team photo
+ * "doesnt really fit, maybe try and find a different one with her in"):
+ * Keelie at the care farm, from the client, cropped to the article's 16:9
+ * frame (crop only, no colour changes). Replaces the team photo or the
+ * headshot only, so a photo the client picks later is kept.
+ *
+ * @return void
+ */
+function ccs_keelie_article_photo_2026_11b() {
+	if ( get_option( 'ccs_keelie_article_photo_2026_11b' ) || ! function_exists( 'ccs_articles_import_photo' ) ) {
+		return;
+	}
+	$article = get_posts( array( 'name' => CCS_KEELIE_ARTICLE_SLUG, 'post_type' => 'post', 'post_status' => 'any', 'numberposts' => 1 ) );
+	if ( ! $article ) {
+		return;
+	}
+	$current = (int) get_post_thumbnail_id( $article[0] );
+	$source  = $current ? (string) get_post_meta( $current, '_ccs_source_theme_path', true ) : '';
+	if ( ! $current || in_array( $source, array( 'assets/images/site-photos-extra/team-group-office-window.webp', 'assets/images/team/keelie-varney.jpg' ), true ) ) {
+		$photo = ccs_articles_import_photo( 'assets/images/site-photos-extra/keelie-straw-care-farm.webp', 'Keelie at the care farm' );
+		if ( $photo ) {
+			update_post_meta( $photo, '_wp_attachment_image_alt', __( 'Keelie and a young woman smiling, each holding an armful of straw outdoors on a sunny day', 'ccs-wp-theme' ) );
+			set_post_thumbnail( $article[0]->ID, $photo );
+		}
+	}
+	update_option( 'ccs_keelie_article_photo_2026_11b', '1', false );
+}
+add_action( 'init', 'ccs_keelie_article_photo_2026_11b', 54 );
+

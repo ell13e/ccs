@@ -19,6 +19,12 @@ get_header();
 	<?php
 	while ( have_posts() ) :
 		the_post();
+		// Launched as "coming soon" until the guides are approved (inc/coming-soon.php).
+		if ( function_exists( 'ccs_is_coming_soon' ) && ccs_is_coming_soon( get_the_ID() ) ) {
+			get_template_part( 'template-parts/page-header', null, array( 'intro' => __( 'Plain-English guides for families weighing up care at home, coming soon.', 'ccs-wp-theme' ) ) );
+			ccs_coming_soon_render();
+			continue;
+		}
 		?>
 		<?php
 		/*
