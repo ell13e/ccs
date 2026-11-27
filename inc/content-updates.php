@@ -933,6 +933,8 @@ function ccs_content_update_steps() {
 		'ccs_activate_seo_plugin_2026_11',
 		'ccs_merge_consultation_enquiries_2026_11',
 		'ccs_care_guides_coming_soon_2026_11',
+		'ccs_keelie_article_photo_2026_11',
+		'ccs_keelie_article_photo_2026_11b',
 		'ccs_share_images_2026_11',
 	);
 }
@@ -997,3 +999,67 @@ function ccs_run_content_updates_on_visit() {
 	}
 }
 add_action( 'wp_loaded', 'ccs_run_content_updates_on_visit' );
+
+/**
+ * One request at a time runs the one-time jobs hooked to 'init' (Nov 2026).
+ *
+ * Many jobs create or change content once and then mark themselves done
+ * (ccs_ensure_* creates a page or post; *_2026_11* changes something once).
+ * They check their own "done" flag, but two requests at the same moment
+ * both see "not done": a fresh-install test that sent six requests at once
+ * created a second Ashford area page and a second Costs and funding page.
+ * Activating the theme in the admin sends several requests together, so
+ * this could happen at launch.
+ *
+ * So one atomic lock, the same kind as the update runner's, decides which
+ * request runs these jobs. Any other request skips them this time, and they
+ * run on its next visit. Jobs are found by name, so new ones are covered
+ * without being listed here. A lock older than two minutes was left by a
+ * crashed request and is cleared.
+ */
+function ccs_guard_one_time_init_jobs() {
+	global $wp_filter, $wpdb;
+	if ( empty( $wp_filter['init'] ) || wp_installing() ) {
+		return;
+	}
+	$jobs = array();
+	foreach ( $wp_filter['init']->callbacks as $priority => $callbacks ) {
+		foreach ( $callbacks as $callback ) {
+			if ( is_string( $callback['function'] ) && preg_match( '/^ccs_(ensure_|.+_2026_11[a-z]?$)/', $callback['function'] ) ) {
+				$jobs[] = array( $callback['function'], $priority );
+			}
+		}
+	}
+	if ( ! $jobs ) {
+		return;
+	}
+	$lock = 'ccs_init_jobs_lock';
+	$take = static function () use ( $wpdb, $lock ) {
+		return (bool) $wpdb->query( $wpdb->prepare( "INSERT IGNORE INTO `{$wpdb->options}` ( `option_name`, `option_value`, `autoload` ) VALUES ( %s, %s, 'no' )", $lock, (string) time() ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+	};
+	$won = $take();
+	if ( ! $won ) {
+		$since = (int) $wpdb->get_var( $wpdb->prepare( "SELECT `option_value` FROM `{$wpdb->options}` WHERE `option_name` = %s", $lock ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		if ( $since && time() - $since > 2 * MINUTE_IN_SECONDS ) {
+			$wpdb->delete( $wpdb->options, array( 'option_name' => $lock ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			$won = $take();
+		}
+	}
+	if ( ! $won ) {
+		foreach ( $jobs as $job ) {
+			remove_action( 'init', $job[0], $job[1] );
+		}
+		return;
+	}
+	// Release once this request's jobs have run (the last runs at priority 80).
+	add_action(
+		'init',
+		static function () use ( $wpdb, $lock ) {
+			$wpdb->delete( $wpdb->options, array( 'option_name' => $lock ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			wp_cache_delete( $lock, 'options' );
+		},
+		PHP_INT_MAX
+	);
+}
+add_action( 'init', 'ccs_guard_one_time_init_jobs', -1000 );
+

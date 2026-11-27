@@ -9,6 +9,7 @@ of which the pages use about 11MB, plus notes, research and tooling. This
 writes a zip with the theme's code and only the photos the code refers to.
 
 What is left out:
+- PDFs that no PHP, CSS, JS or JSON file names;
 - photos in assets/images/site-photos, site-photos-extra and team that no
   PHP, CSS, JS or JSON file names (a size variant such as name-500w.webp is
   kept with its original);
@@ -28,7 +29,7 @@ import zipfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FOLDER = 'CCS'
-SKIP_DIRS = {'.git', '.github', '.claude', '.cursor', 'bin', 'docs', 'reference', 'design-system', '_to_delete', 'node_modules', '__pycache__'}
+SKIP_DIRS = {'.git', '.github', '.claude', '.cursor', 'bin', 'docs', 'reference', 'design-system', '_to_delete', 'node_modules', '__pycache__', 'Claude outputs'}
 SKIP_FILES = {'.DS_Store', 'phpstan.neon', '.gitignore', 'Thumbs.db'}
 SKIP_EXT = {'.md', '.zip', '.mp4', '.mov', '.avi', '.webm', '.map', '.log', '.pyc'}
 PRUNED = ('assets/images/site-photos/', 'assets/images/site-photos-extra/', 'assets/images/team/')
@@ -54,6 +55,11 @@ def main():
 
     keep, left_out = [], []
     for f in files:
+        if f.lower().endswith('.pdf'):
+            # A PDF ships only if the theme links to it: an unused one (the 2025
+            # fee schedule, Nov 2026) would sit at a public address with old prices.
+            (keep if os.path.basename(f) in code else left_out).append(f)
+            continue
         if f.startswith(PRUNED):
             name = os.path.basename(f)
             original = re.sub(r'-\d+w(?=\.webp$)', '', name)
@@ -65,7 +71,7 @@ def main():
 
     size = lambda paths: sum(os.path.getsize(os.path.join(ROOT, p)) for p in paths) / 1e6
     print('kept: %d files, %.1fMB' % (len(keep), size(keep)))
-    print('left out: %d unused photos, %.1fMB' % (len(left_out), size(left_out)))
+    print('left out: %d unused photos and PDFs, %.1fMB' % (len(left_out), size(left_out)))
     if listing:
         for f in sorted(left_out):
             print('  ' + f)

@@ -154,7 +154,8 @@ function ccs_keelie_article_photo_2026_11() {
 	}
 	update_option( 'ccs_keelie_article_photo_2026_11', '1', false );
 }
-add_action( 'init', 'ccs_keelie_article_photo_2026_11', 52 );
+// Runs from the guarded update list (inc/content-updates.php): on 'init' two
+// requests at once on a fresh site each imported the photo (Nov 2026).
 
 /**
  * Link the article from Keelie's profile and the Careers page, once each.
@@ -239,5 +240,5 @@ function ccs_keelie_article_photo_2026_11b() {
 	}
 	update_option( 'ccs_keelie_article_photo_2026_11b', '1', false );
 }
-add_action( 'init', 'ccs_keelie_article_photo_2026_11b', 54 );
+// Runs from the guarded update list (inc/content-updates.php), after the one above.
 

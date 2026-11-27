@@ -30,7 +30,12 @@ Pre-launch audit, 25 November 2026. Checked against the launch checklist and the
 
 ## Launch day (your jobs)
 
-0. Upload and activate the **CCS SEO** plugin alongside the theme (without it: no descriptions, schema or old-site redirects).
+0. Upload two zips, both built by `python3 bin/build-release.py` into the folder beside the theme: **ccs-theme-1.0.0.zip** (Appearance → Themes → Add new → Upload) and **ccs-seo-0.5.1.zip** (Plugins → Add new → Upload). Activating the theme switches the plugin on (without it: no descriptions, schema or old-site redirects). Tested 27 Nov 2026 as a fresh install from these zips:
+   - **Setup:** the plugin switched on, every one-time update ran, and Care guides started "coming soon".
+   - **No duplicates:** none, even with requests sent six at a time.
+   - **Checks:** QA passed at all four widths; all 302 images and files load; links and old-site redirects pass.
+   - **Validators:** schema.org reports 0 errors and 0 warnings; Google's Rich Results Test passes Local business and Organisation.
+   - **Rebuild first:** rebuild the zips after any later change.
 1. In the Customizer, enter **GTM-TGWL555X**. Publish the GTM container first.
 2. Send one test enquiry, then mark **generate_lead** as a key event in GA4.
 3. Verify Search Console as a Domain property (a DNS TXT record), submit `/wp-sitemap.xml`, then link it to GA4.
