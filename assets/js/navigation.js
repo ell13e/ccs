@@ -45,15 +45,21 @@
 	var isCtaStyle = !!mobilePanel;
 
 	/*
-	 * Scroll lock. Setting overflow on <body> alone did nothing: the document
-	 * scrolls on <html> (document.scrollingElement is documentElement here), so
-	 * the page behind the open menu scrolled freely while body sat there
-	 * obediently hidden. Both elements have to be locked.
+	 * Scroll lock, on <html> only: the document scrolls on <html>
+	 * (document.scrollingElement is documentElement here), so that's the one to
+	 * stop. Setting overflow on <body> alone did nothing.
+	 *
+	 * Never on <body> as well (Nov 2026, client: "mobile menu is jerky to
+	 * open"). With both hidden, <body> becomes a scroll box of its own, and the
+	 * sticky header sticks to that box instead of the screen. Opened partway
+	 * down a page, the header jumped back to the top of the document, out of
+	 * view; the page dimmed with nothing in front of it, and the menu (placed
+	 * from the header's position) snapped in at the end, without its header.
+	 * Measured frame by frame in headless Chrome at phone size.
 	 */
 	function setScrollLock(locked) {
 		var value = locked ? 'hidden' : '';
 		document.documentElement.style.overflow = value;
-		document.body.style.overflow = value;
 		/*
 		 * Keep the scrollbar's space while locked. Where scrollbars take up room
 		 * (a desktop browser below 1024px wide), overflow:hidden removed the bar
