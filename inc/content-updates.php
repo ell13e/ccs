@@ -868,6 +868,41 @@ function ccs_merge_consultation_enquiries_2026_11() {
 }
 
 /**
+ * Sharing images (Nov 2026): five pages shared a picture below LinkedIn's
+ * 1200 x 627 minimum (Care guides, Careers, Current vacancies, Domiciliary
+ * care, Respite care). Each now has its own 1200 x 630 sharing image, cropped
+ * from a real CCS photo (crop only, no colour changes), set in the SEO box's
+ * "Sharing image", so the pages' banner photos stay as they are. Only where
+ * the page has no sharing image yet.
+ *
+ * @return void
+ */
+function ccs_share_images_2026_11() {
+	if ( get_option( 'ccs_share_images_2026_11' ) || ! function_exists( 'ccs_articles_import_photo' ) ) {
+		return;
+	}
+	$pages = array(
+		array( 'resources/care-guides', 'page', 'share-care-guides.webp', __( 'A hand writing notes on a large sheet of paper with a marker pen', 'ccs-wp-theme' ) ),
+		array( 'careers', 'page', 'share-careers.webp', __( 'Members of the team chatting and laughing together on the sofas', 'ccs-wp-theme' ) ),
+		array( 'careers/current-vacancies', 'page', 'share-current-vacancies.webp', __( 'Members of the team gathered round a care bed during a training session', 'ccs-wp-theme' ) ),
+		array( 'domiciliary-care', 'service', 'share-domiciliary-care.webp', __( 'A smiling carer taking a selfie with an older gentleman in a cardigan and tie', 'ccs-wp-theme' ) ),
+		array( 'respite-care', 'service', 'share-respite-care.webp', __( 'Two women in red life jackets hugging and smiling on a boat', 'ccs-wp-theme' ) ),
+	);
+	foreach ( $pages as $page ) {
+		$post = get_page_by_path( $page[0], OBJECT, $page[1] );
+		if ( ! $post instanceof WP_Post || get_post_meta( $post->ID, '_ccs_seo_share_image', true ) ) {
+			continue;
+		}
+		$photo = ccs_articles_import_photo( 'assets/images/share/' . $page[2], $page[3] );
+		if ( $photo ) {
+			update_post_meta( $photo, '_wp_attachment_image_alt', $page[3] );
+			update_post_meta( $post->ID, '_ccs_seo_share_image', $photo );
+		}
+	}
+	update_option( 'ccs_share_images_2026_11', '1', false );
+}
+
+/**
  * Every one-time update in this file, in the order they were written.
  *
  * Each checks the site before it changes anything and records that it ran,
@@ -898,6 +933,7 @@ function ccs_content_update_steps() {
 		'ccs_activate_seo_plugin_2026_11',
 		'ccs_merge_consultation_enquiries_2026_11',
 		'ccs_care_guides_coming_soon_2026_11',
+		'ccs_share_images_2026_11',
 	);
 }
 

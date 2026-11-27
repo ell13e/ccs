@@ -22,7 +22,7 @@ import re
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 IMAGES = os.path.join(ROOT, 'assets', 'images')
 OUT = os.path.join(IMAGES, 'media-metadata.csv')
-DIRS = ('site-photos', 'site-photos-extra', 'careers', 'journey', 'stock', 'team')
+DIRS = ('site-photos', 'site-photos-extra', 'careers', 'journey', 'stock', 'team', 'share')
 SKIP = {'.git', '.github', '.claude', '.cursor', 'bin', 'docs', 'reference', 'design-system', '_to_delete', 'node_modules'}
 
 sources = {}

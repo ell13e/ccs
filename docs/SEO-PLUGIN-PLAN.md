@@ -169,6 +169,7 @@ Stage 2 progress:
   - **Link check:** reads every page as a visitor sees it, menus and templates included, in batches. Yoast counts only links in the text, which would wrongly flag most pages here, because their links come from menus and cards.
   - **On the preview:** the 3 team pages awaiting bios have no description, and 6 share images are small. There are no duplicates and no images without alt text. The link check read all pages and found no orphans.
   - Each item has a Fix button, and the menu shows a badge counting the "fix first" items.
+- **Per-page sharing image (0.5.1, 27 Nov 2026):** a "Sharing image" picker in the SEO box, used before the featured image, as Yoast and Rank Math do. The five pages the list flagged now share 1200 × 630 crops of real CCS photos (theme `assets/images/share/`), and their banner photos are unchanged.
 - **Stage 2 is complete.**
 
 **Stage 3: nice to have**
